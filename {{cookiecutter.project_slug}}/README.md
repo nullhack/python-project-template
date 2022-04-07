@@ -77,16 +77,16 @@
 
 #### Packages
 
-  <a href="https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}/raw/main/docs/uml/diagrams/packages_new_package.png">
-    <img src="https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}/raw/main/docs/uml/diagrams/packages_new_package.png" alt="uml-diagram-packages">
+  <a href="https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}/raw/main/docs/uml/diagrams/packages_{{cookiecutter.package_name}}.png">
+    <img src="https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}/raw/main/docs/uml/diagrams/packages_{{cookiecutter.package_name}}.png" alt="uml-diagram-packages">
   </a>
   
 ---
 
 #### Classes
 
-  <a href="https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}/raw/main/docs/uml/diagrams/classes_new_package.png">
-    <img src="https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}/raw/main/docs/uml/diagrams/classes_new_package.png" alt="uml-diagram-classes">
+  <a href="https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}/raw/main/docs/uml/diagrams/classes_{{cookiecutter.package_name}}.png">
+    <img src="https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}/raw/main/docs/uml/diagrams/classes_{{cookiecutter.package_name}}.png" alt="uml-diagram-classes">
   </a>
   
 <p align="right">(<a href="#top">back to top</a>)</p>
@@ -195,7 +195,7 @@ Don't forget to give the project a star! Thanks again!
 <!-- LICENSE -->
 ## License
 
-Distributed under the {{cookiecutter.license}} License. See [`LICENSE.txt`](https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}/LICENSE.txt) for more information.
+Distributed under the {{cookiecutter.license}} License. See [`LICENSE.txt`](https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}/blob/master/LICENSE.txt) for more information.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -239,6 +239,6 @@ References and sources of inspiration
 [stars-url]: https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}/stargazers
 [issues-shield]: https://img.shields.io/github/issues/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}.svg?style=for-the-badge
 [issues-url]: https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}/issues
-[license-shield]: https://img.shields.io/github/license/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}.svg?style=for-the-badge
+[license-shield]: https://img.shields.io/badge/license-{{cookiecutter.license}}-green?style=for-the-badge
 [license-url]: https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}/blob/master/LICENSE.txt
 

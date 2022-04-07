@@ -1,6 +1,6 @@
-digraph "packages_new_package" {
+digraph "packages_my_python_package" {
 rankdir=BT
 charset="utf-8"
-"new_package" [color="black", label="new_package", shape="box", style="solid"];
-"new_package.new_module" [color="black", label="new_package.new_module", shape="box", style="solid"];
+"my_python_package" [color="black", label="my_python_package", shape="box", style="solid"];
+"my_python_package.my_python_module" [color="black", label="my_python_package.my_python_module", shape="box", style="solid"];
 }

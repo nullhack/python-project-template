@@ -13,7 +13,7 @@ repos:
     -   id: detect-aws-credentials
     -   id: detect-private-key
     -   id: end-of-file-fixer
-        exclude: ^docs/
+        files: .*\.py
     -   id: mixed-line-ending
     -   id: name-tests-test
 -   repo: https://github.com/PyCQA/isort
@@ -24,8 +24,6 @@ repos:
     rev: v0.942
     hooks:
         - id: mypy
-          additional_dependencies: [pydantic]
-          exclude: noxfile.py
 -   repo: local
     hooks:
     -   id: black-formatter

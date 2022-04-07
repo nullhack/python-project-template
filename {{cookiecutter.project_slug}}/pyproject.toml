@@ -8,7 +8,7 @@ authors = ["{{cookiecutter.full_name}} <{{cookiecutter.email}}>"]
 python = "^3.9"
 
 [tool.poetry.dev-dependencies]
-pytest = "^5.2"
+pytest = "7.1.1"
 pytest-cov = "^3.0.0"
 pre-commit = "^2.18.1"
 flake8 = "^4.0.1"
@@ -68,3 +68,32 @@ exclude = '''
                      # the root of the project
 )
 '''
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "--verbose --color=yes --cov=src --cov-fail-under=100 --cov-report term-missing --doctest-modules"
+testpaths = [
+    "tests",
+    "src"
+]
+python_files = ["*_test.py"]
+python_functions = ["test_*"]
+render_collapsed = true
+
+[tool.mypy]
+warn_return_any = false
+warn_unused_configs = true
+warn_redundant_casts = true
+
+[[tool.mypy.overrides]]
+module = [
+    "{{cookiecutter.package_name}}"
+]
+follow_imports = "silent"
+strict_optional = true
+warn_unused_ignores = true
+disallow_any_generics = true
+check_untyped_defs = true
+no_implicit_reexport = true
+disallow_untyped_defs = true
+ignore_missing_imports = true
