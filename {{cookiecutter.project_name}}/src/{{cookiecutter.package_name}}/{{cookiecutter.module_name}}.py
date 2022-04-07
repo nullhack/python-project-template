@@ -6,7 +6,7 @@ import logging
 from numbers import Real
 
 # TODO({{cookiecutter.full_name}}): Check how to write todos!
-# https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.projec_name}}/issues/1337
+# https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_name}}/issues/1337
 
 logger = logging.getLogger("test")
 logger.info("This is a {word}", extra={"word": "Log"})
