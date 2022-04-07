@@ -17,7 +17,7 @@ Source: https://www.nerdwallet.com/blog/engineering/5-pytest-best-practices/
 
 import pytest
 
-from new_package import new_module
+from {{cookiecutter.package_name}} import {{cookiecutter.module_name}} as m
 
 
 @pytest.mark.parametrize(
@@ -69,7 +69,7 @@ def test_divide_ok(a, b, expected):
         expected (Real): expected result.
 
     """
-    assert new_module.Calculator.divide(a, b) == expected
+    assert m.Calculator.divide(a, b) == expected
 
 
 @pytest.mark.parametrize(
@@ -92,4 +92,4 @@ def test_divide_error(a, b, expected):
 
     """
     with pytest.raises(expected):
-        new_module.Calculator.divide(a, b)
+        m.Calculator.divide(a, b)

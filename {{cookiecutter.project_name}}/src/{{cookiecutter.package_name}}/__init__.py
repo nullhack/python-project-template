@@ -1,3 +1,3 @@
 # -*- coding: utf-8 -*-
 
-"""Public package docstring."""
+"""{{cookiecutter.project_short_description}}."""

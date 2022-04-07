@@ -5,8 +5,8 @@
 import logging
 from numbers import Real
 
-# TODO(Author_Name): check how to write todos!
-# https://github.com/orsinium-labs/flake8-todos/issues/1337
+# TODO({{cookiecutter.full_name}}): Check how to write todos!
+# https://github.com/{{cookiecutter.github_name}}/{{cookiecutter.projec_name}}/issues/1337
 
 logger = logging.getLogger("test")
 logger.info("This is a {word}", extra={"word": "Log"})
