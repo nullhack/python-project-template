@@ -1,0 +1,70 @@
+[tool.poetry]
+name = "new_package"
+version = "0.1.0"
+description = ""
+authors = ["Eric Lopes <nullhack@users.noreply.github.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+
+[tool.poetry.dev-dependencies]
+pytest = "^5.2"
+pytest-cov = "^3.0.0"
+pre-commit = "^2.18.1"
+flake8 = "^4.0.1"
+mypy = "^0.942"
+isort = "^5.10.1"
+black = {version = "^22.3.0", allow-prereleases = true}
+flake8-docstrings = "^1.6.0"
+xdoctest = "^1.0.0"
+Pygments = "^2.11.2"
+pep8-naming = "^0.12.1"
+darglint = "^1.8.1"
+pytest-html = "^3.1.1"
+pdoc3 = "^0.10.0"
+cookiecutter = "^1.7.3"
+pylint = "^2.13.4"
+graphviz = "^0.19.1"
+pydot = "^1.4.2"
+flake8-secure-coding-standard = "^1.2.1"
+nox = "^2022.1.7"
+flake8-todos = "^0.1.5"
+flake8-logging-format = "^0.6.0"
+flake8-builtins = "^1.5.3"
+flake8-pytest-style = "^1.6.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.isort]
+multi_line_output = 3
+include_trailing_comma = true
+force_grid_wrap = 0
+use_parentheses = true
+line_length = 79
+
+[tool.black]
+line-length = 79
+target-version = ['py38']
+include = '\.pyi?$'
+exclude = '''
+
+(
+  /(
+      \.eggs         # exclude a few common directories in the
+    | \.git          # root of the project
+    | \.hg
+    | \.mypy_cache
+    | \.tox
+    | \.venv
+    | _build
+    | buck-out
+    | build
+    | dist
+    | docs
+  )/
+  | foo.py           # also separately exclude a file named foo.py in
+                     # the root of the project
+)
+'''

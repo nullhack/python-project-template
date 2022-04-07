@@ -1,0 +1,5 @@
+digraph "classes_new_package" {
+rankdir=BT
+charset="utf-8"
+"new_package.new_module.Calculator" [color="black", fontcolor="black", label="{new_package.new_module.Calculator|\l|divide(a: Real, b: Real): Real\l}", shape="record", style="solid"];
+}

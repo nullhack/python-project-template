@@ -1,0 +1,11 @@
+{
+  "full_name": "Eric Lopes",
+  "email": "nullhack@users.noreply.github.com",
+  "github_username": "nullhack",
+  "project_name": "My Python Project",
+  "package_name": "{{ cookiecutter.project_name.lower().replace(' ', '_').replace('-', '_') }}",
+  "module_name": "{{ cookiecutter.package_name.lower().replace(' ', '_').replace('-', '_').replace('package', 'module') }}",
+  "project_short_description": "Python Project with some awesome tools to quickstart any Python project.",
+  "version": "0.1.0",
+  "license": ["MIT", "BSD-3-Clause", "Apache-2.0", "GPL-3.0", "Proprietary"],
+}
