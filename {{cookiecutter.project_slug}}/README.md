@@ -25,16 +25,16 @@
   <p align="center">
     {{cookiecutter.project_short_description}}
     <br />
-    <a href="https://htmlpreview.github.io/?https://raw.githubusercontent.com/{{cookiecutter.github_username}}/{{cookiecutter.project_name}}/main/docs/api/{{cookiecutter.project_name}}/index.html"><strong>Explore the docs »</strong></a>
+    <a href="https://htmlpreview.github.io/?https://raw.githubusercontent.com/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}/main/docs/api/{{cookiecutter.project_slug}}/index.html"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://htmlpreview.github.io/?https://raw.githubusercontent.com/{{cookiecutter.github_username}}/{{cookiecutter.project_name}}/main/docs/pytest_report.html">Tests</a>
+    <a href="https://htmlpreview.github.io/?https://raw.githubusercontent.com/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}/main/docs/pytest_report.html">Tests</a>
     ·
-    <a href="https://htmlpreview.github.io/?https://raw.githubusercontent.com/{{cookiecutter.github_username}}/{{cookiecutter.project_name}}/main/docs/cov-report/index.html">Code Coverage</a>
+    <a href="https://htmlpreview.github.io/?https://raw.githubusercontent.com/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}/main/docs/cov-report/index.html">Code Coverage</a>
     ·
-    <a href="https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_name}}/issues">Report Bug</a>
+    <a href="https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}/issues">Report Bug</a>
     ·
-    <a href="https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_name}}/issues">Request Feature</a>
+    <a href="https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}/issues">Request Feature</a>
   </p>
 </div>
 
@@ -77,16 +77,16 @@
 
 #### Packages
 
-  <a href="https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_name}}/raw/main/docs/uml/diagrams/packages_new_package.png">
-    <img src="https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_name}}/raw/main/docs/uml/diagrams/packages_new_package.png" alt="uml-diagram-packages">
+  <a href="https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}/raw/main/docs/uml/diagrams/packages_new_package.png">
+    <img src="https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}/raw/main/docs/uml/diagrams/packages_new_package.png" alt="uml-diagram-packages">
   </a>
   
 ---
 
 #### Classes
 
-  <a href="https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_name}}/raw/main/docs/uml/diagrams/classes_new_package.png">
-    <img src="https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_name}}/raw/main/docs/uml/diagrams/classes_new_package.png" alt="uml-diagram-classes">
+  <a href="https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}/raw/main/docs/uml/diagrams/classes_new_package.png">
+    <img src="https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}/raw/main/docs/uml/diagrams/classes_new_package.png" alt="uml-diagram-classes">
   </a>
   
 <p align="right">(<a href="#top">back to top</a>)</p>
@@ -113,8 +113,8 @@ This Project depends on the following projects.
 
 1. Clone the repo
    ```sh
-   git clone https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_name}}
-   cd {{cookiecutter.project_name}}
+   git clone https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}
+   cd {{cookiecutter.project_slug}}
    ```
 2. Install NPM packages
    ```sh
@@ -154,7 +154,7 @@ Some useful examples of how this project can be used:
    nox -s pre-commit
    ```
 
-_For more examples, please refer to the [Documentation](https://htmlpreview.github.io/?https://raw.githubusercontent.com/{{cookiecutter.github_username}}/{{cookiecutter.project_name}}/main/docs/api/{{cookiecutter.project_name}}/index.html)_
+_For more examples, please refer to the [Documentation](https://htmlpreview.github.io/?https://raw.githubusercontent.com/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}/main/docs/api/{{cookiecutter.project_slug}}/index.html)_
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -168,7 +168,7 @@ _For more examples, please refer to the [Documentation](https://htmlpreview.gith
 - [ ] Improve documentation
 - [ ] Include more tests
 
-See the [open issues](https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_name}}/issues) for a full list of proposed features (and known issues).
+See the [open issues](https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}/issues) for a full list of proposed features (and known issues).
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -195,7 +195,7 @@ Don't forget to give the project a star! Thanks again!
 <!-- LICENSE -->
 ## License
 
-Distributed under the {{cookiecutter.license}} License. See [`LICENSE.txt`](https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_name}}/LICENSE.txt) for more information.
+Distributed under the {{cookiecutter.license}} License. See [`LICENSE.txt`](https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}/LICENSE.txt) for more information.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -206,7 +206,7 @@ Distributed under the {{cookiecutter.license}} License. See [`LICENSE.txt`](http
 
 {{cookiecutter.full_name}} - [@{{cookiecutter.github_username}}](https://github.com/{{cookiecutter.github_username}}) - {{cookiecutter.email}}
 
-Project Link: [https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_name}}/](https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_name}}/)
+Project Link: [https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}/](https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}/)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -231,14 +231,14 @@ References and sources of inspiration
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/{{cookiecutter.github_username}}/{{cookiecutter.project_name}}.svg?style=for-the-badge
-[contributors-url]: https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_name}}/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/{{cookiecutter.github_username}}/{{cookiecutter.project_name}}.svg?style=for-the-badge
-[forks-url]: https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_name}}/network/members
-[stars-shield]: https://img.shields.io/github/stars/{{cookiecutter.github_username}}/{{cookiecutter.project_name}}.svg?style=for-the-badge
-[stars-url]: https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_name}}/stargazers
-[issues-shield]: https://img.shields.io/github/issues/{{cookiecutter.github_username}}/{{cookiecutter.project_name}}.svg?style=for-the-badge
-[issues-url]: https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_name}}/issues
-[license-shield]: https://img.shields.io/github/license/{{cookiecutter.github_username}}/{{cookiecutter.project_name}}.svg?style=for-the-badge
-[license-url]: https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_name}}/blob/master/LICENSE.txt
+[contributors-shield]: https://img.shields.io/github/contributors/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}.svg?style=for-the-badge
+[contributors-url]: https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}.svg?style=for-the-badge
+[forks-url]: https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}/network/members
+[stars-shield]: https://img.shields.io/github/stars/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}.svg?style=for-the-badge
+[stars-url]: https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}/stargazers
+[issues-shield]: https://img.shields.io/github/issues/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}.svg?style=for-the-badge
+[issues-url]: https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}/issues
+[license-shield]: https://img.shields.io/github/license/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}.svg?style=for-the-badge
+[license-url]: https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}/blob/master/LICENSE.txt
 

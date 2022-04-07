@@ -3,6 +3,7 @@
   "email": "nullhack@users.noreply.github.com",
   "github_username": "nullhack",
   "project_name": "My Python Project",
+  "project_slug": "{{ cookiecutter.project_name.lower().replace(' ', '-') }}",
   "package_name": "{{ cookiecutter.project_name.lower().replace(' ', '_').replace('-', '_').replace('project', 'package') }}",
   "module_name": "{{ cookiecutter.package_name.lower().replace(' ', '_').replace('-', '_').replace('package', 'module') }}",
   "project_short_description": "Python Project with some awesome tools to quickstart any Python project.",
