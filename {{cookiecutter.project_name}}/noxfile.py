@@ -74,8 +74,8 @@ def test_docs(session):
         "pytest",
         "--html=docs/pytest_report.html",
         "--self-contained-html",
-        "--cov-report", 
-        "html:docs/cov-report"
+        "--cov-report",
+        "html:docs/cov-report",
     )
 
 
