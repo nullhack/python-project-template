@@ -75,7 +75,7 @@
 
 ### UML Diagrams
 
-#### Packages
+#### Packages and Modules
 
   <a href="https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}/raw/main/docs/uml/diagrams/packages_{{cookiecutter.package_name}}.png">
     <img src="https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}/raw/main/docs/uml/diagrams/packages_{{cookiecutter.package_name}}.png" alt="uml-diagram-packages">
@@ -116,7 +116,7 @@ This Project depends on the following projects.
    git clone https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}
    cd {{cookiecutter.project_slug}}
    ```
-2. Install NPM packages
+2. Install Python packages
    ```sh
    poetry install
    ```

@@ -71,7 +71,7 @@ exclude = '''
 
 [tool.pytest.ini_options]
 minversion = "6.0"
-addopts = "--verbose --color=yes --cov=src --cov-fail-under=100 --cov-report term-missing --doctest-modules"
+addopts = "--verbose --color=yes --cov=src --cov-fail-under=100 --cov-report term-missing --doctest-modules --cov-config=setup.cfg"
 testpaths = [
     "tests",
     "src"
