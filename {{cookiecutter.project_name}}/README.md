@@ -204,7 +204,7 @@ Distributed under the {{cookiecutter.license}} License. See [`LICENSE.txt`](http
 <!-- CONTACT -->
 ## Contact
 
-{{cookiecutter.full_name}} - [@{{cookiecutter.github_username}}](https://github.com/{{cookiecutter.github_username}}) - {{cookiecuter.email}}
+{{cookiecutter.full_name}} - [@{{cookiecutter.github_username}}](https://github.com/{{cookiecutter.github_username}}) - {{cookiecutter.email}}
 
 Project Link: [https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_name}}/](https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_name}}/)
 
