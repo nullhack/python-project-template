@@ -20,13 +20,10 @@
 <br />
 <div align="center">
 
-  <h3 align="center"> cookiecutter-python-base-project</h3>
+  <h1 align="center"> Cookiecutter Python Base Project</h3>
 
   <p align="center">
     Cookiecutter for Python template with some awesome tools to quickstart any Python project.
-    <br />
-    <a href="https://htmlpreview.github.io/?https://raw.githubusercontent.com/nullhack/cookiecutter-python-base-project/main/docs/api/cookiecutter-python-base-project/index.html"><strong>Explore the docs »</strong></a>
-    <br />
     <br />
     <a href="https://github.com/nullhack/cookiecutter-python-base-project/issues">Report Bug</a>
     ·
@@ -42,9 +39,6 @@
   <ol>
     <li>
       <a href="#about-the-project">About The Project</a>
-      <ul>
-        <li><a href="#uml-diagrams">UML Diagrams</a></li>
-      </ul>
     </li>
     <li>
       <a href="#getting-started">Getting Started</a>
@@ -72,7 +66,7 @@ Flake8 linting to enforce standardized Python coding, automatic UML diagrams gen
 virtual environments using Poetry, workflow automation using Nox, 
 code formating using black and a standard Dockerfile to kickstart your project using the power of Docker containers and much more. 
 
-All you need to do is install [Cookiecutter](https://cookiecutter.readthedocs.io/en/1.7.2/usage.html)
+All you need to do is to install [Cookiecutter](https://cookiecutter.readthedocs.io/en/1.7.2/usage.html)!
 
 ---
 
