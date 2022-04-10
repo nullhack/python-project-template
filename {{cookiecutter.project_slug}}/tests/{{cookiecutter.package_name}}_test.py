@@ -83,7 +83,7 @@ def test_divide_ok(a, b, expected):
 def test_divide_error(a, b, expected):
     """Check if divide returns correct Exceptions for known entries.
 
-    Issue raised by the issue: https://github.com/test/HelloWorld/issues
+    Issue raised by https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}/issues/1337
 
     Args:
         a (Real): Dividend.

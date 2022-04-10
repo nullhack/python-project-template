@@ -1,0 +1,18 @@
+[flake8]
+ignore = E203, E266, E501, W503
+max-line-length = 79
+enable-extensions=G
+#select = B,C,E,F,W,T4,T0,N8,DC,DAR,SCS
+import-order-style = google
+docstring-convention = google
+per-file-ignores = tests/*:DC,SCS,ANN,S101 noxfile.py:ANN,DAR101
+max-complexity = 10
+exclude =
+    docs/
+    .git
+    .nox
+    __pycache__
+    docs/source/conf.py
+    old
+    build
+    dist
