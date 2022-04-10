@@ -25,4 +25,5 @@ COPY .flake8 .
 RUN pip install nox --user && \
     nox -s install
 
-CMD ["nox", "-s", "run"]
+ENTRYPOINT ["nox", "-s"]
+CMD ["run"]
