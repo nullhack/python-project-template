@@ -6,6 +6,10 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# Remove tests and coverage reports
+docs/cov-report
+docs/pytest_report.html
+
 # C extensions
 *.so
 

@@ -64,9 +64,9 @@ def test_divide_ok(a, b, expected):
     """Check if divide works for expected entries.
 
     Args:
-        a (Real): Dividend.
-        b (Real): Divisor.
-        expected (Real): expected result.
+        a (float): Dividend.
+        b (float): Divisor.
+        expected (float): expected result.
 
     """
     assert m.Calculator.divide(a, b) == expected
@@ -86,8 +86,8 @@ def test_divide_error(a, b, expected):
     Issue raised by https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}/issues/1337
 
     Args:
-        a (Real): Dividend.
-        b (Real): Divisor.
+        a (float): Dividend.
+        b (float): Divisor.
         expected (Exception): expected Exception.
 
     """

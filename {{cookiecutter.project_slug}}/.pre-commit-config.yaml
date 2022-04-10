@@ -3,6 +3,7 @@ repos:
     rev: v4.1.0
     hooks:
     -   id: trailing-whitespace
+        files: .*\.py
     -   id: check-yaml
     -   id: check-added-large-files
     -   id: check-ast
@@ -24,7 +25,7 @@ repos:
     hooks:
     -   id: black-formatter
         name: black-formatter
-        stages: [commit]
+        stages: [commit, push]
         language: system
         entry: nox -s black
         types: [python]
@@ -33,15 +34,15 @@ repos:
     hooks:
     -   id: flake8-lint
         name: flake8-lint
-        stages: [commit]
+        stages: [commit, push]
         language: system
         entry: nox -s lint
         types: [python]
         pass_filenames: false
 -   repo: local
     hooks:
-    -   id: pytest-cov
-        name: pytest-cov
+    -   id: pytest
+        name: pytest
         stages: [commit]
         language: system
         entry: nox -s tests
@@ -49,8 +50,8 @@ repos:
         pass_filenames: false
 -   repo: local
     hooks:
-    -   id: test-docs
-        name: test-docs
+    -   id: pytest-docs
+        name: pytest-docs
         stages: [push]
         language: system
         entry: nox -s test-docs
@@ -58,8 +59,8 @@ repos:
         pass_filenames: false
 -   repo: local
     hooks:
-    -   id: documentation
-        name: documentation
+    -   id: api-documentation
+        name: api-documentation
         stages: [push]
         language: system
         entry: nox -s api-docs
@@ -69,7 +70,7 @@ repos:
     hooks:
     -   id: uml-diagram
         name: uml-diagram
-        stages: [commit]
+        stages: [push]
         language: system
         entry: nox -s uml
         types: [python]

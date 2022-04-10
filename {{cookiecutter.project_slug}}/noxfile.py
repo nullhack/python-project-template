@@ -5,7 +5,25 @@ from pathlib import Path
 
 import nox
 
-nox.options.sessions = ["pre-commit"]
+nox.options.sessions = ["install", "pre-commit"]
+
+
+@nox.session(python=False, name="install")
+def install(session):
+    """Install project dependencies."""
+    session.run("pip", "install", "poetry")
+    session.run("poetry", "install")
+    session.run("git", "init")
+    session.run(
+        "poetry",
+        "run",
+        "pre-commit",
+        "install",
+        "--hook-type",
+        "pre-commit",
+        "--hook-type",
+        "pre-push",
+    )
 
 
 @nox.session(python=False, name="tests")

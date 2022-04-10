@@ -3,7 +3,6 @@
 """Module Docstring."""
 
 import logging
-from numbers import Real
 
 # TODO({{cookiecutter.full_name}}): Check how to write todos!
 # https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}/issues/1337
@@ -16,19 +15,19 @@ class Calculator(object):
     """Class for simple calculator operations."""
 
     @staticmethod
-    def divide(a: Real, b: Real) -> Real:
+    def divide(a: float, b: float) -> float:
         """Divide a by b.
 
         Args:
-            a (Real): Dividend.
-            b (Real): Divisor.
+            a (float): Dividend.
+            b (float): Divisor.
 
         Returns:
-            Real: The result of the division.
+            float: The result of the division.
 
         Raises:
             ZeroDivisionError: if b is 0.
-            TypeError: if a or b are not Real numbers.
+            TypeError: if a or b are not float numbers.
 
         Examples:
             You can run this function as following.
@@ -39,12 +38,7 @@ class Calculator(object):
         """
         if b == 0:
             raise ZeroDivisionError
-        elif type(a) not in (Real, float, int) or type(b) not in (
-            Real,
-            float,
-            int,
-        ):
-            print(type(a), type(b))
+        elif type(a) not in (float, int) or type(b) not in (float, int):
             raise TypeError
         return a / b
 

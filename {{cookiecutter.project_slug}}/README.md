@@ -28,10 +28,6 @@
     <a href="https://htmlpreview.github.io/?https://raw.githubusercontent.com/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}/main/docs/api/{{cookiecutter.project_slug}}/index.html"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://htmlpreview.github.io/?https://raw.githubusercontent.com/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}/main/docs/pytest_report.html">Tests</a>
-    ·
-    <a href="https://htmlpreview.github.io/?https://raw.githubusercontent.com/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}/main/docs/cov-report/index.html">Code Coverage</a>
-    ·
     <a href="https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}/issues">Report Bug</a>
     ·
     <a href="https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}/issues">Request Feature</a>
@@ -80,7 +76,7 @@
   <a href="https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}/raw/main/docs/uml/diagrams/packages_{{cookiecutter.package_name}}.png">
     <img src="https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}/raw/main/docs/uml/diagrams/packages_{{cookiecutter.package_name}}.png" alt="uml-diagram-packages">
   </a>
-  
+
 ---
 
 #### Classes
@@ -88,7 +84,7 @@
   <a href="https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}/raw/main/docs/uml/diagrams/classes_{{cookiecutter.package_name}}.png">
     <img src="https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}/raw/main/docs/uml/diagrams/classes_{{cookiecutter.package_name}}.png" alt="uml-diagram-classes">
   </a>
-  
+
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 <!-- GETTING STARTED -->
@@ -101,9 +97,9 @@ To get a local copy up and running follow these simple steps.
 This Project depends on the following projects.
 * poetry
   ```sh
-  curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
+  pip install --user --upgrade poetry
   ```
-  
+
 * nox
   ```sh
   pip install --user --upgrade nox
@@ -116,11 +112,15 @@ This Project depends on the following projects.
    git clone https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}
    cd {{cookiecutter.project_slug}}
    ```
-2. Install Python packages
+2. Install nox
    ```sh
-   poetry install
+   pip install --user --upgrade nox
    ```
-3. Run tests
+3.  Install pre-commit and poetry
+   ```sh
+   nox -s install
+   ```
+4. Run tests
    ```sh
    nox -s tests
    ```
@@ -134,21 +134,26 @@ This Project depends on the following projects.
 
 Some useful examples of how this project can be used:
 
+*  Install and run pre-commit checks
+   ```sh
+   nox
+   ```
+
 *  Run tests
    ```sh
    nox -s tests
    ```
-   
+
 *  Run code lint
    ```sh
    nox -s lint
    ```
-   
+
 *  Generate API documentation
    ```sh
    nox -s api-docs
    ```
-   
+
 *  Run pre-commit checks
    ```sh
    nox -s pre-commit
