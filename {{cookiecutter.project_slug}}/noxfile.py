@@ -5,13 +5,38 @@ from pathlib import Path
 
 import nox
 
-nox.options.sessions = ["install", "pre-commit"]
+nox.options.sessions = ["install-dev", "pre-commit"]
+
+
+@nox.session(python=False, name="run")
+def run(session):
+    """Run the project main module."""
+    session.run(
+        "poetry",
+        "run",
+        "python",
+        "-m",
+        "{{cookiecutter.package_name}}.{{cookiecutter.module_name}}",
+    )
+
+
+@nox.session(python=False, name="install-poetry")
+def install_poetry(session):
+    """Install poetry."""
+    session.run("pip", "install", "poetry")
 
 
 @nox.session(python=False, name="install")
 def install(session):
-    """Install project dependencies."""
-    session.run("pip", "install", "poetry")
+    """Install project itself."""
+    install_poetry(session)
+    session.run("poetry", "install", "--no-dev")
+
+
+@nox.session(python=False, name="install-dev")
+def install_dev(session):
+    """Install project dependencies for development."""
+    install_poetry(session)
     session.run("poetry", "install")
     session.run("git", "init")
     session.run(

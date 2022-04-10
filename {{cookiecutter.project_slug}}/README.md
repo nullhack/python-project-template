@@ -116,7 +116,7 @@ This Project depends on the following projects.
    ```sh
    pip install --user --upgrade nox
    ```
-3.  Install pre-commit and poetry
+3. Install pre-commit and poetry
    ```sh
    nox -s install
    ```
