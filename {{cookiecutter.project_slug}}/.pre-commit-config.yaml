@@ -11,7 +11,6 @@ repos:
     -   id: fix-encoding-pragma
     -   id: check-docstring-first
     -   id: check-merge-conflict
-    -   id: detect-aws-credentials
     -   id: detect-private-key
     -   id: end-of-file-fixer
         files: .*\.py
