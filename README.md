@@ -134,7 +134,7 @@ Don't forget to give the project a star! Thanks again!
 <!-- LICENSE -->
 ## License
 
-Distributed under the MIT License. See [`LICENSE.txt`](https://github.com/nullhack/cookiecutter-python-base-project/blob/master/LICENSE.txt) for more information.
+Distributed under the MIT License. See [`LICENSE.txt`](https://github.com/nullhack/cookiecutter-python-base-project/blob/main/LICENSE.txt) for more information.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -177,4 +177,4 @@ References and sources of inspiration
 [issues-shield]: https://img.shields.io/github/issues/nullhack/cookiecutter-python-base-project.svg?style=for-the-badge
 [issues-url]: https://github.com/nullhack/cookiecutter-python-base-project/issues
 [license-shield]: https://img.shields.io/badge/license-MIT-green?style=for-the-badge
-[license-url]: https://github.com/nullhack/cookiecutter-python-base-project/blob/master/LICENSE.txt
+[license-url]: https://github.com/nullhack/cookiecutter-python-base-project/blob/main/LICENSE.txt
