@@ -118,7 +118,7 @@ This Project depends on the following projects.
    ```
 3. Install pre-commit and poetry
    ```sh
-   nox -s install
+   nox -s install-dev
    ```
 4. Run tests
    ```sh
@@ -200,7 +200,7 @@ Don't forget to give the project a star! Thanks again!
 <!-- LICENSE -->
 ## License
 
-Distributed under the {{cookiecutter.license}} License. See [`LICENSE.txt`](https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}/blob/main/LICENSE.txt) for more information.
+Distributed under the {{cookiecutter.license}} License. See [`LICENSE`](https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}/blob/main/LICENSE) for more information.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -245,5 +245,5 @@ References and sources of inspiration
 [issues-shield]: https://img.shields.io/github/issues/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}.svg?style=for-the-badge
 [issues-url]: https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}/issues
 [license-shield]: https://img.shields.io/badge/license-{{cookiecutter.license}}-green?style=for-the-badge
-[license-url]: https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}/blob/main/LICENSE.txt
+[license-url]: https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}/blob/main/LICENSE
 

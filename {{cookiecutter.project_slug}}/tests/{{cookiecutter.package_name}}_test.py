@@ -18,6 +18,7 @@ Source: https://www.nerdwallet.com/blog/engineering/5-pytest-best-practices/
 import pytest
 
 from {{cookiecutter.package_name}} import {{cookiecutter.module_name}} as m
+from typing import Self
 
 
 @pytest.mark.parametrize(
@@ -31,7 +32,7 @@ class TestGroup:
     """A class with common parameters, `param1` and `param2`."""
 
     @pytest.fixture()
-    def fixt(self):
+    def fixt(self: Self) -> None:
         """This fixture will only be available within the scope of TestGroup.
 
         Returns:
@@ -40,7 +41,7 @@ class TestGroup:
         """
         return 123
 
-    def test_one(self, param1, param2, fixt):
+    def test_one(self: Self, param1: str, param2: str, fixt: int) -> None:
         """Run the first test using the fixture.
 
         Args:
@@ -60,7 +61,7 @@ class TestGroup:
         (84, 2, 42),
     ],
 )
-def test_divide_ok(a, b, expected):
+def test_divide_ok(a: float, b: float, expected: float) -> None:
     """Check if divide works for expected entries.
 
     Args:
@@ -80,7 +81,9 @@ def test_divide_ok(a, b, expected):
         (42, 0, ZeroDivisionError),
     ],
 )
-def test_divide_error(a, b, expected):
+def test_divide_error(
+    a: str | float, b: str | float, expected: float | Exception
+) -> None:
     """Check if divide returns correct Exceptions for known entries.
 
     Issue raised by https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}/issues/1337

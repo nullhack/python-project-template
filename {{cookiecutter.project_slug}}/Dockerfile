@@ -13,17 +13,16 @@ USER user
 
 ENV PATH /home/user/.local/bin:${PATH}
 
-COPY src src
+COPY {{cookiecutter.package_name}} {{cookiecutter.package_name}}
 COPY tests tests
-COPY noxfile.py .
 COPY pyproject.toml .
 COPY poetry.lock .
 COPY .pre-commit-config.yaml .
 COPY .gitignore .
 COPY .flake8 .
 
-RUN pip install nox --user && \
-    nox -s install
+RUN pip install poetry poethepoet --user && \ 
+    poe install
 
-ENTRYPOINT ["nox", "-s"]
+ENTRYPOINT ["poe", "-q"]
 CMD ["run"]
