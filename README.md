@@ -60,11 +60,10 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-Python template with some awesome tools to quickstart any Python project. 
+Python template with some awesome tools to quickstart a Python project with the industry best practices. 
 It includes automatic generation of API documentation, tests using PyTest, code coverage, 
-Flake8 linting to enforce standardized Python coding, automatic UML diagrams generation using PyReverse, 
-virtual environments using Poetry, workflow automation using Nox, 
-code formating using black and a standard Dockerfile to kickstart your project using the power of Docker containers and much more. 
+Flake8 linting to enforce standardized Python coding, virtual environments using Poetry, workflow automation using Poe the Poet, 
+code formatting using black and a space optimized Dockerfile to kickstart your project and run tests using the power of Docker containers. 
 
 All you need to do is to install [Cookiecutter](https://cookiecutter.readthedocs.io/en/1.7.2/usage.html)!
 
@@ -92,13 +91,14 @@ This Project depends on the following projects.
    cookiecutter https://github.com/nullhack/cookiecutter-python-base-project
    # move into your newly created project folder
    ```
-2. Install nox
+2. Install Poe the  Poet and Poetry
    ```sh
-   pip install --user --upgrade nox
+   pip install --user --upgrade poethepoet poetry
    ```
-3. Let nox do it's magic
+3. Let Poe do it's magic
    ```sh
-   nox
+   poe install-dev
+   poe test
    ```
 
 <p align="right">(<a href="#top">back to top</a>)</p>
