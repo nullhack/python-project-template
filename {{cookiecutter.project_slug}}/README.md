@@ -69,40 +69,24 @@
 
 {{cookiecutter.project_short_description}}
 
-### UML Diagrams
-
-#### Packages and Modules
-
-  <a href="https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}/raw/main/docs/uml/diagrams/packages_{{cookiecutter.package_name}}.png">
-    <img src="https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}/raw/main/docs/uml/diagrams/packages_{{cookiecutter.package_name}}.png" alt="uml-diagram-packages">
-  </a>
-
----
-
-#### Classes
-
-  <a href="https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}/raw/main/docs/uml/diagrams/classes_{{cookiecutter.package_name}}.png">
-    <img src="https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}/raw/main/docs/uml/diagrams/classes_{{cookiecutter.package_name}}.png" alt="uml-diagram-classes">
-  </a>
-
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 <!-- GETTING STARTED -->
 ## Getting Started
 
-To get a local copy up and running follow these simple steps.
+To run this project locally, you will need to install the prerequisites and follow the installation section
 
 ### Prerequisites
 
 This Project depends on the following projects.
-* poetry
+* Poetry
   ```sh
   pip install --user --upgrade poetry
   ```
 
-* nox
+* Poe the Poet
   ```sh
-  pip install --user --upgrade nox
+  pip install --user --upgrade poethepoet
   ```
 
 ### Installation
@@ -112,17 +96,17 @@ This Project depends on the following projects.
    git clone https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}
    cd {{cookiecutter.project_slug}}
    ```
-2. Install nox
+2. Install Poe the Poet and Poetry
    ```sh
-   pip install --user --upgrade nox
+   pip install --user --upgrade poethepoet poetry
    ```
-3. Install pre-commit and poetry
+3. Install requirements for development
    ```sh
-   nox -s install-dev
+   poe install-dev
    ```
 4. Run tests
    ```sh
-   nox -s tests
+   poe test
    ```
 
 <p align="right">(<a href="#top">back to top</a>)</p>
@@ -134,30 +118,33 @@ This Project depends on the following projects.
 
 Some useful examples of how this project can be used:
 
-*  Install and run pre-commit checks
+*  Install requirements
    ```sh
-   nox
+   poe install-dev
    ```
 
 *  Run tests
    ```sh
-   nox -s tests
-   ```
-
-*  Run code lint
-   ```sh
-   nox -s lint
+   poe test
    ```
 
 *  Generate API documentation
    ```sh
-   nox -s api-docs
+   poe doc
    ```
 
-*  Run pre-commit checks
+*  Build a docker image for tests
    ```sh
-   nox -s pre-commit
+   poe docker-build --target test --build-tag 3.10-alpine
+   docker run -ti --rm {{cookiecutter.package_name}}:test-3.10-alpine
    ```
+
+*  Build a docker image to run the root files only without running any test
+   ```sh
+   poe docker-build --target prod --build-tag 3.10-alpine --no-test
+   docker run -ti --rm {{cookiecutter.package_name}}:prod-3.10-alpine
+   ```
+   
 
 _For more examples, please refer to the [Documentation](https://htmlpreview.github.io/?https://raw.githubusercontent.com/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}/main/docs/api/{{cookiecutter.project_slug}}/index.html)_
 
