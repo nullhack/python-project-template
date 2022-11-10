@@ -23,7 +23,7 @@ ENV TESTBUILD=$TESTBUILD
 
 RUN pip install --no-cache poetry poethepoet
 RUN poetry config --no-cache
-RUN if [ "$TESTBUILD" = 'True' ]; then poe install-dev; fi
+RUN poe install-dev
 RUN poetry build --format=wheel
 RUN poetry export --only main -f requirements.txt --without-hashes --output requirements.txt
 RUN if [ "$TESTBUILD" = 'True' ]; then poe test; fi

@@ -13,7 +13,7 @@ packages = [
 ]
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = "^3.10"
 
 [tool.poetry.group.dev.dependencies]
 pre-commit = "^2.18.1"
@@ -61,7 +61,7 @@ line_length = 79
 
 [tool.black]
 line-length = 79
-target-version = ['py38']
+target-version = ['py310']
 include = '\.pyi?$'
 exclude = '''
 
@@ -86,7 +86,20 @@ exclude = '''
 
 [tool.pytest.ini_options]
 minversion = "6.0"
-addopts = "--verbose --maxfail=1 --flake8 --reverse --color=yes --cov={{cookiecutter.package_name}} --html=docs/pytest_report.html --self-contained-html --cov-fail-under=100 --cov-report term-missing --cov-report html:docs/cov-report --doctest-modules --cov-config=pyproject.toml"
+addopts = """
+--verbose \
+--maxfail=1 \
+--flake8 \
+--reverse \
+--color=yes \
+--cov={{cookiecutter.package_name}} \
+--html=docs/pytest_report.html \
+--self-contained-html \
+--cov-fail-under=100 \
+--cov-report term-missing \
+--cov-report html:docs/cov-report \
+--doctest-modules \
+--cov-config=pyproject.toml"""
 testpaths = [
     "tests",
     "{{cookiecutter.package_name}}"
@@ -130,12 +143,18 @@ lint = "poetry run flake8"
 doc = "poetry run pdoc --html . --force --output-dir docs/api"
 
 [tool.poe.tasks.docker-build]
-cmd = "docker build --build-arg TESTBUILD=$no_test --build-arg BUILDTAG=$build_tag --build-arg BUILDPLATFORM=$build_platform --target $target_build -t {{cookiecutter.package_name}}:$target_build-$build_tag ."
+cmd = """
+docker build 
+--build-arg TESTBUILD=$no_test \
+--build-arg BUILDTAG=$build_tag \
+--build-arg BUILDPLATFORM=$build_platform \
+--target $target \
+-t {{cookiecutter.package_name}}:$target-$build_tag ."""
 help = "Build a docker image to test the project in an isolated environment"
 args = [
   { name = "no-test", default = true, type = "boolean" }, 
   { name = "build-tag", default = "3-alpine" },
   { name = "build-platform", default = "linux/amd64" },
-  { name = "target-build", default = "prod" },
+  { name = "target", default = "prod" },
 ]
 

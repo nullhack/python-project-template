@@ -15,7 +15,9 @@ Source: https://www.nerdwallet.com/blog/engineering/5-pytest-best-practices/
 import pytest
 
 from {{cookiecutter.package_name}} import {{cookiecutter.module_name}} as m
-from typing import Self
+from typing import TypeVar
+
+Self = TypeVar("Self", bound="TestGroup")
 
 
 @pytest.mark.parametrize(
