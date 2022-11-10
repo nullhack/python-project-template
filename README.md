@@ -134,7 +134,7 @@ Don't forget to give the project a star! Thanks again!
 <!-- LICENSE -->
 ## License
 
-Distributed under the MIT License. See [`LICENSE.txt`](https://github.com/nullhack/cookiecutter-python-base-project/blob/main/LICENSE.txt) for more information.
+Distributed under the MIT License. See [`LICENSE`](https://github.com/nullhack/cookiecutter-python-base-project/blob/main/LICENSE) for more information.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 

@@ -10,6 +10,14 @@ python-versions = ">=3.6"
 python-dateutil = ">=2.7.0"
 
 [[package]]
+name = "astor"
+version = "0.8.1"
+description = "Read/rewrite/write Python ASTs"
+category = "dev"
+optional = false
+python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,>=2.7"
+
+[[package]]
 name = "astroid"
 version = "2.12.12"
 description = "An abstract syntax tree for Python with inference support."
@@ -326,6 +334,19 @@ optional = false
 python-versions = "*"
 
 [[package]]
+name = "flake8-mypy"
+version = "17.8.0"
+description = "A plugin for flake8 integrating mypy."
+category = "dev"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+attrs = "*"
+flake8 = ">=3.0.0"
+mypy = "*"
+
+[[package]]
 name = "flake8-plugin-utils"
 version = "1.3.2"
 description = "The package provides base classes and utils for flake8 plugin writing"
@@ -368,6 +389,18 @@ flake8 = ">=3.7"
 
 [package.extras]
 test = ["mock", "pytest", "pytest-cov", "pytest-mock"]
+
+[[package]]
+name = "flake8-simplify"
+version = "0.19.3"
+description = "flake8 plugin which checks for code that can be simplified"
+category = "dev"
+optional = false
+python-versions = ">=3.6.1"
+
+[package.dependencies]
+astor = ">=0.1"
+flake8 = ">=3.7"
 
 [[package]]
 name = "flake8-todos"
@@ -1106,12 +1139,16 @@ testing = ["flake8 (<5)", "func-timeout", "jaraco.functools", "jaraco.itertools"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "33404935d0ef9d9a579aa197a1e804da9a0e6badd12a8f3db2b7e48dd9b79723"
+content-hash = "f751d08f80e850fa644d0b11b789bf5f40716d6fcccc3258827cc7174a641ec3"
 
 [metadata.files]
 arrow = [
     {file = "arrow-1.2.3-py3-none-any.whl", hash = "sha256:5a49ab92e3b7b71d96cd6bfcc4df14efefc9dfa96ea19045815914a6ab6b1fe2"},
     {file = "arrow-1.2.3.tar.gz", hash = "sha256:3934b30ca1b9f292376d9db15b19446088d12ec58629bc3f0da28fd55fb633a1"},
+]
+astor = [
+    {file = "astor-0.8.1-py2.py3-none-any.whl", hash = "sha256:070a54e890cefb5b3739d19f30f5a5ec840ffc9c50ffa7d23cc9fc1a38ebbfc5"},
+    {file = "astor-0.8.1.tar.gz", hash = "sha256:6a6effda93f4e1ce9f618779b2dd1d9d84f1e32812c23a29b3fff6fd7f63fa5e"},
 ]
 astroid = [
     {file = "astroid-2.12.12-py3-none-any.whl", hash = "sha256:72702205200b2a638358369d90c222d74ebc376787af8fb2f7f2a86f7b5cc85f"},
@@ -1282,6 +1319,10 @@ flake8-docstrings = [
 flake8-logging-format = [
     {file = "flake8-logging-format-0.6.0.tar.gz", hash = "sha256:ca5f2b7fc31c3474a0aa77d227e022890f641a025f0ba664418797d979a779f8"},
 ]
+flake8-mypy = [
+    {file = "flake8-mypy-17.8.0.tar.gz", hash = "sha256:47120db63aff631ee1f84bac6fe8e64731dc66da3efc1c51f85e15ade4a3ba18"},
+    {file = "flake8_mypy-17.8.0-py35.py36-none-any.whl", hash = "sha256:cff009f4250e8391bf48990093cff85802778c345c8449d6498b62efefeebcbc"},
+]
 flake8-plugin-utils = [
     {file = "flake8-plugin-utils-1.3.2.tar.gz", hash = "sha256:20fa2a8ca2decac50116edb42e6af0a1253ef639ad79941249b840531889c65a"},
     {file = "flake8_plugin_utils-1.3.2-py3-none-any.whl", hash = "sha256:1fe43e3e9acf3a7c0f6b88f5338cad37044d2f156c43cb6b080b5f9da8a76f06"},
@@ -1297,6 +1338,10 @@ flake8-pytest-style = [
 flake8-secure-coding-standard = [
     {file = "flake8-secure-coding-standard-1.3.0.tar.gz", hash = "sha256:2bae09960404962497231d9cac0c0a2b3d43d39524afc33379982cad1ae886e2"},
     {file = "flake8_secure_coding_standard-1.3.0-py2.py3-none-any.whl", hash = "sha256:7f96559c124f947d2411b0fa0ddd37efa8831bfb3651576e6c00cae1184a4876"},
+]
+flake8-simplify = [
+    {file = "flake8_simplify-0.19.3-py3-none-any.whl", hash = "sha256:1057320e9312d75849541fee822900d27bcad05b2405edc84713affee635629e"},
+    {file = "flake8_simplify-0.19.3.tar.gz", hash = "sha256:2fb083bf5142a98d9c9554755cf2f56f8926eb4a33eae30c0809041b1546879e"},
 ]
 flake8-todos = [
     {file = "flake8-todos-0.1.5.tar.gz", hash = "sha256:8541033429e7d0c3271104bfd5f74bfa81e07b76b0667cf8b2cd830419638e0d"},

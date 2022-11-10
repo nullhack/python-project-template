@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Module Docstring."""
 
 import logging
@@ -11,7 +9,7 @@ logger = logging.getLogger("test")
 logger.info("This is a {word}", extra={"word": "Log"})
 
 
-class Calculator(object):
+class Calculator:
     """Class for simple calculator operations."""
 
     @staticmethod

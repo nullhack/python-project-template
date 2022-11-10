@@ -3,13 +3,20 @@ name = "{{cookiecutter.package_name}}"
 version = "{{cookiecutter.version}}"
 description = "{{cookiecutter.project_short_description}}"
 authors = ["{{cookiecutter.full_name}} <{{cookiecutter.email}}>"]
+maintainers = ["{{cookiecutter.full_name}} <{{cookiecutter.email}}>"]
+license = "{{cookiecutter.license}}"
+repository = "https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}"
+documentation = "https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}/tree/main/docs/api/"
+readme = "README.md"
+packages = [
+    { include = "{{cookiecutter.package_name}}" },
+]
 
 [tool.poetry.dependencies]
 python = "^3.8"
 
 [tool.poetry.group.dev.dependencies]
 pre-commit = "^2.18.1"
-mypy = "^0.942"
 isort = "^5.10.1"
 black = {version = "^22.3.0", allow-prereleases = true}
 xdoctest = "^1.0.0"
@@ -19,8 +26,9 @@ pdoc3 = "^0.10.0"
 cookiecutter = "^1.7.3"
 pylint = "^2.13.4"
 poethepoet = "^0.16.4"
-flake8 = "^4.0.1"
 pep8-naming = "^0.12.1"
+mypy = "^0.942"
+flake8 = "^4.0.1"
 flake8-docstrings = "^1.6.0"
 flake8-todos = "^0.1.5"
 flake8-secure-coding-standard = "^1.2.1"
@@ -31,6 +39,8 @@ flake8-bugbear = "^22.3.23"
 flake8-bandit = "^3.0.0"
 flake8-annotations = "^2.8.0"
 flake8-black = "^0.3.2"
+flake8-mypy = "^17.8.0"
+flake8-simplify = "^0.19.3"
 pytest = "7.1.1"
 pytest-html = "^3.1.1"
 pytest-sugar = "^0.9.6"
@@ -76,7 +86,7 @@ exclude = '''
 
 [tool.pytest.ini_options]
 minversion = "6.0"
-addopts = "--verbose --flake8 --reverse --color=yes --cov={{cookiecutter.package_name}} --html=docs/pytest_report.html --self-contained-html --cov-fail-under=100 --cov-report term-missing --cov-report html:docs/cov-report --doctest-modules --cov-config=pyproject.toml"
+addopts = "--verbose --maxfail=1 --flake8 --reverse --color=yes --cov={{cookiecutter.package_name}} --html=docs/pytest_report.html --self-contained-html --cov-fail-under=100 --cov-report term-missing --cov-report html:docs/cov-report --doctest-modules --cov-config=pyproject.toml"
 testpaths = [
     "tests",
     "{{cookiecutter.package_name}}"
@@ -118,4 +128,14 @@ test = "poetry run pytest"
 pre-commit = "poetry run pre-commit run --all-files"
 lint = "poetry run flake8"
 doc = "poetry run pdoc --html . --force --output-dir docs/api"
-build = "docker build -t {{cookiecutter.package_name}}:latest ."
+
+[tool.poe.tasks.docker-build]
+cmd = "docker build --build-arg TESTBUILD=$no_test --build-arg BUILDTAG=$build_tag --build-arg BUILDPLATFORM=$build_platform --target $target_build -t {{cookiecutter.package_name}}:$target_build-$build_tag ."
+help = "Build a docker image to test the project in an isolated environment"
+args = [
+  { name = "no-test", default = true, type = "boolean" }, 
+  { name = "build-tag", default = "3-alpine" },
+  { name = "build-platform", default = "linux/amd64" },
+  { name = "target-build", default = "prod" },
+]
+

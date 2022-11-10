@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-
-
 """This file contains examples of how to write tests using pytest!
 
 Some good practices for writting great Python tests:
@@ -32,7 +29,7 @@ class TestGroup:
     """A class with common parameters, `param1` and `param2`."""
 
     @pytest.fixture()
-    def fixt(self: Self) -> None:
+    def fixt(self: Self) -> int:
         """This fixture will only be available within the scope of TestGroup.
 
         Returns:
