@@ -1,7 +1,7 @@
-site_name: MkApi
-site_url: https://github.com/nullhack
-site_description: API documentation with MkDocs.
-site_author: nullhack
+site_name: {{cookiecutter.project_name}}
+site_url: https://github.com/{{cookiecutter.github_username}}
+site_description: {{cookiecutter.project_short_description}}
+site_author: {{cookiecutter.full_name}}
 site_dir: html
 
 plugins:
