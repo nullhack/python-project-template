@@ -65,7 +65,7 @@ It includes automatic generation of API documentation, tests using PyTest, code 
 Flake8 linting to enforce standardized Python coding, virtual environments using Poetry, workflow automation using Poe the Poet, 
 code formatting using black and a space optimized Dockerfile to kickstart your project and run tests using the power of Docker containers. 
 
-All you need to do is to install [Cookiecutter](https://cookiecutter.readthedocs.io/en/1.7.2/usage.html)!
+You only need to install [Cookiecutter](https://cookiecutter.readthedocs.io/en/1.7.2/usage.html)!
 
 ---
 

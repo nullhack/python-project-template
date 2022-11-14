@@ -1,0 +1,18 @@
+site_name: MkApi
+site_url: https://github.com/nullhack
+site_description: API documentation with MkDocs.
+site_author: nullhack
+site_dir: html
+
+plugins:
+  - search
+  - mkapi
+
+theme:
+    name: readthedocs
+
+nav:
+  - index.md
+  - API: mkapi/api/python_base_package
+  - Tests: mkapi/tests/tests
+

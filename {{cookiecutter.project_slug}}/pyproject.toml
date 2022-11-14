@@ -22,10 +22,12 @@ black = {version = "^22.3.0", allow-prereleases = true}
 xdoctest = "^1.0.0"
 Pygments = "^2.11.2"
 darglint = "^1.8.1"
-pdoc3 = "^0.10.0"
 cookiecutter = "^1.7.3"
 pylint = "^2.13.4"
 poethepoet = "^0.16.4"
+mkdocs = "^1.4.2"
+mkapi = "^1.0.14"
+mako = "^1.2.3"
 pep8-naming = "^0.12.1"
 mypy = "^0.942"
 flake8 = "^4.0.1"
@@ -140,7 +142,7 @@ run = "poetry run python -m {{cookiecutter.package_name}}.{{cookiecutter.module_
 test = "poetry run pytest"
 pre-commit = "poetry run pre-commit run --all-files"
 lint = "poetry run flake8"
-doc = "poetry run pdoc --html . --force --output-dir docs/api"
+doc = "poetry run mkdocs serve --use-directory-urls -f docs/mkdocs.yaml"
 
 [tool.poe.tasks.docker-build]
 cmd = """
