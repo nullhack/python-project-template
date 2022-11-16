@@ -43,12 +43,17 @@ flake8-annotations = "^2.8.0"
 flake8-black = "^0.3.2"
 flake8-mypy = "^17.8.0"
 flake8-simplify = "^0.19.3"
+flake8-isort = "^5.0.0"
 pytest = "7.1.1"
 pytest-html = "^3.1.1"
 pytest-sugar = "^0.9.6"
 pytest-flake8 = "^1.1.1"
 pytest-reverse = "^1.5.0"
 pytest-cov = "^3.0.0"
+pytest-bdd = "^6.1.1"
+
+[tool.poetry.scripts]
+-x = "poethepoet:main"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
@@ -109,6 +114,7 @@ testpaths = [
 python_files = ["*_test.py"]
 python_functions = ["test_*"]
 render_collapsed = true
+bdd_features_base_dir = "features"
 
 [tool.coverage.report]
 exclude_lines = [
@@ -138,11 +144,12 @@ pretty = true
 [tool.poe.tasks]
 install = "poetry install --only main"
 install-dev = "poetry install"
-run = "poetry run python -m {{cookiecutter.package_name}}.{{cookiecutter.module_name}}"
-test = "poetry run pytest"
-pre-commit = "poetry run pre-commit run --all-files"
-lint = "poetry run flake8"
-doc = "poetry run mkdocs serve --use-directory-urls -f docs/mkdocs.yaml"
+run = "python -m {{cookiecutter.package_name}}.{{cookiecutter.module_name}}"
+test = "pytest"
+pre-commit = "pre-commit run --all-files"
+lint = "flake8"
+doc = "mkdocs serve --use-directory-urls -f docs/mkdocs.yaml"
+doc-html = "mkdocs build --use-directory-urls -f docs/mkdocs.yaml"
 
 [tool.poe.tasks.docker-build]
 cmd = """

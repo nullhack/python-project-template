@@ -13,6 +13,6 @@ theme:
 
 nav:
   - index.md
-  - API: mkapi/api/python_base_package
+  - API: mkapi/api/{{cookiecutter.package_name}}
   - Tests: mkapi/tests/tests
 

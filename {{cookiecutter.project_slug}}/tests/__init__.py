@@ -1,1 +1,1 @@
-"""Init file for test module."""
+"""Tests module."""
