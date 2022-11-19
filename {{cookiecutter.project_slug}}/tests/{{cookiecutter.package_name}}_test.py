@@ -11,11 +11,11 @@ Source: https://www.nerdwallet.com/blog/engineering/5-pytest-best-practices/
   *  Prefer tmpdir over global test artifacts
 
 """
+from typing import TypeVar
 
 import pytest
 
 from {{cookiecutter.package_name}} import {{cookiecutter.module_name}} as m
-from typing import TypeVar
 
 Self = TypeVar("Self", bound="TestGroup")
 

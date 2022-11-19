@@ -7,12 +7,18 @@ site_dir: html
 plugins:
   - search
   - mkapi
+  - awesome-pages
+  - gen-files:
+      scripts:
+        - gen_pages.py
 
 theme:
-    name: readthedocs
+    name: material
 
 nav:
   - index.md
+  - ... | readme.md
+  - ... | scenarios/**/*.md
   - API: mkapi/api/{{cookiecutter.package_name}}
   - Tests: mkapi/tests/tests
 

@@ -1,12 +1,11 @@
 [flake8]
-#ignore = E203, E266, E501, W503, T499, ANN101, ANN102, ANN002, ANN003, S101, SCS108 
-ignore = E501,SCS109
+ignore = E203, E266, E501, W503, T499
 max-line-length = 79
 enable-extensions=G
-#select = B,C,E,F,W,T4,T0,N8,DC,DAR,SCS
+#select = B,C,E,F,W,T4,T0,N8,DC,DAR
 import-order-style = google
 docstring-convention = google
-per-file-ignores = tests/*:S101, SCS108
+per-file-ignores = tests/*:S101
 max-complexity = 10
 exclude =
     docs/

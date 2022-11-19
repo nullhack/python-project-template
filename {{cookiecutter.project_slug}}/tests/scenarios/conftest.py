@@ -2,11 +2,12 @@
 
 This module will inject configuration scripts before running tests.
 """
-from pytest_bdd import feature
+from pathlib import Path
+
+import pytest
+from pytest_bdd.feature import get_features
 from pytest_bdd.scenario import get_features_base_dir
 from pytest_bdd.utils import get_caller_module_path
-from pathlib import Path
-import pytest
 
 
 def pytest_configure(config: pytest.Config) -> None:
@@ -19,7 +20,7 @@ def pytest_configure(config: pytest.Config) -> None:
     conftest_dir = Path(__file__).parent
     caller_module_path = get_caller_module_path()
     features_base_dir = get_features_base_dir(caller_module_path)
-    features = feature.get_features([features_base_dir])
+    features = get_features([features_base_dir])
 
     for feat in features:
 
