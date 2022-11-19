@@ -1,8 +1,10 @@
 site_name: {{cookiecutter.project_name}}
-site_url: https://github.com/{{cookiecutter.github_username}}
+site_url: https://{{cookiecutter.github_username}}.github.io/{{cookiecutter.project_slug}}
 site_description: {{cookiecutter.project_short_description}}
 site_author: {{cookiecutter.full_name}}
 site_dir: html
+repo_name: {{cookiecutter.github_username}}/{{cookiecutter.project_slug}}
+repo_url: https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}
 
 plugins:
   - search
@@ -13,7 +15,32 @@ plugins:
         - gen_pages.py
 
 theme:
-    name: material
+  name: material
+  palette:
+  - media: '(prefers-color-scheme: dark)'
+    scheme: slate
+    primary: blue
+    accent: amber
+    toggle:
+      icon: material/lightbulb-outline
+      name: Switch to light mode
+  - media: '(prefers-color-scheme: light)'
+    scheme: default
+    primary: black
+    accent: amber
+    toggle:
+      icon: material/lightbulb
+      name: Switch to dark mode
+  features:
+  - search.suggest
+  - search.highlight
+  - content.tabs.link
+  icon:
+    repo: fontawesome/brands/github-alt
+  #logo: img/logo.svg
+  #favicon: img/favicon.png
+  language: en
+
 
 nav:
   - index.md
