@@ -11,7 +11,10 @@ from pytest_bdd.utils import get_caller_module_path
 
 
 def pytest_configure(config: pytest.Config) -> None:
-    """Configure tests tp include new features.
+    """Configure tests to include new features.
+
+    This function adds new features automatically as test files.
+    Adding new features will trigger errors because steps are not implemented.
 
     Args:
         config (Config): Configuration provided by pytest.

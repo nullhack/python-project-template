@@ -8,7 +8,6 @@ repos:
     -   id: check-added-large-files
     -   id: check-ast
     -   id: check-case-conflict
-    -   id: fix-encoding-pragma
     -   id: check-docstring-first
     -   id: check-merge-conflict
     -   id: detect-private-key
@@ -22,20 +21,11 @@ repos:
     -   id: isort
 -   repo: local
     hooks:
-    -   id: black-formatter
-        name: black-formatter
-        stages: [commit, push]
-        language: system
-        entry: nox -s black
-        types: [python]
-        pass_filenames: false
--   repo: local
-    hooks:
     -   id: flake8-lint
         name: flake8-lint
         stages: [commit, push]
         language: system
-        entry: nox -s lint
+        entry: poe lint
         types: [python]
         pass_filenames: false
 -   repo: local
@@ -44,16 +34,7 @@ repos:
         name: pytest
         stages: [commit]
         language: system
-        entry: nox -s tests
-        types: [python]
-        pass_filenames: false
--   repo: local
-    hooks:
-    -   id: pytest-docs
-        name: pytest-docs
-        stages: [push]
-        language: system
-        entry: nox -s test-docs
+        entry: poe test
         types: [python]
         pass_filenames: false
 -   repo: local
@@ -62,15 +43,6 @@ repos:
         name: api-documentation
         stages: [push]
         language: system
-        entry: nox -s api-docs
-        types: [python]
-        pass_filenames: false
--   repo: local
-    hooks:
-    -   id: uml-diagram
-        name: uml-diagram
-        stages: [push]
-        language: system
-        entry: nox -s uml
+        entry: poe doc
         types: [python]
         pass_filenames: false

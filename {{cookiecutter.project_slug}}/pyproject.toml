@@ -151,6 +151,10 @@ pre-commit = "pre-commit run --all-files"
 lint = "flake8"
 doc = "mkdocs serve --use-directory-urls -f docs/mkdocs.yaml"
 doc-html = "mkdocs build --no-directory-urls -f docs/mkdocs.yaml"
+doc-publish = """mkdocs gh-deploy \
+--config-file docs/mkdocs.yaml \
+--no-directory-urls \
+--remote-branch docs"""
 
 [tool.poe.tasks.docker-build]
 cmd = """

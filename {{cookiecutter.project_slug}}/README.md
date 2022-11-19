@@ -25,7 +25,7 @@
   <p align="center">
     {{cookiecutter.project_short_description}}
     <br />
-    <a href="https://htmlpreview.github.io/?https://raw.githubusercontent.com/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}/main/docs/api/{{cookiecutter.project_slug}}/index.html"><strong>Explore the docs »</strong></a>
+    <a href="https://{{cookiecutter.github_username}}.github.io/{{cookiecutter.project_slug}}/readme.html"><strong>Explore the docs »</strong></a>
     <br />
     <br />
     <a href="https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}/issues">Report Bug</a>
@@ -42,9 +42,6 @@
   <ol>
     <li>
       <a href="#about-the-project">About The Project</a>
-      <ul>
-        <li><a href="#uml-diagrams">UML Diagrams</a></li>
-      </ul>
     </li>
     <li>
       <a href="#getting-started">Getting Started</a>
@@ -74,7 +71,7 @@
 <!-- GETTING STARTED -->
 ## Getting Started
 
-To run this project locally, you will need to install the prerequisites and follow the installation section
+To run this project locally, you will need to install the prerequisites and follow the installation section.
 
 ### Prerequisites
 
@@ -146,7 +143,7 @@ Some useful examples of how this project can be used:
    ```
    
 
-_For more examples, please refer to the [Documentation](https://htmlpreview.github.io/?https://raw.githubusercontent.com/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}/main/docs/api/{{cookiecutter.project_slug}}/index.html)_
+_For more examples, please refer to the [Documentation](https://{{cookiecutter.github_username}}.github.io/{{cookiecutter.project_slug}}/readme.html)_
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 

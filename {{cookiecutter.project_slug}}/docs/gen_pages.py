@@ -1,9 +1,10 @@
-import mkdocs_gen_files
 from pathlib import Path
+
+import mkdocs_gen_files
 
 docs_parent_dir = Path(__file__).parent.parent
 
-
+# Automagically injects README file into the documentation
 readme_path = docs_parent_dir / "README.md"
 if readme_path.exists():
     with open(readme_path, "r") as r:
@@ -11,6 +12,7 @@ if readme_path.exists():
             f.write(r.read())
 
 
+# Injects feature files into the documentation
 head_lines = (
     "Feature:",
     "Scenario:",
@@ -37,4 +39,3 @@ for feature_path in features_dir.glob("**/*.feature"):
                     write_line = f">    {line}"
 
                 gf.write(write_line)
-
