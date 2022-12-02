@@ -17,14 +17,14 @@ plugins:
 theme:
   name: material
   palette:
-  - media: '(prefers-color-scheme: dark)'
+  - media: '(prefers-color-scheme: light)'
     scheme: slate
     primary: blue
     accent: amber
     toggle:
       icon: material/lightbulb-outline
       name: Switch to light mode
-  - media: '(prefers-color-scheme: light)'
+  - media: '(prefers-color-scheme: dark)'
     scheme: default
     primary: black
     accent: amber
@@ -44,8 +44,8 @@ theme:
 
 nav:
   - index.md
-  - ... | readme.md
-  - ... | scenarios/**/*.md
+  - ... | glob=readme.md
+  - ... | regex=scenarios/.+.md
   - API: mkapi/api/{{cookiecutter.package_name}}
   - Tests: mkapi/tests/tests
 
