@@ -99,6 +99,7 @@ This Project depends on the following projects.
    ```sh
    poe install-dev
    poe test
+   poe run
    ```
 
 <p align="right">(<a href="#top">back to top</a>)</p>
@@ -107,7 +108,8 @@ This Project depends on the following projects.
 <!-- ROADMAP -->
 ## Roadmap
 
-- [ ] Improve documentation
+- [x] Improve documentation
+- [ ] Update packages and look for new industry standards to include
 
 See the [open issues](https://github.com/nullhack/cookiecutter-python-base-project/issues) for a full list of proposed features (and known issues).
 
@@ -150,14 +152,11 @@ Project Link: [https://github.com/nullhack/cookiecutter-python-base-project/](ht
 
 
 <!-- ACKNOWLEDGMENTS -->
-## Acknowledgments
+## Acknowledgments and thanks
 
-Some great references to start from
+This project was heavily based on some great references.
 
 * [Choose an Open Source License](https://choosealicense.com)
-
-References and sources of inspiration
-
 * [Hypermodern Python](https://cjolowicz.github.io/posts/hypermodern-python-01-setup/)
 * [Best practices for Python projects in 2021](https://mitelman.engineering/blog/python-best-practice/automating-python-best-practices-for-a-new-project/)
 * [5 Pytest Best Practices for Writing Great Python Tests](https://www.nerdwallet.com/blog/engineering/5-pytest-best-practices/)

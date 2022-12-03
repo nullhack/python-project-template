@@ -125,6 +125,11 @@ Some useful examples of how this project can be used:
    poe test
    ```
 
+*  Run the project
+   ```sh
+   poe run
+   ```
+
 *  Generate API documentation
    ```sh
    poe doc
@@ -154,7 +159,7 @@ _For more examples, please refer to the [Documentation](https://{{cookiecutter.g
 
 - [x] Add tests
 - [x] Add code coverage
-- [ ] Improve documentation
+- [x] Improve documentation
 - [ ] Include more tests
 
 See the [open issues](https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}/issues) for a full list of proposed features (and known issues).
@@ -180,16 +185,6 @@ Don't forget to give the project a star! Thanks again!
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 
-
-<!-- LICENSE -->
-## License
-
-Distributed under the {{cookiecutter.license}} License. See [`LICENSE`](https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}/blob/main/LICENSE) for more information.
-
-<p align="right">(<a href="#top">back to top</a>)</p>
-
-
-
 <!-- CONTACT -->
 ## Contact
 
@@ -200,20 +195,20 @@ Project Link: [https://github.com/{{cookiecutter.github_username}}/{{cookiecutte
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 
-
 <!-- ACKNOWLEDGMENTS -->
 ## Acknowledgments
 
-Some great references to start from
+This project was created using cookiecutter and NullHack's python-project-template:
 
-* [Choose an Open Source License](https://choosealicense.com)
+* [NullHack's python-project-template](https://github.com/nullhack/cookiecutter-python-base-project/)
 
-References and sources of inspiration
+<p align="right">(<a href="#top">back to top</a>)</p>
 
-* [Hypermodern Python](https://cjolowicz.github.io/posts/hypermodern-python-01-setup/)
-* [Best practices for Python projects in 2021](https://mitelman.engineering/blog/python-best-practice/automating-python-best-practices-for-a-new-project/)
-* [5 Pytest Best Practices for Writing Great Python Tests](https://www.nerdwallet.com/blog/engineering/5-pytest-best-practices/)
-* [Best-README-Template](https://github.com/othneildrew/Best-README-Template)
+
+<!-- LICENSE -->
+## License
+
+Distributed under the {{cookiecutter.license}} License. See [`LICENSE`](https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}/blob/main/LICENSE) for more information.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
