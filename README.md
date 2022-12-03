@@ -20,7 +20,7 @@
 <br />
 <div align="center">
 
-  <h1 align="center"> Cookiecutter Python Base Project</h3>
+  <h1 align="center"> Cookiecutter Python Project Template</h3>
 
   <p align="center">
     Cookiecutter for Python template with some awesome tools to quickstart any Python project.
@@ -72,7 +72,7 @@ You only need to install [Cookiecutter](https://cookiecutter.readthedocs.io/en/1
 <!-- GETTING STARTED -->
 ## Getting Started
 
-### [Live Example](https://github.com/nullhack/python-base-project)
+### [Live Example](https://github.com/nullhack/python-project-example)
 
 To get a local copy up and running follow these simple steps.
 
