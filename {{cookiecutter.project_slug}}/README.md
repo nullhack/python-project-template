@@ -200,7 +200,7 @@ Project Link: [https://github.com/{{cookiecutter.github_username}}/{{cookiecutte
 
 This project was created using cookiecutter and NullHack's python-project-template:
 
-* [NullHack's python-project-template](https://github.com/nullhack/cookiecutter-python-base-project/)
+* [NullHack's python-project-template](https://github.com/nullhack/python-project-template/)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 

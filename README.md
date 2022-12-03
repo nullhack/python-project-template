@@ -25,9 +25,9 @@
   <p align="center">
     Cookiecutter for Python template with some awesome tools to quickstart any Python project.
     <br />
-    <a href="https://github.com/nullhack/cookiecutter-python-base-project/issues">Report Bug</a>
+    <a href="https://github.com/nullhack/python-project-template/issues">Report Bug</a>
     ·
-    <a href="https://github.com/nullhack/cookiecutter-python-base-project/issues">Request Feature</a>
+    <a href="https://github.com/nullhack/python-project-template/issues">Request Feature</a>
   </p>
 </div>
 
@@ -88,7 +88,7 @@ This Project depends on the following projects.
 
 1. Replicate the template locally
    ```sh
-   cookiecutter https://github.com/nullhack/cookiecutter-python-base-project
+   cookiecutter https://github.com/nullhack/python-project-template
    # move into your newly created project folder
    ```
 2. Install Poe the  Poet and Poetry
@@ -111,7 +111,7 @@ This Project depends on the following projects.
 - [x] Improve documentation
 - [ ] Update packages and look for new industry standards to include
 
-See the [open issues](https://github.com/nullhack/cookiecutter-python-base-project/issues) for a full list of proposed features (and known issues).
+See the [open issues](https://github.com/nullhack/python-project-template/issues) for a full list of proposed features (and known issues).
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -136,7 +136,7 @@ Don't forget to give the project a star! Thanks again!
 <!-- LICENSE -->
 ## License
 
-Distributed under the MIT License. See [`LICENSE`](https://github.com/nullhack/cookiecutter-python-base-project/blob/main/LICENSE) for more information.
+Distributed under the MIT License. See [`LICENSE`](https://github.com/nullhack/python-project-template/blob/main/LICENSE) for more information.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -146,7 +146,7 @@ Distributed under the MIT License. See [`LICENSE`](https://github.com/nullhack/c
 
 Eric Lopes - [@nullhack](https://github.com/nullhack)
 
-Project Link: [https://github.com/nullhack/cookiecutter-python-base-project/](https://github.com/nullhack/cookiecutter-python-base-project/)
+Project Link: [https://github.com/nullhack/python-project-template/](https://github.com/nullhack/python-project-template/)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -167,13 +167,13 @@ This project was heavily based on some great references.
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/nullhack/cookiecutter-python-base-project.svg?style=for-the-badge
-[contributors-url]: https://github.com/nullhack/cookiecutter-python-base-project/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/nullhack/cookiecutter-python-base-project.svg?style=for-the-badge
-[forks-url]: https://github.com/nullhack/cookiecutter-python-base-project/network/members
-[stars-shield]: https://img.shields.io/github/stars/nullhack/cookiecutter-python-base-project.svg?style=for-the-badge
-[stars-url]: https://github.com/nullhack/cookiecutter-python-base-project/stargazers
-[issues-shield]: https://img.shields.io/github/issues/nullhack/cookiecutter-python-base-project.svg?style=for-the-badge
-[issues-url]: https://github.com/nullhack/cookiecutter-python-base-project/issues
+[contributors-shield]: https://img.shields.io/github/contributors/nullhack/python-project-template.svg?style=for-the-badge
+[contributors-url]: https://github.com/nullhack/python-project-template/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/nullhack/python-project-template.svg?style=for-the-badge
+[forks-url]: https://github.com/nullhack/python-project-template/network/members
+[stars-shield]: https://img.shields.io/github/stars/nullhack/python-project-template.svg?style=for-the-badge
+[stars-url]: https://github.com/nullhack/python-project-template/stargazers
+[issues-shield]: https://img.shields.io/github/issues/nullhack/python-project-template.svg?style=for-the-badge
+[issues-url]: https://github.com/nullhack/python-project-template/issues
 [license-shield]: https://img.shields.io/badge/license-MIT-green?style=for-the-badge
-[license-url]: https://github.com/nullhack/cookiecutter-python-base-project/blob/main/LICENSE.txt
+[license-url]: https://github.com/nullhack/python-project-template/blob/main/LICENSE.txt
