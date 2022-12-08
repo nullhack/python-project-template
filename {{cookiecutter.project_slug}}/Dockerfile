@@ -22,12 +22,12 @@ COPY tests tests
 
 RUN poetry install
 
-RUN poetry build --format=wheel
-RUN poetry export --only main -f requirements.txt --without-hashes --output requirements.txt
-
 ARG TESTBUILD=True
 ENV TESTBUILD=$TESTBUILD
 RUN if [ "$TESTBUILD" = 'True' ]; then poe test; fi
+
+RUN poetry build --format=wheel
+RUN poetry export --only main -f requirements.txt --without-hashes --output requirements.txt
 
 ENTRYPOINT ["poe", "-q"]
 CMD ["test"]
