@@ -72,7 +72,7 @@ You only need to install [Cookiecutter](https://cookiecutter.readthedocs.io/en/1
 <!-- GETTING STARTED -->
 ## Getting Started
 
-### [Live Example](https://github.com/nullhack/python-project-example)
+### [Live Example](https://github.com/nullhack/python-project-template/tree/example/python-project-template)
 
 To get a local copy up and running follow these simple steps.
 
