@@ -15,4 +15,7 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Build the Docker image
+      run: pip install cookiecutter
+      run: cookiecutter --no-input .
+      run: cd python-project-example
       run: docker build . --file Dockerfile --tag test-image:$(date +%s)
