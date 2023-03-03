@@ -11,18 +11,13 @@ repos:
     -   id: check-docstring-first
     -   id: check-merge-conflict
     -   id: detect-private-key
-    -   id: end-of-file-fixer
         files: .*\.py
     -   id: mixed-line-ending
     -   id: name-tests-test
--   repo: https://github.com/PyCQA/isort
-    rev: 5.10.1
-    hooks:
-    -   id: isort
 -   repo: local
     hooks:
-    -   id: flake8-lint
-        name: flake8-lint
+    -   id: lint
+        name: lint
         stages: [commit, push]
         language: system
         entry: poe lint
@@ -32,7 +27,7 @@ repos:
     hooks:
     -   id: pytest
         name: pytest
-        stages: [commit]
+        stages: [commit, push]
         language: system
         entry: poe test
         types: [python]
@@ -43,6 +38,6 @@ repos:
         name: api-documentation
         stages: [push]
         language: system
-        entry: poe doc
+        entry: poe doc-html
         types: [python]
         pass_filenames: false
