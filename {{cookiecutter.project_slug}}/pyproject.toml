@@ -46,16 +46,6 @@ target-version = ['py310']
 include = '\.pyi?$'
 
 [tool.ruff]
-exclude = [
-    "docs/",
-    ".git",
-    ".nox",
-    "__pycache__",
-    "docs/source/conf.py",
-    "old",
-    "build",
-    "dist",
-]
 ignore = ["E501"]
 line-length = 79
 select = [
