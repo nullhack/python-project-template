@@ -62,7 +62,7 @@
 
 Python template with some awesome tools to quickstart a Python project with the industry best practices. 
 It includes automatic generation of API documentation, tests using PyTest, code coverage, 
-Flake8 linting to enforce standardized Python coding, virtual environments using Poetry, workflow automation using Poe the Poet, 
+ruff linting to enforce standardized Python coding, virtual environments using Poetry, workflow automation using Poe the Poet, 
 code formatting using black and a space optimized Dockerfile to kickstart your project and run tests using the power of Docker containers. 
 
 You only need to install [Cookiecutter](https://cookiecutter.readthedocs.io/en/1.7.2/usage.html)!
