@@ -1,6 +1,8 @@
-"""Configuration file for pytest.
+"""A module for configuring pytest to include new features.
 
-This module will inject configuration scripts before running tests.
+This module provides a function to add new features automatically
+as test files in pytest. The new features will trigger errors because
+steps are not implemented.
 """
 from pathlib import Path
 
