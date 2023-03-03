@@ -22,5 +22,5 @@ jobs:
       
     - name: Build the Docker image
       run: cd python-project-example && \
-           docker build . --file Dockerfile --tag test-image:$(date +%s)
+           /usr/bin/docker build . --file Dockerfile --tag test-image:$(date +%s)
            
