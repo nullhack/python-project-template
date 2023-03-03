@@ -18,14 +18,14 @@ theme:
   name: material
   palette:
   - media: '(prefers-color-scheme: light)'
-    scheme: slate
+    scheme: default
     primary: blue
     accent: amber
     toggle:
       icon: material/lightbulb-outline
       name: Switch to light mode
   - media: '(prefers-color-scheme: dark)'
-    scheme: default
+    scheme: slate
     primary: black
     accent: amber
     toggle:

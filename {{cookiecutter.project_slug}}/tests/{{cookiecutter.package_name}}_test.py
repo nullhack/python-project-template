@@ -1,4 +1,4 @@
-"""This file contains examples of how to write tests using pytest!
+{%- if cookiecutter.include_examples == "true" -%}"""This file contains examples of how to write tests using pytest!
 
 Some good practices for writting great Python tests:
 
@@ -95,3 +95,5 @@ def test_divide_error(
     """
     with pytest.raises(expected):
         m.Calculator.divide(a, b)
+{%- elif cookiecutter.include_examples != "true" -%}
+"""Pytest test module."""{% endif %}

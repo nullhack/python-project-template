@@ -21,9 +21,12 @@ def pytest_configure(config: pytest.Config) -> None:
 
     """
     conftest_dir = Path(__file__).parent
-    caller_module_path = get_caller_module_path()
-    features_base_dir = get_features_base_dir(caller_module_path)
-    features = get_features([features_base_dir])
+    caller_module_path = Path(get_caller_module_path())
+    features_base_dir = Path(get_features_base_dir(caller_module_path))
+    if features_base_dir.exists():
+        features = get_features([features_base_dir])
+    else:
+        features = []
 
     for feat in features:
 

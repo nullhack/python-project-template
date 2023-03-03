@@ -1,3 +1,4 @@
+{%- if cookiecutter.include_examples == "true" -%}
 """Module Docstring."""
 
 import logging
@@ -5,7 +6,7 @@ import logging
 # TODO({{cookiecutter.full_name}}): Check how to write todos!
 # https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}/issues/1337
 
-logger = logging.getLogger("test")
+logger = logging.getLogger("{{cookiecutter.module_name}}")
 logger.info("This is a {word}", extra={"word": "Log"})
 
 
@@ -43,3 +44,13 @@ class Calculator:
 
 if __name__ == "__main__":
     print("RUNNING!")
+{%- elif cookiecutter.include_examples != "true" -%}
+"""Module Docstring."""
+
+import logging
+
+logger = logging.getLogger("{{cookiecutter.module_name}}")
+
+
+if __name__ == "__main__":
+    print("RUNNING!"){% endif %}
