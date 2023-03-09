@@ -20,7 +20,7 @@
 <br />
 <div align="center">
 
-  <h1 align="center"> Cookiecutter Python Project Template</h3>
+  <h1 align="center"> Python Project Template</h3>
 
   <p align="center">
     Cookiecutter for Python template with some awesome tools to quickstart any Python project.

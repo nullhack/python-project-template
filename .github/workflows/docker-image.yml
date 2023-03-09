@@ -2,9 +2,9 @@ name: Docker Image CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ main ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ main ]
 
 jobs:
 
@@ -13,6 +13,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v2
+    - name: Install dependencies
+      run: |
+        apt-get update && apt-get install -y python3-pip
+        pip3 install cookiecutter
+    - name: Generate project files with cookiecutter
+      run: cookiecutter --no-input .
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag test-image:$(date +%s)
+      run: cd python-project-example && docker build . --file Dockerfile --tag my-image-name:$(date +%s)
