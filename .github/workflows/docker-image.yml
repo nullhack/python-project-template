@@ -21,6 +21,6 @@ jobs:
     - name: Generate project files with cookiecutter
       run: cookiecutter --no-input .
     - name: Move into the project
-      run: cd python-project-template
+      run: cd python-project-example
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
