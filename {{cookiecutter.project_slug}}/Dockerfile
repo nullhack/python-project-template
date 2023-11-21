@@ -13,19 +13,13 @@ COPY pyproject.toml .
 COPY poetry.lock .
 RUN poetry install --no-root
 
-COPY .pre-commit-config.yaml .
-COPY README.md .
-COPY features features
-COPY {{cookiecutter.package_name}} {{cookiecutter.package_name}}
-COPY tests tests
-
+COPY ./ ./
 RUN poetry install
 
 ARG TESTBUILD=True
 ENV TESTBUILD=$TESTBUILD
 RUN if [ "$TESTBUILD" = 'True' ]; then poe lint; fi
 RUN if [ "$TESTBUILD" = 'True' ]; then poe test; fi
-
 
 RUN poetry build --format=wheel
 RUN poetry export --only main -f requirements.txt --without-hashes --output requirements.txt
