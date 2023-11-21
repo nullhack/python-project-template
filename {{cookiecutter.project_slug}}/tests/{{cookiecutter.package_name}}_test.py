@@ -96,4 +96,12 @@ def test_divide_error(
     with pytest.raises(expected):
         m.Calculator.divide(a, b)
 {%- elif cookiecutter.include_examples != "true" -%}
-"""Pytest test module."""{% endif %}
+"""Pytest test module."""
+
+
+def test_basics() -> None:
+    """A test that is always True.
+    """
+    assert True is True
+
+{% endif %}
