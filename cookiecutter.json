@@ -1,0 +1,14 @@
+{
+  "full_name": "Eric Lopes",
+  "email": "nullhack@users.noreply.github.com",
+  "github_username": "nullhack",
+  "project_name": "Python Project Example",
+  "project_slug": "{{ cookiecutter.project_name.lower().replace(' ', '-') }}",
+  "package_name": "{{ cookiecutter.project_name.lower().replace(' ', '_').replace('-', '_').replace('project', 'package') }}",
+  "module_name": "{{ cookiecutter.package_name.lower().replace(' ', '_').replace('-', '_').replace('package', 'module') }}",
+  "project_short_description": "Python template with some awesome tools to quickstart any Python project",
+  "minimum_coverage": 100,
+  "include_examples": "true",
+  "version": "0.1.0",
+  "license": ["MIT", "BSD_3_Clause", "Apache_2.0", "GPL_3.0", "Proprietary"]
+}
