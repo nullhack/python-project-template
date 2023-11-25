@@ -1,0 +1,32 @@
+{% raw %}
+name: Test Docker Image CI/CD
+
+on:
+  push:
+    branches:
+      - '*'
+      - '!main'
+      - '!master'
+      - '!prod'
+
+jobs:
+  set-up-docker:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v4
+      -
+        name: Install docker
+        run: apt update && apt install -y docker-compose
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      -
+        name: Build and test
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./Dockerfile
+          push: false
+{% endraw %}
