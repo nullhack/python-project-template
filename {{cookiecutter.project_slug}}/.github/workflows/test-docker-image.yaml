@@ -4,10 +4,9 @@ name: Test Docker Image CI/CD
 on:
   push:
     branches:
-      - '*'
-      - '!main'
-      - '!master'
-      - '!prod'
+      - 'main'
+      - 'master'
+      - 'prod'
 
 jobs:
   set-up-docker:
