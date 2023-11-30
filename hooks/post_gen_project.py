@@ -12,9 +12,8 @@ Attributes:
 import shutil
 from pathlib import Path
 
-REMOVE_PATHS = []
 REMOVE_PATHS = [
-    "features",
+    "bdd-features",
     "tests/scenarios/steps",
 ]
 
