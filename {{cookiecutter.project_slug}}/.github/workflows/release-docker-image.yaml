@@ -3,7 +3,8 @@ name: Release Docker Image CI/CD
 
 on:
   release:
-    types: [ published ]
+    types:
+      - published
 
 jobs:
   set-up-docker:

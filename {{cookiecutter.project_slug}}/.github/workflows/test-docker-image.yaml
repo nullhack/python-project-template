@@ -2,11 +2,7 @@
 name: Test Docker Image CI/CD
 
 on:
-  push:
-    branches:
-      - 'main'
-      - 'master'
-      - 'prod'
+  pull_request:
 
 jobs:
   set-up-docker:
