@@ -97,7 +97,7 @@ testpaths = [
 python_files = ["*_test.py"]
 python_functions = ["test_*"]
 render_collapsed = true
-bdd_features_base_dir = "features"
+bdd_features_base_dir = "bdd-features"
 
 [tool.coverage.report]
 exclude_lines = [
@@ -116,7 +116,9 @@ install = "poetry install --only main"
 install-dev = "poetry install"
 run = "python -m {{cookiecutter.package_name}}.{{cookiecutter.module_name}}"
 test = "pytest"
-pre-commit = "pre-commit run --all-files"
+install-pre-commit = "pre-commit install"
+run-pre-commit = "pre-commit run --all-files"
+pre-commit = ["install-pre-commit", "run-pre-commit"]
 lint-ruff = "ruff check **/*.py --fix"
 lint-black = "black **/*.py"
 lint = ["lint-black", "lint-ruff"]

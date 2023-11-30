@@ -20,24 +20,6 @@ repos:
         name: lint
         stages: [commit, push]
         language: system
-        entry: poe lint
-        types: [python]
-        pass_filenames: false
--   repo: local
-    hooks:
-    -   id: pytest
-        name: pytest
-        stages: [commit, push]
-        language: system
-        entry: poe test
-        types: [python]
-        pass_filenames: false
--   repo: local
-    hooks:
-    -   id: api-documentation
-        name: api-documentation
-        stages: [push]
-        language: system
-        entry: poe doc-html
+        entry: poetry run -c lint
         types: [python]
         pass_filenames: false
