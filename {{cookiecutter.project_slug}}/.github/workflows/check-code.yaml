@@ -1,0 +1,26 @@
+{% raw %}
+name: Check Code standards
+
+on:
+  push:
+
+jobs:
+  set-up-docker:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v4
+      -
+        name: Install ruff and black
+        run: |
+          apt update && apt install -y python3-pip && pip install ruff black
+      -
+        name: run ruff
+        run: |
+          ruff check **/*.py
+      -
+        name: run poetry
+        run: |
+          black **/*.py
+{% endraw %}
