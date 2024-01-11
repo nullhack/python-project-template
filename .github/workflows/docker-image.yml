@@ -1,10 +1,7 @@
 name: Docker Image CI
 
 on:
-  push:
-    branches: [ main ]
   pull_request:
-    branches: [ main ]
 
 jobs:
 
@@ -20,8 +17,6 @@ jobs:
         pip3 install cookiecutter
     - name: Generate project files with cookiecutter
       run: cookiecutter --no-input .
-    - name: debug
-      run: find .
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v3
     - name: Build and test
