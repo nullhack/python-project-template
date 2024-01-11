@@ -16,9 +16,16 @@ jobs:
     - uses: actions/checkout@v2
     - name: Install dependencies
       run: |
-        apt-get update && apt-get install -y python3-pip
+        apt-get update && apt-get install -y python3-pip docker-compose
         pip3 install cookiecutter
     - name: Generate project files with cookiecutter
       run: cookiecutter --no-input .
-    - name: Build the Docker image
-      run: cd python-project-example && docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+    - name: Build and test
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        file: ./python-project-example/Dockerfile
+        push: false
+
