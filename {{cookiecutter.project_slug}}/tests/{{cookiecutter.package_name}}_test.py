@@ -100,8 +100,7 @@ def test_divide_error(
 
 
 def test_basics() -> None:
-    """A test that is always True.
-    """
+    """A test that is always True."""
     assert True is True
 
 {% endif %}
