@@ -37,8 +37,9 @@ WORKDIR /home/user/app
 COPY --chown=user:user --from=test /home/user/app/requirements.txt requirements.txt
 COPY --chown=user:user --from=test /home/user/app/dist dist
 
-RUN pip install --no-cache -r requirements.txt dist/*.whl --user
-
+USER root
+RUN pip install --no-cache -r requirements.txt dist/*.whl
+USER user
 
 ENTRYPOINT ["python", "-m", "{{cookiecutter.package_name}}.{{cookiecutter.module_name}}"]
 
