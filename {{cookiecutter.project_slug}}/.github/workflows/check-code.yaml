@@ -14,7 +14,8 @@ jobs:
       -
         name: Install ruff and black
         run: |
-          apt update && apt install -y python3-pip && pip install ruff black
+          python -m pip install --upgrade pip
+          pip install black ruff
       -
         name: run ruff
         run: |
