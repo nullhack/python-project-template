@@ -4,7 +4,7 @@
 import logging
 
 # TODO({{cookiecutter.full_name}}): Check how to write todos!
-# https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}/issues/1337
+# https://docs.astral.sh/ruff/rules/missing-todo-link/
 
 logger = logging.getLogger("{{cookiecutter.module_name}}")
 logger.info("This is a {word}", extra={"word": "Log"})
@@ -43,7 +43,7 @@ class Calculator:
 
 
 if __name__ == "__main__":
-    print("RUNNING!")
+    logger.warning("RUNNING!")
 {%- elif cookiecutter.include_examples != "true" -%}
 """Module Docstring."""
 
@@ -53,4 +53,4 @@ logger = logging.getLogger("{{cookiecutter.module_name}}")
 
 
 if __name__ == "__main__":
-    print("RUNNING!"){% endif %}
+    logger.warning("RUNNING!"){% endif %}

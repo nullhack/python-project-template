@@ -22,7 +22,6 @@ poethepoet = "^0.16.4"
 ruff = ">=0.1.7"
 pytest = ">=7.1.1"
 pytest-html = ">=4.1.0"
-pytest-sugar = ">=0.9.6"
 pytest-cov = ">=5.0.0"
 pytest-xdist = ">=3.6.1"
 pytest-bdd = ">=7.1.2"
@@ -39,13 +38,11 @@ mkdocstrings = {extras = ["python"], version = "^0.25.1"}
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
 
-[tool.ruff]
-lint.ignore = ["E501"]
-line-length = 79
-lint.select = [
+[tool.ruff.lint]
+ignore = ["E501", "RET"]
+select = [
   "A", 
   "ANN", 
-  "ARG", 
   "ASYNC", 
   "B", 
   "C4", 
@@ -59,7 +56,6 @@ lint.select = [
   "G", 
   "I", 
   "ICN", 
-  "ISC", 
   "LOG", 
   "N", 
   "NPY", 
@@ -74,13 +70,12 @@ lint.select = [
   "TD", 
   "W",
 ]
+preview = true
+mccabe.max-complexity = 10
+pydocstyle.convention = "google"
 
-
-[tool.ruff.lint.mccabe]
-max-complexity = 10
-
-[tool.ruff.lint.pydocstyle]
-convention = "google"
+[tool.ruff]
+line-length = 79
 
 [tool.ruff.lint.per-file-ignores]
 "tests/*" = ["S101"]
@@ -88,7 +83,6 @@ convention = "google"
 [tool.pytest.ini_options]
 minversion = "6.0"
 addopts = """
---verbose \
 --maxfail=1 \
 --color=yes \
 --cov={{cookiecutter.package_name}} \

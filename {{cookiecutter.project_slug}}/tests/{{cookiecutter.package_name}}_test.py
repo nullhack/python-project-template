@@ -6,7 +6,7 @@ Source: https://www.nerdwallet.com/blog/engineering/5-pytest-best-practices/
 
   *  Prefer mocker over mock
   *  Parametrize the same behavior, have different tests for different behaviors
-  *  Don’t modify fixture values in other fixtures
+  *  Don't modify fixture values in other fixtures
   *  Prefer responses over mocking outbound HTTP requests
   *  Prefer tmpdir over global test artifacts
 
@@ -48,7 +48,7 @@ class TestGroup:
             fixt (int): Value from fixture.
 
         """
-        print("\ntest_one", param1, param2, fixt)
+        assert param1 != param2
 
 
 @pytest.mark.parametrize(
