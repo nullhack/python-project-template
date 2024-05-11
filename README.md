@@ -72,7 +72,7 @@ You only need to install [Cookiecutter](https://cookiecutter.readthedocs.io/en/1
 <!-- GETTING STARTED -->
 ## Getting Started
 
-### [Live Example](https://github.com/nullhack/python-project-template/tree/example/python-project-template)
+### [Live Example](https://nullhack.github.io/python-project-template/)
 
 To get a local copy up and running follow these simple steps.
 
@@ -108,8 +108,9 @@ This Project depends on the following projects.
 <!-- ROADMAP -->
 ## Roadmap
 
-- [x] Improve documentation
-- [ ] Update packages and look for new industry standards to include
+- [X] Update packages and look for new industry standards to include
+- [ ] Automatically deploy new documentation on new PR merged
+- [ ] Make the github actions and gitea actions run without errors
 
 See the [open issues](https://github.com/nullhack/python-project-template/issues) for a full list of proposed features (and known issues).
 
