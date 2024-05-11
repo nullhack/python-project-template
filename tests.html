@@ -649,7 +649,7 @@
 <ul>
 <li>Prefer mocker over mock</li>
 <li>Parametrize the same behavior, have different tests for different behaviors</li>
-<li>Don’t modify fixture values in other fixtures</li>
+<li>Don't modify fixture values in other fixtures</li>
 <li>Prefer responses over mocking outbound HTTP requests</li>
 <li>Prefer tmpdir over global test artifacts</li>
 </ul>
@@ -741,7 +741,7 @@
 <span class="sd">            fixt (int): Value from fixture.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">test_one&quot;</span><span class="p">,</span> <span class="n">param1</span><span class="p">,</span> <span class="n">param2</span><span class="p">,</span> <span class="n">fixt</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">param1</span> <span class="o">!=</span> <span class="n">param2</span>
 </code></pre></div></td></tr></table></div>
             </details>
 
@@ -879,7 +879,7 @@
 <span class="sd">        fixt (int): Value from fixture.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">test_one&quot;</span><span class="p">,</span> <span class="n">param1</span><span class="p">,</span> <span class="n">param2</span><span class="p">,</span> <span class="n">fixt</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">param1</span> <span class="o">!=</span> <span class="n">param2</span>
 </code></pre></div></td></tr></table></div>
           </details>
   </div>
