@@ -8,7 +8,15 @@ repo_url: https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.pro
 
 plugins:
   - search
-  - mkapi
+  - mkdocstrings:
+      handlers:
+        python:
+          options:
+            show_submodules: true
+            show_if_no_docstring: true
+            modernize_annotations: true
+            separate_signature: true
+            docstring_section_style: list
   - awesome-pages
   - gen-files:
       scripts:
@@ -21,17 +29,7 @@ theme:
     scheme: default
     primary: blue
     accent: amber
-    toggle:
-      icon: material/lightbulb-outline
-      name: Switch to light mode
-  - media: '(prefers-color-scheme: dark)'
-    scheme: slate
-    primary: black
-    accent: amber
-    toggle:
-      icon: material/lightbulb
-      name: Switch to dark mode
-  features:
+  atures:
   - search.suggest
   - search.highlight
   - content.tabs.link
@@ -41,11 +39,9 @@ theme:
   #favicon: img/favicon.png
   language: en
 
-
 nav:
   - index.md
   - ... | glob=readme.md
+  - reference.md
   - ... | regex=scenarios/.+.md
-  - API: mkapi/api/{{cookiecutter.package_name}}
-  - Tests: mkapi/tests/tests
-
+  - tests.md

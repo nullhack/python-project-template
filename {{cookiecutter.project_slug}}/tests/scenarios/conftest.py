@@ -4,6 +4,7 @@ This module provides a function to add new features automatically
 as test files in pytest. The new features will trigger errors because
 steps are not implemented.
 """
+
 from pathlib import Path
 
 import pytest
@@ -31,7 +32,6 @@ def pytest_configure(config: pytest.Config) -> None:
         features = []
 
     for feat in features:
-
         feature_dir = Path(feat.filename).parent
         file_dir = (
             conftest_dir / "steps" / feature_dir.relative_to(features_base_dir)
