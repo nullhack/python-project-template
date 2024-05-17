@@ -12,13 +12,45 @@ Source: https://www.nerdwallet.com/blog/engineering/5-pytest-best-practices/
 
 """
 
+import pathlib
 from typing import Self
 
 import pytest
+from pytest_mock import MockerFixture
 
 from {{cookiecutter.package_name}} import {{cookiecutter.module_name}} as m
 
 
+class UnixFS:
+    """A class representing Unix filesystem operations."""
+
+    @staticmethod
+    def rm(filename: str) -> None:
+        """Remove a file specified by its filename.
+
+        Args:
+            filename (str): The name of the file to be removed.
+
+        """
+        pathlib.Path.unlink(filename)
+
+
+def test_unix_fs(mocker: MockerFixture) -> None:
+    """Test the UnixFS.rm method to ensure it calls pathlib.Path.unlink.
+
+    This function uses the mocker library to patch the pathlib.Path.unlink method,
+    calls the UnixFS.rm method with a test filename, and asserts that
+    pathlib.Path.unlink was called exactly once with the correct filename.
+
+    Args:
+        mocker (pytest_mock.MockerFixture): The mocker fixture provided by pytest-mock.
+    """
+    mocker.patch("pathlib.Path.unlink")
+    UnixFS.rm("file")
+    pathlib.Path.unlink.assert_called_once_with("file")
+
+
+@pytest.mark.timeout(1)
 @pytest.mark.parametrize(
     ("param1", "param2"),
     [

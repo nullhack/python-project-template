@@ -19,16 +19,18 @@ python = "^3.11"
 pre-commit = "^2.18.1"
 xdoctest = "^1.0.0"
 poethepoet = "^0.16.4"
-ruff = ">=0.1.7"
-pytest = ">=7.1.1"
-pytest-html = ">=4.1.0"
-pytest-cov = ">=5.0.0"
-pytest-xdist = ">=3.6.1"
-pytest-bdd = ">=7.1.2"
-mkdocs = ">=1.6.0"
-mkdocs-material = ">=9.5.0"
-mkdocs-gen-files = ">=0.5.0"
-mkdocs-awesome-pages-plugin = ">=2.9.2"
+ruff = "^0.1.7"
+pytest = "^7.1.1"
+pytest-html = "^4.1.0"
+pytest-cov = "^5.0.0"
+pytest-xdist = "^3.6.1"
+pytest-bdd = "^7.1.2"
+pytest-mock = "^3.14.0"
+pytest-timeout = "^2.3.1"
+mkdocs = "^1.6.0"
+mkdocs-material = "^9.5.0"
+mkdocs-gen-files = "^0.5.0"
+mkdocs-awesome-pages-plugin = "^2.9.2"
 mkdocstrings = {extras = ["python"], version = "^0.25.1"}
 
 [tool.poetry.scripts]
@@ -83,24 +85,28 @@ line-length = 79
 [tool.pytest.ini_options]
 minversion = "6.0"
 addopts = """
---maxfail=1 \
---color=yes \
---cov={{cookiecutter.package_name}} \
---html=docs/pytest_report.html \
+--maxfail 1 \
+--color yes \
+--cov {{cookiecutter.package_name}} \
+--html docs/pytest_report.html \
 --self-contained-html \
---cov-fail-under={{cookiecutter.minimum_coverage}} \
+--cov-fail-under {{cookiecutter.minimum_coverage}} \
 --cov-report term-missing \
 --cov-report html:docs/cov-report \
 --doctest-modules \
---cov-config=pyproject.toml"""
+--timeout 300 \
+--cov-config pyproject.toml"""
 testpaths = [
     "tests",
     "{{cookiecutter.package_name}}"
 ]
+filterwarnings = [
+    "ignore::pytest.PytestUnknownMarkWarning",
+]
 python_files = ["*_test.py"]
 python_functions = ["test_*"]
-render_collapsed = true
-bdd_features_base_dir = "bdd-features"
+render_collapsed = "all"
+bdd_features_base_dir = "acceptance-criteria"
 
 [tool.coverage.report]
 exclude_lines = [

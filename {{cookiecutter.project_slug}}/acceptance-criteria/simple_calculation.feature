@@ -1,4 +1,5 @@
 {%- if cookiecutter.include_examples == "true" -%}
+@smoke @issue-1234
 Feature: divide
     The user should be able to divide two numbers.
 
