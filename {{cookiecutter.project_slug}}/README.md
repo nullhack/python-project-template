@@ -76,14 +76,14 @@ To run this project locally, you will need to install the prerequisites and foll
 ### Prerequisites
 
 This Project depends on the following projects.
-* Poetry
+* UV
   ```sh
-  pip install --user --upgrade poetry
+  pip install --user --upgrade uv
   ```
 
-* Poe the Poet
+* Taskipy
   ```sh
-  pip install --user --upgrade poethepoet
+  pip install --user --upgrade taskipy
   ```
 
 ### Installation
@@ -93,17 +93,17 @@ This Project depends on the following projects.
    git clone https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}
    cd {{cookiecutter.project_slug}}
    ```
-2. Install Poe the Poet and Poetry
+2. Install UV and taskipy
    ```sh
-   pip install --user --upgrade poethepoet poetry
+   pip install --user --upgrade uv taskipy
    ```
 3. Install requirements for development
    ```sh
-   poe install-dev
+   uv pip install '.[dev]'
    ```
 4. Run tests
    ```sh
-   poe test
+   uv run task test
    ```
 
 <p align="right">(<a href="#top">back to top</a>)</p>
@@ -117,34 +117,34 @@ Some useful examples of how this project can be used:
 
 *  Install requirements
    ```sh
-   poe install-dev
+   uv run task '.[dev]'
    ```
 
 *  Run tests
    ```sh
-   poe test
+   uv run task test
    ```
 
 *  Run the project
    ```sh
-   poe run
+   uv run main.py
    ```
 
 *  Generate API documentation
    ```sh
-   poe doc
+   uv run task doc-html
    ```
 
 *  Build a docker image for tests
    ```sh
-   poe docker-build --target test --build-tag 3.10-alpine
-   docker run -ti --rm {{cookiecutter.package_name}}:test-3.10-alpine
+   docker build --target test -t {{cookiecutter.package_name}}:test
+   docker run -ti --rm {{cookiecutter.package_name}}:test
    ```
 
 *  Build a docker image to run the root files only without running any test
    ```sh
-   poe docker-build --target prod --build-tag 3.10-alpine --no-test
-   docker run -ti --rm {{cookiecutter.package_name}}:prod-3.10-alpine
+   docker build --target prod -t {{cookiecutter.package_name}}:prod
+   docker run -ti --rm {{cookiecutter.package_name}}:prod
    ```
    
 
@@ -160,7 +160,7 @@ _For more examples, please refer to the [Documentation](https://{{cookiecutter.g
 - [x] Add tests
 - [x] Add code coverage
 - [x] Improve documentation
-- [ ] Include more tests
+- [ ] Watch for new best standards
 
 See the [open issues](https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}/issues) for a full list of proposed features (and known issues).
 
@@ -198,7 +198,7 @@ Project Link: [https://github.com/{{cookiecutter.github_username}}/{{cookiecutte
 <!-- ACKNOWLEDGMENTS -->
 ## Acknowledgments
 
-This project was created using cookiecutter and NullHack's python-project-template:
+This project was created using cookiecutter and Nullhack's python-project-template:
 
 * [NullHack's python-project-template](https://github.com/nullhack/python-project-template/)
 
