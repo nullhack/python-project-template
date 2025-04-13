@@ -29,7 +29,7 @@ from {{cookiecutter.package_name}} import {{cookiecutter.module_name}} as m
 class TestGroup:
     """A class with common parameters, `param1` and `param2`."""
 
-    @pytest.fixture()
+    @pytest.fixture
     def fixt(self: Self) -> int:
         """This fixture will only be available within the scope of TestGroup.
 

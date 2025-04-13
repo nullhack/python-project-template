@@ -44,4 +44,3 @@ nav:
   - ... | glob=readme.md
   - reference.md
   - ... | regex=scenarios/.+.md
-  - tests.md

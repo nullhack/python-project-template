@@ -37,7 +37,7 @@ class Calculator:
         """
         if b == 0:
             raise ZeroDivisionError
-        elif type(a) not in (float, int) or type(b) not in (float, int):
+        if type(a) not in (float, int) or type(b) not in (float, int):
             raise TypeError
         return a / b
 

@@ -4,7 +4,7 @@ version = "{{cookiecutter.version}}"
 description = "{{cookiecutter.project_short_description}}"
 readme = "README.md"
 requires-python = ">=3.13"
-license = "{{cookiecutter.license}}"
+license = { file = "LICENSE" }
 authors = [
     { name = "{{cookiecutter.full_name}}", email = "{{cookiecutter.email}}" }
 ]
