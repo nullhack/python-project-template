@@ -62,8 +62,7 @@
 
 Python template with some awesome tools to quickstart a Python project with the industry best practices. 
 It includes automatic generation of API documentation, tests using PyTest, code coverage, 
-ruff linting to enforce standardized Python coding, virtual environments using UV, workflow automation using Taskipy, 
-code formatting using black and a space optimized Dockerfile to kickstart your project and run tests using the power of Docker containers. 
+ruff linting to enforce standardized Python coding and formatting, virtual environments using UV, workflow automation using Taskipy and a space optimized Dockerfile to kickstart your project and run tests using the power of Docker containers. 
 
 You only need to install [Cookiecutter](https://cookiecutter.readthedocs.io/en/1.7.2/usage.html)!
 
