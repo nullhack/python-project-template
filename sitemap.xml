@@ -1,28 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
-         <loc>https://nullhack.github.io/python-project-template/index.html</loc>
-         <lastmod>2024-05-11</lastmod>
-         <changefreq>daily</changefreq>
+         <loc>https://nullhack.github.io/python-project-example/index.html</loc>
+         <lastmod>2025-04-14</lastmod>
     </url>
     <url>
-         <loc>https://nullhack.github.io/python-project-template/readme.html</loc>
-         <lastmod>2024-05-11</lastmod>
-         <changefreq>daily</changefreq>
+         <loc>https://nullhack.github.io/python-project-example/readme.html</loc>
+         <lastmod>2025-04-14</lastmod>
     </url>
     <url>
-         <loc>https://nullhack.github.io/python-project-template/reference.html</loc>
-         <lastmod>2024-05-11</lastmod>
-         <changefreq>daily</changefreq>
+         <loc>https://nullhack.github.io/python-project-example/reference.html</loc>
+         <lastmod>2025-04-14</lastmod>
     </url>
     <url>
-         <loc>https://nullhack.github.io/python-project-template/tests.html</loc>
-         <lastmod>2024-05-11</lastmod>
-         <changefreq>daily</changefreq>
-    </url>
-    <url>
-         <loc>https://nullhack.github.io/python-project-template/scenarios/simple_calculation.html</loc>
-         <lastmod>2024-05-11</lastmod>
-         <changefreq>daily</changefreq>
+         <loc>https://nullhack.github.io/python-project-example/scenarios/simple_calculation.html</loc>
+         <lastmod>2025-04-14</lastmod>
     </url>
 </urlset>
