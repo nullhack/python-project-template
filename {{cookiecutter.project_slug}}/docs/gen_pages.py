@@ -30,7 +30,7 @@ head_lines = (
     "Background:",
 )
 ignore_lines = ("@", "#")
-features_dir = docs_parent_dir / "bdd-features"
+features_dir = docs_parent_dir / "acceptance-criteria"
 for feature_path in features_dir.glob("**/*.feature"):
     with Path.open(feature_path, "r") as f:
         relative_dir = feature_path.parent.relative_to(features_dir)
