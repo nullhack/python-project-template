@@ -10,7 +10,7 @@ sh.setFormatter(formatter)
 logger.addHandler(sh)
 
 
-def main() -> str:
+def main() -> None:
     """Just a main function."""
     logger.info("Hello from python-project-uv!")
 
