@@ -1,45 +1,42 @@
-[tool.poetry]
-name = "{{cookiecutter.package_name}}"
+[project]
+name = "{{cookiecutter.project_slug}}"
 version = "{{cookiecutter.version}}"
 description = "{{cookiecutter.project_short_description}}"
-authors = ["{{cookiecutter.full_name}} <{{cookiecutter.email}}>"]
-maintainers = ["{{cookiecutter.full_name}} <{{cookiecutter.email}}>"]
-license = "{{cookiecutter.license}}"
-repository = "https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}"
-documentation = "https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}/tree/main/docs/api/"
 readme = "README.md"
-packages = [
-    { include = "{{cookiecutter.package_name}}" },
+requires-python = ">=3.13"
+license = { file = "LICENSE" }
+authors = [
+    { name = "{{cookiecutter.full_name}}", email = "{{cookiecutter.email}}" }
+]
+maintainers = [
+    { name = "{{cookiecutter.full_name}}", email = "{{cookiecutter.email}}" }
+]
+dependencies = []
+
+[project.urls]
+Repository = "https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}"
+Documentation = "https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}/tree/main/docs/api/"
+
+[project.optional-dependencies]
+dev = [
+    "mkdocs>=1.6.1",
+    "mkdocs-awesome-pages-plugin>=2.10.1",
+    "mkdocs-gen-files>=0.5.0",
+    "mkdocs-material>=9.6.11",
+    "mkdocstrings[python]>=0.29.1",
+    "pytest>=8.3.5",
+    "pytest-bdd>=8.1.0",
+    "pytest-cov>=6.1.1",
+    "pytest-html>=4.1.1",
+    "ruff>=0.11.5",
+    "taskipy>=1.14.1",
 ]
 
-[tool.poetry.dependencies]
-python = "^3.11"
-
-[tool.poetry.group.dev.dependencies]
-pre-commit = "^2.18.1"
-xdoctest = "^1.0.0"
-poethepoet = "^0.16.4"
-ruff = ">=0.1.7"
-pytest = ">=7.1.1"
-pytest-html = ">=4.1.0"
-pytest-cov = ">=5.0.0"
-pytest-xdist = ">=3.6.1"
-pytest-bdd = ">=7.1.2"
-mkdocs = ">=1.6.0"
-mkdocs-material = ">=9.5.0"
-mkdocs-gen-files = ">=0.5.0"
-mkdocs-awesome-pages-plugin = ">=2.9.2"
-mkdocstrings = {extras = ["python"], version = "^0.25.1"}
-
-[tool.poetry.scripts]
--c = "poethepoet:main"
-
-[build-system]
-requires = ["poetry-core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"
+[tool.setuptools]
+packages = ["{{cookiecutter.package_name}}"]
 
 [tool.ruff.lint]
-ignore = ["E501", "RET"]
+ignore = []
 select = [
   "A", 
   "ANN", 
@@ -73,9 +70,6 @@ select = [
 preview = true
 mccabe.max-complexity = 10
 pydocstyle.convention = "google"
-
-[tool.ruff]
-line-length = 79
 
 [tool.ruff.lint.per-file-ignores]
 "tests/*" = ["S101"]
@@ -114,36 +108,15 @@ exclude_lines = [
     "if __name__ == .__main__.:"
     ]
 
-[tool.poe.tasks]
-install = "poetry install --only main"
-install-dev = "poetry install"
+[tool.taskipy.tasks]
 run = "python -m {{cookiecutter.package_name}}.{{cookiecutter.module_name}}"
 test = "pytest"
-install-pre-commit = "pre-commit install"
-run-pre-commit = "pre-commit run --all-files"
-pre-commit = ["install-pre-commit", "run-pre-commit"]
 ruff-check = "ruff check **/*.py --fix"
 ruff-format = "ruff format **/*.py"
-lint = ["ruff-check", "ruff-format"]
+lint = "task ruff-check && task ruff-format"
 doc = "mkdocs serve --use-directory-urls -f docs/mkdocs.yaml"
 doc-html = "mkdocs build --no-directory-urls -f docs/mkdocs.yaml"
 doc-publish = """mkdocs gh-deploy \
 --config-file docs/mkdocs.yaml \
 --no-directory-urls \
 --remote-branch docs"""
-
-[tool.poe.tasks.docker-build]
-cmd = """
-docker build 
---build-arg TESTBUILD=$no_test \
---build-arg BUILDTAG=$build_tag \
---build-arg BUILDPLATFORM=$build_platform \
---target $target \
--t {{cookiecutter.package_name}}:$target-$build_tag ."""
-help = "Build a docker image to test the project in an isolated environment"
-args = [
-  { name = "no-test", default = true, type = "boolean" }, 
-  { name = "build-tag", default = "3-alpine" },
-  { name = "build-platform", default = "linux/amd64" },
-  { name = "target", default = "prod" },
-]
