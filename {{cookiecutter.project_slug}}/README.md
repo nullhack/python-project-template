@@ -99,6 +99,7 @@ This Project depends on the following projects.
    ```
 3. Install requirements for development
    ```sh
+   uv venv
    uv pip install '.[dev]'
    ```
 4. Run tests
@@ -200,7 +201,7 @@ Project Link: [https://github.com/{{cookiecutter.github_username}}/{{cookiecutte
 
 This project was created using cookiecutter and Nullhack's python-project-template:
 
-* [NullHack's python-project-template](https://github.com/nullhack/python-project-template/)
+* [Nullhack's python-project-template](https://github.com/nullhack/python-project-template/)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 

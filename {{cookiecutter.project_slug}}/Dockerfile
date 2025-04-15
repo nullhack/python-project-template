@@ -11,7 +11,7 @@ RUN pip install --no-cache uv taskipy
 
 COPY ./ ./
 
-RUN pip install -e '.[dev]'
+RUN pip install '.[dev]'
 
 ARG TESTBUILD=True
 ENV TESTBUILD=$TESTBUILD
