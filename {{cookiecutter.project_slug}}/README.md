@@ -76,14 +76,9 @@ To run this project locally, you will need to install the prerequisites and foll
 ### Prerequisites
 
 This Project depends on the following projects.
-* UV
+* uv
   ```sh
   pip install --user --upgrade uv
-  ```
-
-* Taskipy
-  ```sh
-  pip install --user --upgrade taskipy
   ```
 
 ### Installation
@@ -93,9 +88,9 @@ This Project depends on the following projects.
    git clone https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}
    cd {{cookiecutter.project_slug}}
    ```
-2. Install UV and taskipy
+2. Install uv
    ```sh
-   pip install --user --upgrade uv taskipy
+   pip install --user --upgrade uv
    ```
 3. Install requirements for development
    ```sh
