@@ -62,7 +62,7 @@
 
 Python template with some awesome tools to quickstart a Python project with the industry best practices. 
 It includes automatic generation of API documentation, tests using PyTest, code coverage, 
-ruff linting to enforce standardized Python coding and formatting, virtual environments using UV, workflow automation using Taskipy and a space optimized Dockerfile to kickstart your project and run tests using the power of Docker containers. 
+ruff linting to enforce standardized Python coding and formatting, virtual environments using uv, workflow automation using Taskipy and a space optimized Dockerfile to kickstart your project and run tests using the power of Docker containers. 
 
 You only need to install [Cookiecutter](https://cookiecutter.readthedocs.io/en/1.7.2/usage.html)!
 
@@ -90,12 +90,13 @@ This Project depends on the following projects.
    cookiecutter https://github.com/nullhack/python-project-template
    # move into your newly created project folder
    ```
-2. Install UV and Taskipy
+2. Install uv and Taskipy
    ```sh
-   pip install --user --upgrade uv taskipy
+   pip install --user --upgrade uv
    ```
 3. Let Taskipy do it's magic
    ```sh
+   uv venv
    uv pip install .[dev]
    uv task test
    uv task run
