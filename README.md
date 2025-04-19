@@ -62,8 +62,7 @@
 
 Python template with some awesome tools to quickstart a Python project with the industry best practices. 
 It includes automatic generation of API documentation, tests using PyTest, code coverage, 
-ruff linting to enforce standardized Python coding, virtual environments using Poetry, workflow automation using Poe the Poet, 
-code formatting using black and a space optimized Dockerfile to kickstart your project and run tests using the power of Docker containers. 
+ruff linting to enforce standardized Python coding and formatting, virtual environments using UV, workflow automation using Taskipy and a space optimized Dockerfile to kickstart your project and run tests using the power of Docker containers. 
 
 You only need to install [Cookiecutter](https://cookiecutter.readthedocs.io/en/1.7.2/usage.html)!
 
@@ -72,7 +71,7 @@ You only need to install [Cookiecutter](https://cookiecutter.readthedocs.io/en/1
 <!-- GETTING STARTED -->
 ## Getting Started
 
-### [Live Example](https://github.com/nullhack/python-project-template/tree/example/python-project-template)
+### [Live Example](https://nullhack.github.io/python-project-template/)
 
 To get a local copy up and running follow these simple steps.
 
@@ -91,15 +90,15 @@ This Project depends on the following projects.
    cookiecutter https://github.com/nullhack/python-project-template
    # move into your newly created project folder
    ```
-2. Install Poe the  Poet and Poetry
+2. Install UV and Taskipy
    ```sh
-   pip install --user --upgrade poethepoet poetry
+   pip install --user --upgrade uv taskipy
    ```
-3. Let Poe do it's magic
+3. Let Taskipy do it's magic
    ```sh
-   poe install-dev
-   poe test
-   poe run
+   uv pip install .[dev]
+   uv task test
+   uv task run
    ```
 
 <p align="right">(<a href="#top">back to top</a>)</p>
@@ -108,8 +107,9 @@ This Project depends on the following projects.
 <!-- ROADMAP -->
 ## Roadmap
 
-- [x] Improve documentation
-- [ ] Update packages and look for new industry standards to include
+- [X] Update packages and look for new industry standards to include
+- [ ] Automatically deploy new documentation on new PR merged
+- [ ] Make the github actions and gitea actions run without errors
 
 See the [open issues](https://github.com/nullhack/python-project-template/issues) for a full list of proposed features (and known issues).
 
@@ -144,7 +144,7 @@ Distributed under the MIT License. See [`LICENSE`](https://github.com/nullhack/p
 <!-- CONTACT -->
 ## Contact
 
-Eric Lopes - [@nullhack](https://github.com/nullhack)
+eol - [@nullhack](https://github.com/nullhack)
 
 Project Link: [https://github.com/nullhack/python-project-template/](https://github.com/nullhack/python-project-template/)
 
@@ -161,6 +161,7 @@ This project was heavily based on some great references.
 * [Best practices for Python projects in 2021](https://mitelman.engineering/blog/python-best-practice/automating-python-best-practices-for-a-new-project/)
 * [5 Pytest Best Practices for Writing Great Python Tests](https://www.nerdwallet.com/blog/engineering/5-pytest-best-practices/)
 * [Best-README-Template](https://github.com/othneildrew/Best-README-Template)
+* [Beyond Hypermodern: Python is easy now (2024)](https://rdrn.me/postmodern-python/)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 

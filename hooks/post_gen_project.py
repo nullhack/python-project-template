@@ -13,7 +13,7 @@ import shutil
 from pathlib import Path
 
 REMOVE_PATHS = [
-    "bdd-features",
+    "acceptance-scenarios",
     "tests/scenarios/steps",
 ]
 

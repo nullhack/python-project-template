@@ -4,15 +4,15 @@ This module provides a function to add new features automatically
 as test files in pytest. The new features will trigger errors because
 steps are not implemented.
 """
+
 from pathlib import Path
 
-import pytest
 from pytest_bdd.feature import get_features
 from pytest_bdd.scenario import get_features_base_dir
 from pytest_bdd.utils import get_caller_module_path
 
 
-def pytest_configure(config: pytest.Config) -> None:
+def pytest_configure() -> None:
     """Configure tests to include new features.
 
     This function adds new features automatically as test files.
@@ -31,7 +31,6 @@ def pytest_configure(config: pytest.Config) -> None:
         features = []
 
     for feat in features:
-
         feature_dir = Path(feat.filename).parent
         file_dir = (
             conftest_dir / "steps" / feature_dir.relative_to(features_base_dir)
@@ -51,5 +50,5 @@ def pytest_configure(config: pytest.Config) -> None:
         file_dir.mkdir(parents=True, exist_ok=True)
 
         if not file_path.exists():
-            with open(file_path, "w") as f:
+            with Path.open(file_path, "w") as f:
                 f.write(txt)

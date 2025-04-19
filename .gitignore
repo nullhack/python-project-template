@@ -1,3 +1,6 @@
+# Ignore project example
+python-project-example
+
 .DS_Store
 .coverage
 .vscode/\n.idea/

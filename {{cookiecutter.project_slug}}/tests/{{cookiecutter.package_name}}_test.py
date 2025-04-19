@@ -6,18 +6,17 @@ Source: https://www.nerdwallet.com/blog/engineering/5-pytest-best-practices/
 
   *  Prefer mocker over mock
   *  Parametrize the same behavior, have different tests for different behaviors
-  *  Don’t modify fixture values in other fixtures
+  *  Don't modify fixture values in other fixtures
   *  Prefer responses over mocking outbound HTTP requests
   *  Prefer tmpdir over global test artifacts
 
 """
-from typing import TypeVar
+
+from typing import Self
 
 import pytest
 
 from {{cookiecutter.package_name}} import {{cookiecutter.module_name}} as m
-
-Self = TypeVar("Self", bound="TestGroup")
 
 
 @pytest.mark.parametrize(
@@ -30,7 +29,7 @@ Self = TypeVar("Self", bound="TestGroup")
 class TestGroup:
     """A class with common parameters, `param1` and `param2`."""
 
-    @pytest.fixture()
+    @pytest.fixture
     def fixt(self: Self) -> int:
         """This fixture will only be available within the scope of TestGroup.
 
@@ -49,7 +48,7 @@ class TestGroup:
             fixt (int): Value from fixture.
 
         """
-        print("\ntest_one", param1, param2, fixt)
+        assert param1 != param2
 
 
 @pytest.mark.parametrize(
