@@ -113,9 +113,8 @@ Some useful examples of how this project can be used:
 
 *  Install requirements
    ```sh
-   pip install --user --upgrade uv
    uv venv
-   uv run task '.[dev]'
+   uv pip install '.[dev]'
    ```
 
 *  Run tests
