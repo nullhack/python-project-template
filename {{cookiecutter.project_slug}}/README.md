@@ -113,7 +113,8 @@ Some useful examples of how this project can be used:
 
 *  Install requirements
    ```sh
-   uv run task '.[dev]'
+   uv venv
+   uv pip install '.[dev]'
    ```
 
 *  Run tests
@@ -123,7 +124,7 @@ Some useful examples of how this project can be used:
 
 *  Run the project
    ```sh
-   uv run main.py
+   uv run task run
    ```
 
 *  Generate API documentation

@@ -76,17 +76,23 @@ pydocstyle.convention = "google"
 
 [tool.pytest.ini_options]
 minversion = "6.0"
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+    "unit",
+    "integration",
+    "system",
+    "acceptance",
+    "regression",
+    "smoke",
+    "sanity",
+    "performance",
+    "security",
+    "performance",
+]
 addopts = """
 --maxfail=1 \
 --color=yes \
---cov={{cookiecutter.package_name}} \
---html=docs/pytest_report.html \
---self-contained-html \
---cov-fail-under={{cookiecutter.minimum_coverage}} \
---cov-report term-missing \
---cov-report html:docs/cov-report \
---doctest-modules \
---cov-config=pyproject.toml"""
+"""
 testpaths = [
     "tests",
     "{{cookiecutter.package_name}}"
@@ -110,7 +116,22 @@ exclude_lines = [
 
 [tool.taskipy.tasks]
 run = "python -m {{cookiecutter.package_name}}.{{cookiecutter.module_name}}"
-test = "pytest"
+test-report = """\
+pytest \
+  --cov-config=pyproject.toml \
+  --doctest-modules \
+  --cov-fail-under=90 \
+  --cov-report=term-missing \
+  --cov-report=html:docs/cov-report \
+  --html=docs/pytest_report.html \
+  --self-contained-html\
+"""
+test = """\
+python -c "import subprocess, sys; print('Running Smoke Tests...'); sys.exit(0 if subprocess.run(['pytest', '-m', 'smoke']).returncode in (0,5) else 1)" && \
+python -c "import subprocess, sys; print('Running Unit Tests...'); sys.exit(0 if subprocess.run(['pytest', '-m', 'unit']).returncode in (0,5) else 1)" && \
+python -c "print('Running Tests...');" && \
+task test-report\
+"""
 ruff-check = "ruff check **/*.py --fix"
 ruff-format = "ruff format **/*.py"
 lint = "task ruff-check && task ruff-format"
