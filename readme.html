@@ -742,7 +742,8 @@
 <li>
 <p>Install requirements
    <code>sh
-   uv run task '.[dev]'</code></p>
+   uv venv
+   uv pip install '.[dev]'</code></p>
 </li>
 <li>
 <p>Run tests
@@ -752,7 +753,7 @@
 <li>
 <p>Run the project
    <code>sh
-   uv run main.py</code></p>
+   uv run task run</code></p>
 </li>
 <li>
 <p>Generate API documentation
