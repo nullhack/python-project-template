@@ -163,6 +163,7 @@ This project was heavily based on some great references.
 * [5 Pytest Best Practices for Writing Great Python Tests](https://www.nerdwallet.com/blog/engineering/5-pytest-best-practices/)
 * [Best-README-Template](https://github.com/othneildrew/Best-README-Template)
 * [Beyond Hypermodern: Python is easy now (2024)](https://rdrn.me/postmodern-python/)
+* [Pytest Best Practices](https://pytest-with-eric.com/)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
