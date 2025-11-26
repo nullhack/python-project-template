@@ -67,7 +67,7 @@ def pytest_bdd_apply_tag(tag: str, function: Callable[..., Any]) -> bool | None:
     Returns:
         bool | None: True if the tag was handled, otherwise None.
     """
-    if tag == "todo":
+    if tag.lower() == "todo":
         marker = pytest.mark.skip(reason="Not implemented yet")
         marker(function)
         return True
