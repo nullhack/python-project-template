@@ -5,6 +5,8 @@ as test files in pytest. The new features will trigger errors because
 steps are not implemented.
 """
 
+import pytest
+
 from pathlib import Path
 
 from pytest_bdd.feature import get_features
@@ -52,3 +54,13 @@ def pytest_configure() -> None:
         if not file_path.exists():
             with Path.open(file_path, "w") as f:
                 f.write(txt)
+
+
+def pytest_bdd_apply_tag(tag, function):
+    if tag == 'todo':
+        marker = pytest.mark.skip(reason="Not implemented yet")
+        marker(function)
+        return True
+    else:
+        # Fall back to the default behavior of pytest-bdd
+        return None
