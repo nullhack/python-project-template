@@ -25,15 +25,22 @@ dev = [
     "mkdocs-material>=9.6.11",
     "mkdocstrings[python]>=0.29.1",
     "pytest>=8.3.5",
-    "pytest-bdd>=8.1.0",
     "pytest-cov>=6.1.1",
     "pytest-html>=4.1.1",
     "ruff>=0.11.5",
     "taskipy>=1.14.1",
+    "hypothesis>=6.148.4",
+    "cosmic-ray>=8.4.3",
 ]
 
 [tool.setuptools]
 packages = ["{{cookiecutter.package_name}}"]
+
+[tool.mutmut]
+paths_to_mutate = [ "{{cookiecutter.package_name}}/" ]
+pytest_add_cli_args_test_selection= [ "tests/" ]
+mutate_only_covered_lines=true
+
 
 [tool.ruff.lint]
 ignore = []
@@ -100,7 +107,6 @@ testpaths = [
 python_files = ["*_test.py"]
 python_functions = ["test_*"]
 render_collapsed = true
-bdd_features_base_dir = "acceptance-scenarios"
 
 [tool.coverage.report]
 exclude_lines = [
@@ -118,13 +124,15 @@ exclude_lines = [
 run = "python -m {{cookiecutter.package_name}}.{{cookiecutter.module_name}}"
 test-report = """\
 pytest \
-  --cov-config=pyproject.toml \
   --doctest-modules \
-  --cov-fail-under=90 \
-  --cov-report=term-missing \
-  --cov-report=html:docs/cov-report \
+  --cov-config=pyproject.toml \
+  --cov-report html:docs/htmlcov \
+  --cov-report term:skip-covered \
+  --cov={{cookiecutter.package_name}} \
+  --cov-fail-under={{cookiecutter.minimum_coverage}} \
   --html=docs/pytest_report.html \
-  --self-contained-html\
+  --self-contained-html \
+  --hypothesis-show-statistics \
 """
 test = """\
 python -c "import subprocess, sys; print('Running Smoke Tests...'); sys.exit(0 if subprocess.run(['pytest', '-m', 'smoke']).returncode in (0,5) else 1)" && \
@@ -135,8 +143,8 @@ task test-report\
 ruff-check = "ruff check **/*.py --fix"
 ruff-format = "ruff format **/*.py"
 lint = "task ruff-check && task ruff-format"
-doc = "mkdocs serve --use-directory-urls -f docs/mkdocs.yaml"
-doc-html = "mkdocs build --no-directory-urls -f docs/mkdocs.yaml"
+doc-serve = "mkdocs serve --use-directory-urls -f docs/mkdocs.yaml"
+doc-report = "mkdocs build --no-directory-urls -f docs/mkdocs.yaml"
 doc-publish = """mkdocs gh-deploy \
 --config-file docs/mkdocs.yaml \
 --no-directory-urls \

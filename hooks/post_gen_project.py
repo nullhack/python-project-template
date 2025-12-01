@@ -10,15 +10,17 @@ Attributes:
 """
 
 import shutil
+import os
 from pathlib import Path
 
 REMOVE_PATHS = [
-    "acceptance-scenarios",
-    "tests/scenarios/steps",
+    "tests/basic_test.py"
 ]
 
 for path in REMOVE_PATHS:
     p = Path(".") / Path(path)
     if p and p.exists() and p.is_dir():
         shutil.rmtree(p)
+    elif p and p.exists() and p.is_file():
+        os.remove(p)
 {% endif %}
