@@ -36,12 +36,6 @@ dev = [
 [tool.setuptools]
 packages = ["{{cookiecutter.package_name}}"]
 
-[tool.mutmut]
-paths_to_mutate = [ "{{cookiecutter.package_name}}/" ]
-pytest_add_cli_args_test_selection= [ "tests/" ]
-mutate_only_covered_lines=true
-
-
 [tool.ruff.lint]
 ignore = []
 select = [
@@ -149,3 +143,12 @@ doc-publish = """mkdocs gh-deploy \
 --config-file docs/mkdocs.yaml \
 --no-directory-urls \
 --remote-branch docs"""
+mut-report = """
+  uv run cosmic-ray new-config mut.toml && \
+  uv run cosmic-ray init mut.toml mut.sqlite && \
+  uv run cosmic-ray --verbosity=INFO baseline mut.toml && \
+  uv run cosmic-ray exec mut.toml mut.sqlite && \
+  uv run cr-html mut.sqlite > docs/mut_report.html && \
+  rm mut.toml && \
+  rm mut.sqlite
+"""
