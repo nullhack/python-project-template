@@ -17,7 +17,6 @@ plugins:
             modernize_annotations: true
             separate_signature: true
             docstring_section_style: list
-  - awesome-pages
   - gen-files:
       scripts:
         - gen_pages.py
@@ -41,5 +40,5 @@ theme:
 
 nav:
   - index.md
-  - ... | glob=readme.md
+  - readme.md
   - reference.md

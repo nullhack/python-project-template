@@ -20,7 +20,6 @@ Documentation = "https://github.com/{{cookiecutter.github_username}}/{{cookiecut
 [project.optional-dependencies]
 dev = [
     "mkdocs>=1.6.1",
-    "mkdocs-awesome-pages-plugin>=2.10.1",
     "mkdocs-gen-files>=0.5.0",
     "mkdocs-material>=9.6.11",
     "mkdocstrings[python]>=0.29.1",
