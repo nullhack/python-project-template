@@ -19,31 +19,3 @@ if readme_path.exists():
     ) as f:
         f.write(r.read())
 
-
-# Injects feature files into the documentation
-head_lines = (
-    "Feature:",
-    "Scenario:",
-    "Scenario Outline:",
-    "Rule:",
-    "Example:",
-    "Background:",
-)
-ignore_lines = ("@", "#")
-features_dir = docs_parent_dir / "acceptance-scenarios"
-for feature_path in features_dir.glob("**/*.feature"):
-    with Path.open(feature_path, "r") as f:
-        relative_dir = feature_path.parent.relative_to(features_dir)
-        with mkdocs_gen_files.open(
-            f"scenarios/{relative_dir}/{feature_path.stem}.md", "w"
-        ) as gf:
-            f_line_list = f.readlines()
-            for line in f_line_list:
-                if any(line.strip().startswith(hl) for hl in head_lines):
-                    write_line = f"### {line}\n"
-                elif any(line.strip().startswith(il) for il in ignore_lines):
-                    continue
-                else:
-                    write_line = f">    {line}"
-
-                gf.write(write_line)
