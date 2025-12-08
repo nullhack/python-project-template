@@ -11,7 +11,10 @@ authors = [
 maintainers = [
     { name = "{{cookiecutter.full_name}}", email = "{{cookiecutter.email}}" }
 ]
-dependencies = []
+dependencies = [
+    "dotenv>=0.9.9",
+    "fire>=0.7.1",
+]
 
 [project.urls]
 Repository = "https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}"
