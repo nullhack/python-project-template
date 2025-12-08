@@ -6,18 +6,16 @@ import fire
 logger = logging.getLogger(__name__)
 
 def set_logging(verbosity: int = 0) -> None:
-    if verbosity >= 3:
-        level = logging.DEBUG
-    elif verbosity == 2:
-        level = logging.INFO
-    elif verbosity == 1:
-        level = logging.WARNING
-    else:
-        level = logging.ERROR
+    mapping = {
+        1: logging.WARNING,
+        2: logging.INFO,
+        3: logging.DEBUG,
+    }
+    level = mapping.get(verbosity, logging.ERROR)
     logging.basicConfig(
-            level=level,
-            format="%(levelname)s - %(name)s: %(message)s"
-        )
+        level=level,
+        format="%(levelname)s - %(name)s: %(message)s"
+    )
 
 def main(verbosity: int = 0):
     """Run with --verbosity=N (0..3+)"""
