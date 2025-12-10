@@ -33,6 +33,7 @@ dev = [
     "taskipy>=1.14.1",
     "hypothesis>=6.148.4",
     "cosmic-ray>=8.4.3",
+    "pyright>=1.1.407",
 ]
 
 [tool.setuptools]
@@ -154,3 +155,4 @@ mut-report = """
   rm mut.toml && \
   rm mut.sqlite
 """
+static-check = "pyright"
