@@ -1,217 +1,181 @@
-<div id="top"></div>
+# {{cookiecutter.project_name}}
 
-<!-- PROJECT SHIELDS -->
-<!--
-*** I'm using markdown "reference style" links for readability.
-*** Reference links are enclosed in brackets [ ] instead of parentheses ( ).
-*** See the bottom of this document for the declaration of the reference variables
-*** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
-*** https://www.markdownguide.org/basic-syntax/#reference-style-links
--->
 [![Contributors][contributors-shield]][contributors-url]
 [![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
-[![MIT License][license-shield]][license-url]
+[![{{cookiecutter.license}} License][license-shield]][license-url]
+[![Coverage](https://img.shields.io/badge/coverage-{{cookiecutter.minimum_coverage}}%25-brightgreen?style=for-the-badge)](docs/htmlcov/index.html)
 
+> {{cookiecutter.project_short_description}}
 
+**AI-Enhanced Python Project** built with enterprise-grade architecture, TDD/BDD workflows, and zero-config quality standards.
 
-<!-- PROJECT LOGO -->
-<br />
-<div align="center">
+---
 
-  <h3 align="center"> {{cookiecutter.project_name}}</h3>
+## ⚡ Quick Start
 
-  <p align="center">
-    {{cookiecutter.project_short_description}}
-    <br />
-    <a href="https://{{cookiecutter.github_username}}.github.io/{{cookiecutter.project_slug}}/readme.html"><strong>Explore the docs »</strong></a>
-    <br />
-    <br />
-    <a href="https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}/issues">Report Bug</a>
-    ·
-    <a href="https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}/issues">Request Feature</a>
-  </p>
-</div>
+```bash
+# Clone and setup
+git clone https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}
+cd {{cookiecutter.project_slug}}
 
+# Install UV package manager (if not installed)
+curl -LsSf https://astral.sh/uv/install.sh | sh
 
+# Initialize AI development environment
+opencode && /init
 
-<!-- TABLE OF CONTENTS -->
-<details>
-  <summary>Table of Contents</summary>
-  <ol>
-    <li>
-      <a href="#about-the-project">About The Project</a>
-    </li>
-    <li>
-      <a href="#getting-started">Getting Started</a>
-      <ul>
-        <li><a href="#prerequisites">Prerequisites</a></li>
-        <li><a href="#installation">Installation</a></li>
-      </ul>
-    </li>
-    <li><a href="#usage">Usage</a></li>
-    <li><a href="#roadmap">Roadmap</a></li>
-    <li><a href="#contributing">Contributing</a></li>
-    <li><a href="#license">License</a></li>
-    <li><a href="#contact">Contact</a></li>
-    <li><a href="#acknowledgments">Acknowledgments</a></li>
-  </ol>
-</details>
+# Setup development environment
+uv venv && uv pip install -e '.[dev]'
 
+# Validate everything works
+task test && task lint && task static-check
+```
 
+## 🤖 AI-Powered Development
 
-<!-- ABOUT THE PROJECT -->
-## About The Project
+This project includes built-in AI agents to accelerate your development:
 
-{{cookiecutter.project_short_description}}
+```bash
+# Define new features with SOLID principles
+@developer /skill feature-definition
 
-<p align="right">(<a href="#top">back to top</a>)</p>
+# Create prototypes and validate concepts  
+@developer /skill prototype-script
 
-<!-- GETTING STARTED -->
-## Getting Started
+# Write comprehensive tests first (TDD)
+@developer /skill tdd-bdd
 
-To run this project locally, you will need to install the prerequisites and follow the installation section.
+# Get architecture review before implementing
+@architect
 
-### Prerequisites
+# Implement with guided TDD workflow
+@developer /skill implementation
 
-This Project depends on the following projects.
-* uv
-  ```sh
-  pip install --user --upgrade uv
-  ```
+# Create releases with smart versioning
+@repo-manager /skill git-release
+```
 
-### Installation
+## 🏗️ Architecture & Standards
 
-1. Clone the repo
-   ```sh
-   git clone https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}
-   cd {{cookiecutter.project_slug}}
-   ```
-2. Install uv
-   ```sh
-   pip install --user --upgrade uv
-   ```
-3. Install requirements for development
-   ```sh
-   uv venv
-   uv pip install '.[dev]'
-   ```
-4. Run tests
-   ```sh
-   uv run task test
-   ```
+- **🎯 SOLID Principles** - Single responsibility, dependency inversion, clean interfaces
+- **🔧 Object Calisthenics** - No primitives, small classes, behavior-rich objects
+- **🧪 TDD/BDD Testing** - {{cookiecutter.minimum_coverage}}% coverage requirement with property-based tests
+- **⚡ Modern Toolchain** - UV, Ruff, PyTest, Hypothesis, PyRight
+- **🚀 Smart Releases** - Calver versioning with AI-generated themed names
 
-<p align="right">(<a href="#top">back to top</a>)</p>
+## 📋 Development Commands
 
+```bash
+# Core development workflow
+task run              # Execute main application
+task test             # Run comprehensive test suite  
+task lint             # Format and lint code
+task static-check     # Type safety validation
+task doc-serve        # Live documentation server
 
+# Quality assurance
+task test-report      # Detailed coverage report
+task mut-report       # Mutation testing (optional)
+task doc-publish      # Deploy documentation
 
-<!-- USAGE EXAMPLES -->
-## Usage
+# Container workflows
+docker build --target test -t {{cookiecutter.package_name}}:test
+docker build --target prod -t {{cookiecutter.package_name}}:prod
+```
 
-Some useful examples of how this project can be used:
+## 🎯 Project Structure
 
-*  Install requirements
-   ```sh
-   uv venv
-   uv pip install '.[dev]'
-   ```
+```
+{{cookiecutter.project_slug}}/
+├── {{cookiecutter.package_name}}/        # Main application package
+│   ├── __init__.py                       # Package initialization
+│   └── {{cookiecutter.module_name}}.py  # Core module
+├── .opencode/                            # AI development agents
+│   ├── agents/                           # Specialized AI agents
+│   │   ├── developer.md                  # 7-phase development workflow
+│   │   ├── architect.md                  # SOLID architecture review
+│   │   └── repo-manager.md               # Release and PR management
+│   └── skills/                           # Development skills
+│       ├── feature-definition/           # Requirements planning
+│       ├── tdd-bdd/                      # Test-driven development
+│       ├── implementation/               # Guided implementation
+│       └── code-quality/                 # Quality enforcement
+├── tests/                                # Comprehensive test suite
+├── docs/                                 # Documentation
+├── Dockerfile                            # Multi-stage container build
+└── pyproject.toml                        # Project configuration
+```
 
-*  Run tests
-   ```sh
-   uv run task test
-   ```
+## 🔧 Technology Stack
 
-*  Run the project
-   ```sh
-   uv run task run
-   ```
+| Category | Tools |
+|----------|-------|
+| **Package Management** | UV (blazing fast pip/poetry replacement) |
+| **Code Quality** | Ruff (linting + formatting), PyRight (type checking) |
+| **Testing** | PyTest + Hypothesis (property-based testing) |
+| **AI Integration** | OpenCode agents for development automation |
+| **Documentation** | MkDocs with modern theme |
+| **Containerization** | Docker with optimized multi-stage builds |
 
-*  Generate API documentation
-   ```sh
-   uv run task doc-html
-   ```
+## 📈 Quality Metrics
 
-*  Build a docker image for tests
-   ```sh
-   docker build --target test -t {{cookiecutter.package_name}}:test
-   docker run -ti --rm {{cookiecutter.package_name}}:test
-   ```
+- ✅ **{{cookiecutter.minimum_coverage}}% Test Coverage** - Comprehensive test suite including edge cases
+- ✅ **Static Type Safety** - Full type hints with protocol-based interfaces  
+- ✅ **Zero Linting Issues** - Automated formatting and style enforcement
+- ✅ **Property-Based Testing** - Hypothesis for robust validation
+- ✅ **Architecture Compliance** - AI-enforced SOLID principles
 
-*  Build a docker image to run the root files only without running any test
-   ```sh
-   docker build --target prod -t {{cookiecutter.package_name}}:prod
-   docker run -ti --rm {{cookiecutter.package_name}}:prod
-   ```
-   
+## 🚀 Deployment Ready
 
-_For more examples, please refer to the [Documentation](https://{{cookiecutter.github_username}}.github.io/{{cookiecutter.project_slug}}/readme.html)_
+```bash
+# Production container build
+docker build --target prod -t {{cookiecutter.package_name}}:latest .
+docker run {{cookiecutter.package_name}}:latest
 
-<p align="right">(<a href="#top">back to top</a>)</p>
+# Documentation deployment  
+task doc-publish  # Deploys to GitHub Pages
 
+# Smart release management
+@repo-manager /skill git-release
+# Creates versioned release: v1.2.20240315r1 "Creative Fox"
+```
 
+## 🤝 Contributing
 
-<!-- ROADMAP -->
-## Roadmap
+Built with AI-assisted development workflows:
 
-- [x] Add tests
-- [x] Add code coverage
-- [x] Improve documentation
-- [ ] Watch for new best standards
+```bash
+# Start a new feature
+@developer /skill feature-definition
+@developer /skill prototype-script
+@developer /skill tdd-bdd
+@architect  # Architecture review
+@developer /skill implementation
+@repo-manager /skill pr-management
+```
 
-See the [open issues](https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}/issues) for a full list of proposed features (and known issues).
+See [DEVELOPMENT_WORKFLOW.md](DEVELOPMENT_WORKFLOW.md) for the complete 7-phase development process.
 
-<p align="right">(<a href="#top">back to top</a>)</p>
+## 📄 License
 
+Distributed under the {{cookiecutter.license}} License. See [LICENSE](LICENSE) for details.
 
+## 🙏 Built With
 
-<!-- CONTRIBUTING -->
-## Contributing
+- [AI-Enhanced Python Template](https://github.com/nullhack/python-project-template) - Enterprise-grade Python project template
+- [OpenCode](https://opencode.ai) - AI-powered development platform
+- [UV](https://astral.sh/uv/) - Modern Python package manager
+- [Ruff](https://astral.sh/ruff/) - Extremely fast Python linter
 
-Any contributions you make are **greatly appreciated**.
+---
 
-If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
-Don't forget to give the project a star! Thanks again!
-
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-<p align="right">(<a href="#top">back to top</a>)</p>
-
-
-<!-- CONTACT -->
-## Contact
-
-{{cookiecutter.full_name}} - [@{{cookiecutter.github_username}}](https://github.com/{{cookiecutter.github_username}}) - {{cookiecutter.email}}
-
-Project Link: [https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}/](https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}/)
-
-<p align="right">(<a href="#top">back to top</a>)</p>
-
-
-<!-- ACKNOWLEDGMENTS -->
-## Acknowledgments
-
-This project was created using cookiecutter and Nullhack's python-project-template:
-
-* [Nullhack's python-project-template](https://github.com/nullhack/python-project-template/)
-
-<p align="right">(<a href="#top">back to top</a>)</p>
-
-
-<!-- LICENSE -->
-## License
-
-Distributed under the {{cookiecutter.license}} License. See [`LICENSE`](https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}/blob/main/LICENSE) for more information.
-
-<p align="right">(<a href="#top">back to top</a>)</p>
-
+**Author:** {{cookiecutter.full_name}} ([@{{cookiecutter.github_username}}](https://github.com/{{cookiecutter.github_username}}))  
+**Project:** [{{cookiecutter.project_slug}}](https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}})  
+**Documentation:** [{{cookiecutter.github_username}}.github.io/{{cookiecutter.project_slug}}](https://{{cookiecutter.github_username}}.github.io/{{cookiecutter.project_slug}})
 
 <!-- MARKDOWN LINKS & IMAGES -->
-<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 [contributors-shield]: https://img.shields.io/github/contributors/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}.svg?style=for-the-badge
 [contributors-url]: https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}/graphs/contributors
 [forks-shield]: https://img.shields.io/github/forks/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}.svg?style=for-the-badge
@@ -222,4 +186,3 @@ Distributed under the {{cookiecutter.license}} License. See [`LICENSE`](https://
 [issues-url]: https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}/issues
 [license-shield]: https://img.shields.io/badge/license-{{cookiecutter.license}}-green?style=for-the-badge
 [license-url]: https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}/blob/main/LICENSE
-

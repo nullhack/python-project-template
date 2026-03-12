@@ -1,4 +1,5 @@
 import inspect
+from typing import Any
 
 from _pytest.config import Config
 from _pytest.nodes import Item
@@ -11,7 +12,9 @@ def pytest_configure(config: Config) -> None:
     node IDs (without parameterization suffixes) have already had
     their docstrings printed.
     """
-    config._printed_docstrings = set()  # type: ignore[attr-defined]
+    # use getattr/setattr to avoid static-type warnings about unknown attrs
+    if getattr(config, "_printed_docstrings", None) is None:
+        setattr(config, "_printed_docstrings", set())
 
 
 def pytest_runtest_setup(item: Item) -> None:
@@ -30,16 +33,33 @@ def pytest_runtest_setup(item: Item) -> None:
     # "path/to/test.py::test_func[param]" → keep the part before "["
     base_nodeid = item.nodeid.split("[", 1)[0]
 
-    if base_nodeid in item.config._printed_docstrings:  # type: ignore[attr-defined]
+    printed = getattr(item.config, "_printed_docstrings", set())
+    if base_nodeid in printed:
         return
 
-    doc = inspect.getdoc(item.obj) or ""
+    # obtain the underlying Python object for the test in a safe way
+    # different pytest versions / stubs expose different attributes; try common ones
+    obj: Any = getattr(item, "obj", None) or getattr(item, "function", None) or item
+
+    doc = inspect.getdoc(obj) or ""
     if not doc.strip():
-        item.config._printed_docstrings.add(base_nodeid)  # type: ignore[attr-defined]
+        printed.add(base_nodeid)
+        setattr(item.config, "_printed_docstrings", printed)
         return
 
-    for line in doc.splitlines():
-        tr.write_line("  " + line)
-    tr.write_line("")
+    # call write_line if available; otherwise fall back to a write() if present
+    write_line = getattr(tr, "write_line", None)
+    if callable(write_line):
+        for line in doc.splitlines():
+            write_line("  " + line)
+        write_line("")
+    else:
+        write = getattr(tr, "write", None)
+        if callable(write):
+            # write() often expects raw text including newline
+            for line in doc.splitlines():
+                write("  " + line + "\n")
+            write("\n")
 
-    item.config._printed_docstrings.add(base_nodeid)  # type: ignore[attr-defined]
+    printed.add(base_nodeid)
+    setattr(item.config, "_printed_docstrings", printed)

@@ -11,7 +11,10 @@ authors = [
 maintainers = [
     { name = "{{cookiecutter.full_name}}", email = "{{cookiecutter.email}}" }
 ]
-dependencies = []
+dependencies = [
+    "dotenv>=0.9.9",
+    "fire>=0.7.1",
+]
 
 [project.urls]
 Repository = "https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}"
@@ -20,7 +23,6 @@ Documentation = "https://github.com/{{cookiecutter.github_username}}/{{cookiecut
 [project.optional-dependencies]
 dev = [
     "mkdocs>=1.6.1",
-    "mkdocs-awesome-pages-plugin>=2.10.1",
     "mkdocs-gen-files>=0.5.0",
     "mkdocs-material>=9.6.11",
     "mkdocstrings[python]>=0.29.1",
@@ -31,6 +33,7 @@ dev = [
     "taskipy>=1.14.1",
     "hypothesis>=6.148.4",
     "cosmic-ray>=8.4.3",
+    "pyright>=1.1.407",
 ]
 
 [tool.setuptools]
@@ -73,7 +76,7 @@ mccabe.max-complexity = 10
 pydocstyle.convention = "google"
 
 [tool.ruff.lint.per-file-ignores]
-"tests/*" = ["S101"]
+"tests/**" = ["S101"]
 
 [tool.pytest.ini_options]
 minversion = "6.0"
@@ -134,8 +137,8 @@ python -c "import subprocess, sys; print('Running Unit Tests...'); sys.exit(0 if
 python -c "print('Running Tests...');" && \
 task test-report\
 """
-ruff-check = "ruff check **/*.py --fix"
-ruff-format = "ruff format **/*.py"
+ruff-check = "ruff check . --fix"
+ruff-format = "ruff format ."
 lint = "task ruff-check && task ruff-format"
 doc-serve = "mkdocs serve --use-directory-urls -f docs/mkdocs.yaml"
 doc-report = "mkdocs build --no-directory-urls -f docs/mkdocs.yaml"
@@ -152,3 +155,4 @@ mut-report = """
   rm mut.toml && \
   rm mut.sqlite
 """
+static-check = "pyright"
