@@ -1,170 +1,170 @@
-<div id="top"></div>
+# 🚀 AI-Enhanced Python Project Template
 
-<!-- PROJECT SHIELDS -->
-<!--
-*** I'm using markdown "reference style" links for readability.
-*** Reference links are enclosed in brackets [ ] instead of parentheses ( ).
-*** See the bottom of this document for the declaration of the reference variables
-*** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
-*** https://www.markdownguide.org/basic-syntax/#reference-style-links
--->
 [![Contributors][contributors-shield]][contributors-url]
 [![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
 [![MIT License][license-shield]][license-url]
 
+> **Ship production-ready Python projects faster with AI-powered development workflows**
 
+Modern cookiecutter template delivering enterprise-grade Python projects with **OpenCode AI agents**, **TDD/BDD workflows**, and **zero-config quality standards**.
 
-<!-- PROJECT LOGO -->
-<br />
-<div align="center">
+## ✨ What You Get
 
-  <h1 align="center"> Python Project Template</h3>
+🤖 **AI-Powered Development** - OpenCode agents for architecture review, TDD implementation, and repository management  
+🏗️ **SOLID Architecture** - Object calisthenics, dependency inversion, and protocol-based design  
+⚡ **Zero-Config Setup** - UV package manager, Ruff formatting, PyTest + Hypothesis testing  
+🎯 **Quality Enforced** - 100% coverage, static typing, property-based testing  
+🔄 **Smart Releases** - Calver versioning with themed releases (`v1.2.20240315r1 "Swift Cheetah"`)  
+📋 **Complete Workflows** - 7-phase development cycle from prototype to production
 
-  <p align="center">
-    Cookiecutter for Python template with some awesome tools to quickstart any Python project.
-    <br />
-    <a href="https://github.com/nullhack/python-project-template/issues">Report Bug</a>
-    ·
-    <a href="https://github.com/nullhack/python-project-template/issues">Request Feature</a>
-  </p>
-</div>
+## 🎯 Perfect For
 
+- **Startups** building MVPs with enterprise standards
+- **Teams** needing consistent code quality and architecture
+- **Developers** wanting AI-assisted TDD/BDD workflows
+- **Projects** requiring rapid iteration with zero technical debt
 
-
-<!-- TABLE OF CONTENTS -->
-<details>
-  <summary>Table of Contents</summary>
-  <ol>
-    <li>
-      <a href="#about-the-project">About The Project</a>
-    </li>
-    <li>
-      <a href="#getting-started">Getting Started</a>
-      <ul>
-        <li><a href="#prerequisites">Prerequisites</a></li>
-        <li><a href="#installation">Installation</a></li>
-      </ul>
-    </li>
-    <li><a href="#roadmap">Roadmap</a></li>
-    <li><a href="#contributing">Contributing</a></li>
-    <li><a href="#license">License</a></li>
-    <li><a href="#contact">Contact</a></li>
-    <li><a href="#acknowledgments">Acknowledgments</a></li>
-  </ol>
-</details>
-
-
-
-<!-- ABOUT THE PROJECT -->
-## About The Project
-
-Python template with some awesome tools to quickstart a Python project with the industry best practices. 
-It includes automatic generation of API documentation, tests using PyTest, code coverage, 
-ruff linting to enforce standardized Python coding and formatting, virtual environments using uv, workflow automation using Taskipy and a space optimized Dockerfile to kickstart your project and run tests using the power of Docker containers. 
-
-You only need to install [Cookiecutter](https://cookiecutter.readthedocs.io/en/1.7.2/usage.html)!
-
----
-
-<!-- GETTING STARTED -->
-## Getting Started
-
-### [Live Example](https://nullhack.github.io/python-project-template/)
-
-To get a local copy up and running follow these simple steps.
+## 🚀 Quick Start
 
 ### Prerequisites
 
-This Project depends on the following projects.
-* cookiecutter
-  ```sh
-  pip install --user --upgrade cookiecutter
-  ```
+Install the required tools:
 
-### Installation
+```bash
+# Install OpenCode AI assistant
+curl -fsSL https://opencode.ai/install.sh | sh
 
-1. Replicate the template locally
-   ```sh
-   cookiecutter https://github.com/nullhack/python-project-template
-   # move into your newly created project folder
-   ```
-2. Install uv and Taskipy
-   ```sh
-   pip install --user --upgrade uv
-   ```
-3. Let Taskipy do it's magic
-   ```sh
-   uv venv
-   uv pip install .[dev]
-   uv task test
-   uv task run
-   ```
+# Install UV package manager (replaces pip/poetry/virtualenv)
+curl -LsSf https://astral.sh/uv/install.sh | sh
 
-<p align="right">(<a href="#top">back to top</a>)</p>
+# Install Cookiecutter
+pip install cookiecutter
+```
+
+### Create Your Project
+
+```bash
+# Generate your AI-enhanced Python project
+cookiecutter gh:nullhack/python-project-template
+
+# Enter your project directory
+cd your-project-name
+
+# Initialize AI development environment
+opencode
+/init
+
+# Start developing with AI assistance
+@developer /skill feature-definition
+```
+
+### Instant Development Ready
+
+```bash
+# Install dependencies and activate virtual environment
+uv venv && uv pip install -e '.[dev]'
+
+# Run the complete development workflow
+task test     # 100% coverage + property-based tests
+task lint     # Ruff formatting + static analysis  
+task doc-serve # Live documentation server
+
+# Deploy with confidence
+@repo-manager /skill git-release
+```
+
+## 🏛️ Architecture & Workflow
+
+### 7-Phase AI Development Cycle
+
+1. **Feature Definition** → SOLID principles planning with acceptance criteria
+2. **Prototype Validation** → Quick scripts with real data capture
+3. **Test-Driven Development** → BDD-style tests using pytest + hypothesis  
+4. **Signature Design** → Protocol-based interfaces with type safety
+5. **Architecture Review** → AI architect validates SOLID compliance
+6. **Implementation** → Method-by-method TDD with real prototype data
+7. **Quality Assurance** → Automated quality gates and deployment
+
+### Smart Release Management
+
+- **Hybrid Versioning**: `v{major}.{minor}.{YYYYMMDD}r{revision}`
+- **Themed Releases**: AI-generated names based on PR sentiment
+  - Performance: `"Swift Cheetah"` `"Lightning Falcon"`  
+  - Security: `"Vigilant Owl"` `"Guardian Bear"`
+  - Features: `"Creative Fox"` `"Innovative Dolphin"`
+
+## 🔧 Included Technology Stack
+
+**Development**
+- Python 3.13+ with modern type hints
+- UV for blazing-fast dependency management
+- Ruff for linting and formatting (replaces 8+ tools)
+- PyTest + Hypothesis for comprehensive testing
+
+**AI Integration**  
+- OpenCode agents for development automation
+- Architect agent for design review and SOLID compliance
+- Repository manager for releases and PR workflows
+
+**Quality Assurance**
+- 100% test coverage requirement
+- Static type checking with Pyright
+- Property-based testing for edge cases
+- Mutation testing with Cosmic Ray
+
+**Documentation & Deployment**
+- MkDocs with modern theme
+- Docker containerization
+- GitHub Actions CI/CD
+- Automated documentation deployment
 
 
-<!-- ROADMAP -->
-## Roadmap
+## 📈 Template Roadmap
 
-- [X] Update packages and look for new industry standards to include
-- [ ] Automatically deploy new documentation on new PR merged
-- [ ] Make the github actions and gitea actions run without errors
+- [x] ✨ AI-powered development workflow with OpenCode integration
+- [x] 🏗️ SOLID architecture enforcement with object calisthenics  
+- [x] 🤖 Automated repository management with smart releases
+- [x] ⚡ Modern toolchain (UV, Ruff, PyTest, Hypothesis)
+- [ ] 🌐 Multi-language template support (TypeScript, Rust)
+- [ ] 🔒 Advanced security scanning and SBOM generation
+- [ ] 📊 Performance benchmarking and optimization workflows
 
-See the [open issues](https://github.com/nullhack/python-project-template/issues) for a full list of proposed features (and known issues).
+## 🤝 Contributing
 
-<p align="right">(<a href="#top">back to top</a>)</p>
+Contributions make this template better for everyone! We welcome:
 
+- 🐛 Bug reports and fixes
+- ✨ New agents and skills  
+- 📚 Documentation improvements
+- 🎯 Workflow optimizations
 
-<!-- CONTRIBUTING -->
-## Contributing
+```bash
+# Quick contribution setup
+cookiecutter gh:nullhack/python-project-template
+cd your-contribution
+@developer /skill feature-definition
+@repo-manager /skill pr-management
+```
 
-Any contributions you make are **greatly appreciated**.
+## 📄 License
 
-If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
-Don't forget to give the project a star! Thanks again!
+MIT License - see [`LICENSE`](LICENSE) for details.
 
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+## 🙏 Credits
 
-<p align="right">(<a href="#top">back to top</a>)</p>
+Built on the shoulders of giants:
 
+- [OpenCode](https://opencode.ai) - AI-powered development platform
+- [UV](https://astral.sh/uv/) - Blazing fast Python package manager  
+- [Ruff](https://astral.sh/ruff/) - Extremely fast Python linter
+- [Hypermodern Python](https://cjolowicz.github.io/posts/hypermodern-python-01-setup/) - Modern Python practices
+- [Hypothesis](https://hypothesis.readthedocs.io/) - Property-based testing framework
 
-<!-- LICENSE -->
-## License
+---
 
-Distributed under the MIT License. See [`LICENSE`](https://github.com/nullhack/python-project-template/blob/main/LICENSE) for more information.
-
-<p align="right">(<a href="#top">back to top</a>)</p>
-
-
-<!-- CONTACT -->
-## Contact
-
-eol - [@nullhack](https://github.com/nullhack)
-
-Project Link: [https://github.com/nullhack/python-project-template/](https://github.com/nullhack/python-project-template/)
-
-<p align="right">(<a href="#top">back to top</a>)</p>
-
-
-<!-- ACKNOWLEDGMENTS -->
-## Acknowledgments and thanks
-
-This project was heavily based on some great references.
-
-* [Choose an Open Source License](https://choosealicense.com)
-* [Hypermodern Python](https://cjolowicz.github.io/posts/hypermodern-python-01-setup/)
-* [Best practices for Python projects in 2021](https://mitelman.engineering/blog/python-best-practice/automating-python-best-practices-for-a-new-project/)
-* [5 Pytest Best Practices for Writing Great Python Tests](https://www.nerdwallet.com/blog/engineering/5-pytest-best-practices/)
-* [Best-README-Template](https://github.com/othneildrew/Best-README-Template)
-* [Beyond Hypermodern: Python is easy now (2024)](https://rdrn.me/postmodern-python/)
-
-<p align="right">(<a href="#top">back to top</a>)</p>
+**[⭐ Star this repo](https://github.com/nullhack/python-project-template) if it powers your next breakthrough!**
 
 
 <!-- MARKDOWN LINKS & IMAGES -->
