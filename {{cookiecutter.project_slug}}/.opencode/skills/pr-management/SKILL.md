@@ -491,6 +491,7 @@ fi
 ```
 
 ### With CI/CD Pipeline
+{% raw %}
 ```yaml
 # Auto-deployment for specific labels
 name: Auto Deploy
@@ -508,3 +509,4 @@ jobs:
           echo "Deploying PR #${{ github.event.pull_request.number }} to staging"
           # Deployment commands...
 ```
+{% endraw %}

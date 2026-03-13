@@ -89,7 +89,7 @@ When developers use this template, they get:
 cookiecutter gh:your-username/python-project-template
 
 # Or use a specific version
-cookiecutter gh:your-username/python-project-template --checkout v1.2.0
+cookiecutter gh:your-username/python-project-template --checkout v1.2.20260312r1
 ```
 
 ### Template Development Workflow
@@ -108,15 +108,15 @@ cookiecutter gh:your-username/python-project-template --checkout v1.2.0
 
 ## Template Versioning
 
-### Semantic Versioning for Template
-- **Major (v2.0.0)**: Breaking changes to cookiecutter variables
-- **Minor (v1.1.0)**: New agents, skills, workflow features
-- **Patch (v1.0.1)**: Bug fixes, documentation updates
+### Hybrid Calver Versioning for Template
+- **Major (v2.x.xxxxr1)**: Breaking changes to cookiecutter variables
+- **Minor (v1.x.xxxxr1)**: New agents, skills, workflow features
+- **Revision (v1.2.xxxxr2)**: Bug fixes, documentation updates
 
 ### Recent Releases
-- **v1.0.0**: Initial release with development workflow
-- **v1.1.0**: Added repository management agent
-- **v1.2.0**: Added meta template management system
+- **v1.0.20260312r1**: Initial release with development workflow
+- **v1.1.20260312r1**: Added repository management agent
+- **v1.2.20260312r1**: Added meta template management system
 
 ## Generated Project Features
 
