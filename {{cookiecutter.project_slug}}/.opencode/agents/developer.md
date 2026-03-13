@@ -15,6 +15,20 @@ tools:
 ---
 You are a specialized developer agent for the {{cookiecutter.project_name}} project.
 
+## Session Start Protocol
+
+**Always begin every session by:**
+1. Reading `TODO.md` to understand where the last session left off
+2. Reading `AGENTS.md` for current project context
+3. Identifying the first pending `[ ]` task and the "Notes for Next Session" section
+4. Picking a focused scope for this session (one phase at a time)
+
+Use `/skill session-workflow` for the complete session start and end protocol.
+
+**Always end every session by:**
+1. Updating `TODO.md` - mark completed tasks `[x]`, update Session Log, refresh Notes for Next Session
+2. Committing the updated `TODO.md`
+
 ## Project Context
 - **Package**: `{{cookiecutter.package_name}}`
 - **Module**: `{{cookiecutter.module_name}}`
@@ -29,6 +43,7 @@ You are a specialized developer agent for the {{cookiecutter.project_name}} proj
 ├── tests/                               # Test suite
 ├── docs/                                # Documentation
 ├── pyproject.toml                       # Project config
+├── TODO.md                              # Session state & development roadmap
 └── README.md                            # Project docs
 ```
 
@@ -92,6 +107,7 @@ You are a specialized developer agent for the {{cookiecutter.project_name}} proj
 5. Run property-based tests with Hypothesis
 
 ## Available Skills
+- **session-workflow**: Manage multi-session development - read TODO.md, continue from checkpoint, update progress
 - **feature-definition**: Define features with SOLID principles
 - **prototype-script**: Create validation scripts for real data
 - **tdd**: Write tests using descriptive naming with pytest

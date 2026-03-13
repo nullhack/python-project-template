@@ -35,7 +35,21 @@ task test && task lint && task static-check
 
 ## 🤖 AI-Powered Development
 
-This project includes built-in AI agents to accelerate your development:
+This project includes built-in AI agents to accelerate your development.
+
+### Multi-Session Development
+
+Complex projects are developed across multiple AI sessions. `TODO.md` at the root acts as the shared state — any AI agent can pick up exactly where the last session stopped.
+
+```bash
+# Start any session: read state, orient, continue
+@developer /skill session-workflow
+
+# End any session: update TODO.md, commit progress, hand off
+@developer /skill session-workflow
+```
+
+### Feature Development Workflow
 
 ```bash
 # Define new features with SOLID principles
@@ -91,19 +105,21 @@ docker build --target prod -t {{cookiecutter.package_name}}:prod
 {{cookiecutter.project_slug}}/
 ├── {{cookiecutter.package_name}}/        # Main application package
 │   ├── __init__.py                       # Package initialization
-│   └── {{cookiecutter.module_name}}.py  # Core module
+│   └── {{cookiecutter.module_name}}.py   # Core module
 ├── .opencode/                            # AI development agents
 │   ├── agents/                           # Specialized AI agents
 │   │   ├── developer.md                  # 7-phase development workflow
 │   │   ├── architect.md                  # SOLID architecture review
 │   │   └── repo-manager.md               # Release and PR management
 │   └── skills/                           # Development skills
+│       ├── session-workflow/             # Multi-session development state
 │       ├── feature-definition/           # Requirements planning
-│       ├── tdd/                      # Test-driven development
+│       ├── tdd/                          # Test-driven development
 │       ├── implementation/               # Guided implementation
 │       └── code-quality/                 # Quality enforcement
 ├── tests/                                # Comprehensive test suite
 ├── docs/                                 # Documentation
+├── TODO.md                               # Development roadmap & session state
 ├── Dockerfile                            # Multi-stage container build
 └── pyproject.toml                        # Project configuration
 ```
