@@ -307,7 +307,7 @@ class TokenExpiredError(AuthenticationError):
 ```python
 """
 Authentication module interface definitions.
-Created from prototype data in prototypes/jwt_prototype_results.json
+Created from test data (values copied from prototype run, then prototype deleted)
 """
 from __future__ import annotations
 

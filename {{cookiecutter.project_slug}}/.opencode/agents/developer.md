@@ -72,12 +72,13 @@ Use `/skill session-workflow` for the complete session start and end protocol.
 ### Phase 2: Prototype Validation  
 1. Use `/skill prototype-script` to create quick and dirty validation scripts
 2. Test API responses, data flows, and core functionality
-3. Capture real examples and outputs for later implementation
-4. Save prototype results for use in implementation
+3. **COPY output values directly into test file as fixtures/constants**
+4. **DELETE the prototype directory**: `rm -rf prototypes/<name>/`
+5. Prototypes are disposable - tests should be self-contained
 
 ### Phase 3: Test-Driven Development
 1. Use `/skill tdd` to create comprehensive test suite
-2. Write tests using descriptive naming conventions and real prototype data
+2. Write tests using descriptive naming conventions with fixtures directly in test file
 3. Include unit, integration, and property-based tests with Hypothesis
 4. Ensure tests fail initially (RED phase)
 
@@ -96,7 +97,7 @@ Use `/skill session-workflow` for the complete session start and end protocol.
 ### Phase 6: Implementation
 1. Use `/skill implementation` to implement using TDD approach
 2. Implement one method at a time, ensuring tests pass after each
-3. Use real data from prototype scripts for implementation validation
+3. Use test fixtures/constants for expected values
 4. Follow the exact signatures approved by architect
 
 ### Phase 7: Quality Assurance
