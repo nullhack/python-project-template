@@ -92,7 +92,7 @@ validate_project() {
     
     # Structure validation
     local required_dirs=(".opencode" ".opencode/agents" ".opencode/skills" "tests" "docs")
-    local required_files=("pyproject.toml" "README.md" "AGENTS.md" "DEVELOPMENT_WORKFLOW.md")
+    local required_files=("pyproject.toml" "README.md" "AGENTS.md")
     
     for dir in "${required_dirs[@]}"; do
         if [ ! -d "$dir" ]; then

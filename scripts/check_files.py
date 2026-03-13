@@ -8,7 +8,6 @@ REQUIRED_FILES = [
     "pyproject.toml",
     "README.md",
     "AGENTS.md",
-    "DEVELOPMENT_WORKFLOW.md",
     ".opencode/agents/developer.md",
     ".opencode/agents/architect.md",
     ".opencode/agents/repo-manager.md",

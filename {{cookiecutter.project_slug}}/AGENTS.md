@@ -17,14 +17,34 @@
 | **Version** | {{cookiecutter.version}} |
 | **Minimum Coverage** | {{cookiecutter.minimum_coverage}}% |
 
+## Session-Based Development
+
+This project uses a **session workflow** that allows complex development to span multiple AI sessions. Any AI agent can continue work from where the last session stopped.
+
+### How it works
+
+1. **`TODO.md`** at the project root is the shared state between sessions
+2. Every session starts by reading `TODO.md` to find the current phase
+3. Every session ends by updating `TODO.md` with progress and handoff notes
+4. This makes the project AI-agnostic: any agent, any time can continue
+
+### Starting a new session
+```bash
+# The developer agent reads TODO.md automatically
+@developer /skill session-workflow
+```
+
 ## Available Skills
 
 This project includes custom skills for OpenCode:
 
+### Session Management
+- **session-workflow**: Manage multi-session development - read TODO.md, continue from last checkpoint, update progress and hand off cleanly
+
 ### Development Workflow
 - **feature-definition**: Define features with SOLID principles and clear requirements
 - **prototype-script**: Create quick validation scripts with real data capture  
-- **tdd-bdd**: Write comprehensive tests using BDD naming with pytest/hypothesis
+- **tdd**: Write comprehensive tests using TDD with pytest/hypothesis
 - **signature-design**: Design modern Python interfaces with protocols and type hints
 - **implementation**: Implement using TDD methodology with real prototype data
 - **code-quality**: Enforce quality with ruff, coverage, and hypothesis testing
@@ -39,7 +59,7 @@ This project includes custom skills for OpenCode:
 
 ## Available Agents
 
-- **developer**: Main development agent with complete 7-phase TDD/BDD workflow
+- **developer**: Main development agent with complete 7-phase TDD workflow
 - **architect**: Design review and approval agent for SOLID/object calisthenics compliance
 - **repo-manager**: Repository management for Git operations, PRs, commits, and releases
 
@@ -122,11 +142,19 @@ opencode
 Then run `/init` to generate a fresh `AGENTS.md` based on your project's current state.
 
 ### Example Workflow
+
+#### Starting a session (always do this first)
+```bash
+# Read project state and orient for this session
+@developer /skill session-workflow
+```
+
+#### Full feature development workflow
 ```bash
 # 1. Define and implement a feature
 @developer /skill feature-definition
 @developer /skill prototype-script  
-@developer /skill tdd-bdd
+@developer /skill tdd
 @developer /skill signature-design
 @architect # Review design
 @developer /skill implementation
@@ -135,4 +163,11 @@ Then run `/init` to generate a fresh `AGENTS.md` based on your project's current
 # 2. Create PR and manage repository
 @repo-manager /skill pr-management
 @repo-manager /skill git-release
+```
+
+#### Ending a session (always do this last)
+```bash
+# Update TODO.md with progress and handoff notes, then commit
+@developer /skill session-workflow
+# Follow the "Session End Protocol" in the skill
 ```

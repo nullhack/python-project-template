@@ -9,7 +9,7 @@
 
 > {{cookiecutter.project_short_description}}
 
-**AI-Enhanced Python Project** built with enterprise-grade architecture, TDD/BDD workflows, and zero-config quality standards.
+**AI-Enhanced Python Project** built with enterprise-grade architecture, TDD workflows, and zero-config quality standards.
 
 ---
 
@@ -35,7 +35,21 @@ task test && task lint && task static-check
 
 ## 🤖 AI-Powered Development
 
-This project includes built-in AI agents to accelerate your development:
+This project includes built-in AI agents to accelerate your development.
+
+### Multi-Session Development
+
+Complex projects are developed across multiple AI sessions. `TODO.md` at the root acts as the shared state — any AI agent can pick up exactly where the last session stopped.
+
+```bash
+# Start any session: read state, orient, continue
+@developer /skill session-workflow
+
+# End any session: update TODO.md, commit progress, hand off
+@developer /skill session-workflow
+```
+
+### Feature Development Workflow
 
 ```bash
 # Define new features with SOLID principles
@@ -45,7 +59,7 @@ This project includes built-in AI agents to accelerate your development:
 @developer /skill prototype-script
 
 # Write comprehensive tests first (TDD)
-@developer /skill tdd-bdd
+@developer /skill tdd
 
 # Get architecture review before implementing
 @architect
@@ -61,7 +75,7 @@ This project includes built-in AI agents to accelerate your development:
 
 - **🎯 SOLID Principles** - Single responsibility, dependency inversion, clean interfaces
 - **🔧 Object Calisthenics** - No primitives, small classes, behavior-rich objects
-- **🧪 TDD/BDD Testing** - {{cookiecutter.minimum_coverage}}% coverage requirement with property-based tests
+- **🧪 TDD Testing** - {{cookiecutter.minimum_coverage}}% coverage requirement with property-based tests
 - **⚡ Modern Toolchain** - UV, Ruff, PyTest, Hypothesis, PyRight
 - **🚀 Smart Releases** - Calver versioning with AI-generated themed names
 
@@ -91,19 +105,21 @@ docker build --target prod -t {{cookiecutter.package_name}}:prod
 {{cookiecutter.project_slug}}/
 ├── {{cookiecutter.package_name}}/        # Main application package
 │   ├── __init__.py                       # Package initialization
-│   └── {{cookiecutter.module_name}}.py  # Core module
+│   └── {{cookiecutter.module_name}}.py   # Core module
 ├── .opencode/                            # AI development agents
 │   ├── agents/                           # Specialized AI agents
 │   │   ├── developer.md                  # 7-phase development workflow
 │   │   ├── architect.md                  # SOLID architecture review
 │   │   └── repo-manager.md               # Release and PR management
 │   └── skills/                           # Development skills
+│       ├── session-workflow/             # Multi-session development state
 │       ├── feature-definition/           # Requirements planning
-│       ├── tdd-bdd/                      # Test-driven development
+│       ├── tdd/                          # Test-driven development
 │       ├── implementation/               # Guided implementation
 │       └── code-quality/                 # Quality enforcement
 ├── tests/                                # Comprehensive test suite
 ├── docs/                                 # Documentation
+├── TODO.md                               # Development roadmap & session state
 ├── Dockerfile                            # Multi-stage container build
 └── pyproject.toml                        # Project configuration
 ```
@@ -150,13 +166,11 @@ Built with AI-assisted development workflows:
 # Start a new feature
 @developer /skill feature-definition
 @developer /skill prototype-script
-@developer /skill tdd-bdd
+@developer /skill tdd
 @architect  # Architecture review
 @developer /skill implementation
 @repo-manager /skill pr-management
 ```
-
-See [DEVELOPMENT_WORKFLOW.md](DEVELOPMENT_WORKFLOW.md) for the complete 7-phase development process.
 
 ## 📄 License
 

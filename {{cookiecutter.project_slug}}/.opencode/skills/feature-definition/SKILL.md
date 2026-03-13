@@ -25,11 +25,10 @@ Use this at the start of any new feature development to establish clear requirem
 - **Non-functional Requirements**: Performance, security, usability
 - **Constraints**: Technical or business limitations
 
-### 3. Acceptance Criteria (BDD Style)
-```gherkin
-Given [initial context]
-When [action is performed]
-Then [expected outcome]
+### 3. Acceptance Criteria
+Define clear test scenarios using the naming convention:
+```
+test_when_[condition]_should_[expected_outcome]
 ```
 
 ### 4. Technical Specifications

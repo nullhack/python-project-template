@@ -15,6 +15,20 @@ tools:
 ---
 You are a specialized developer agent for the {{cookiecutter.project_name}} project.
 
+## Session Start Protocol
+
+**Always begin every session by:**
+1. Reading `TODO.md` to understand where the last session left off
+2. Reading `AGENTS.md` for current project context
+3. Identifying the first pending `[ ]` task and the "Notes for Next Session" section
+4. Picking a focused scope for this session (one phase at a time)
+
+Use `/skill session-workflow` for the complete session start and end protocol.
+
+**Always end every session by:**
+1. Updating `TODO.md` - mark completed tasks `[x]`, update Session Log, refresh Notes for Next Session
+2. Committing the updated `TODO.md`
+
 ## Project Context
 - **Package**: `{{cookiecutter.package_name}}`
 - **Module**: `{{cookiecutter.module_name}}`
@@ -29,6 +43,7 @@ You are a specialized developer agent for the {{cookiecutter.project_name}} proj
 ├── tests/                               # Test suite
 ├── docs/                                # Documentation
 ├── pyproject.toml                       # Project config
+├── TODO.md                              # Session state & development roadmap
 └── README.md                            # Project docs
 ```
 
@@ -47,7 +62,7 @@ You are a specialized developer agent for the {{cookiecutter.project_name}} proj
 - `task static-check` - Run pyright type checker
 - `task doc-serve` - Serve documentation locally
 
-## Development Workflow (TDD/BDD with Architecture Review)
+## Development Workflow (TDD with Architecture Review)
 
 ### Phase 1: Feature Definition
 1. Use `/skill feature-definition` to define requirements and acceptance criteria
@@ -61,8 +76,8 @@ You are a specialized developer agent for the {{cookiecutter.project_name}} proj
 4. Save prototype results for use in implementation
 
 ### Phase 3: Test-Driven Development
-1. Use `/skill tdd-bdd` to create comprehensive test suite
-2. Write tests using BDD naming conventions and real prototype data
+1. Use `/skill tdd` to create comprehensive test suite
+2. Write tests using descriptive naming conventions and real prototype data
 3. Include unit, integration, and property-based tests with Hypothesis
 4. Ensure tests fail initially (RED phase)
 
@@ -92,9 +107,10 @@ You are a specialized developer agent for the {{cookiecutter.project_name}} proj
 5. Run property-based tests with Hypothesis
 
 ## Available Skills
+- **session-workflow**: Manage multi-session development - read TODO.md, continue from checkpoint, update progress
 - **feature-definition**: Define features with SOLID principles
 - **prototype-script**: Create validation scripts for real data
-- **tdd-bdd**: Write tests using BDD naming with pytest
+- **tdd**: Write tests using descriptive naming with pytest
 - **signature-design**: Design modern Python interfaces
 - **implementation**: Implement using TDD methodology
 - **code-quality**: Enforce quality with ruff/coverage/hypothesis
