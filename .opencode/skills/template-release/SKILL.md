@@ -1,6 +1,6 @@
 ---
 name: template-release
-description: Manage complete releases of the cookiecutter template with testing, documentation, and semantic versioning
+description: Manage complete releases of the cookiecutter template with testing, documentation, themed naming and semantic versioning
 license: MIT
 compatibility: opencode
 metadata:
@@ -168,7 +168,30 @@ rm -rf "$generated_project"
 echo "✅ Final validation passed"
 ```
 
-### Phase 5: Create Release
+### Phase 5: Create Release with Themed Naming
+
+**IMPORTANT**: You must use your AI capabilities to analyze the commits and generate an appropriate themed name. Do NOT use random/hardcoded selection.
+
+1. **Get commits since last release:**
+```bash
+git log ${current_version}..HEAD --oneline
+```
+
+2. **Analyze the commits using your AI** to determine the dominant theme/vibe:
+   - Read each commit message and PR description
+   - Determine if they're about: performance, security, features, bug fixes, refactoring, or docs
+   - Pick a theme that matches the majority
+
+3. **Generate themed name** based on your analysis:
+   - **Performance**: swift cheetah, lightning falcon, rapid hare, blazing gazelle
+   - **Security**: vigilant owl, guardian bear, watchful hawk, steadfast turtle
+   - **Features**: creative fox, innovative dolphin, clever raven, curious raccoon
+   - **Bug Fixes**: persistent badger, diligent ant, careful turtle, steadfast ox
+   - **Refactoring**: elegant swan, graceful deer, nimble cat, balanced llama
+   - **Documentation**: wise elephant, thoughtful whale, scholarly owl, patient sloth
+   - **Mixed**: versatile chameleon, adaptive jackal, resourceful coyote
+
+4. **Create the release:**
 ```bash
 # Commit version changes
 git add CHANGELOG.md README.md
@@ -179,7 +202,7 @@ git commit -m "chore(release): prepare $new_version
 - Final template validation completed"
 
 # Create annotated tag
-git tag -a $new_version -m "Release $new_version
+git tag -a $new_version -m "Release $new_version \"$release_name\"
 
 $(git log ${current_version}..HEAD --oneline | head -10)
 
@@ -189,11 +212,11 @@ See CHANGELOG.md for complete details."
 git push origin main
 git push origin $new_version
 
-# Create GitHub release
+# Create GitHub release with themed name (use the AI-generated name as title)
 changelog_section=$(sed -n "/## \[$new_version\]/,/## \[/p" CHANGELOG.md | head -n -1)
 
 gh release create $new_version \
-  --title "Template Release $new_version" \
+  --title "$release_name" \
   --notes "$changelog_section" \
   --latest
 ```
