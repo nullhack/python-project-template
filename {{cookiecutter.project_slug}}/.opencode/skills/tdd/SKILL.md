@@ -38,6 +38,24 @@ For complete test patterns and guidelines, see:
 3. **Refactor** (REFACTOR phase)
    - Improve code while keeping tests green
 
+## CRITICAL: Handle Lint Warnings Properly
+
+When writing tests, ruff may report issues like RUF069 (float-equality-comparison). 
+
+**NEVER use noqa to silence warnings.** Instead:
+1. Check the rule at https://docs.astral.sh/ruff/rules/<RULE_CODE>/
+2. Apply the proper fix from the "How to fix" section
+
+Example for RUF069 (float-equality):
+```python
+# WRONG - silencing
+assert bond.amount_usdt == 10.0  # noqa: RUF069
+
+# RIGHT - using math.isclose()
+import math
+assert math.isclose(bond.amount_usdt, 10.0, abs_tol=1e-9)
+```
+
 ## Running Tests
 
 ```bash
