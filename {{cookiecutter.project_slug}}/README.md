@@ -155,7 +155,7 @@ task doc-publish  # Deploys to GitHub Pages
 
 # Smart release management
 @repo-manager /skill git-release
-# Creates versioned release: v1.2.20240315r1 "Creative Fox"
+# Creates versioned release: v1.2.20260315 "Creative Fox"
 ```
 
 ## 🤝 Contributing
