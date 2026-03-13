@@ -15,21 +15,21 @@ Use this when ready to release a new version of the cookiecutter template after 
 
 ## Template Versioning Strategy
 
-### Semantic Versioning for Template
-Use standard semantic versioning: `v{major}.{minor}.{patch}`
+### Hybrid Calver Versioning for Template
+Use hybrid versioning: `v{major}.{minor}.{YYYYMMDD}r{revision}`
 
 **Version Bump Guidelines:**
-- **Major (v2.0.0)**: Breaking changes to cookiecutter variables, major workflow changes, removed features
-- **Minor (v1.1.0)**: New agents, new skills, workflow enhancements, new features
-- **Patch (v1.0.1)**: Bug fixes, documentation updates, minor improvements
+- **Major (v2.x.xxxxr1)**: Breaking changes to cookiecutter variables, major workflow changes, removed features
+- **Minor (v1.x.xxxxr1)**: New agents, new skills, workflow enhancements, new features
+- **Revision (v1.2.xxxxr2)**: Bug fixes, documentation updates, minor improvements on same day
 
 **Examples:**
 ```
-v1.0.0  # Initial release
-v1.1.0  # Added repo-manager agent and git-release skill
-v1.1.1  # Fixed bug in template generation
-v1.2.0  # Added template-manager meta agent
-v2.0.0  # Changed cookiecutter.json structure (breaking)
+v1.0.20260302r1  # Initial release on March 2, 2026
+v1.1.20260315r1  # Added repo-manager agent and git-release skill on March 15
+v1.1.20260315r2  # Fixed bug in template generation same day
+v1.2.20260320r1  # Added template-manager meta agent on March 20
+v2.0.20260401r1  # Changed cookiecutter.json structure (breaking) on April 1
 ```
 
 ## Release Process Workflow
@@ -56,7 +56,7 @@ fi
 ### Phase 2: Version Calculation and Update
 ```bash
 # Get current version from git tags
-current_version=$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0")
+current_version=$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.00000000r0")
 echo "Current version: $current_version"
 
 # Determine next version based on changes
@@ -65,7 +65,7 @@ git log ${current_version}..HEAD --oneline
 
 # Version bump logic (manual decision)
 echo "Select version bump type:"
-echo "1. Patch (bug fixes, docs)"
+echo "1. Revision (bug fixes, docs - same day)"
 echo "2. Minor (new features, agents, skills)"
 echo "3. Major (breaking changes)"
 
@@ -74,24 +74,37 @@ breaking_changes=$(git log ${current_version}..HEAD --grep="BREAKING CHANGE" --o
 new_features=$(git log ${current_version}..HEAD --grep="feat:" --oneline | wc -l)
 bug_fixes=$(git log ${current_version}..HEAD --grep="fix:" --oneline | wc -l)
 
+# Get current date for calver
+current_date=$(date +%Y%m%d)
+
 if [ "$breaking_changes" -gt 0 ]; then
     bump_type="major"
 elif [ "$new_features" -gt 0 ]; then
     bump_type="minor"
 else
-    bump_type="patch"
+    bump_type="revision"
 fi
+
+# Extract current version components
+current_major=$(echo $current_version | sed 's/v\([0-9]\+\)\..*/\1/')
+current_minor=$(echo $current_version | sed 's/v[0-9]\+\.\([0-9]\+\).*/\1/')
+current_date_in_tag=$(echo $current_version | sed 's/v[0-9]\+\.[0-9]\+\.\([0-9]\{8\}\).*/\1/')
+current_revision=$(echo $current_version | sed 's/.*r\([0-9]\+\)/\1/')
 
 # Calculate new version
 case $bump_type in
     "major")
-        new_version=$(echo $current_version | sed 's/v\([0-9]\+\).*/v\1/' | sed 's/v//' | awk '{print "v" ($1+1) ".0.0"}')
+        new_version=$(echo "v$((current_major + 1)).0.${current_date}r1")
         ;;
     "minor")
-        new_version=$(echo $current_version | sed 's/v\([0-9]\+\)\.\([0-9]\+\).*/v\1.\2/' | sed 's/v//' | awk -F. '{print "v" $1 "." ($2+1) ".0"}')
+        new_version=$(echo "v${current_major}.$((current_minor + 1)).${current_date}r1")
         ;;
-    "patch")
-        new_version=$(echo $current_version | sed 's/v//' | awk -F. '{print "v" $1 "." $2 "." ($3+1)}')
+    "revision")
+        if [ "$current_date_in_tag" = "$current_date" ]; then
+            new_version=$(echo "v${current_major}.${current_minor}.${current_date}r$((current_revision + 1))")
+        else
+            new_version=$(echo "v${current_major}.${current_minor}.${current_date}r1")
+        fi
         ;;
 esac
 
@@ -317,7 +330,7 @@ EOF
 git add .
 git commit -m "feat(agents): add template-manager meta agent"
 @template-manager /skill template-release
-# Output: "Created release v1.2.0 with new meta agent functionality"
+# Output: "Created release v1.2.20260320r1 with new meta agent functionality"
 ```
 
 ### Patch Release  
@@ -326,7 +339,7 @@ git commit -m "feat(agents): add template-manager meta agent"
 git add .
 git commit -m "fix(docs): correct cookiecutter variable examples"
 @template-manager /skill template-release
-# Output: "Created release v1.1.1 with documentation fixes"
+# Output: "Created release v1.2.20260320r2 with documentation fixes"
 ```
 
 ### Major Release
@@ -337,5 +350,5 @@ git commit -m "feat!: restructure cookiecutter variables for better usability
 
 BREAKING CHANGE: cookiecutter.json format changed"
 @template-manager /skill template-release
-# Output: "Created release v2.0.0 with breaking changes - migration guide included"
+# Output: "Created release v2.0.20260401r1 with breaking changes - migration guide included"
 ```
