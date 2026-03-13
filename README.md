@@ -16,7 +16,7 @@ Modern cookiecutter template delivering enterprise-grade Python projects with **
 🏗️ **SOLID Architecture** - Object calisthenics, dependency inversion, and protocol-based design  
 ⚡ **Zero-Config Setup** - UV package manager, Ruff formatting, PyTest + Hypothesis testing  
 🎯 **Quality Enforced** - 100% coverage, static typing, property-based testing  
-🔄 **Smart Releases** - Calver versioning with themed releases (`v1.2.20240315r1 "Swift Cheetah"`)  
+🔄 **Smart Releases** - Calver versioning with themed releases (`v1.2.20260315 "Swift Cheetah"`)  
 📋 **Complete Workflows** - 7-phase development cycle from prototype to production
 
 ## 🎯 Perfect For

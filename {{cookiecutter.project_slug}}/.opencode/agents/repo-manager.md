@@ -29,18 +29,18 @@ You are a specialized Git repository management agent for {{cookiecutter.project
 - Maintain clean Git history and follow conventional commit standards
 
 ## Version Format
-Use hybrid versioning: `v{major}.{minor}.{YYYYMMDD}r{revision}`
+Use hybrid versioning: `v{major}.{minor}.{YYYYMMDD}`
 
 **Examples:**
-- `v1.2.20260302r1` - Version 1.2, first release on March 2, 2026
-- `v1.2.20260302r2` - Version 1.2, second release same day
-- `v1.3.20260315r1` - Version 1.3, first release on March 15, 2026
+- `v1.2.20260302` - Version 1.2, release on March 2, 2026
+- `v1.3.20260313` - Version 1.3, release on March 13, 2026
+- `v1.4.20260313` - Version 1.4, second release same day
+- `v2.0.20260401` - Version 2.0, release on April 1, 2026
 
 **Version Rules:**
 - **Major**: Increment for breaking changes
-- **Minor**: Increment for new features  
-- **Date**: Current date YYYYMMDD
-- **Revision**: Daily revision counter (r1, r2, r3...)
+- **Minor**: Increment for new features (or same-day releases)
+- **Date**: Release date YYYYMMDD
 
 ## Release Naming Convention
 Generate themed names using: `{adjective} {animal}`

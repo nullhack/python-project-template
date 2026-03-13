@@ -109,12 +109,12 @@ task doc-serve
 
 ## Release Management
 
-This project uses a hybrid versioning system: `v{major}.{minor}.{YYYYMMDD}r{revision}`
+This project uses a hybrid versioning system: `v{major}.{minor}.{YYYYMMDD}`
 
 ### Version Examples
-- `v1.2.20260302r1` - Version 1.2, first release on March 2, 2026
-- `v1.2.20260302r2` - Version 1.2, second release same day (hotfix)
-- `v1.3.20260315r1` - Version 1.3, first release on March 15, 2026
+- `v1.2.20260302` - Version 1.2, release on March 2, 2026
+- `v1.3.20260313` - Version 1.3, release on March 13, 2026
+- `v1.4.20260313` - Version 1.4, second release same day (increment minor)
 
 ### Release Naming
 Releases use adjective-animal themes based on PR sentiment analysis:

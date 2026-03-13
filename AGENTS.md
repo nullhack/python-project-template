@@ -67,7 +67,7 @@ When developers use this template, they get:
 7. **Quality Assurance** → Comprehensive quality checks
 
 ### Repository Management
-- Hybrid versioning: `v1.2.20260302r1` (major.minor.calver)
+- Hybrid versioning: `v1.2.20260302` (major.minor.calver)
 - Themed releases: "swift cheetah", "vigilant owl", "creative fox"
 - Automated PR workflows with conventional commits
 - GitHub CLI integration
@@ -88,7 +88,7 @@ When developers use this template, they get:
 cookiecutter gh:your-username/python-project-template
 
 # Or use a specific version
-cookiecutter gh:your-username/python-project-template --checkout v1.2.20260312r1
+cookiecutter gh:your-username/python-project-template --checkout v1.2.20260312
 ```
 
 ### Template Development Workflow
@@ -108,14 +108,15 @@ cookiecutter gh:your-username/python-project-template --checkout v1.2.20260312r1
 ## Template Versioning
 
 ### Hybrid Calver Versioning for Template
-- **Major (v2.x.xxxxr1)**: Breaking changes to cookiecutter variables
-- **Minor (v1.x.xxxxr1)**: New agents, skills, workflow features
-- **Revision (v1.2.xxxxr2)**: Bug fixes, documentation updates
+- **Major (v2.x.20260401)**: Breaking changes to cookiecutter variables
+- **Minor (v1.x.20260315)**: New agents, skills, workflow features, or same-day releases
 
 ### Recent Releases
-- **v1.0.20260312r1**: Initial release with development workflow
-- **v1.1.20260312r1**: Added repository management agent
-- **v1.2.20260312r1**: Added meta template management system
+- **v1.0.20260312**: Initial release with development workflow
+- **v1.1.20260312**: Added repository management agent
+- **v1.2.20260312**: Added meta template management system
+- **v1.3.20260313**: Added session-workflow skill
+- **v1.4.20260313**: Added AI-driven themed naming
 
 ## Generated Project Features
 

@@ -16,32 +16,31 @@ Use this when ready to create a new release after features are complete and test
 ## Hybrid Versioning System
 
 ### Version Format
-`v{major}.{minor}.{YYYYMMDD}r{revision}`
+`v{major}.{minor}.{YYYYMMDD}`
 
 **Components:**
 - **Major**: Breaking changes (e.g., API changes, removed features)
-- **Minor**: New features, significant enhancements  
+- **Minor**: New features, significant enhancements, or same-day releases
 - **Date**: Release date in YYYYMMDD format
-- **Revision**: Daily revision counter (r1, r2, r3...)
 
 **Examples:**
 ```
-v1.0.20260302r1  # Version 1.0, first release on March 2, 2026
-v1.0.20260302r2  # Version 1.0, second release same day (hotfix)
-v1.1.20260315r1  # Version 1.1, first release on March 15, 2026
-v2.0.20260401r1  # Version 2.0, breaking changes on April 1, 2026
+v1.0.20260302  # Version 1.0, release on March 2, 2026
+v1.1.20260315  # Version 1.1, release on March 15, 2026
+v1.2.20260315  # Version 1.2, second release same day
+v2.0.20260401  # Version 2.0, breaking changes on April 1, 2026
 ```
 
 ### Version Bump Rules
 ```bash
 # Feature release (minor bump)
-v1.2.20260302r1 → v1.3.{today}r1
+v1.2.20260302 → v1.3.{today}
 
 # Breaking change (major bump)  
-v1.2.20260302r1 → v2.0.{today}r1
+v1.2.20260302 → v2.0.{today}
 
-# Same day hotfix (revision bump)
-v1.2.20260302r1 → v1.2.20260302r2
+# Same day release (increment minor by 2)
+v1.2.20260302 → v1.3.20260302
 ```
 
 ## Release Naming Strategy
