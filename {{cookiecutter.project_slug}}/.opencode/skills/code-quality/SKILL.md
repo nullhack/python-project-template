@@ -264,6 +264,25 @@ jobs:
 
 ### 8. Quality Issue Resolution
 
+#### CRITICAL: Never Silence Warnings with noqa
+**Golden Rule**: When ruff reports an issue, ALWAYS check the documentation to understand how to fix it properly. Never use `noqa` comments to silence warnings.
+
+For any ruff rule (like RUF069, F841, etc.):
+1. Look up the rule at https://docs.astral.sh/ruff/rules/
+2. Read the "How to fix" section
+3. Apply the proper solution
+4. Only use noqa as a last resort when no proper fix exists
+
+Example workflow for RUF069 (float-equality-comparison):
+```bash
+# WRONG - just silencing the warning
+assert value == 10.0  # noqa: RUF069
+
+# RIGHT - using math.isclose() as per ruff docs
+import math
+assert math.isclose(value, 10.0, abs_tol=1e-9)
+```
+
 #### Common Ruff Issues and Fixes
 ```python
 # Issue: ANN001 - Missing type hint for function argument
