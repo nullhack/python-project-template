@@ -309,7 +309,7 @@ gh run view $(gh pr view 123 --json headRefOid --jq .headRefOid)
 # 1. Start feature development
 /skill feature-definition  # Define requirements
 /skill prototype-script    # Create prototype
-/skill tdd-bdd            # Write tests
+/skill tdd            # Write tests
 
 # 2. Create PR for design review
 git checkout -b feature/user-auth
@@ -406,7 +406,7 @@ gh pr list --label "bug" --json number | \
 ### Testing
 - [ ] Adequate test coverage
 - [ ] Tests are meaningful
-- [ ] BDD naming conventions used
+- [ ] Test naming conventions followed
 - [ ] Property-based tests where appropriate
 
 ### Documentation
