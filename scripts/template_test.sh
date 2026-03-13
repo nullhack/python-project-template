@@ -118,7 +118,7 @@ validate_project() {
     log_success "No unsubstituted variables found"
     
     # Validate pyproject.toml syntax
-    if ! python -c "import tomllib; tomllib.load(open('pyproject.toml', 'rb'))" 2>/dev/null; then
+    if ! python3 -c "import tomllib; tomllib.load(open('pyproject.toml', 'rb'))" 2>/dev/null; then
         log_error "pyproject.toml syntax validation failed"
         return 1
     fi
@@ -186,13 +186,13 @@ with open('$skill', 'r') as f:
     log_info "Installing dependencies..."
     
     # Check if Python is available
-    if ! command -v python &> /dev/null; then
+    if ! command -v python3 &> /dev/null; then
         log_error "Python is not available"
         return 1
     fi
     
     # Create virtual environment
-    python -m venv venv
+    python3 -m venv venv
     source venv/bin/activate
     
     # Install UV and dependencies

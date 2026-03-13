@@ -124,17 +124,18 @@ Examples: `wise elephant`, `thoughtful whale`, `scholarly owl`
        return max(scores, key=scores.get)
    ```
 
- 4. **Select Theme Name**
-   **IMPORTANT**: Use your AI to analyze the actual commit/PR content and generate an appropriate themed name. Do NOT use random selection.
-
-   Read the commit messages and PR descriptions from the previous step. Use your AI understanding to determine the dominant theme:
-   - **Performance**: swift cheetah, lightning falcon, rapid hare, blazing gazelle
-   - **Security**: vigilant owl, guardian bear, watchful hawk, steadfast turtle
-   - **Features**: creative fox, innovative dolphin, clever raven, curious raccoon
-   - **Bug Fixes**: persistent badger, diligent ant, careful turtle, steadfast ox
-   - **Refactoring**: elegant swan, graceful deer, nimble cat, balanced llama
-   - **Documentation**: wise elephant, thoughtful whale, scholarly owl, patient sloth
-   - **Mixed/Multiple**: versatile chameleon, adaptive jackal, resourceful coyote
+4. **Select Theme Name**
+   ```python
+   def generate_release_name(dominant_theme):
+       themes = {
+           "performance": [("swift", "cheetah"), ("lightning", "falcon"), ("rapid", "hare")],
+           "security": [("vigilant", "owl"), ("guardian", "bear"), ("watchful", "hawk")],
+           "features": [("creative", "fox"), ("innovative", "dolphin"), ("clever", "raven")],
+           # ... etc
+       }
+       
+       return random.choice(themes[dominant_theme])
+   ```
 
 ## Release Process Workflow
 
@@ -158,21 +159,15 @@ git checkout -b release/v1.3.${current_date}r1
 last_tag=$(git describe --tags --abbrev=0)
 gh pr list --state merged --base develop --limit 20
 
-# Use YOUR AI to analyze the PR titles and descriptions:
-# - Read each PR title and description
-# - Understand what the changes are actually about
-# - Determine the dominant theme/vibe
-# - Select an appropriate adjective-animal pair
-
-# Example (you must do real analysis):
+# Example analysis output:
 # Recent PRs:
-# - "Add session-workflow skill for multi-session AI development"
-# - "Remove BDD references and DEVELOPMENT_WORKFLOW.md"
-# - "Template hotfix - Jinja2 escaping"
+# - "Optimize database query performance"
+# - "Add caching layer for API responses"  
+# - "Improve search algorithm efficiency"
+# - "Speed up test suite execution"
 #
-# AI Analysis: These are primarily about FEATURES and IMPROVEMENTS
-# The addition of a new skill is the dominant theme
-# Selected name: "creative fox" (features theme)
+# Dominant theme: PERFORMANCE (4 performance-related PRs)
+# Selected name: "swift cheetah"
 ```
 
 ### Step 3: Update Version and Changelog
