@@ -9,7 +9,7 @@
 
 > {{cookiecutter.project_short_description}}
 
-**AI-Enhanced Python Project** built with enterprise-grade architecture, TDD/BDD workflows, and zero-config quality standards.
+**AI-Enhanced Python Project** built with enterprise-grade architecture, TDD workflows, and zero-config quality standards.
 
 ---
 
@@ -45,7 +45,7 @@ This project includes built-in AI agents to accelerate your development:
 @developer /skill prototype-script
 
 # Write comprehensive tests first (TDD)
-@developer /skill tdd-bdd
+@developer /skill tdd
 
 # Get architecture review before implementing
 @architect
@@ -61,7 +61,7 @@ This project includes built-in AI agents to accelerate your development:
 
 - **🎯 SOLID Principles** - Single responsibility, dependency inversion, clean interfaces
 - **🔧 Object Calisthenics** - No primitives, small classes, behavior-rich objects
-- **🧪 TDD/BDD Testing** - {{cookiecutter.minimum_coverage}}% coverage requirement with property-based tests
+- **🧪 TDD Testing** - {{cookiecutter.minimum_coverage}}% coverage requirement with property-based tests
 - **⚡ Modern Toolchain** - UV, Ruff, PyTest, Hypothesis, PyRight
 - **🚀 Smart Releases** - Calver versioning with AI-generated themed names
 
@@ -99,7 +99,7 @@ docker build --target prod -t {{cookiecutter.package_name}}:prod
 │   │   └── repo-manager.md               # Release and PR management
 │   └── skills/                           # Development skills
 │       ├── feature-definition/           # Requirements planning
-│       ├── tdd-bdd/                      # Test-driven development
+│       ├── tdd/                      # Test-driven development
 │       ├── implementation/               # Guided implementation
 │       └── code-quality/                 # Quality enforcement
 ├── tests/                                # Comprehensive test suite
@@ -150,13 +150,11 @@ Built with AI-assisted development workflows:
 # Start a new feature
 @developer /skill feature-definition
 @developer /skill prototype-script
-@developer /skill tdd-bdd
+@developer /skill tdd
 @architect  # Architecture review
 @developer /skill implementation
 @repo-manager /skill pr-management
 ```
-
-See [DEVELOPMENT_WORKFLOW.md](DEVELOPMENT_WORKFLOW.md) for the complete 7-phase development process.
 
 ## 📄 License
 

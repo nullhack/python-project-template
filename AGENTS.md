@@ -7,7 +7,7 @@ This is the meta repository for the AI-Enhanced Python Project Cookiecutter Temp
 | Information | Details |
 |-------------|---------|
 | **Purpose** | Create AI-enhanced Python projects with comprehensive development workflows |
-| **AI Integration** | OpenCode agents and skills for TDD/BDD development |
+| **AI Integration** | OpenCode agents and skills for TDD development |
 | **Quality Standards** | SOLID principles, object calisthenics, 100% coverage |
 | **Versioning** | Hybrid major.minor.calver for generated projects |
 | **Architecture** | Test-driven development with architect approval workflow |
@@ -37,15 +37,14 @@ python-project-template/
 │   │   └── skills/
 │   │       ├── feature-definition/       # SOLID feature planning
 │   │       ├── prototype-script/         # Quick validation scripts
-│   │       ├── tdd-bdd/                  # Test-driven development
+│   │       ├── tdd/                      # Test-driven development
 │   │       ├── signature-design/         # Interface design
 │   │       ├── implementation/           # TDD implementation
 │   │       ├── code-quality/             # Quality enforcement
 │   │       ├── git-release/              # Release management
 │   │       └── pr-management/            # Pull request workflows
 │   ├── pyproject.toml                    # Project configuration
-│   ├── AGENTS.md                         # Generated project AI documentation
-│   └── DEVELOPMENT_WORKFLOW.md           # 7-phase development guide
+│   └── AGENTS.md                         # Generated project AI documentation
 ├── .opencode/                            # Meta agents for template itself
 │   ├── agents/template-manager.md        # This meta agent
 │   └── skills/
@@ -61,7 +60,7 @@ When developers use this template, they get:
 ### AI-Powered Development Workflow
 1. **Feature Definition** → SOLID principles planning
 2. **Prototype Validation** → Quick scripts with real data
-3. **Test-Driven Development** → BDD tests with pytest/hypothesis
+3. **Test-Driven Development** → TDD tests with pytest/hypothesis
 4. **Signature Design** → Modern Python interfaces
 5. **Architecture Review** → AI architect approval
 6. **Implementation** → TDD methodology
@@ -126,7 +125,7 @@ cookiecutter gh:your-username/python-project-template --checkout v1.2.20260312r1
 - **@repo-manager**: Git operations, PRs, and themed releases
 
 ### Skills Included in Generated Projects
-- **feature-definition**, **prototype-script**, **tdd-bdd**
+- **feature-definition**, **prototype-script**, **tdd**
 - **signature-design**, **implementation**, **code-quality**
 - **git-release**, **pr-management**
 - **create-skill**, **create-agent**
@@ -136,7 +135,7 @@ cookiecutter gh:your-username/python-project-template --checkout v1.2.20260312r1
 # In a generated project
 @developer /skill feature-definition     # Define new feature
 @developer /skill prototype-script       # Create prototype
-@developer /skill tdd-bdd                # Write tests
+@developer /skill tdd                # Write tests
 @architect                               # Get design approval
 @developer /skill implementation         # Implement feature
 @repo-manager /skill pr-management       # Create PR

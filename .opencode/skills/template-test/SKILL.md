@@ -66,7 +66,6 @@ test -d "${project_dir}/.opencode/skills"
 test -f "${project_dir}/pyproject.toml"
 test -f "${project_dir}/README.md"
 test -f "${project_dir}/AGENTS.md"
-test -f "${project_dir}/DEVELOPMENT_WORKFLOW.md"
 ```
 
 ### File Content Validation
@@ -212,7 +211,6 @@ validate_project() {
     test -f "pyproject.toml" || { echo "❌ Missing pyproject.toml"; return 1; }
     test -f "README.md" || { echo "❌ Missing README.md"; return 1; }
     test -f "AGENTS.md" || { echo "❌ Missing AGENTS.md"; return 1; }
-    test -f "DEVELOPMENT_WORKFLOW.md" || { echo "❌ Missing DEVELOPMENT_WORKFLOW.md"; return 1; }
     
     # Check for unsubstituted variables
     if grep -r "{{cookiecutter" . --exclude-dir=venv 2>/dev/null; then

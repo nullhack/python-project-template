@@ -1,6 +1,6 @@
 ---
-name: tdd-bdd
-description: Implement Test-Driven Development with BDD-style naming and pytest best practices
+name: tdd
+description: Implement Test-Driven Development with descriptive naming conventions and pytest best practices
 license: MIT
 compatibility: opencode
 metadata:
@@ -8,14 +8,14 @@ metadata:
   workflow: feature-development
 ---
 ## What I do
-Guide the creation of tests using TDD methodology with BDD-style naming conventions, using pytest, coverage, and hypothesis for robust testing.
+Guide the creation of tests using TDD methodology with descriptive naming conventions, using pytest, coverage, and hypothesis for robust testing.
 
 ## When to use me
 Use this after prototype validation to create comprehensive tests before implementing the actual feature code.
 
-## TDD-BDD Process
+## TDD Process
 
-### 1. BDD Test Naming Convention
+### 1. Test Naming Convention
 ```python
 def test_when_[condition]_should_[expected_outcome]():
     """Test that describes behavior clearly."""
@@ -243,7 +243,7 @@ class TestAuthService:
 ```python
 """
 Tests for user authentication feature.
-Following TDD-BDD approach with real prototype data.
+Following TDD approach with real prototype data.
 """
 import pytest
 import json

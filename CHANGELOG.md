@@ -6,10 +6,10 @@ All notable changes to this template will be documented in this file.
 
 ### Added
 - **AI-Enhanced Development Workflow** - Complete OpenCode integration for AI-powered development
-- **Developer Agent** - Main development agent with 7-phase TDD/BDD workflow
+- **Developer Agent** - Main development agent with 7-phase TDD workflow
 - **Architect Agent** - Design review agent for SOLID principles and object calisthenics compliance
 - **Repository Manager Agent** - Git operations, PRs, and themed releases management
-- **Development Skills** - feature-definition, prototype-script, tdd-bdd, signature-design, implementation, code-quality
+- **Development Skills** - feature-definition, prototype-script, tdd, signature-design, implementation, code-quality
 - **Repository Skills** - git-release (hybrid calver versioning with themed releases), pr-management
 - **Meta Skills** - create-skill, create-agent for extending OpenCode
 - **Template Management** - template-manager agent, template-test, template-release skills

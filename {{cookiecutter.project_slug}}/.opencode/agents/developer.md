@@ -47,7 +47,7 @@ You are a specialized developer agent for the {{cookiecutter.project_name}} proj
 - `task static-check` - Run pyright type checker
 - `task doc-serve` - Serve documentation locally
 
-## Development Workflow (TDD/BDD with Architecture Review)
+## Development Workflow (TDD with Architecture Review)
 
 ### Phase 1: Feature Definition
 1. Use `/skill feature-definition` to define requirements and acceptance criteria
@@ -61,8 +61,8 @@ You are a specialized developer agent for the {{cookiecutter.project_name}} proj
 4. Save prototype results for use in implementation
 
 ### Phase 3: Test-Driven Development
-1. Use `/skill tdd-bdd` to create comprehensive test suite
-2. Write tests using BDD naming conventions and real prototype data
+1. Use `/skill tdd` to create comprehensive test suite
+2. Write tests using descriptive naming conventions and real prototype data
 3. Include unit, integration, and property-based tests with Hypothesis
 4. Ensure tests fail initially (RED phase)
 
@@ -94,7 +94,7 @@ You are a specialized developer agent for the {{cookiecutter.project_name}} proj
 ## Available Skills
 - **feature-definition**: Define features with SOLID principles
 - **prototype-script**: Create validation scripts for real data
-- **tdd-bdd**: Write tests using BDD naming with pytest
+- **tdd**: Write tests using descriptive naming with pytest
 - **signature-design**: Design modern Python interfaces
 - **implementation**: Implement using TDD methodology
 - **code-quality**: Enforce quality with ruff/coverage/hypothesis
