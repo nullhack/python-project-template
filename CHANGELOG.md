@@ -24,7 +24,7 @@ All notable changes to this template will be documented in this file.
 - **7-Phase Development Cycle**: Feature Definition → Prototype → TDD → Signature Design → Architecture Review → Implementation → Quality Assurance
 - **SOLID Principles Enforcement** - Single responsibility, dependency inversion, interface segregation
 - **Object Calisthenics** - No primitives, small classes, behavior-rich objects
-- **Hybrid Calver Versioning**: v1.2.20260302r1 format with themed releases
+- **Hybrid Calver Versioning**: v1.2.20260302 format with themed releases
 - **Themed Release Names**: "Swift Cheetah", "Vigilant Owl", "Creative Fox" based on PR sentiment
 - **Property-Based Testing**: Hypothesis integration for robust test coverage
 

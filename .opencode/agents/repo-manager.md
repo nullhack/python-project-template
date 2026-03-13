@@ -46,6 +46,8 @@ Use hybrid versioning: `v{major}.{minor}.{YYYYMMDD}`
 Generate themed names using: `{adjective} {animal}`
 
 **Name Selection Strategy:**
+**IMPORTANT**: Use your AI to analyze the actual PR/commit content and generate an appropriate themed name. Do NOT use random selection.
+
 1. Get merged PRs: `gh pr list --state merged --base develop --limit 20`
 2. **Use your AI to analyze** the PR titles and descriptions
 3. Determine overall "vibe" (performance, security, features, fixes, etc.) based on the actual content
