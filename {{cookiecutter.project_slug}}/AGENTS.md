@@ -166,13 +166,12 @@ This project uses a hybrid versioning system: `v{major}.{minor}.{YYYYMMDD}`
 - `v1.4.20260313` - Version 1.4, second release same day (increment minor)
 
 ### Release Naming
-Releases use adjective-animal themes based on PR sentiment analysis:
-- **Performance**: `swift cheetah`, `lightning falcon`, `rapid gazelle`
-- **Security**: `vigilant owl`, `guardian bear`, `watchful hawk` 
-- **Features**: `creative fox`, `innovative dolphin`, `clever raven`
-- **Bug Fixes**: `persistent badger`, `diligent ant`, `careful turtle`
-- **Refactoring**: `elegant swan`, `graceful deer`, `nimble cat`
-- **Documentation**: `wise elephant`, `thoughtful whale`, `scholarly owl`
+Releases use AI-generated adjective-animal names. Each release gets a unique name based on PR content. Examples:
+- `v1.5.20260403 - Crystal Jellyfish` (documentation overhaul)
+- `v1.6.20260404 - Velvet Manta` (refactoring)
+- `v1.7.20260405 - Electric Firefly` (performance)
+
+The AI analyzes PR content and generates creative, unique names.
 
 ### Creating Releases
 Use the repo-manager agent:
