@@ -89,7 +89,7 @@ task doc-serve # Live documentation server
 
 ### Smart Release Management
 
-- **Hybrid Versioning**: `v{major}.{minor}.{YYYYMMDD}r{revision}`
+- **Hybrid Versioning**: `v{major}.{minor}.{YYYYMMDD}` (same-day releases increment minor)
 - **Themed Releases**: AI-generated names based on PR sentiment
   - Performance: `"Swift Cheetah"` `"Lightning Falcon"`  
   - Security: `"Vigilant Owl"` `"Guardian Bear"`

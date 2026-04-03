@@ -149,7 +149,7 @@ gh pr list --state merged --base develop --limit 10
 # Recent PRs: "Optimize database queries", "Improve API performance", "Cache implementation"
 # Theme detected: Performance improvements
 # Generated name: "swift falcon"
-# Version: v1.2.20260302r1
+# Version: v1.2.20260302
 ```
 
 ### Emergency Hotfix

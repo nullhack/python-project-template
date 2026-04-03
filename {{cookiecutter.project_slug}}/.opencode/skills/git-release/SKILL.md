@@ -148,7 +148,7 @@ git log --oneline $(git describe --tags --abbrev=0)..HEAD
 
 # Create release branch
 current_date=$(date +%Y%m%d)
-git checkout -b release/v1.3.${current_date}r1
+git checkout -b release/v1.3.${current_date}
 ```
 
 ### Step 2: Analyze PRs and Generate Name
@@ -177,11 +177,11 @@ gh pr list --state merged --base develop --limit 20
 ### Step 3: Update Version and Changelog
 ```bash
 # Update pyproject.toml
-sed -i 's/version = ".*"/version = "1.3.20260302r1"/' pyproject.toml
+sed -i 's/version = ".*"/version = "1.3.20260302"/' pyproject.toml
 
 # Generate changelog entry
 cat >> CHANGELOG.md << EOF
-## [v1.3.20260302r1] - Swift Cheetah - 2026-03-02
+## [v1.3.20260302] - Swift Cheetah - 2026-03-02
 
 ### Performance Improvements
 - Optimize database query performance (#123)
@@ -197,24 +197,24 @@ EOF
 
 # Commit version bump
 git add pyproject.toml CHANGELOG.md
-git commit -m "chore(release): bump version to v1.3.20260302r1 - Swift Cheetah"
+git commit -m "chore(release): bump version to v1.3.20260302 - Swift Cheetah"
 ```
 
 ### Step 4: Create and Publish Release
 ```bash
 # Merge to main
 git checkout main
-git merge release/v1.3.20260302r1
+git merge release/v1.3.20260302
 
 # Create tag
-git tag v1.3.20260302r1
+git tag v1.3.20260302
 
 # Push to remote
 git push origin main --tags
 
 # Create GitHub release
-gh release create v1.3.20260302r1 \
-  --title "v1.3.20260302r1 - Swift Cheetah" \
+gh release create v1.3.20260302 \
+  --title "v1.3.20260302 - Swift Cheetah" \
   --notes-file CHANGELOG.md
 
 # Sync develop branch  
@@ -223,20 +223,20 @@ git merge main
 git push origin develop
 
 # Clean up release branch
-git branch -d release/v1.3.20260302r1
-git push origin --delete release/v1.3.20260302r1
+git branch -d release/v1.3.20260302
+git push origin --delete release/v1.3.20260302
 ```
 
 ### Step 5: Post-Release Tasks
 ```bash
 # Verify release
-gh release view v1.3.20260302r1
+gh release view v1.3.20260302
 
 # Check CI/CD pipeline
-gh workflow run deploy --ref v1.3.20260302r1
+gh workflow run deploy --ref v1.3.20260302
 
 # Update project documentation
-echo "Latest release: v1.3.20260302r1 - Swift Cheetah" > .release-info
+echo "Latest release: v1.3.20260302 - Swift Cheetah" > .release-info
 ```
 
 ## Hotfix Release Process
@@ -255,18 +255,21 @@ git commit -m "fix(security): patch authentication vulnerability"
 gh pr create --title "Critical Security Hotfix" \
   --body "Emergency patch for authentication vulnerability"
 
-# After merge, create revision release
+# After merge, create minor release for same day
 current_date=$(date +%Y%m%d)
 last_version=$(git describe --tags --abbrev=0)
 
-# Calculate next revision (v1.3.20260302r1 → v1.3.20260302r2)
-next_revision=$(echo $last_version | sed 's/r\([0-9]\+\)/r\1+1/')
+# Calculate next minor version (v1.3.20260302 → v1.4.20260302 if same day)
+minor=$(echo $last_version | cut -d. -f2)
+date_str=$(echo $last_version | cut -d. -f3)
+new_minor=$((minor + 1))
+next_version="v${new_minor}.${date_str}"
 
-git tag $next_revision
+git tag $next_version
 git push origin main --tags
 
-gh release create $next_revision \
-  --title "$next_revision - Guardian Bear (Hotfix)" \
+gh release create $next_version \
+  --title "$next_version - Guardian Bear (Hotfix)" \
   --notes "Emergency security patch"
 ```
 
@@ -290,7 +293,7 @@ task static-check || { echo "❌ Type checking failed"; exit 1; }
 
 # Validate version format
 version=$(grep 'version =' pyproject.toml | cut -d'"' -f2)
-if ! [[ $version =~ ^[0-9]+\.[0-9]+\.[0-9]{8}r[0-9]+$ ]]; then
+if ! [[ $version =~ ^[0-9]+\.[0-9]+\.[0-9]{8}$ ]]; then
     echo "❌ Invalid version format: $version"
     exit 1
 fi
@@ -312,7 +315,7 @@ echo "✅ Pre-release validation passed!"
 # Analysis: 3 feature PRs, 1 performance PR
 # Theme: FEATURES (dominant)
 # Name: "innovative dolphin"
-# Version: v1.4.20260315r1
+# Version: v1.4.20260315
 ```
 
 ### Security Release
@@ -321,7 +324,7 @@ echo "✅ Pre-release validation passed!"
 # Analysis: 4 security PRs, 1 docs PR  
 # Theme: SECURITY (dominant)
 # Name: "vigilant owl"
-# Version: v1.3.20260320r1
+# Version: v1.3.20260320
 ```
 
 ### Major Release
@@ -330,5 +333,5 @@ echo "✅ Pre-release validation passed!"
 # Analysis: Breaking changes detected
 # Theme: Based on supporting PRs
 # Name: "pioneering eagle" 
-# Version: v2.0.20260401r1
+# Version: v2.0.20260401
 ```
