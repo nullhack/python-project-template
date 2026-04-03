@@ -5,7 +5,7 @@
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
 [![{{cookiecutter.license}} License][license-shield]][license-url]
-[![Coverage](https://img.shields.io/badge/coverage-{{cookiecutter.minimum_coverage}}%25-brightgreen?style=for-the-badge)](docs/htmlcov/index.html)
+[![Coverage](https://img.shields.io/badge/coverage-{{cookiecutter.minimum_coverage}}%25-brightgreen?style=for-the-badge)](docs/coverage/index.html)
 
 > {{cookiecutter.project_short_description}}
 
@@ -87,16 +87,13 @@ task run              # Execute main application
 task test             # Run comprehensive test suite  
 task lint             # Format and lint code
 task static-check     # Type safety validation
-task doc-serve        # Live documentation server
+task doc-serve        # Live pdoc documentation server
+task doc-build        # Build static pdoc API docs
+task doc-publish      # Publish API docs to GitHub Pages
 
 # Quality assurance
 task test-report      # Detailed coverage report
 task mut-report       # Mutation testing (optional)
-task doc-publish      # Deploy documentation
-
-# Container workflows
-docker build --target test -t {{cookiecutter.package_name}}:test
-docker build --target prod -t {{cookiecutter.package_name}}:prod
 ```
 
 ## 🎯 Project Structure
@@ -118,7 +115,7 @@ docker build --target prod -t {{cookiecutter.package_name}}:prod
 │       ├── implementation/               # Guided implementation
 │       └── code-quality/                 # Quality enforcement
 ├── tests/                                # Comprehensive test suite
-├── docs/                                 # Documentation
+├── docs/                                 # Documentation (api/, tests/, coverage/)
 ├── TODO.md                               # Development roadmap & session state
 ├── Dockerfile                            # Multi-stage container build
 └── pyproject.toml                        # Project configuration
@@ -130,9 +127,9 @@ docker build --target prod -t {{cookiecutter.package_name}}:prod
 |----------|-------|
 | **Package Management** | UV (blazing fast pip/poetry replacement) |
 | **Code Quality** | Ruff (linting + formatting), PyRight (type checking) |
-| **Testing** | PyTest + Hypothesis (property-based testing) |
+| **Testing** | PyTest + Hypothesis (property-based testing), pytest-html-plus (BDD reports) |
 | **AI Integration** | OpenCode agents for development automation |
-| **Documentation** | MkDocs with modern theme |
+| **Documentation** | pdoc with search functionality |
 | **Containerization** | Docker with optimized multi-stage builds |
 
 ## 📈 Quality Metrics
@@ -150,8 +147,11 @@ docker build --target prod -t {{cookiecutter.package_name}}:prod
 docker build --target prod -t {{cookiecutter.package_name}}:latest .
 docker run {{cookiecutter.package_name}}:latest
 
-# Documentation deployment  
-task doc-publish  # Deploys to GitHub Pages
+# Build API documentation
+task doc-build  # Generates docs/api/index.html
+
+# Publish API docs to GitHub Pages
+task doc-publish  # Pushes docs/api to gh-pages branch
 
 # Smart release management
 @repo-manager /skill git-release

@@ -115,7 +115,8 @@ task doc-serve # Live documentation server
 - Mutation testing with Cosmic Ray
 
 **Documentation & Deployment**
-- MkDocs with modern theme
+- pdoc for API documentation with search
+- pytest-html-plus with BDD docstring display
 - Docker containerization
 - GitHub Actions CI/CD
 - Automated documentation deployment
