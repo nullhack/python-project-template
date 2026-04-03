@@ -44,10 +44,10 @@ This project includes custom skills for OpenCode:
 ### Development Workflow
 - **feature-definition**: Define features with SOLID principles and clear requirements
 - **prototype-script**: Create quick validation scripts with real data capture  
-- **tdd**: Write comprehensive tests using TDD with pytest/hypothesis
+- **tdd**: Write comprehensive tests using TDD with pytest/hypothesis — includes decision guide for when to use plain TDD, Hypothesis (property-based), or Hypothesis stateful testing
 - **signature-design**: Design modern Python interfaces with protocols and type hints
 - **implementation**: Implement using TDD methodology with real prototype data
-- **code-quality**: Enforce quality with ruff, coverage, and hypothesis testing
+- **code-quality**: Enforce quality with ruff, coverage, hypothesis, and cosmic-ray mutation testing
 
 ### Repository Management
 - **git-release**: Create semantic releases with hybrid major.minor.calver versioning and themed naming
@@ -73,8 +73,14 @@ uv pip install '.[dev]'
 # Run the application
 task run
 
-# Run tests
+# Run tests (full suite with coverage report)
 task test
+
+# Run fast tests only (skip slow tests)
+task test-fast
+
+# Run slow tests only
+task test-slow
 
 # Run linting
 task lint
@@ -84,28 +90,71 @@ task static-check
 
 # Serve documentation
 task doc-serve
+
+# Build documentation
+task doc-build
 ```
 
-## Package Structure
+## Documentation
 
+This project uses **pdoc** for API documentation generation:
+
+```bash
+# Serve documentation locally
+task doc-serve
+
+# Build static documentation with search
+task doc-build
 ```
-{{cookiecutter.project_slug}}/
-├── {{cookiecutter.package_name}}/    # Main package
-│   ├── __init__.py
-│   └── {{cookiecutter.module_name}}.py
-├── tests/                             # Test suite
-├── docs/                              # Documentation (MkDocs)
-├── pyproject.toml                     # Project configuration
-├── Dockerfile                         # Docker image
-└── README.md                          # Project documentation
+
+Generated docs are in `docs/api/` - open `docs/api/index.html` to browse.
+
+## Test Conventions
+
+This project uses BDD-style tests with the following conventions:
+
+### Test Function Naming
+```python
+# Format: test_<condition>_should_<outcome>
+def test_given_<context>_when_<action>_then_<result>(): ...
+def test_<condition>_should_<outcome>(): ...
 ```
+
+### BDD Docstrings
+All test functions must have Given/When/Then docstrings:
+```python
+def test_federation_created_should_have_active_status():
+    """
+    Given: A valid federation with required fields
+    When: Federation is created
+    Then: Status should be active
+    """
+```
+
+### Running Tests
+
+```bash
+# Run fast tests (skip slow tests)
+task test-fast
+
+# Run only slow tests
+task test-slow
+
+# Full test suite with coverage
+task test
+```
+
+### Checking Test Compliance
+- **pytest-html-plus report**: `docs/tests/report.html` - BDD docstrings displayed as test names
+- **Coverage report**: `docs/coverage/index.html` - View coverage by file
 
 ## Code Quality Standards
 
-- **Linting**: ruff with Google style conventions
+- **Linting**: ruff with Google style conventions (D205, D212, D415 disabled for test files to allow BDD docstrings)
 - **Type Checking**: pyright
 - **Test Coverage**: Minimum {{cookiecutter.minimum_coverage}}%
 - **Python Version**: >=3.13
+- **Test Markers**: `slow` marks tests >50ms (SQLite, Hypothesis, web routes)
 
 ## Release Management
 

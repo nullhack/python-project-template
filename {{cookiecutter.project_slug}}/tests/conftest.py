@@ -1,65 +1,87 @@
-import inspect
-from typing import Any
+"""Pytest configuration for BDD docstring display in HTML reports."""
 
-from _pytest.config import Config
-from _pytest.nodes import Item
+import json
+import os
 
-
-def pytest_configure(config: Config) -> None:
-    """Initialize per-session state for docstring printing.
-
-    Creates a set on the config object used to track which test
-    node IDs (without parameterization suffixes) have already had
-    their docstrings printed.
-    """
-    # use getattr/setattr to avoid static-type warnings about unknown attrs
-    if getattr(config, "_printed_docstrings", None) is None:
-        setattr(config, "_printed_docstrings", set())
+import pytest
 
 
-def pytest_runtest_setup(item: Item) -> None:
-    """Print a test function's docstring the first time it is encountered.
+def _build_docstring_map() -> dict[str, str]:
+    """Walk test files and map nodeid → docstring."""
+    import ast
+    from pathlib import Path
 
-    The docstring is printed only once per “base” nodeid. For example,
-    a parametrized test like ``test_func[param]`` will only have its
-    docstring printed for the first parameterization. Subsequent cases
-    skip printing.
-    """
-    tr = item.config.pluginmanager.getplugin("terminalreporter")
-    if not tr:
+    mapping: dict[str, str] = {}
+    tests_dir = Path(__file__).resolve().parent
+    project_root = tests_dir.parent
+
+    for py_file in tests_dir.rglob("*_test.py"):
+        rel = str(py_file.relative_to(project_root))
+        try:
+            tree = ast.parse(py_file.read_text())
+        except (SyntaxError, OSError):
+            continue
+
+        for node in ast.walk(tree):
+            if isinstance(node, ast.ClassDef):
+                for item in node.body:
+                    if isinstance(item, (ast.FunctionDef, ast.AsyncFunctionDef)):
+                        if item.name.startswith("test_"):
+                            doc = ast.get_docstring(item)
+                            if doc:
+                                mapping[f"{rel}::{node.name}::{item.name}"] = doc
+            elif isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
+                if node.name.startswith("test_"):
+                    doc = ast.get_docstring(node)
+                    if doc:
+                        mapping[f"{rel}::{node.name}"] = doc
+
+    return mapping
+
+
+@pytest.hookimpl(trylast=True)
+def pytest_sessionfinish(session, exitstatus) -> None:
+    """Add docstrings to JSON and regenerate HTML."""
+    html_output = session.config.getoption("--html-output") or "docs/tests"
+    json_report = session.config.getoption("--json-report") or "final_report.json"
+    json_path = os.path.join(html_output, json_report)
+
+    try:
+        with open(json_path) as f:
+            data = json.load(f)
+    except (FileNotFoundError, json.JSONDecodeError):
         return
 
-    # strip parameterization suffix:
-    # "path/to/test.py::test_func[param]" → keep the part before "["
-    base_nodeid = item.nodeid.split("[", 1)[0]
+    doc_map = _build_docstring_map()
+    for result in data.get("results", []):
+        nodeid = result.get("nodeid", "")
 
-    printed = getattr(item.config, "_printed_docstrings", set())
-    if base_nodeid in printed:
-        return
+        # Strip parametrize suffix like [a-b] for lookup
+        if "[" in nodeid and nodeid.endswith("]"):
+            bracket_idx = nodeid.rindex("[")
+            base_nodeid = nodeid[:bracket_idx]
+            params = nodeid[bracket_idx + 1 : -1]
+        else:
+            base_nodeid = nodeid
+            params = None
 
-    # obtain the underlying Python object for the test in a safe way
-    # different pytest versions / stubs expose different attributes; try common ones
-    obj: Any = getattr(item, "obj", None) or getattr(item, "function", None) or item
+        doc = doc_map.get(base_nodeid)
+        if doc:
+            doc_html = doc.replace("\n", "<br>")
+            if params:
+                param_doc = f"Params: ({params.replace('-', ', ')})\n{doc}"
+                param_html = param_doc.replace("\n", "<br>")
+                result["docstring"] = param_doc
+                result["test"] = param_html
+            else:
+                result["docstring"] = doc
+                result["test"] = doc_html
 
-    doc = inspect.getdoc(obj) or ""
-    if not doc.strip():
-        printed.add(base_nodeid)
-        setattr(item.config, "_printed_docstrings", printed)
-        return
+    with open(json_path, "w") as f:
+        json.dump(data, f, indent=2)
 
-    # call write_line if available; otherwise fall back to a write() if present
-    write_line = getattr(tr, "write_line", None)
-    if callable(write_line):
-        for line in doc.splitlines():
-            write_line("  " + line)
-        write_line("")
-    else:
-        write = getattr(tr, "write", None)
-        if callable(write):
-            # write() often expects raw text including newline
-            for line in doc.splitlines():
-                write("  " + line + "\n")
-            write("\n")
+    from pytest_html_plus.generate_html_report import JSONReporter
 
-    printed.add(base_nodeid)
-    setattr(item.config, "_printed_docstrings", printed)
+    reporter = JSONReporter(json_path, "", html_output)
+    reporter.load_report()
+    reporter.generate_html_report()

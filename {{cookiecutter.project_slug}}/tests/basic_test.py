@@ -13,7 +13,11 @@ from {{cookiecutter.package_name}} import {{cookiecutter.module_name}} as m
     b=st.integers(min_value=-10_000, max_value=10_000).filter(lambda x: x != 0),
 )
 def test_divide_inverse(a: int, b: int) -> None:
-    """Check that multiplication is the inverse of division (within float tolerance)."""
+    """
+    Given: Two integers a and b where b is non-zero
+    When: Calculator.divide(a, b) is called
+    Then: result * b should equal a (within float tolerance)
+    """
     result = m.Calculator.divide(a, b)
 
     assert math.isclose(result * b, a, rel_tol=1e-12, abs_tol=1e-12)
