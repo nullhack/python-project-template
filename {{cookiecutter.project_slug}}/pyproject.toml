@@ -22,13 +22,11 @@ Documentation = "https://github.com/{{cookiecutter.github_username}}/{{cookiecut
 
 [project.optional-dependencies]
 dev = [
-    "mkdocs>=1.6.1",
-    "mkdocs-gen-files>=0.5.0",
-    "mkdocs-material>=9.6.11",
-    "mkdocstrings[python]>=0.29.1",
+    "pdoc>=14.0",
     "pytest>=8.3.5",
     "pytest-cov>=6.1.1",
-    "pytest-html>=4.1.1",
+    "pytest-html-plus>=0.5",
+    "pytest-mock>=3.14.0",
     "ruff>=0.11.5",
     "taskipy>=1.14.1",
     "hypothesis>=6.148.4",
@@ -76,7 +74,7 @@ mccabe.max-complexity = 10
 pydocstyle.convention = "google"
 
 [tool.ruff.lint.per-file-ignores]
-"tests/**" = ["S101"]
+"tests/**" = ["S101", "ANN", "D205", "D212", "D415"]
 
 [tool.pytest.ini_options]
 minversion = "6.0"
@@ -94,8 +92,12 @@ markers = [
     "performance",
 ]
 addopts = """
---maxfail=1 \
+--maxfail=10 \
 --color=yes \
+--tb=short \
+-q \
+--html-output=docs/tests \
+--json-report=final_report.json \
 """
 testpaths = [
     "tests",
@@ -123,29 +125,40 @@ test-report = """\
 pytest \
   --doctest-modules \
   --cov-config=pyproject.toml \
-  --cov-report html:docs/htmlcov \
+  --cov-report html:docs/coverage \
   --cov-report term:skip-covered \
   --cov={{cookiecutter.package_name}} \
   --cov-fail-under={{cookiecutter.minimum_coverage}} \
-  --html=docs/pytest_report.html \
-  --self-contained-html \
   --hypothesis-show-statistics \
 """
 test = """\
 python -c "import subprocess, sys; print('Running Smoke Tests...'); sys.exit(0 if subprocess.run(['pytest', '-m', 'smoke']).returncode in (0,5) else 1)" && \
-python -c "import subprocess, sys; print('Running Unit Tests...'); sys.exit(0 if subprocess.run(['pytest', '-m', 'unit']).returncode in (0,5) else 1)" && \
+python -c "import subprocess, sys; print('Running Unit Tests...'); sys.exit(0 if subprocess.run(['pytest', '-m', 'unit', '-m', 'not slow']).returncode in (0,5) else 1)" && \
+python -c "import subprocess, sys; print('Running Integration Tests...'); sys.exit(0 if subprocess.run(['pytest', '-m', 'integration', '-m', 'not slow']).returncode in (0,5) else 1)" && \
 python -c "print('Running Tests...');" && \
 task test-report\
+"""
+test-fast = """\
+python -c "import subprocess, sys; print('Running Smoke Tests...'); sys.exit(0 if subprocess.run(['pytest', '-m', 'smoke']).returncode in (0,5) else 1)" && \
+python -c "import subprocess, sys; print('Running Unit Tests...'); sys.exit(0 if subprocess.run(['pytest', '-m', 'unit', '-m', 'not slow']).returncode in (0,5) else 1)" && \
+python -c "import subprocess, sys; print('Running Integration Tests...'); sys.exit(0 if subprocess.run(['pytest', '-m', 'integration', '-m', 'not slow']).returncode in (0,5) else 1)" \
+"""
+test-slow = """\
+pytest -m slow \
 """
 ruff-check = "ruff check . --fix"
 ruff-format = "ruff format ."
 lint = "task ruff-check && task ruff-format"
-doc-serve = "mkdocs serve --use-directory-urls -f docs/mkdocs.yaml"
-doc-report = "mkdocs build --no-directory-urls -f docs/mkdocs.yaml"
-doc-publish = """mkdocs gh-deploy \
---config-file docs/mkdocs.yaml \
---no-directory-urls \
---remote-branch docs"""
+doc-serve = "pdoc ./{{cookiecutter.package_name}} --host localhost --port 8080"
+doc-build = "pdoc ./{{cookiecutter.package_name}} -o docs/api --search"
+doc-publish = """\
+git checkout gh-pages || git checkout -b gh-pages && \
+git rm -rf . && \
+cp -r docs/api/* . && \
+git add -A && \
+git commit -m "Publish API documentation" && \
+git push origin gh-pages --force && \
+git checkout -"""
 mut-report = """
   uv run cosmic-ray new-config mut.toml && \
   uv run cosmic-ray init mut.toml mut.sqlite && \

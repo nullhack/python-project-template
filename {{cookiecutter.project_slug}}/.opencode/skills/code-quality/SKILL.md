@@ -174,14 +174,81 @@ def handle_data(processor: DataProcessor) -> None:
 ```
 
 ### 5. Mutation Testing with Cosmic Ray
-```bash
-# Run mutation testing (optional, resource-intensive)
-task mut-report
 
+Mutation testing validates **test quality** — not just coverage — by introducing small code changes (mutations) and verifying that tests catch them. A test suite with high coverage but a poor mutation score means tests are exercising code without actually verifying behavior.
+
+#### When to run cosmic-ray
+- **After GREEN phase**: when all tests pass and coverage >= minimum
+- **Before merging PRs** for core domain logic (models, services, value objects)
+- **Not needed for**: storage adapters, web routers, CLI glue code — focus on the domain
+
+#### Running cosmic-ray
+
+```bash
+# Full mutation report (slow — run once per feature, not per commit)
+uv run task mut-report
 # Generates: docs/mut_report.html
+
+# Targeted run on a specific module (faster feedback)
+uv run cosmic-ray run cosmic-ray.toml {{cookiecutter.module_name}} tests/unit/ --report
+uv run cosmic-ray html-report cosmic-ray.toml > docs/mut_report.html
 ```
 
-Mutation testing validates test quality by introducing bugs and checking if tests catch them.
+#### Configuration (`cosmic-ray.toml`)
+
+```toml
+[cosmic-ray]
+module-path = "{{cookiecutter.module_name}}"
+timeout = 10.0
+excluded-modules = []  # Add web/adapter modules to skip
+test-command = "uv run pytest tests/unit/ -x -q"
+
+[cosmic-ray.distributor]
+name = "local"
+```
+
+#### Interpreting results
+
+| Metric | Target | Action if below |
+|--------|--------|----------------|
+| Mutation score | >= 80% | Add property-based tests to kill surviving mutants |
+| Survived mutants | < 20% | Investigate with `cosmic-ray show-survivors` |
+
+```bash
+# See which mutants survived (what tests aren't catching)
+uv run cosmic-ray show-survivors cosmic-ray.toml
+```
+
+#### Fixing surviving mutants
+
+A surviving mutant means a real bug could go undetected. For each survivor:
+
+1. Read the mutant diff — what change survived?
+2. Write a test that would **fail** with that mutation applied
+3. Confirm the new test kills the mutant by re-running
+
+```python
+# Surviving mutant example:
+# Original:  if value > 0:
+# Mutant:    if value >= 0:   ← survived — no test catches zero boundary
+
+# Fix: add a boundary test
+@given(st.floats(max_value=0.0, allow_nan=False, allow_infinity=False))
+def test_when_value_is_zero_or_negative_should_raise_invalid_value_error(value):
+    with pytest.raises(InvalidValueError):
+        MyModel(value=value)
+```
+
+#### Prioritization — where mutation testing pays off most
+
+| Code type | Run cosmic-ray? | Reason |
+|-----------|-----------------|--------|
+| Domain models | Yes — always | Core invariants must be airtight |
+| Value objects | Yes — always | Validation logic is critical |
+| Domain services | Yes | Business rules live here |
+| Repository ports/interfaces | No | No logic to mutate |
+| Storage adapters | No | Covered by integration tests |
+| Web routers | No | Thin delegation layer |
 
 ### 6. Quality Gates and Automation
 
@@ -263,6 +330,25 @@ jobs:
 - Test-to-code ratio: >1:1
 
 ### 8. Quality Issue Resolution
+
+#### CRITICAL: Never Silence Warnings with noqa
+**Golden Rule**: When ruff reports an issue, ALWAYS check the documentation to understand how to fix it properly. Never use `noqa` comments to silence warnings.
+
+For any ruff rule (like RUF069, F841, etc.):
+1. Look up the rule at https://docs.astral.sh/ruff/rules/
+2. Read the "How to fix" section
+3. Apply the proper solution
+4. Only use noqa as a last resort when no proper fix exists
+
+Example workflow for RUF069 (float-equality-comparison):
+```bash
+# WRONG - just silencing the warning
+assert value == 10.0  # noqa: RUF069
+
+# RIGHT - using math.isclose() as per ruff docs
+import math
+assert math.isclose(value, 10.0, abs_tol=1e-9)
+```
 
 #### Common Ruff Issues and Fixes
 ```python

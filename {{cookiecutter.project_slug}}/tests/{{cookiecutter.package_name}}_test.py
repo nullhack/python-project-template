@@ -10,6 +10,10 @@ Source: https://www.nerdwallet.com/blog/engineering/5-pytest-best-practices/
   *  Prefer responses over mocking outbound HTTP requests
   *  Prefer tmpdir over global test artifacts
 
+BDD Test Convention:
+  *  Use descriptive naming: test_<condition>_should_<outcome>
+  *  All tests should have Given/When/Then docstrings
+
 """
 
 from typing import Self
@@ -40,13 +44,10 @@ class TestGroup:
         return 123
 
     def test_one(self: Self, param1: str, param2: str, fixt: int) -> None:
-        """Run the first test using the fixture.
-
-        Args:
-            param1 (str): First parameter.
-            param2 (str): Second parameter.
-            fixt (int): Value from fixture.
-
+        """
+        Given: Two different string parameters
+        When: Test executes
+        Then: Parameters should not be equal
         """
         assert param1 != param2
 
@@ -60,13 +61,10 @@ class TestGroup:
     ],
 )
 def test_divide_ok(a: float, b: float, expected: float) -> None:
-    """Check if divide works for expected entries.
-
-    Args:
-        a (float): Dividend.
-        b (float): Divisor.
-        expected (float): expected result.
-
+    """
+    Given: Valid division inputs
+    When: Calculator.divide(a, b) is called
+    Then: Should return expected result
     """
     assert m.Calculator.divide(a, b) == expected
 
@@ -82,15 +80,10 @@ def test_divide_ok(a: float, b: float, expected: float) -> None:
 def test_divide_error(
     a: str | float, b: str | float, expected: float | Exception
 ) -> None:
-    """Check if divide returns correct Exceptions for known entries.
-
-    Issue raised by https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}/issues/1337
-
-    Args:
-        a (float): Dividend.
-        b (float): Divisor.
-        expected (Exception): expected Exception.
-
+    """
+    Given: Invalid division inputs
+    When: Calculator.divide(a, b) is called
+    Then: Should raise expected Exception
     """
     with pytest.raises(expected):
         m.Calculator.divide(a, b)
@@ -99,7 +92,11 @@ def test_divide_error(
 
 
 def test_basics() -> None:
-    """A test that is always True."""
+    """
+    Given: A simple test
+    When: Test executes
+    Then: Should always pass
+    """
     assert True is True
 
 {% endif %}

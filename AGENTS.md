@@ -68,7 +68,7 @@ When developers use this template, they get:
 
 ### Repository Management
 - Hybrid versioning: `v1.2.20260302` (major.minor.calver)
-- Themed releases: "swift cheetah", "vigilant owl", "creative fox"
+- AI-generated themed releases (unique per release): "Blooming Narwhal", "Crystal Jellyfish", "Electric Firefly"
 - Automated PR workflows with conventional commits
 - GitHub CLI integration
 
@@ -79,6 +79,8 @@ When developers use this template, they get:
 - Comprehensive linting with ruff
 - Static type checking with pyright
 - Property-based testing with Hypothesis
+- API documentation with pdoc
+- BDD-style test reports with pytest-html-plus
 
 ## Template Usage
 
@@ -117,6 +119,7 @@ cookiecutter gh:your-username/python-project-template --checkout v1.2.20260312
 - **v1.2.20260312**: Added meta template management system
 - **v1.3.20260313**: Added session-workflow skill
 - **v1.4.20260313**: Added AI-driven themed naming
+- **v1.5.20260403**: Replaced mkdocs with pdoc for API docs, added pytest-html-plus with BDD docstring display
 
 ## Generated Project Features
 

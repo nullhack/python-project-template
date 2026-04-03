@@ -36,16 +36,45 @@ Use `/skill session-workflow` for the complete session start and end protocol.
 - **Python Version**: >=3.13
 
 ## Project Structure
+
 ```
 {{cookiecutter.project_slug}}/
 ├── {{cookiecutter.package_name}}/      # Main package
+│   ├── __init__.py
 │   └── {{cookiecutter.module_name}}.py  # Entry point
-├── tests/                               # Test suite
-├── docs/                                # Documentation
+├── tests/                              # Test suite (mirror source tree)
+│   ├── unit/
+│   │   ├── __init__.py
+│   │   ├── domain/
+│   │   │   ├── __init__.py
+│   │   │   └── [module]_test.py
+│   │   ├── storage/
+│   │   │   ├── __init__.py
+│   │   │   └── [adapter]_test.py
+│   │   └── models_test.py
+│   ├── integration/
+│   │   ├── __init__.py
+│   │   └── storage/
+│   │       ├── __init__.py
+│   │       ├── factory_test.py
+│   │       ├── memory/
+│   │       │   └── [repo]_test.py
+│   │       └── sqlite/
+│   │           └── [repo]_test.py
+│   ├── conftest.py
+│   └── {{cookiecutter.project_slug}}_test.py  # Smoke test
+├── docs/                               # Documentation
 ├── pyproject.toml                       # Project config
 ├── TODO.md                              # Session state & development roadmap
 └── README.md                            # Project docs
 ```
+
+### Test Naming Convention
+- Use `*_test.py` suffix (e.g., `models_test.py`, not `test_models.py`)
+- Configure in `pyproject.toml`: `python_files = ["*_test.py"]`
+
+### Mirror Source Tree Rule
+For each source module `{{cookiecutter.module_name}}/<path>/<module>.py`, create a corresponding test file `tests/<path>/<module>_test.py`.
 
 ## Coding Standards
 - Follow PEP 8 style guide

@@ -16,7 +16,7 @@ Modern cookiecutter template delivering enterprise-grade Python projects with **
 🏗️ **SOLID Architecture** - Object calisthenics, dependency inversion, and protocol-based design  
 ⚡ **Zero-Config Setup** - UV package manager, Ruff formatting, PyTest + Hypothesis testing  
 🎯 **Quality Enforced** - 100% coverage, static typing, property-based testing  
-🔄 **Smart Releases** - Calver versioning with themed releases (`v1.2.20260315 "Swift Cheetah"`)  
+🔄 **Smart Releases** - Calver versioning with AI-generated themed names  
 📋 **Complete Workflows** - 7-phase development cycle from prototype to production
 
 ## 🎯 Perfect For
@@ -89,7 +89,7 @@ task doc-serve # Live documentation server
 
 ### Smart Release Management
 
-- **Hybrid Versioning**: `v{major}.{minor}.{YYYYMMDD}r{revision}`
+- **Hybrid Versioning**: `v{major}.{minor}.{YYYYMMDD}` (same-day releases increment minor)
 - **Themed Releases**: AI-generated names based on PR sentiment
   - Performance: `"Swift Cheetah"` `"Lightning Falcon"`  
   - Security: `"Vigilant Owl"` `"Guardian Bear"`
@@ -115,7 +115,8 @@ task doc-serve # Live documentation server
 - Mutation testing with Cosmic Ray
 
 **Documentation & Deployment**
-- MkDocs with modern theme
+- pdoc for API documentation with search
+- pytest-html-plus with BDD docstring display
 - Docker containerization
 - GitHub Actions CI/CD
 - Automated documentation deployment
