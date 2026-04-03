@@ -153,19 +153,16 @@ echo "✅ Final validation passed"
 git log ${current_version}..HEAD --oneline
 ```
 
-2. **Analyze the commits using your AI** to determine the dominant theme/vibe:
+2. **Analyze the commits using your AI** to determine what this release is about:
    - Read each commit message and PR description
-   - Determine if they're about: performance, security, features, bug fixes, refactoring, or docs
-   - Pick a theme that matches the majority
+   - Understand the story/narrative of the release
 
-3. **Generate themed name** based on your analysis:
-   - **Performance**: swift cheetah, lightning falcon, rapid hare, blazing gazelle
-   - **Security**: vigilant owl, guardian bear, watchful hawk, steadfast turtle
-   - **Features**: creative fox, innovative dolphin, clever raven, curious raccoon
-   - **Bug Fixes**: persistent badger, diligent ant, careful turtle, steadfast ox
-   - **Refactoring**: elegant swan, graceful deer, nimble cat, balanced llama
-   - **Documentation**: wise elephant, thoughtful whale, scholarly owl, patient sloth
-   - **Mixed**: versatile chameleon, adaptive jackal, resourceful coyote
+3. **Generate a unique themed name** based on your analysis:
+   - Create an adjective-animal pair that reflects the content
+   - Avoid overused combinations (fox, owl, dolphin, cheetah)
+   - Make it creative and memorable
+
+**Good examples**: Blooming Narwhal, Crystal Jellyfish, Velvet Manta, Electric Firefly, Aurora Moth, Tidal Otter
 
 4. **Create the release:**
 ```bash

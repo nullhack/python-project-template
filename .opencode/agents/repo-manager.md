@@ -48,19 +48,22 @@ Generate themed names using: `{adjective} {animal}`
 **Name Selection Strategy:**
 **IMPORTANT**: Use your AI to analyze the actual PR/commit content and generate an appropriate themed name. Do NOT use random selection.
 
-1. Get merged PRs: `gh pr list --state merged --base develop --limit 20`
+1. Get merged PRs: `gh pr list --state merged --base main --limit 20`
 2. **Use your AI to analyze** the PR titles and descriptions
-3. Determine overall "vibe" (performance, security, features, fixes, etc.) based on the actual content
-4. Select appropriate adjective + animal combination
+3. Determine what this release is really about
+4. Generate a unique adjective-animal name that:
+   - Reflects the PR content
+   - Hasn't been used before
+   - Is creative and memorable
 
-4. Select appropriate adjective + animal combination:
-   - **Performance**: swift cheetah, lightning falcon, rapid hare
-   - **Security**: vigilant owl, guardian bear, watchful hawk
-   - **Features**: creative fox, innovative dolphin, clever raven
-   - **Bug Fixes**: persistent badger, diligent ant, careful turtle
-   - **Refactoring**: elegant swan, graceful deer, nimble cat
-   - **Documentation**: wise elephant, thoughtful whale, patient sloth
-   - **Mixed**: versatile chameleon, adaptive jackal, resourceful coyote
+**Avoid** overused combinations like "swift cheetah", "creative fox", "vigilant owl", "innovative dolphin".
+
+**Try** unique combinations like:
+- Exotic: narwhal, axolotl, capybara, quokka, pangolin
+- Aquatic: jellyfish, seahorse, manta, cuttlefish, otter
+- Birds: kingfisher, heron, ibis, stork
+- Insects: firefly, butterfly, dragonfly
+- Mythical: phoenix, griffin, pegasus, siren
 
 ## Git Operations
 

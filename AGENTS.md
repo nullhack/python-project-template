@@ -68,7 +68,7 @@ When developers use this template, they get:
 
 ### Repository Management
 - Hybrid versioning: `v1.2.20260302` (major.minor.calver)
-- Themed releases: "swift cheetah", "vigilant owl", "creative fox"
+- AI-generated themed releases (unique per release): "Blooming Narwhal", "Crystal Jellyfish", "Electric Firefly"
 - Automated PR workflows with conventional commits
 - GitHub CLI integration
 
