@@ -1,7 +1,6 @@
 ---
 description: Software architect agent specialized in design review and approval following SOLID principles and object calisthenics
 mode: subagent
-model: anthropic/claude-sonnet-4-20250514
 temperature: 0.2
 tools:
   write: false

@@ -33,6 +33,8 @@ python-project-template/
 │   │   ├── agents/
 │   │   │   ├── developer.md              # Main development agent
 │   │   │   ├── architect.md              # Design review agent
+│   │   │   ├── overseer.md               # Quality assurance agent
+│   │   │   ├── requirements-gatherer.md # Requirements gathering agent
 │   │   │   └── repo-manager.md           # Repository management agent
 │   │   └── skills/
 │   │       ├── feature-definition/       # SOLID feature planning
@@ -126,6 +128,8 @@ cookiecutter gh:your-username/python-project-template --checkout v1.2.20260312
 ### Agents Included in Generated Projects
 - **@developer**: Complete 7-phase development workflow
 - **@architect**: Design review and SOLID principles enforcement
+- **@overseer**: Quality assurance - reviews work after each test implementation
+- **@requirements-gatherer**: Gathers requirements, updates docs, creates analysis for architect
 - **@repo-manager**: Git operations, PRs, and themed releases
 
 ### Skills Included in Generated Projects
@@ -137,11 +141,23 @@ cookiecutter gh:your-username/python-project-template --checkout v1.2.20260312
 ### Example Generated Project Usage
 ```bash
 # In a generated project
+
+# 0. Start by gathering requirements (new projects)
+@requirements-gatherer  # Ask questions, create analysis, update docs
+@architect             # Review analysis and approve design
+
+# 1. Define and implement a feature
 @developer /skill feature-definition     # Define new feature
 @developer /skill prototype-script       # Create prototype
-@developer /skill tdd                # Write tests
+@developer /skill tdd                    # Write tests
+@overseer                                # Review tests - request changes if needed
+@developer /skill signature-design       # Design interfaces
 @architect                               # Get design approval
 @developer /skill implementation         # Implement feature
+@developer /skill code-quality           # Run quality checks
+@overseer                                # Final review
+
+# 2. Manage repository
 @repo-manager /skill pr-management       # Create PR
 @repo-manager /skill git-release         # Create release
 ```
