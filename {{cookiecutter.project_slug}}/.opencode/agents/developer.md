@@ -1,7 +1,6 @@
 ---
 description: Specialized development agent for {{cookiecutter.project_name}} - handles code implementation, debugging, and feature development
 mode: subagent
-model: anthropic/claude-sonnet-4-20250514
 temperature: 0.3
 tools:
   write: true
@@ -110,6 +109,8 @@ For each source module `{{cookiecutter.module_name}}/<path>/<module>.py`, create
 2. Write tests using descriptive naming conventions with fixtures directly in test file
 3. Include unit, integration, and property-based tests with Hypothesis
 4. Ensure tests fail initially (RED phase)
+5. **After test implementation, call `@overseer` to review the work and request changes if needed**
+6. Only proceed after overseer approval
 
 ### Phase 4: Signature Design
 1. Use `/skill signature-design` to create function/class signatures
@@ -135,6 +136,7 @@ For each source module `{{cookiecutter.module_name}}/<path>/<module>.py`, create
 3. Verify type checking: `task static-check` 
 4. Validate coverage meets {{cookiecutter.minimum_coverage}}%: `task test`
 5. Run property-based tests with Hypothesis
+6. **Call `@overseer` for final review before considering the feature complete**
 
 ## Available Skills
 - **session-workflow**: Manage multi-session development - read TODO.md, continue from checkpoint, update progress
