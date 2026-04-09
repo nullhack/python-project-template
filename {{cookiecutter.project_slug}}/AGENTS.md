@@ -61,6 +61,8 @@ This project includes custom skills for OpenCode:
 
 - **developer**: Main development agent with complete 7-phase TDD workflow
 - **architect**: Design review and approval agent for SOLID/object calisthenics compliance
+- **overseer**: Quality assurance agent - reviews work after each test implementation, requests changes if needed
+- **requirements-gatherer**: Gathers project requirements, updates documentation, creates analysis for architect
 - **repo-manager**: Repository management for Git operations, PRs, commits, and releases
 
 ## Development Commands
@@ -199,14 +201,21 @@ Then run `/init` to generate a fresh `AGENTS.md` based on your project's current
 
 #### Full feature development workflow
 ```bash
+# 0. Gather requirements first (for new projects)
+@requirements-gatherer  # Ask questions, create analysis, update docs
+@architect              # Review analysis and approve design
+@developer              # Start implementation with approved TODO
+
 # 1. Define and implement a feature
 @developer /skill feature-definition
 @developer /skill prototype-script  
 @developer /skill tdd
+@overseer               # Review tests - request changes if needed
 @developer /skill signature-design
-@architect # Review design
+@architect             # Review design
 @developer /skill implementation
 @developer /skill code-quality
+@overseer               # Final review before moving on
 
 # 2. Create PR and manage repository
 @repo-manager /skill pr-management
