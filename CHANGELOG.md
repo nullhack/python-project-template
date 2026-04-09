@@ -2,6 +2,16 @@
 
 All notable changes to this template will be documented in this file.
 
+## [v1.6.20260409] - Guardian Owl - 2026-04-09
+
+### Added
+- **Overseer Agent** - Quality assurance agent that reviews work after each test implementation and requests changes if needed
+- **Requirements Gatherer Agent** - Agent that asks questions to understand project needs, updates documentation, creates detailed analysis for architect
+
+### Changed
+- Updated developer workflow to include `@overseer` calls after Phase 3 (TDD tests) and Phase 7 (Quality Assurance)
+- Updated AGENTS.md with new agents and updated workflow examples
+
 ## [v1.0.0] - 2026-03-12
 
 ### Added
