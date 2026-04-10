@@ -1,23 +1,23 @@
-# Python Project Template - AI-Enhanced Development
+# Python Project Template - Enterprise Development Framework
 
-This is the meta repository for the AI-Enhanced Python Project Cookiecutter Template.
+This repository contains an enterprise-grade Cookiecutter template for Python projects with integrated AI-enhanced development workflows.
 
 ## Template Overview
 
-| Information | Details |
-|-------------|---------|
-| **Purpose** | Create AI-enhanced Python projects with comprehensive development workflows |
-| **AI Integration** | OpenCode agents and skills for TDD development |
-| **Quality Standards** | SOLID principles, object calisthenics, 100% coverage |
-| **Versioning** | Hybrid major.minor.calver for generated projects |
-| **Architecture** | Test-driven development with architect approval workflow |
+| Component | Description |
+|-----------|-------------|
+| **Purpose** | Generate Python projects with enterprise development practices and AI-powered workflows |
+| **Methodology** | Test-Driven Development (TDD) with mandatory quality gates |
+| **Standards** | SOLID principles, Object Calisthenics, DRY/KISS, 100% test coverage |
+| **Versioning** | Semantic versioning for template, hybrid calver for generated projects |
+| **Architecture** | Domain-driven design with architectural review process |
 
-## Meta Agent for Template Management
+## Template Management Team
 
-### Available Agents
+### DevOps and Release Engineering
 
-- **template-manager**: Meta agent for managing the cookiecutter template repository itself - focuses on template testing, validation, and releases
-- **repo-manager**: Repository management for template PRs, commits, and releases - handles git operations and GitHub integration
+- **template-manager**: DevOps Engineer specializing in template lifecycle management, CI/CD pipelines, and quality assurance
+- **repo-manager**: Release Engineer managing version control, pull requests, and semantic releases
 
 ### Available Skills
 
@@ -83,11 +83,11 @@ When developers use this template, they get:
 10. **Automatic Progression** → System moves to next feature in epic
 
 ### AI Agents with Industry Roles
-- **@developer** → Development lead with TDD workflow
-- **@architect** → Software architect for design patterns and standards
-- **@requirements-gatherer** → Business analyst for stakeholder requirements
-- **@overseer** → QA specialist with mandatory quality gates
-- **@repo-manager** → Repository and release management
+- **@developer** → Development lead with TDD workflow and QA integration
+- **@architect** → Software architect for design patterns and SOLID principles
+- **@requirements-gatherer** → Business analyst using BABOK principles  
+- **@overseer** → QA specialist with mandatory quality checkpoints
+- **@repo-manager** → Release engineer for repository operations
 
 ### Repository Management
 - Hybrid versioning: `v1.2.20260302` (major.minor.calver)

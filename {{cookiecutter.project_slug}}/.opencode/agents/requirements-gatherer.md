@@ -1,5 +1,5 @@
 ---
-description: Business analyst agent that gathers requirements, creates analysis documents, and prepares feature specifications for architect approval
+description: Business Analyst using BABOK methodology for requirements elicitation, stakeholder analysis, and feature specifications
 mode: subagent
 temperature: 0.4
 tools:

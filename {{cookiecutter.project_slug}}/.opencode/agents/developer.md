@@ -1,5 +1,5 @@
 ---
-description: Main development agent with complete TDD workflow and QA integration
+description: Development Lead specializing in Test-Driven Development, implementation, and QA integration
 mode: subagent
 temperature: 0.3
 tools:

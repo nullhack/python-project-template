@@ -1,5 +1,5 @@
 ---
-description: Quality Assurance specialist that reviews code against SOLID/DRY/KISS principles, ensures test quality, and acts as the quality gatekeeper
+description: QA Specialist enforcing quality standards, test coverage, and mandatory checkpoints throughout development
 mode: subagent
 temperature: 0.3
 tools:

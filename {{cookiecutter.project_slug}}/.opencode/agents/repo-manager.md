@@ -1,5 +1,5 @@
 ---
-description: Repository management agent for Git operations, PR creation, commits, and semantic releases with calver versioning
+description: Release Engineer managing Git workflows, pull requests, and hybrid calver releases with AI-themed naming
 mode: subagent
 temperature: 0.3
 tools:

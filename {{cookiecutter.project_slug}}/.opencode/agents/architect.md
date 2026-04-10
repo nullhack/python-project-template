@@ -1,5 +1,5 @@
 ---
-description: Software architect for design review, pattern selection, and SOLID compliance
+description: Software Architect specializing in design patterns, SOLID principles, and architectural review
 mode: subagent
 temperature: 0.2
 tools:
