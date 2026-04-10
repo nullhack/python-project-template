@@ -54,7 +54,7 @@ python-project-template/
 ## Release Engineering Process
 
 ### Semantic Versioning Strategy
-Following SemVer 2.0.0 specification: `v{major}.{minor}.{patch}`
+Following hybrid calver specification: `v{major}.{minor}.{YYYYMMDD}`
 - **Major (Breaking)**: API changes, cookiecutter variable modifications, structural changes
 - **Minor (Feature)**: New capabilities, agents, skills, backward-compatible enhancements
 - **Patch (Fix)**: Bug fixes, documentation updates, security patches
