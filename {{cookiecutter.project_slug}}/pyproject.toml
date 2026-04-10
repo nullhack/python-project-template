@@ -154,8 +154,9 @@ doc-build = "pdoc ./{{cookiecutter.package_name}} -o docs/api --search"
 doc-publish = """\
 task doc-build && \
 git checkout gh-pages 2>/dev/null || git checkout -b gh-pages && \
-git rm -rf . 2>/dev/null || true && \
-cp -r docs/api/* . && \
+git rm -rf . && \
+git clean -fd && \
+cp -r docs/api/. . && \
 git add -A && \
 git commit -m "Publish API documentation" && \
 git push origin gh-pages --force && \

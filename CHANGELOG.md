@@ -2,6 +2,22 @@
 
 All notable changes to this template will be documented in this file.
 
+## [v1.7.20260410] - Vivid Cardinal - 2026-04-10
+
+### Added
+- **QA-gated Epic Workflow** - Complete epic-based development with mandatory quality checkpoints at each phase
+- **Epic-workflow Skill** - Manages epic-based development with automatic feature progression
+- **EPICS.md Template** - Epic tracking and management file for generated projects
+
+### Changed
+- Updated all agent descriptions to use industry-standard roles (Development Lead, Software Architect, QA Specialist, Business Analyst, Release Engineer)
+- Removed model specifications from all agents to make template model-agnostic
+- Updated AGENTS.md to properly document all 5 generated project agents and all skills
+- Updated README.md with new workflow and agent roles
+
+### Fixed
+- Documentation now accurately reflects what exists in template
+
 ## [v1.6.20260409] - Guardian Owl - 2026-04-09
 
 ### Added
