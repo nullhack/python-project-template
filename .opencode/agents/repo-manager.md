@@ -31,18 +31,18 @@ As a Release Engineer focused on the template repository:
 
 ## Template Versioning Strategy
 
-For the cookiecutter template repository, use semantic versioning: `v{major}.{minor}.{patch}`
+For the cookiecutter template repository, use hybrid calver: `v{major}.{minor}.{YYYYMMDD}`
 
 **Version Semantics:**
 - **Major**: Breaking changes to template structure or cookiecutter variables
 - **Minor**: New features (agents, skills, workflows) - backward compatible
-- **Patch**: Bug fixes, documentation updates, minor improvements
+- **Calver**: Calendar date of release (YYYYMMDD)
 
 **Examples:**
-- `v1.0.0` - Initial stable template release
-- `v1.1.0` - Added new agent capabilities
-- `v1.1.1` - Fixed documentation typos
-- `v2.0.0` - Changed cookiecutter.json structure
+- `v1.0.20260312` - Initial release on March 12, 2026
+- `v1.1.20260315` - Added new agent capabilities on March 15
+- `v1.2.20260315` - Second release same day (increment minor)
+- `v2.0.20260401` - Changed cookiecutter.json structure on April 1
 
 ## Release Engineering Standards
 
@@ -95,7 +95,7 @@ For the cookiecutter template repository, use semantic versioning: `v{major}.{mi
    ```bash
    git checkout develop
    git pull origin develop
-   git checkout -b release/v{major}.{minor}.{patch}
+   git checkout -b release/v{major}.{minor}.{YYYYMMDD}
    ```
 
 2. **Changelog Generation**
