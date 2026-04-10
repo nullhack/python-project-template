@@ -8,6 +8,8 @@
 
 > **Ship production-ready Python projects faster with AI-powered development workflows**
 
+### Latest Release: [v1.7.20260410](https://github.com/nullhack/python-project-template/releases/tag/v1.7.20260410) - Vivid Cardinal
+
 Modern cookiecutter template delivering enterprise-grade Python projects with **OpenCode AI agents**, **TDD/BDD workflows**, and **zero-config quality standards**.
 
 ## ✨ What You Get
