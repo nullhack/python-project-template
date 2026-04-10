@@ -57,14 +57,24 @@ python-project-template/
 
 When developers use this template, they get:
 
-### AI-Powered Development Workflow
-1. **Feature Definition** → SOLID principles planning
-2. **Prototype Validation** → Quick scripts with real data
-3. **Test-Driven Development** → TDD tests with pytest/hypothesis
-4. **Signature Design** → Modern Python interfaces
-5. **Architecture Review** → AI architect approval
-6. **Implementation** → TDD methodology
-7. **Quality Assurance** → Comprehensive quality checks
+### Epic-Based Development with QA Gates
+1. **Requirements Gathering** → Business analyst interviews and analysis
+2. **QA Checkpoint** → Requirements completeness review
+3. **Test-Driven Development** → BDD tests with pytest/hypothesis
+4. **QA Checkpoint** → Test quality review
+5. **Design & Architecture** → Pattern selection and SOLID design
+6. **Implementation** → TDD methodology (Red-Green-Refactor)
+7. **QA Checkpoint** → SOLID/DRY/KISS compliance review
+8. **Final Quality** → Comprehensive quality checks
+9. **QA Checkpoint** → Final approval before feature completion
+10. **Automatic Progression** → System moves to next feature in epic
+
+### AI Agents with Industry Roles
+- **@developer** → Development lead with TDD workflow
+- **@architect** → Software architect for design patterns and standards
+- **@requirements-gatherer** → Business analyst for stakeholder requirements
+- **@overseer** → QA specialist with mandatory quality gates
+- **@repo-manager** → Repository and release management
 
 ### Repository Management
 - Hybrid versioning: `v1.2.20260302` (major.minor.calver)
@@ -73,14 +83,16 @@ When developers use this template, they get:
 - GitHub CLI integration
 
 ### Code Quality Standards
-- SOLID principles enforcement
-- Object calisthenics compliance
+- SOLID principles enforcement with architect review
+- DRY/KISS principles with overseer validation
+- Object calisthenics compliance (9 rules)
 - 100% test coverage requirement
 - Comprehensive linting with ruff
 - Static type checking with pyright
 - Property-based testing with Hypothesis
 - API documentation with pdoc
 - BDD-style test reports with pytest-html-plus
+- Mandatory QA gates that cannot be bypassed
 
 ## Template Usage
 
@@ -120,15 +132,19 @@ cookiecutter gh:your-username/python-project-template --checkout v1.2.20260312
 - **v1.3.20260313**: Added session-workflow skill
 - **v1.4.20260313**: Added AI-driven themed naming
 - **v1.5.20260403**: Replaced mkdocs with pdoc for API docs, added pytest-html-plus with BDD docstring display
+- **v1.6.20260410**: Added QA-gated epic workflow with business analyst and QA specialist agents
 
 ## Generated Project Features
 
 ### Agents Included in Generated Projects
-- **@developer**: Complete 7-phase development workflow
-- **@architect**: Design review and SOLID principles enforcement
+- **@developer**: Complete development workflow with mandatory QA gates
+- **@architect**: Software architect for design patterns and SOLID principles
+- **@requirements-gatherer**: Business analyst for stakeholder requirements
+- **@overseer**: QA specialist enforcing quality at checkpoints
 - **@repo-manager**: Git operations, PRs, and themed releases
 
 ### Skills Included in Generated Projects
+- **session-workflow**, **epic-workflow** (multi-session and epic management)
 - **feature-definition**, **prototype-script**, **tdd**
 - **signature-design**, **implementation**, **code-quality**
 - **git-release**, **pr-management**
@@ -136,14 +152,15 @@ cookiecutter gh:your-username/python-project-template --checkout v1.2.20260312
 
 ### Example Generated Project Usage
 ```bash
-# In a generated project
-@developer /skill feature-definition     # Define new feature
-@developer /skill prototype-script       # Create prototype
-@developer /skill tdd                # Write tests
-@architect                               # Get design approval
-@developer /skill implementation         # Implement feature
-@repo-manager /skill pr-management       # Create PR
-@repo-manager /skill git-release         # Create release
+# In a generated project - Epic-based workflow
+@requirements-gatherer               # Gather requirements
+@overseer                           # QA: Requirements review
+@developer /skill tdd               # Write tests  
+@overseer                           # QA: Test quality review
+@architect                          # Design approval
+@developer /skill implementation    # Implement feature
+@overseer                           # QA: Code quality review
+@developer /skill epic-workflow next-feature  # Auto-progress to next
 ```
 
 ## Template Development

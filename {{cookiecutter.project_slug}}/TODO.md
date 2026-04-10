@@ -1,76 +1,70 @@
 # {{cookiecutter.project_name}} - Development TODO
 
-This file tracks all development steps across AI sessions. Each session should read this file first, pick up from the last completed step, and update statuses before finishing.
+This file tracks current feature development within epics. For epic/feature tracking, see EPICS.md.
+Each session should read both TODO.md and EPICS.md to understand current state.
 
 **Convention:** `[ ]` = pending, `[x]` = done, `[~]` = in progress, `[-]` = skipped
 
-> **For AI agents:** Use `/skill session-workflow` for the full session start/end protocol.
+> **For AI agents:** Use `/skill session-workflow` and `/skill epic-workflow` for proper workflow management.
 
 ---
 
-## Phase 1: Project Foundation
+## Current Epic: Project Foundation
+## Current Feature: Project Setup
 
+### Phase 0: Initial Setup
 - [x] Project created via cookiecutter template
 - [ ] Review and update `README.md` with project-specific description
 - [ ] Install dependencies: `uv venv && uv pip install -e '.[dev]'`
 - [ ] Verify base tests pass: `task test`
+- [ ] Initialize EPICS.md with first business epic
+
+### QA Checkpoint
+- [ ] @overseer: Review project setup completeness
+- [ ] QA Status: ⏸️ Pending
 
 ---
 
-## Phase 2: Feature Definition
+## Feature Development Phases (Template)
 
-- [ ] Define core features using `/skill feature-definition`
-- [ ] Document requirements and acceptance criteria
-- [ ] Review SOLID principles compliance in design
+When starting a new feature, copy these phases:
 
----
+### Phase 1: Requirements Gathering
+- [ ] @requirements-gatherer: Conduct stakeholder interview
+- [ ] Create feature analysis document
+- [ ] Define acceptance criteria
+- [ ] QA: @overseer reviews requirements
 
-## Phase 3: Prototype & Validation
+### Phase 2: Feature Definition  
+- [ ] @developer /skill feature-definition
+- [ ] Document technical requirements
+- [ ] Update EPICS.md with feature details
 
-- [ ] Create prototype scripts using `/skill prototype-script`
-- [ ] Validate core concepts with real data
-- [ ] Document prototype outputs for implementation reference
+### Phase 3: Test Development
+- [ ] @developer /skill prototype-script (if needed)
+- [ ] @developer /skill tdd
+- [ ] Write BDD-style tests with Given/When/Then
+- [ ] QA: @overseer reviews test quality
 
----
+### Phase 4: Design & Architecture
+- [ ] @developer /skill signature-design
+- [ ] @architect: Review and approve design
+- [ ] Address architectural feedback
 
-## Phase 4: Test-Driven Development
+### Phase 5: Implementation
+- [ ] @developer /skill implementation
+- [ ] Implement using TDD (Red-Green-Refactor)
+- [ ] QA: @overseer reviews SOLID/DRY/KISS compliance
 
-- [ ] Write comprehensive test suite using `/skill tdd`
-- [ ] Ensure all tests fail initially (RED phase)
-- [ ] Cover unit, integration, and property-based tests
+### Phase 6: Final Quality Assurance
+- [ ] @developer /skill code-quality
+- [ ] Run all quality checks (lint, type-check, test)
+- [ ] QA: @overseer final approval
 
----
-
-## Phase 5: Architecture Review
-
-- [ ] Design interfaces using `/skill signature-design`
-- [ ] Request architecture review from `@architect`
-- [ ] Address any architectural concerns
-
----
-
-## Phase 6: Implementation
-
-- [ ] Implement features using `/skill implementation`
-- [ ] Make tests pass one at a time (GREEN phase)
-- [ ] Refactor for quality (REFACTOR phase)
-
----
-
-## Phase 7: Quality Assurance
-
-- [ ] Run linting: `task lint`
-- [ ] Run type checking: `task static-check`
-- [ ] Verify coverage ≥ {{cookiecutter.minimum_coverage}}%: `task test`
-- [ ] Run property-based tests with Hypothesis
-
----
-
-## Phase 8: Release
-
-- [ ] Create release using `@repo-manager /skill git-release`
-- [ ] Update documentation
-- [ ] Deploy if applicable
+### Phase 7: Feature Completion
+- [ ] Update EPICS.md - mark feature complete
+- [ ] @developer /skill epic-workflow next-feature
+- [ ] Proceed to next feature or close epic
 
 ---
 

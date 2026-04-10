@@ -40,6 +40,7 @@ This project includes custom skills for OpenCode:
 
 ### Session Management
 - **session-workflow**: Manage multi-session development - read TODO.md, continue from last checkpoint, update progress and hand off cleanly
+- **epic-workflow**: Manage epic-based development with automatic feature progression and mandatory QA gates
 
 ### Development Workflow
 - **feature-definition**: Define features with SOLID principles and clear requirements
@@ -59,8 +60,10 @@ This project includes custom skills for OpenCode:
 
 ## Available Agents
 
-- **developer**: Main development agent with complete 7-phase TDD workflow
-- **architect**: Design review and approval agent for SOLID/object calisthenics compliance
+- **developer**: Main development agent with complete TDD workflow and QA integration
+- **architect**: Software architect for design review, pattern selection, and SOLID compliance
+- **requirements-gatherer**: Business analyst for requirements elicitation and feature analysis
+- **overseer**: Quality assurance specialist enforcing standards at mandatory checkpoints
 - **repo-manager**: Repository management for Git operations, PRs, commits, and releases
 
 ## Development Commands
@@ -189,33 +192,67 @@ opencode
 
 Then run `/init` to generate a fresh `AGENTS.md` based on your project's current state.
 
-### Example Workflow
+### Example Workflows
 
-#### Starting a session (always do this first)
+#### Starting a new project
 ```bash
-# Read project state and orient for this session
-@developer /skill session-workflow
+# 1. Start with requirements gathering
+@requirements-gatherer  # Interview stakeholders, create analysis
+@architect             # Review requirements and approve approach
+@developer /skill epic-workflow start-epic "Core Features"
 ```
 
-#### Full feature development workflow
+#### Epic-based feature development with QA gates
 ```bash
-# 1. Define and implement a feature
-@developer /skill feature-definition
-@developer /skill prototype-script  
-@developer /skill tdd
-@developer /skill signature-design
-@architect # Review design
-@developer /skill implementation
-@developer /skill code-quality
+# For each feature in the epic:
 
-# 2. Create PR and manage repository
+# 1. Requirements & Analysis
+@requirements-gatherer  # Gather detailed requirements
+@overseer              # QA checkpoint: requirements review
+
+# 2. Test Development
+@developer /skill tdd  # Write BDD tests
+@overseer             # QA checkpoint: test quality review
+
+# 3. Design & Architecture  
+@developer /skill signature-design
+@architect            # Approve design and patterns
+
+# 4. Implementation
+@developer /skill implementation
+@overseer             # QA checkpoint: SOLID/DRY/KISS review
+
+# 5. Final Quality
+@developer /skill code-quality
+@overseer             # QA checkpoint: final approval
+
+# 6. Feature completion - system auto-progresses to next
+@developer /skill epic-workflow next-feature
+```
+
+#### Creating releases
+```bash
+# After all epic features complete
+@overseer             # Final pre-release QA review
 @repo-manager /skill pr-management
 @repo-manager /skill git-release
 ```
 
-#### Ending a session (always do this last)
+#### Session management
 ```bash
-# Update TODO.md with progress and handoff notes, then commit
-@developer /skill session-workflow
-# Follow the "Session End Protocol" in the skill
+# Start of session
+@developer /skill session-workflow  # Read TODO.md, understand state
+
+# End of session
+@developer /skill session-workflow  # Update TODO.md, commit changes
 ```
+
+### Quality Assurance Protocol
+
+**The @overseer agent enforces mandatory QA checkpoints:**
+1. After requirements gathering - completeness review
+2. After TDD phase - test quality review
+3. After implementation - SOLID/DRY/KISS review
+4. Before feature completion - final approval
+
+**Development cannot proceed without @overseer approval at each gate.**
