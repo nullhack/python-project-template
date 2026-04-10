@@ -1,7 +1,6 @@
 ---
 description: Repository management agent for Git operations, PR creation, commits, and semantic releases with calver versioning
 mode: subagent
-model: anthropic/claude-sonnet-4-20250514
 temperature: 0.3
 tools:
   write: false

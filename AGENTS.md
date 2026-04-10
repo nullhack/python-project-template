@@ -14,14 +14,17 @@ This is the meta repository for the AI-Enhanced Python Project Cookiecutter Temp
 
 ## Meta Agent for Template Management
 
-### Available Agent
+### Available Agents
 
-- **template-manager**: Meta agent for managing the cookiecutter template repository itself
+- **template-manager**: Meta agent for managing the cookiecutter template repository itself - focuses on template testing, validation, and releases
+- **repo-manager**: Repository management for template PRs, commits, and releases - handles git operations and GitHub integration
 
 ### Available Skills
 
 - **template-test**: Test cookiecutter template generation with various configurations
 - **template-release**: Manage template releases with semantic versioning
+- **git-release**: Create semantic releases for the template repository
+- **pr-management**: Create and manage pull requests for template improvements
 
 ## Template Structure
 
@@ -33,8 +36,12 @@ python-project-template/
 │   │   ├── agents/
 │   │   │   ├── developer.md              # Main development agent
 │   │   │   ├── architect.md              # Design review agent
+│   │   │   ├── requirements-gatherer.md  # Business analyst agent
+│   │   │   ├── overseer.md               # QA specialist agent
 │   │   │   └── repo-manager.md           # Repository management agent
 │   │   └── skills/
+│   │       ├── session-workflow/         # Session state management
+│   │       ├── epic-workflow/            # Epic-based development
 │   │       ├── feature-definition/       # SOLID feature planning
 │   │       ├── prototype-script/         # Quick validation scripts
 │   │       ├── tdd/                      # Test-driven development
@@ -42,14 +49,20 @@ python-project-template/
 │   │       ├── implementation/           # TDD implementation
 │   │       ├── code-quality/             # Quality enforcement
 │   │       ├── git-release/              # Release management
-│   │       └── pr-management/            # Pull request workflows
+│   │       ├── pr-management/            # Pull request workflows
+│   │       ├── create-skill/             # Create new skills
+│   │       └── create-agent/             # Create new agents
 │   ├── pyproject.toml                    # Project configuration
 │   └── AGENTS.md                         # Generated project AI documentation
 ├── .opencode/                            # Meta agents for template itself
-│   ├── agents/template-manager.md        # This meta agent
+│   ├── agents/
+│   │   ├── template-manager.md           # Template development and management
+│   │   └── repo-manager.md               # Template repository operations
 │   └── skills/
 │       ├── template-test/                # Template testing
-│       └── template-release/             # Template release management
+│       ├── template-release/             # Template release management
+│       ├── git-release/                  # Semantic releases for template
+│       └── pr-management/                # Pull request workflows for template
 └── docs/                                 # Template documentation
 ```
 
@@ -183,6 +196,20 @@ cookiecutter gh:your-username/python-project-template --checkout v1.2.20260312
 3. Test thoroughly with various configurations
 4. Create PR with description of changes
 5. Template maintainers will review and merge
+
+## Template Management Workflow
+
+### Agent Roles in Template Development
+- **@template-manager**: Handles template-specific tasks like testing generation, validating cookiecutter variables, and releasing new template versions
+- **@repo-manager**: Manages the template repository itself - creating PRs, commits, GitHub releases, and handling version control
+
+### Example Template Development
+```bash
+# Working on template improvements
+@template-manager /skill template-test    # Test template generation
+@repo-manager /skill pr-management        # Create PR for changes
+@template-manager /skill template-release # Release new template version
+```
 
 ## Integration with OpenCode
 

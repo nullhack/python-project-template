@@ -1,7 +1,6 @@
 ---
-description: Specialized development agent for {{cookiecutter.project_name}} - handles code implementation, debugging, and feature development
+description: Main development agent with complete TDD workflow and QA integration
 mode: subagent
-model: anthropic/claude-sonnet-4-20250514
 temperature: 0.3
 tools:
   write: true

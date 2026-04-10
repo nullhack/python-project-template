@@ -1,7 +1,6 @@
 ---
 description: Business analyst agent that gathers requirements, creates analysis documents, and prepares feature specifications for architect approval
 mode: subagent
-model: anthropic/claude-sonnet-4-20250514
 temperature: 0.4
 tools:
   write: true

@@ -1,7 +1,6 @@
 ---
 description: Meta agent for managing the cookiecutter template repository itself - releases, testing, and documentation
 mode: subagent
-model: anthropic/claude-sonnet-4-20250514
 temperature: 0.2
 tools:
   write: true

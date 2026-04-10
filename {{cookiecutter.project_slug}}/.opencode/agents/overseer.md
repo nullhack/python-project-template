@@ -1,7 +1,6 @@
 ---
 description: Quality Assurance specialist that reviews code against SOLID/DRY/KISS principles, ensures test quality, and acts as the quality gatekeeper
 mode: subagent
-model: anthropic/claude-sonnet-4-20250514
 temperature: 0.3
 tools:
   write: false
