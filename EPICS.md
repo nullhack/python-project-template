@@ -27,21 +27,41 @@ This file tracks all epics and their features. Each feature goes through mandato
 
 ---
 
-## Epic: [Your First Epic Name]
+## Epic: V2 Template Initialization System
 **Status**: ⏸️ Pending
-**Business Value**: [Why this epic provides value to users/business]
+**Business Value**: Replace cookiecutter with intelligent subagent-based project initialization that integrates seamlessly with AI-enhanced development workflows
 
 ### Features:
-1. **[Feature 1 Name]** - Status: ⏸️ Pending
+1. **Project Initializer Agent** - Status: ⏸️ Pending
    - Acceptance Criteria:
-     - [Specific measurable criterion]
-     - [Another criterion]
+     - Dedicated @project-initializer agent created
+     - Interactive metadata collection workflow
+     - Input validation for all project parameters
+     - Integration with OpenCode agent ecosystem
    - QA Status: Not Started
    
-2. **[Feature 2 Name]** - Status: ⏸️ Pending
+2. **Template File Processing** - Status: ⏸️ Pending
    - Acceptance Criteria:
-     - [Specific measurable criterion]
-     - [Another criterion]
+     - Minimal .template files for dynamic content only
+     - Placeholder replacement system ({{VARIABLE_NAME}} format)
+     - Package directory renaming functionality
+     - Error handling for file operations
+   - QA Status: Not Started
+
+3. **Clean State Initialization** - Status: ⏸️ Pending
+   - Acceptance Criteria:
+     - Fresh TODO.md with project-specific content
+     - Clean EPICS.md with template structure
+     - Git repository initialization with initial commit
+     - Development environment setup (uv venv, dependencies)
+   - QA Status: Not Started
+
+4. **Setup Validation & Testing** - Status: ⏸️ Pending
+   - Acceptance Criteria:
+     - Complete setup process under 2 minutes
+     - All tests pass after initialization
+     - All OpenCode agents operational
+     - Comprehensive error messages for failures
    - QA Status: Not Started
 
 ---

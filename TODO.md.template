@@ -1,4 +1,4 @@
-# Python Project Template - Development TODO
+# PythonProjectTemplate - Development TODO
 
 This file tracks current feature development within epics. For epic/feature tracking, see EPICS.md.
 Each session should read both TODO.md and EPICS.md to understand current state.
@@ -9,24 +9,45 @@ Each session should read both TODO.md and EPICS.md to understand current state.
 
 ---
 
-## Current Epic: V2 Template Initialization System
-## Current Feature: Project Initializer Agent
+## Current Epic: Project Initialization
+## Current Feature: Initial Setup
 
 ### Phase 1: Requirements Gathering
-- [x] @requirements-gatherer: Conducted stakeholder interview
-- [x] Created feature analysis document (docs/features/v2-template-initialization-analysis.md)
-- [x] Defined acceptance criteria for V2 initiative
+- [ ] @requirements-gatherer: Define project requirements and scope
+- [ ] Create feature analysis document
+- [ ] Define acceptance criteria for first epic
 - [ ] QA: @overseer reviews requirements completeness
 
-### Phase 2: Agent Architecture Design
-- [ ] @architect: Review V2 analysis and approve approach
-- [ ] Design project-initializer agent specification
-- [ ] Define template file processing architecture
-- [ ] Approve placeholder format and validation rules
+### Phase 2: Feature Definition  
+- [ ] @developer /skill feature-definition
+- [ ] Document technical requirements
+- [ ] Update EPICS.md with feature details
 
-### QA Checkpoint
-- [ ] @overseer: Review V2 requirements analysis
-- [ ] QA Status: ⏸️ Pending - Requirements review needed
+### Phase 3: Test Development
+- [ ] @developer /skill prototype-script (if needed)
+- [ ] @developer /skill tdd
+- [ ] Write BDD-style tests with Given/When/Then
+- [ ] QA: @overseer reviews test quality
+
+### Phase 4: Design & Architecture
+- [ ] @developer /skill signature-design
+- [ ] @architect: Review and approve design
+- [ ] Address architectural feedback
+
+### Phase 5: Implementation
+- [ ] @developer /skill implementation
+- [ ] Implement using TDD (Red-Green-Refactor)
+- [ ] QA: @overseer reviews SOLID/DRY/KISS compliance
+
+### Phase 6: Final Quality Assurance
+- [ ] @developer /skill code-quality
+- [ ] Run all quality checks (lint, type-check, test)
+- [ ] QA: @overseer final approval
+
+### Phase 7: Feature Completion
+- [ ] Update EPICS.md - mark feature complete
+- [ ] @developer /skill epic-workflow next-feature
+- [ ] Proceed to next feature or close epic
 
 ---
 
@@ -77,13 +98,13 @@ When starting a new feature, copy these phases:
 
 | Date       | Session Summary                                    |
 |------------|----------------------------------------------------|
-| 2026-04-10 | V2 requirements gathering completed, analysis document created |
+| YYYY-MM-DD | Project initialized from template                 |
 
 ---
 
 ## Notes for Next Session
 
-- **Next Step**: @architect review of V2 analysis document (docs/features/v2-template-initialization-analysis.md)
-- **Key Decisions Made**: Dedicated agent, minimal templating, fresh projects only, no V1 compatibility
-- **Focus Areas**: Template file processing architecture, agent integration design, error handling strategy
-- **Deliverable**: Approved architectural design for project-initializer agent implementation
+- **Next Step**: Define first feature requirements
+- **Key Decisions Made**: Project structure established
+- **Focus Areas**: Core functionality definition, test strategy, architecture planning
+- **Deliverable**: Clear project roadmap and first feature specification

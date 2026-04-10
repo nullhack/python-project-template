@@ -60,17 +60,11 @@ This project includes custom skills for OpenCode:
 
 ## Available Agents
 
-<<<<<<< HEAD
+- **setup-project**: Project initialization agent for V2 template system - transforms template into customized project
 - **developer**: Main development agent with complete TDD workflow and QA integration
 - **architect**: Software architect for design review, pattern selection, and SOLID compliance
 - **requirements-gatherer**: Business analyst for requirements elicitation and feature analysis
 - **overseer**: Quality assurance specialist enforcing standards at mandatory checkpoints
-=======
-- **developer**: Main development agent with complete 7-phase TDD workflow
-- **architect**: Design review and approval agent for SOLID/object calisthenics compliance
-- **overseer**: Quality assurance agent - reviews work after each test implementation, requests changes if needed
-- **requirements-gatherer**: Gathers project requirements, updates documentation, creates analysis for architect
->>>>>>> origin/main
 - **repo-manager**: Repository management for Git operations, PRs, commits, and releases
 
 ## Development Commands
