@@ -6,10 +6,10 @@ readme = "README.md"
 requires-python = ">=3.13"
 license = { file = "LICENSE" }
 authors = [
-    { name = "USER_NAME", email = "USER@EMAIL" }
+    { name = "USER_NAME", email = "user@example.com" }
 ]
 maintainers = [
-    { name = "USER_NAME", email = "USER@EMAIL" }
+    { name = "USER_NAME", email = "user@example.com" }
 ]
 dependencies = [
     "dotenv>=0.9.9",
@@ -25,7 +25,7 @@ dev = [
     "pdoc>=14.0",
     "pytest>=8.3.5",
     "pytest-cov>=6.1.1",
-    "pytest-html-plus>=0.5",
+    "pytest-html>=4.1.1",
     "pytest-mock>=3.14.0",
     "ruff>=0.11.5",
     "taskipy>=1.14.1",
@@ -96,8 +96,8 @@ addopts = """
 --color=yes \
 --tb=short \
 -q \
---html-output=docs/tests \
---json-report=final_report.json \
+--html=docs/tests/report.html \
+--self-contained-html \
 """
 testpaths = [
     "tests",

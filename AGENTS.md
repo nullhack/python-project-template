@@ -149,7 +149,7 @@ task test
 ```
 
 ### Checking Test Compliance
-- **pytest-html-plus report**: `docs/tests/report.html` - BDD docstrings displayed as test names
+- **pytest-html report**: `docs/tests/report.html` - BDD docstrings displayed as test names
 - **Coverage report**: `docs/coverage/index.html` - View coverage by file
 
 ## Code Quality Standards

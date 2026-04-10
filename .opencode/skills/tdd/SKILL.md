@@ -70,7 +70,7 @@ For complete test patterns and guidelines, see:
 
 ## BDD Test Docstrings
 
-All test functions must include Given/When/Then docstrings for the pytest-html-plus report.
+All test functions must include Given/When/Then docstrings for the pytest-html report.
 
 ### Format
 
@@ -110,7 +110,7 @@ def test_divide_by_zero_should_raise_error():
 
 ### Why BDD Docstrings?
 
-1. **pytest-html-plus**: The HTML report displays docstrings as test names, making it easy to understand what each test verifies
+1. **pytest-html**: The HTML report displays docstrings as test names, making it easy to understand what each test verifies
 2. **Documentation**: Docstrings serve as living documentation of test intent
 3. **Debugging**: When a test fails, the docstring immediately shows what scenario was being tested
 

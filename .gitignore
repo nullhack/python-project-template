@@ -11,8 +11,7 @@ __pycache__/
 docs/html
 
 # Remove tests and coverage reports
-docs/cov-report
-docs/pytest_report.html
+docs/
 
 # C extensions
 *.so
