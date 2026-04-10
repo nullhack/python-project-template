@@ -1,27 +1,30 @@
-# Python Project Template - AI-Enhanced Development
+# Python Project Template - Enterprise Development Framework
 
-This is the meta repository for the AI-Enhanced Python Project Cookiecutter Template.
+This repository contains an enterprise-grade Cookiecutter template for Python projects with integrated AI-enhanced development workflows.
 
 ## Template Overview
 
-| Information | Details |
-|-------------|---------|
-| **Purpose** | Create AI-enhanced Python projects with comprehensive development workflows |
-| **AI Integration** | OpenCode agents and skills for TDD development |
-| **Quality Standards** | SOLID principles, object calisthenics, 100% coverage |
-| **Versioning** | Hybrid major.minor.calver for generated projects |
-| **Architecture** | Test-driven development with architect approval workflow |
+| Component | Description |
+|-----------|-------------|
+| **Purpose** | Generate Python projects with enterprise development practices and AI-powered workflows |
+| **Methodology** | Test-Driven Development (TDD) with mandatory quality gates |
+| **Standards** | SOLID principles, Object Calisthenics, DRY/KISS, 100% test coverage |
+| **Versioning** | Semantic versioning for template, hybrid calver for generated projects |
+| **Architecture** | Domain-driven design with architectural review process |
 
-## Meta Agent for Template Management
+## Template Management Team
 
-### Available Agent
+### DevOps and Release Engineering
 
-- **template-manager**: Meta agent for managing the cookiecutter template repository itself
+- **template-manager**: DevOps Engineer specializing in template lifecycle management, CI/CD pipelines, and quality assurance
+- **repo-manager**: Release Engineer managing version control, pull requests, and semantic releases
 
 ### Available Skills
 
 - **template-test**: Test cookiecutter template generation with various configurations
 - **template-release**: Manage template releases with semantic versioning
+- **git-release**: Create semantic releases for the template repository
+- **pr-management**: Create and manage pull requests for template improvements
 
 ## Template Structure
 
@@ -33,10 +36,17 @@ python-project-template/
 │   │   ├── agents/
 │   │   │   ├── developer.md              # Main development agent
 │   │   │   ├── architect.md              # Design review agent
+<<<<<<< HEAD
+│   │   │   ├── requirements-gatherer.md  # Business analyst agent
+│   │   │   ├── overseer.md               # QA specialist agent
+=======
 │   │   │   ├── overseer.md               # Quality assurance agent
 │   │   │   ├── requirements-gatherer.md # Requirements gathering agent
+>>>>>>> origin/main
 │   │   │   └── repo-manager.md           # Repository management agent
 │   │   └── skills/
+│   │       ├── session-workflow/         # Session state management
+│   │       ├── epic-workflow/            # Epic-based development
 │   │       ├── feature-definition/       # SOLID feature planning
 │   │       ├── prototype-script/         # Quick validation scripts
 │   │       ├── tdd/                      # Test-driven development
@@ -44,14 +54,20 @@ python-project-template/
 │   │       ├── implementation/           # TDD implementation
 │   │       ├── code-quality/             # Quality enforcement
 │   │       ├── git-release/              # Release management
-│   │       └── pr-management/            # Pull request workflows
+│   │       ├── pr-management/            # Pull request workflows
+│   │       ├── create-skill/             # Create new skills
+│   │       └── create-agent/             # Create new agents
 │   ├── pyproject.toml                    # Project configuration
 │   └── AGENTS.md                         # Generated project AI documentation
 ├── .opencode/                            # Meta agents for template itself
-│   ├── agents/template-manager.md        # This meta agent
+│   ├── agents/
+│   │   ├── template-manager.md           # Template development and management
+│   │   └── repo-manager.md               # Template repository operations
 │   └── skills/
 │       ├── template-test/                # Template testing
-│       └── template-release/             # Template release management
+│       ├── template-release/             # Template release management
+│       ├── git-release/                  # Semantic releases for template
+│       └── pr-management/                # Pull request workflows for template
 └── docs/                                 # Template documentation
 ```
 
@@ -59,14 +75,24 @@ python-project-template/
 
 When developers use this template, they get:
 
-### AI-Powered Development Workflow
-1. **Feature Definition** → SOLID principles planning
-2. **Prototype Validation** → Quick scripts with real data
-3. **Test-Driven Development** → TDD tests with pytest/hypothesis
-4. **Signature Design** → Modern Python interfaces
-5. **Architecture Review** → AI architect approval
-6. **Implementation** → TDD methodology
-7. **Quality Assurance** → Comprehensive quality checks
+### Epic-Based Development with QA Gates
+1. **Requirements Gathering** → Business analyst interviews and analysis
+2. **QA Checkpoint** → Requirements completeness review
+3. **Test-Driven Development** → BDD tests with pytest/hypothesis
+4. **QA Checkpoint** → Test quality review
+5. **Design & Architecture** → Pattern selection and SOLID design
+6. **Implementation** → TDD methodology (Red-Green-Refactor)
+7. **QA Checkpoint** → SOLID/DRY/KISS compliance review
+8. **Final Quality** → Comprehensive quality checks
+9. **QA Checkpoint** → Final approval before feature completion
+10. **Automatic Progression** → System moves to next feature in epic
+
+### AI Agents with Industry Roles
+- **@developer** → Development lead with TDD workflow and QA integration
+- **@architect** → Software architect for design patterns and SOLID principles
+- **@requirements-gatherer** → Business analyst using BABOK principles  
+- **@overseer** → QA specialist with mandatory quality checkpoints
+- **@repo-manager** → Release engineer for repository operations
 
 ### Repository Management
 - Hybrid versioning: `v1.2.20260302` (major.minor.calver)
@@ -75,14 +101,16 @@ When developers use this template, they get:
 - GitHub CLI integration
 
 ### Code Quality Standards
-- SOLID principles enforcement
-- Object calisthenics compliance
+- SOLID principles enforcement with architect review
+- DRY/KISS principles with overseer validation
+- Object calisthenics compliance (9 rules)
 - 100% test coverage requirement
 - Comprehensive linting with ruff
 - Static type checking with pyright
 - Property-based testing with Hypothesis
 - API documentation with pdoc
 - BDD-style test reports with pytest-html-plus
+- Mandatory QA gates that cannot be bypassed
 
 ## Template Usage
 
@@ -122,17 +150,26 @@ cookiecutter gh:your-username/python-project-template --checkout v1.2.20260312
 - **v1.3.20260313**: Added session-workflow skill
 - **v1.4.20260313**: Added AI-driven themed naming
 - **v1.5.20260403**: Replaced mkdocs with pdoc for API docs, added pytest-html-plus with BDD docstring display
+- **v1.6.20260410**: Added QA-gated epic workflow with business analyst and QA specialist agents
 
 ## Generated Project Features
 
 ### Agents Included in Generated Projects
+<<<<<<< HEAD
+- **@developer**: Complete development workflow with mandatory QA gates
+- **@architect**: Software architect for design patterns and SOLID principles
+- **@requirements-gatherer**: Business analyst for stakeholder requirements
+- **@overseer**: QA specialist enforcing quality at checkpoints
+=======
 - **@developer**: Complete 7-phase development workflow
 - **@architect**: Design review and SOLID principles enforcement
 - **@overseer**: Quality assurance - reviews work after each test implementation
 - **@requirements-gatherer**: Gathers requirements, updates docs, creates analysis for architect
+>>>>>>> origin/main
 - **@repo-manager**: Git operations, PRs, and themed releases
 
 ### Skills Included in Generated Projects
+- **session-workflow**, **epic-workflow** (multi-session and epic management)
 - **feature-definition**, **prototype-script**, **tdd**
 - **signature-design**, **implementation**, **code-quality**
 - **git-release**, **pr-management**
@@ -140,6 +177,17 @@ cookiecutter gh:your-username/python-project-template --checkout v1.2.20260312
 
 ### Example Generated Project Usage
 ```bash
+<<<<<<< HEAD
+# In a generated project - Epic-based workflow
+@requirements-gatherer               # Gather requirements
+@overseer                           # QA: Requirements review
+@developer /skill tdd               # Write tests  
+@overseer                           # QA: Test quality review
+@architect                          # Design approval
+@developer /skill implementation    # Implement feature
+@overseer                           # QA: Code quality review
+@developer /skill epic-workflow next-feature  # Auto-progress to next
+=======
 # In a generated project
 
 # 0. Start by gathering requirements (new projects)
@@ -160,6 +208,7 @@ cookiecutter gh:your-username/python-project-template --checkout v1.2.20260312
 # 2. Manage repository
 @repo-manager /skill pr-management       # Create PR
 @repo-manager /skill git-release         # Create release
+>>>>>>> origin/main
 ```
 
 ## Template Development
@@ -182,6 +231,20 @@ cookiecutter gh:your-username/python-project-template --checkout v1.2.20260312
 3. Test thoroughly with various configurations
 4. Create PR with description of changes
 5. Template maintainers will review and merge
+
+## Template Management Workflow
+
+### Agent Roles in Template Development
+- **@template-manager**: Handles template-specific tasks like testing generation, validating cookiecutter variables, and releasing new template versions
+- **@repo-manager**: Manages the template repository itself - creating PRs, commits, GitHub releases, and handling version control
+
+### Example Template Development
+```bash
+# Working on template improvements
+@template-manager /skill template-test    # Test template generation
+@repo-manager /skill pr-management        # Create PR for changes
+@template-manager /skill template-release # Release new template version
+```
 
 ## Integration with OpenCode
 

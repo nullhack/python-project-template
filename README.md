@@ -12,12 +12,12 @@ Modern cookiecutter template delivering enterprise-grade Python projects with **
 
 ## ✨ What You Get
 
-🤖 **AI-Powered Development** - OpenCode agents for architecture review, TDD implementation, and repository management  
-🏗️ **SOLID Architecture** - Object calisthenics, dependency inversion, and protocol-based design  
-⚡ **Zero-Config Setup** - UV package manager, Ruff formatting, PyTest + Hypothesis testing  
-🎯 **Quality Enforced** - 100% coverage, static typing, property-based testing  
-🔄 **Smart Releases** - Calver versioning with AI-generated themed names  
-📋 **Complete Workflows** - 7-phase development cycle from prototype to production
+🤖 **Enterprise AI Team** - 5 specialized agents: Developer, Architect, Business Analyst, QA Specialist, Release Engineer  
+🏗️ **SOLID Architecture** - Object Calisthenics, Dependency Inversion, Protocol-based design with architect review  
+⚡ **Zero-Config Setup** - UV package manager, Ruff formatting, pytest + Hypothesis testing  
+🎯 **Mandatory QA Gates** - 4 quality checkpoints enforced by QA specialist throughout development  
+🔄 **Smart Releases** - Hybrid calver versioning with AI-generated themed names  
+📋 **Epic-Based Workflow** - Requirements-driven development with automatic feature progression
 
 ## 🎯 Perfect For
 
@@ -56,8 +56,9 @@ cd your-project-name
 opencode
 /init
 
-# Start developing with AI assistance
-@developer /skill feature-definition
+# Start an epic with requirements gathering
+@requirements-gatherer  # Business analysis
+@developer /skill epic-workflow start-epic "MVP Features"
 ```
 
 ### Instant Development Ready
@@ -77,15 +78,18 @@ task doc-serve # Live documentation server
 
 ## 🏛️ Architecture & Workflow
 
-### 7-Phase AI Development Cycle
+### Epic-Based Development with Mandatory QA Gates
 
-1. **Feature Definition** → SOLID principles planning with acceptance criteria
-2. **Prototype Validation** → Quick scripts with real data capture
-3. **Test-Driven Development** → BDD-style tests using pytest + hypothesis  
-4. **Signature Design** → Protocol-based interfaces with type safety
-5. **Architecture Review** → AI architect validates SOLID compliance
-6. **Implementation** → Method-by-method TDD with real prototype data
-7. **Quality Assurance** → Automated quality gates and deployment
+1. **Requirements Gathering** → Business analyst conducts stakeholder interviews
+2. **QA Gate #1** → Requirements completeness review by QA specialist
+3. **Test-Driven Development** → BDD-style tests with pytest + Hypothesis
+4. **QA Gate #2** → Test quality and coverage review
+5. **Design & Architecture** → Pattern selection and SOLID design by architect
+6. **Implementation** → TDD methodology with Red-Green-Refactor cycle
+7. **QA Gate #3** → SOLID/DRY/KISS compliance review
+8. **Final Quality** → Comprehensive quality checks
+9. **QA Gate #4** → Final approval before feature completion
+10. **Automatic Progression** → System advances to next feature in epic
 
 ### Smart Release Management
 
@@ -103,10 +107,12 @@ task doc-serve # Live documentation server
 - Ruff for linting and formatting (replaces 8+ tools)
 - PyTest + Hypothesis for comprehensive testing
 
-**AI Integration**  
-- OpenCode agents for development automation
-- Architect agent for design review and SOLID compliance
-- Repository manager for releases and PR workflows
+**AI Integration - Your Enterprise Development Team**  
+- **@developer**: Development Lead implementing TDD workflow with QA integration
+- **@architect**: Software Architect ensuring SOLID principles and design patterns
+- **@requirements-gatherer**: Business Analyst using BABOK methodology
+- **@overseer**: QA Specialist enforcing mandatory quality checkpoints
+- **@repo-manager**: Release Engineer handling versioning and deployments
 
 **Quality Assurance**
 - 100% test coverage requirement
@@ -128,7 +134,9 @@ task doc-serve # Live documentation server
 - [x] 🏗️ SOLID architecture enforcement with object calisthenics  
 - [x] 🤖 Automated repository management with smart releases
 - [x] ⚡ Modern toolchain (UV, Ruff, PyTest, Hypothesis)
-- [ ] 🌐 Multi-language template support (TypeScript, Rust)
+- [x] 📋 Epic-based workflow with automatic feature progression
+- [x] 🎯 Mandatory QA gates with dedicated QA specialist agent
+- [x] 💼 Business analyst agent for requirements gathering
 - [ ] 🔒 Advanced security scanning and SBOM generation
 - [ ] 📊 Performance benchmarking and optimization workflows
 
