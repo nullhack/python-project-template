@@ -1,185 +1,195 @@
-# 🚀 AI-Enhanced Python Project Template
+# Python Project Template
 
 [![Contributors][contributors-shield]][contributors-url]
 [![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
 [![MIT License][license-shield]][license-url]
+[![Coverage](https://img.shields.io/badge/coverage-100%25-brightgreen?style=for-the-badge)](docs/coverage/index.html)
 
-> **Ship production-ready Python projects faster with AI-powered development workflows**
+> Python template with some awesome tools to quickstart any Python project
 
-### Latest Release: [v1.7.20260410](https://github.com/nullhack/python-project-template/releases/tag/v1.7.20260410) - Vivid Cardinal
+**AI-Enhanced Python Project** built with enterprise-grade architecture, TDD workflows, and zero-config quality standards.
 
-Modern cookiecutter template delivering enterprise-grade Python projects with **OpenCode AI agents**, **TDD/BDD workflows**, and **zero-config quality standards**.
+---
 
-## ✨ What You Get
-
-🤖 **Enterprise AI Team** - 5 specialized agents: Developer, Architect, Business Analyst, QA Specialist, Release Engineer  
-🏗️ **SOLID Architecture** - Object Calisthenics, Dependency Inversion, Protocol-based design with architect review  
-⚡ **Zero-Config Setup** - UV package manager, Ruff formatting, pytest + Hypothesis testing  
-🎯 **Mandatory QA Gates** - 4 quality checkpoints enforced by QA specialist throughout development  
-🔄 **Smart Releases** - Hybrid calver versioning with AI-generated themed names  
-📋 **Epic-Based Workflow** - Requirements-driven development with automatic feature progression
-
-## 🎯 Perfect For
-
-- **Startups** building MVPs with enterprise standards
-- **Teams** needing consistent code quality and architecture
-- **Developers** wanting AI-assisted TDD/BDD workflows
-- **Projects** requiring rapid iteration with zero technical debt
-
-## 🚀 Quick Start
-
-### Prerequisites
-
-Install the required tools:
+## ⚡ Quick Start
 
 ```bash
-# Install OpenCode AI assistant
-curl -fsSL https://opencode.ai/install.sh | sh
+# Clone and setup
+git clone https://github.com/nullhack/python-project-template
+cd python-project-template
 
-# Install UV package manager (replaces pip/poetry/virtualenv)
+# Install UV package manager (if not installed)
 curl -LsSf https://astral.sh/uv/install.sh | sh
 
-# Install Cookiecutter
-pip install cookiecutter
-```
-
-### Create Your Project
-
-```bash
-# Generate your AI-enhanced Python project
-cookiecutter gh:nullhack/python-project-template
-
-# Enter your project directory
-cd your-project-name
-
 # Initialize AI development environment
-opencode
-/init
+opencode && /init
 
-# Start an epic with requirements gathering
-@requirements-gatherer  # Business analysis
-@developer /skill epic-workflow start-epic "MVP Features"
-```
-
-### Instant Development Ready
-
-```bash
-# Install dependencies and activate virtual environment
+# Setup development environment
 uv venv && uv pip install -e '.[dev]'
 
-# Run the complete development workflow
-task test     # 100% coverage + property-based tests
-task lint     # Ruff formatting + static analysis  
-task doc-serve # Live documentation server
+# Validate everything works
+task test && task lint && task static-check
+```
 
-# Deploy with confidence
+## 🤖 AI-Powered Development
+
+This project includes built-in AI agents to accelerate your development.
+
+### Multi-Session Development
+
+Complex projects are developed across multiple AI sessions. `TODO.md` at the root acts as the shared state — any AI agent can pick up exactly where the last session stopped.
+
+```bash
+# Start any session: read state, orient, continue
+@developer /skill session-workflow
+
+# End any session: update TODO.md, commit progress, hand off
+@developer /skill session-workflow
+```
+
+### Feature Development Workflow
+
+```bash
+# Define new features with SOLID principles
+@developer /skill feature-definition
+
+# Create prototypes and validate concepts  
+@developer /skill prototype-script
+
+# Write comprehensive tests first (TDD)
+@developer /skill tdd
+
+# Get architecture review before implementing
+@architect
+
+# Implement with guided TDD workflow
+@developer /skill implementation
+
+# Create releases with smart versioning
 @repo-manager /skill git-release
 ```
 
-## 🏛️ Architecture & Workflow
+## 🏗️ Architecture & Standards
 
-### Epic-Based Development with Mandatory QA Gates
+- **🎯 SOLID Principles** - Single responsibility, dependency inversion, clean interfaces
+- **🔧 Object Calisthenics** - No primitives, small classes, behavior-rich objects
+- **🧪 TDD Testing** - 100% coverage requirement with property-based tests
+- **⚡ Modern Toolchain** - UV, Ruff, PyTest, Hypothesis, PyRight
+- **🚀 Smart Releases** - Calver versioning with AI-generated themed names
 
-1. **Requirements Gathering** → Business analyst conducts stakeholder interviews
-2. **QA Gate #1** → Requirements completeness review by QA specialist
-3. **Test-Driven Development** → BDD-style tests with pytest + Hypothesis
-4. **QA Gate #2** → Test quality and coverage review
-5. **Design & Architecture** → Pattern selection and SOLID design by architect
-6. **Implementation** → TDD methodology with Red-Green-Refactor cycle
-7. **QA Gate #3** → SOLID/DRY/KISS compliance review
-8. **Final Quality** → Comprehensive quality checks
-9. **QA Gate #4** → Final approval before feature completion
-10. **Automatic Progression** → System advances to next feature in epic
+## 📋 Development Commands
 
-### Smart Release Management
+```bash
+# Core development workflow
+task run              # Execute main application
+task test             # Run comprehensive test suite  
+task lint             # Format and lint code
+task static-check     # Type safety validation
+task doc-serve        # Live pdoc documentation server
+task doc-build        # Build static pdoc API docs
+task doc-publish      # Publish API docs to GitHub Pages
 
-- **Hybrid Versioning**: `v{major}.{minor}.{YYYYMMDD}` (same-day releases increment minor)
-- **Themed Releases**: AI-generated names based on PR sentiment
-  - Performance: `"Swift Cheetah"` `"Lightning Falcon"`  
-  - Security: `"Vigilant Owl"` `"Guardian Bear"`
-  - Features: `"Creative Fox"` `"Innovative Dolphin"`
+# Quality assurance
+task test-report      # Detailed coverage report
+task mut-report       # Mutation testing (optional)
+```
 
-## 🔧 Included Technology Stack
+## 🎯 Project Structure
 
-**Development**
-- Python 3.13+ with modern type hints
-- UV for blazing-fast dependency management
-- Ruff for linting and formatting (replaces 8+ tools)
-- PyTest + Hypothesis for comprehensive testing
+```
+python-project-template/
+├── python_package_template/        # Main application package
+│   ├── __init__.py                       # Package initialization
+│   └── python_module_template.py   # Core module
+├── .opencode/                            # AI development agents
+│   ├── agents/                           # Specialized AI agents
+│   │   ├── developer.md                  # 7-phase development workflow
+│   │   ├── architect.md                  # SOLID architecture review
+│   │   └── repo-manager.md               # Release and PR management
+│   └── skills/                           # Development skills
+│       ├── session-workflow/             # Multi-session development state
+│       ├── feature-definition/           # Requirements planning
+│       ├── tdd/                          # Test-driven development
+│       ├── implementation/               # Guided implementation
+│       └── code-quality/                 # Quality enforcement
+├── tests/                                # Comprehensive test suite
+├── docs/                                 # Documentation (api/, tests/, coverage/)
+├── TODO.md                               # Development roadmap & session state
+├── Dockerfile                            # Multi-stage container build
+└── pyproject.toml                        # Project configuration
+```
 
-**AI Integration - Your Enterprise Development Team**  
-- **@developer**: Development Lead implementing TDD workflow with QA integration
-- **@architect**: Software Architect ensuring SOLID principles and design patterns
-- **@requirements-gatherer**: Business Analyst using BABOK methodology
-- **@overseer**: QA Specialist enforcing mandatory quality checkpoints
-- **@repo-manager**: Release Engineer handling versioning and deployments
+## 🔧 Technology Stack
 
-**Quality Assurance**
-- 100% test coverage requirement
-- Static type checking with Pyright
-- Property-based testing for edge cases
-- Mutation testing with Cosmic Ray
+| Category | Tools |
+|----------|-------|
+| **Package Management** | UV (blazing fast pip/poetry replacement) |
+| **Code Quality** | Ruff (linting + formatting), PyRight (type checking) |
+| **Testing** | PyTest + Hypothesis (property-based testing), pytest-html-plus (BDD reports) |
+| **AI Integration** | OpenCode agents for development automation |
+| **Documentation** | pdoc with search functionality |
+| **Containerization** | Docker with optimized multi-stage builds |
 
-**Documentation & Deployment**
-- pdoc for API documentation with search
-- pytest-html-plus with BDD docstring display
-- Docker containerization
-- GitHub Actions CI/CD
-- Automated documentation deployment
+## 📈 Quality Metrics
 
+- ✅ **100% Test Coverage** - Comprehensive test suite including edge cases
+- ✅ **Static Type Safety** - Full type hints with protocol-based interfaces  
+- ✅ **Zero Linting Issues** - Automated formatting and style enforcement
+- ✅ **Property-Based Testing** - Hypothesis for robust validation
+- ✅ **Architecture Compliance** - AI-enforced SOLID principles
 
-## 📈 Template Roadmap
+## 🚀 Deployment Ready
 
-- [x] ✨ AI-powered development workflow with OpenCode integration
-- [x] 🏗️ SOLID architecture enforcement with object calisthenics  
-- [x] 🤖 Automated repository management with smart releases
-- [x] ⚡ Modern toolchain (UV, Ruff, PyTest, Hypothesis)
-- [x] 📋 Epic-based workflow with automatic feature progression
-- [x] 🎯 Mandatory QA gates with dedicated QA specialist agent
-- [x] 💼 Business analyst agent for requirements gathering
-- [ ] 🔒 Advanced security scanning and SBOM generation
-- [ ] 📊 Performance benchmarking and optimization workflows
+```bash
+# Production container build
+docker build --target prod -t python_package_template:latest .
+docker run python_package_template:latest
+
+# Build API documentation
+task doc-build  # Generates docs/api/index.html
+
+# Publish API docs to GitHub Pages
+task doc-publish  # Pushes docs/api to gh-pages branch
+
+# Smart release management
+@repo-manager /skill git-release
+# Creates versioned release: v1.2.20260315 "Creative Fox"
+```
 
 ## 🤝 Contributing
 
-Contributions make this template better for everyone! We welcome:
-
-- 🐛 Bug reports and fixes
-- ✨ New agents and skills  
-- 📚 Documentation improvements
-- 🎯 Workflow optimizations
+Built with AI-assisted development workflows:
 
 ```bash
-# Quick contribution setup
-cookiecutter gh:nullhack/python-project-template
-cd your-contribution
+# Start a new feature
 @developer /skill feature-definition
+@developer /skill prototype-script
+@developer /skill tdd
+@architect  # Architecture review
+@developer /skill implementation
 @repo-manager /skill pr-management
 ```
 
 ## 📄 License
 
-MIT License - see [`LICENSE`](LICENSE) for details.
+Distributed under the MIT License. See [LICENSE](LICENSE) for details.
 
-## 🙏 Credits
+## 🙏 Built With
 
-Built on the shoulders of giants:
-
+- [AI-Enhanced Python Template](https://github.com/nullhack/python-project-template) - Enterprise-grade Python project template
 - [OpenCode](https://opencode.ai) - AI-powered development platform
-- [UV](https://astral.sh/uv/) - Blazing fast Python package manager  
+- [UV](https://astral.sh/uv/) - Modern Python package manager
 - [Ruff](https://astral.sh/ruff/) - Extremely fast Python linter
-- [Hypermodern Python](https://cjolowicz.github.io/posts/hypermodern-python-01-setup/) - Modern Python practices
-- [Hypothesis](https://hypothesis.readthedocs.io/) - Property-based testing framework
 
 ---
 
-**[⭐ Star this repo](https://github.com/nullhack/python-project-template) if it powers your next breakthrough!**
-
+**Author:** USER_NAME ([@nullhack](https://github.com/nullhack))  
+**Project:** [python-project-template](https://github.com/nullhack/python-project-template)  
+**Documentation:** [nullhack.github.io/python-project-template](https://nullhack.github.io/python-project-template)
 
 <!-- MARKDOWN LINKS & IMAGES -->
-<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 [contributors-shield]: https://img.shields.io/github/contributors/nullhack/python-project-template.svg?style=for-the-badge
 [contributors-url]: https://github.com/nullhack/python-project-template/graphs/contributors
 [forks-shield]: https://img.shields.io/github/forks/nullhack/python-project-template.svg?style=for-the-badge
@@ -189,4 +199,4 @@ Built on the shoulders of giants:
 [issues-shield]: https://img.shields.io/github/issues/nullhack/python-project-template.svg?style=for-the-badge
 [issues-url]: https://github.com/nullhack/python-project-template/issues
 [license-shield]: https://img.shields.io/badge/license-MIT-green?style=for-the-badge
-[license-url]: https://github.com/nullhack/python-project-template/blob/main/LICENSE.txt
+[license-url]: https://github.com/nullhack/python-project-template/blob/main/LICENSE

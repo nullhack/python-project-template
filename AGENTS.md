@@ -1,265 +1,283 @@
-# Python Project Template - Enterprise Development Framework
+# Python Project Template
 
-This repository contains an enterprise-grade Cookiecutter template for Python projects with integrated AI-enhanced development workflows.
+Python template with some awesome tools to quickstart any Python project
 
-## Template Overview
+## Project Details
 
-| Component | Description |
-|-----------|-------------|
-| **Purpose** | Generate Python projects with enterprise development practices and AI-powered workflows |
-| **Methodology** | Test-Driven Development (TDD) with mandatory quality gates |
-| **Standards** | SOLID principles, Object Calisthenics, DRY/KISS, 100% test coverage |
-| **Versioning** | Semantic versioning for template, hybrid calver for generated projects |
-| **Architecture** | Domain-driven design with architectural review process |
+| Variable | Value |
+|----------|-------|
+| **Project Name** | Python Project Template |
+| **Project Slug** | python-project-template |
+| **Package Name** | python_package_template |
+| **Module Name** | python_module_template |
+| **Author** | USER_NAME |
+| **Email** | USER@EMAIL |
+| **GitHub** | @nullhack |
+| **License** | MIT |
+| **Version** | 0.1.20260410 |
+| **Minimum Coverage** | 100% |
 
-## Template Management Team
+## Session-Based Development
 
-### DevOps and Release Engineering
+This project uses a **session workflow** that allows complex development to span multiple AI sessions. Any AI agent can continue work from where the last session stopped.
 
-- **template-manager**: DevOps Engineer specializing in template lifecycle management, CI/CD pipelines, and quality assurance
-- **repo-manager**: Release Engineer managing version control, pull requests, and semantic releases
+### How it works
 
-### Available Skills
+1. **`TODO.md`** at the project root is the shared state between sessions
+2. Every session starts by reading `TODO.md` to find the current phase
+3. Every session ends by updating `TODO.md` with progress and handoff notes
+4. This makes the project AI-agnostic: any agent, any time can continue
 
-- **template-test**: Test cookiecutter template generation with various configurations
-- **template-release**: Manage template releases with semantic versioning
-- **git-release**: Create semantic releases for the template repository
-- **pr-management**: Create and manage pull requests for template improvements
-
-## Template Structure
-
-```
-python-project-template/
-├── cookiecutter.json                     # Template configuration
-├── {{cookiecutter.project_slug}}/        # Generated project template
-│   ├── .opencode/                        # AI agents for generated projects
-│   │   ├── agents/
-│   │   │   ├── developer.md              # Main development agent
-│   │   │   ├── architect.md              # Design review agent
-<<<<<<< HEAD
-│   │   │   ├── requirements-gatherer.md  # Business analyst agent
-│   │   │   ├── overseer.md               # QA specialist agent
-=======
-│   │   │   ├── overseer.md               # Quality assurance agent
-│   │   │   ├── requirements-gatherer.md # Requirements gathering agent
->>>>>>> origin/main
-│   │   │   └── repo-manager.md           # Repository management agent
-│   │   └── skills/
-│   │       ├── session-workflow/         # Session state management
-│   │       ├── epic-workflow/            # Epic-based development
-│   │       ├── feature-definition/       # SOLID feature planning
-│   │       ├── prototype-script/         # Quick validation scripts
-│   │       ├── tdd/                      # Test-driven development
-│   │       ├── signature-design/         # Interface design
-│   │       ├── implementation/           # TDD implementation
-│   │       ├── code-quality/             # Quality enforcement
-│   │       ├── git-release/              # Release management
-│   │       ├── pr-management/            # Pull request workflows
-│   │       ├── create-skill/             # Create new skills
-│   │       └── create-agent/             # Create new agents
-│   ├── pyproject.toml                    # Project configuration
-│   └── AGENTS.md                         # Generated project AI documentation
-├── .opencode/                            # Meta agents for template itself
-│   ├── agents/
-│   │   ├── template-manager.md           # Template development and management
-│   │   └── repo-manager.md               # Template repository operations
-│   └── skills/
-│       ├── template-test/                # Template testing
-│       ├── template-release/             # Template release management
-│       ├── git-release/                  # Semantic releases for template
-│       └── pr-management/                # Pull request workflows for template
-└── docs/                                 # Template documentation
+### Starting a new session
+```bash
+# The developer agent reads TODO.md automatically
+@developer /skill session-workflow
 ```
 
-## What Generated Projects Get
+## Available Skills
 
-When developers use this template, they get:
+This project includes custom skills for OpenCode:
 
-### Epic-Based Development with QA Gates
-1. **Requirements Gathering** → Business analyst interviews and analysis
-2. **QA Checkpoint** → Requirements completeness review
-3. **Test-Driven Development** → BDD tests with pytest/hypothesis
-4. **QA Checkpoint** → Test quality review
-5. **Design & Architecture** → Pattern selection and SOLID design
-6. **Implementation** → TDD methodology (Red-Green-Refactor)
-7. **QA Checkpoint** → SOLID/DRY/KISS compliance review
-8. **Final Quality** → Comprehensive quality checks
-9. **QA Checkpoint** → Final approval before feature completion
-10. **Automatic Progression** → System moves to next feature in epic
+### Session Management
+- **session-workflow**: Manage multi-session development - read TODO.md, continue from last checkpoint, update progress and hand off cleanly
+- **epic-workflow**: Manage epic-based development with automatic feature progression and mandatory QA gates
 
-### AI Agents with Industry Roles
-- **@developer** → Development lead with TDD workflow and QA integration
-- **@architect** → Software architect for design patterns and SOLID principles
-- **@requirements-gatherer** → Business analyst using BABOK principles  
-- **@overseer** → QA specialist with mandatory quality checkpoints
-- **@repo-manager** → Release engineer for repository operations
+### Development Workflow
+- **feature-definition**: Define features with SOLID principles and clear requirements
+- **prototype-script**: Create quick validation scripts with real data capture  
+- **tdd**: Write comprehensive tests using TDD with pytest/hypothesis — includes decision guide for when to use plain TDD, Hypothesis (property-based), or Hypothesis stateful testing
+- **signature-design**: Design modern Python interfaces with protocols and type hints
+- **implementation**: Implement using TDD methodology with real prototype data
+- **code-quality**: Enforce quality with ruff, coverage, hypothesis, and cosmic-ray mutation testing
 
 ### Repository Management
-- Hybrid versioning: `v1.2.20260302` (major.minor.calver)
-- AI-generated themed releases (unique per release): "Blooming Narwhal", "Crystal Jellyfish", "Electric Firefly"
-- Automated PR workflows with conventional commits
-- GitHub CLI integration
+- **git-release**: Create semantic releases with hybrid major.minor.calver versioning and themed naming
+- **pr-management**: Create and manage pull requests with proper formatting and workflow integration
 
-### Code Quality Standards
-- SOLID principles enforcement with architect review
-- DRY/KISS principles with overseer validation
-- Object calisthenics compliance (9 rules)
-- 100% test coverage requirement
-- Comprehensive linting with ruff
-- Static type checking with pyright
-- Property-based testing with Hypothesis
-- API documentation with pdoc
-- BDD-style test reports with pytest-html-plus
-- Mandatory QA gates that cannot be bypassed
+### Meta Skills
+- **create-skill**: Creates new OpenCode skills following the skill definition standard
+- **create-agent**: Creates new OpenCode subagents following the agent definition standard
 
-## Template Usage
+## Available Agents
 
-### Creating a New Project
-```bash
-# Use the latest template
-cookiecutter gh:your-username/python-project-template
-
-# Or use a specific version
-cookiecutter gh:your-username/python-project-template --checkout v1.2.20260312
-```
-
-### Template Development Workflow
-```bash
-# 1. Make changes to template
-# Edit template files, add new agents/skills
-
-# 2. Test template generation
-@template-manager /skill template-test
-
-# 3. Create template release
-@template-manager /skill template-release
-
-# 4. Generated projects now have new features
-```
-
-## Template Versioning
-
-### Hybrid Calver Versioning for Template
-- **Major (v2.x.20260401)**: Breaking changes to cookiecutter variables
-- **Minor (v1.x.20260315)**: New agents, skills, workflow features, or same-day releases
-
-### Recent Releases
-- **v1.0.20260312**: Initial release with development workflow
-- **v1.1.20260312**: Added repository management agent
-- **v1.2.20260312**: Added meta template management system
-- **v1.3.20260313**: Added session-workflow skill
-- **v1.4.20260313**: Added AI-driven themed naming
-- **v1.5.20260403**: Replaced mkdocs with pdoc for API docs, added pytest-html-plus with BDD docstring display
-- **v1.6.20260410**: Added QA-gated epic workflow with business analyst and QA specialist agents
-
-## Generated Project Features
-
-### Agents Included in Generated Projects
 <<<<<<< HEAD
-- **@developer**: Complete development workflow with mandatory QA gates
-- **@architect**: Software architect for design patterns and SOLID principles
-- **@requirements-gatherer**: Business analyst for stakeholder requirements
-- **@overseer**: QA specialist enforcing quality at checkpoints
+- **developer**: Main development agent with complete TDD workflow and QA integration
+- **architect**: Software architect for design review, pattern selection, and SOLID compliance
+- **requirements-gatherer**: Business analyst for requirements elicitation and feature analysis
+- **overseer**: Quality assurance specialist enforcing standards at mandatory checkpoints
 =======
-- **@developer**: Complete 7-phase development workflow
-- **@architect**: Design review and SOLID principles enforcement
-- **@overseer**: Quality assurance - reviews work after each test implementation
-- **@requirements-gatherer**: Gathers requirements, updates docs, creates analysis for architect
+- **developer**: Main development agent with complete 7-phase TDD workflow
+- **architect**: Design review and approval agent for SOLID/object calisthenics compliance
+- **overseer**: Quality assurance agent - reviews work after each test implementation, requests changes if needed
+- **requirements-gatherer**: Gathers project requirements, updates documentation, creates analysis for architect
 >>>>>>> origin/main
-- **@repo-manager**: Git operations, PRs, and themed releases
+- **repo-manager**: Repository management for Git operations, PRs, commits, and releases
 
-### Skills Included in Generated Projects
-- **session-workflow**, **epic-workflow** (multi-session and epic management)
-- **feature-definition**, **prototype-script**, **tdd**
-- **signature-design**, **implementation**, **code-quality**
-- **git-release**, **pr-management**
-- **create-skill**, **create-agent**
+## Development Commands
 
-### Example Generated Project Usage
 ```bash
-<<<<<<< HEAD
-# In a generated project - Epic-based workflow
-@requirements-gatherer               # Gather requirements
-@overseer                           # QA: Requirements review
-@developer /skill tdd               # Write tests  
-@overseer                           # QA: Test quality review
-@architect                          # Design approval
-@developer /skill implementation    # Implement feature
-@overseer                           # QA: Code quality review
-@developer /skill epic-workflow next-feature  # Auto-progress to next
-=======
-# In a generated project
+# Install dependencies
+uv venv
+uv pip install '.[dev]'
 
-# 0. Start by gathering requirements (new projects)
-@requirements-gatherer  # Ask questions, create analysis, update docs
-@architect             # Review analysis and approve design
+# Run the application
+task run
 
-# 1. Define and implement a feature
-@developer /skill feature-definition     # Define new feature
-@developer /skill prototype-script       # Create prototype
-@developer /skill tdd                    # Write tests
-@overseer                                # Review tests - request changes if needed
-@developer /skill signature-design       # Design interfaces
-@architect                               # Get design approval
-@developer /skill implementation         # Implement feature
-@developer /skill code-quality           # Run quality checks
-@overseer                                # Final review
+# Run tests (full suite with coverage report)
+task test
 
-# 2. Manage repository
-@repo-manager /skill pr-management       # Create PR
-@repo-manager /skill git-release         # Create release
->>>>>>> origin/main
+# Run fast tests only (skip slow tests)
+task test-fast
+
+# Run slow tests only
+task test-slow
+
+# Run linting
+task lint
+
+# Run type checking
+task static-check
+
+# Serve documentation
+task doc-serve
+
+# Build documentation
+task doc-build
 ```
 
-## Template Development
+## Documentation
 
-### Making Template Changes
-1. **Update Template Files**: Modify files in `{{cookiecutter.project_slug}}/`
-2. **Add New Agents/Skills**: Create in `.opencode/` directory
-3. **Test Changes**: Use `@template-manager /skill template-test`
-4. **Release Template**: Use `@template-manager /skill template-release`
+This project uses **pdoc** for API documentation generation:
 
-### Quality Standards for Template
-- All generated projects must pass quality checks
-- Template testing with multiple configurations
-- Documentation must be up-to-date
-- YAML frontmatter must be valid in all agents/skills
-
-### Contributing to Template
-1. Fork the template repository
-2. Make improvements following template standards
-3. Test thoroughly with various configurations
-4. Create PR with description of changes
-5. Template maintainers will review and merge
-
-## Template Management Workflow
-
-### Agent Roles in Template Development
-- **@template-manager**: Handles template-specific tasks like testing generation, validating cookiecutter variables, and releasing new template versions
-- **@repo-manager**: Manages the template repository itself - creating PRs, commits, GitHub releases, and handling version control
-
-### Example Template Development
 ```bash
-# Working on template improvements
-@template-manager /skill template-test    # Test template generation
-@repo-manager /skill pr-management        # Create PR for changes
-@template-manager /skill template-release # Release new template version
+# Serve documentation locally
+task doc-serve
+
+# Build static documentation with search
+task doc-build
 ```
 
-## Integration with OpenCode
+Generated docs are in `docs/api/` - open `docs/api/index.html` to browse.
 
-The template is designed to work seamlessly with OpenCode:
+## Test Conventions
+
+This project uses BDD-style tests with the following conventions:
+
+### Test Function Naming
+```python
+# Format: test_<condition>_should_<outcome>
+def test_given_<context>_when_<action>_then_<result>(): ...
+def test_<condition>_should_<outcome>(): ...
+```
+
+### BDD Docstrings
+All test functions must have Given/When/Then docstrings:
+```python
+def test_federation_created_should_have_active_status():
+    """
+    Given: A valid federation with required fields
+    When: Federation is created
+    Then: Status should be active
+    """
+```
+
+### Running Tests
 
 ```bash
-# In generated projects
+# Run fast tests (skip slow tests)
+task test-fast
+
+# Run only slow tests
+task test-slow
+
+# Full test suite with coverage
+task test
+```
+
+### Checking Test Compliance
+- **pytest-html-plus report**: `docs/tests/report.html` - BDD docstrings displayed as test names
+- **Coverage report**: `docs/coverage/index.html` - View coverage by file
+
+## Code Quality Standards
+
+- **Linting**: ruff with Google style conventions (D205, D212, D415 disabled for test files to allow BDD docstrings)
+- **Type Checking**: pyright
+- **Test Coverage**: Minimum 100%
+- **Python Version**: >=3.13
+- **Test Markers**: `slow` marks tests >50ms (SQLite, Hypothesis, web routes)
+
+## Release Management
+
+This project uses a hybrid versioning system: `v{major}.{minor}.{YYYYMMDD}`
+
+### Version Examples
+- `v1.2.20260302` - Version 1.2, release on March 2, 2026
+- `v1.3.20260313` - Version 1.3, release on March 13, 2026
+- `v1.4.20260313` - Version 1.4, second release same day (increment minor)
+
+### Release Naming
+Releases use AI-generated adjective-animal names. Each release gets a unique name based on PR content. Examples:
+- `v1.5.20260403 - Crystal Jellyfish` (documentation overhaul)
+- `v1.6.20260404 - Velvet Manta` (refactoring)
+- `v1.7.20260405 - Electric Firefly` (performance)
+
+The AI analyzes PR content and generates creative, unique names.
+
+### Creating Releases
+Use the repo-manager agent:
+```bash
+@repo-manager /skill git-release
+```
+
+## Using OpenCode
+
+Initialize OpenCode in this project:
+```bash
 opencode
 /opencode
-/init                    # Generate fresh AGENTS.md
-
-# Use the workflow
-@developer               # Main development agent
-@architect              # Architecture review
-@repo-manager           # Repository operations
 ```
 
-This template provides a complete AI-enhanced development environment for Python projects, ensuring high code quality, proper testing, and professional repository management.
+Then run `/init` to generate a fresh `AGENTS.md` based on your project's current state.
+
+### Example Workflows
+
+#### Starting a new project
+```bash
+# 1. Start with requirements gathering
+@requirements-gatherer  # Interview stakeholders, create analysis
+@architect             # Review requirements and approve approach
+@developer /skill epic-workflow start-epic "Core Features"
+```
+
+#### Epic-based feature development with QA gates
+```bash
+<<<<<<< HEAD
+# For each feature in the epic:
+=======
+# 0. Gather requirements first (for new projects)
+@requirements-gatherer  # Ask questions, create analysis, update docs
+@architect              # Review analysis and approve design
+@developer              # Start implementation with approved TODO
+
+# 1. Define and implement a feature
+@developer /skill feature-definition
+@developer /skill prototype-script  
+@developer /skill tdd
+@overseer               # Review tests - request changes if needed
+@developer /skill signature-design
+@architect             # Review design
+@developer /skill implementation
+@developer /skill code-quality
+@overseer               # Final review before moving on
+>>>>>>> origin/main
+
+# 1. Requirements & Analysis
+@requirements-gatherer  # Gather detailed requirements
+@overseer              # QA checkpoint: requirements review
+
+# 2. Test Development
+@developer /skill tdd  # Write BDD tests
+@overseer             # QA checkpoint: test quality review
+
+# 3. Design & Architecture  
+@developer /skill signature-design
+@architect            # Approve design and patterns
+
+# 4. Implementation
+@developer /skill implementation
+@overseer             # QA checkpoint: SOLID/DRY/KISS review
+
+# 5. Final Quality
+@developer /skill code-quality
+@overseer             # QA checkpoint: final approval
+
+# 6. Feature completion - system auto-progresses to next
+@developer /skill epic-workflow next-feature
+```
+
+#### Creating releases
+```bash
+# After all epic features complete
+@overseer             # Final pre-release QA review
+@repo-manager /skill pr-management
+@repo-manager /skill git-release
+```
+
+#### Session management
+```bash
+# Start of session
+@developer /skill session-workflow  # Read TODO.md, understand state
+
+# End of session
+@developer /skill session-workflow  # Update TODO.md, commit changes
+```
+
+### Quality Assurance Protocol
+
+**The @overseer agent enforces mandatory QA checkpoints:**
+1. After requirements gathering - completeness review
+2. After TDD phase - test quality review
+3. After implementation - SOLID/DRY/KISS review
+4. Before feature completion - final approval
+
+**Development cannot proceed without @overseer approval at each gate.**
