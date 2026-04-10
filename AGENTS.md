@@ -36,8 +36,13 @@ python-project-template/
 │   │   ├── agents/
 │   │   │   ├── developer.md              # Main development agent
 │   │   │   ├── architect.md              # Design review agent
+<<<<<<< HEAD
 │   │   │   ├── requirements-gatherer.md  # Business analyst agent
 │   │   │   ├── overseer.md               # QA specialist agent
+=======
+│   │   │   ├── overseer.md               # Quality assurance agent
+│   │   │   ├── requirements-gatherer.md # Requirements gathering agent
+>>>>>>> origin/main
 │   │   │   └── repo-manager.md           # Repository management agent
 │   │   └── skills/
 │   │       ├── session-workflow/         # Session state management
@@ -150,10 +155,17 @@ cookiecutter gh:your-username/python-project-template --checkout v1.2.20260312
 ## Generated Project Features
 
 ### Agents Included in Generated Projects
+<<<<<<< HEAD
 - **@developer**: Complete development workflow with mandatory QA gates
 - **@architect**: Software architect for design patterns and SOLID principles
 - **@requirements-gatherer**: Business analyst for stakeholder requirements
 - **@overseer**: QA specialist enforcing quality at checkpoints
+=======
+- **@developer**: Complete 7-phase development workflow
+- **@architect**: Design review and SOLID principles enforcement
+- **@overseer**: Quality assurance - reviews work after each test implementation
+- **@requirements-gatherer**: Gathers requirements, updates docs, creates analysis for architect
+>>>>>>> origin/main
 - **@repo-manager**: Git operations, PRs, and themed releases
 
 ### Skills Included in Generated Projects
@@ -165,6 +177,7 @@ cookiecutter gh:your-username/python-project-template --checkout v1.2.20260312
 
 ### Example Generated Project Usage
 ```bash
+<<<<<<< HEAD
 # In a generated project - Epic-based workflow
 @requirements-gatherer               # Gather requirements
 @overseer                           # QA: Requirements review
@@ -174,6 +187,28 @@ cookiecutter gh:your-username/python-project-template --checkout v1.2.20260312
 @developer /skill implementation    # Implement feature
 @overseer                           # QA: Code quality review
 @developer /skill epic-workflow next-feature  # Auto-progress to next
+=======
+# In a generated project
+
+# 0. Start by gathering requirements (new projects)
+@requirements-gatherer  # Ask questions, create analysis, update docs
+@architect             # Review analysis and approve design
+
+# 1. Define and implement a feature
+@developer /skill feature-definition     # Define new feature
+@developer /skill prototype-script       # Create prototype
+@developer /skill tdd                    # Write tests
+@overseer                                # Review tests - request changes if needed
+@developer /skill signature-design       # Design interfaces
+@architect                               # Get design approval
+@developer /skill implementation         # Implement feature
+@developer /skill code-quality           # Run quality checks
+@overseer                                # Final review
+
+# 2. Manage repository
+@repo-manager /skill pr-management       # Create PR
+@repo-manager /skill git-release         # Create release
+>>>>>>> origin/main
 ```
 
 ## Template Development

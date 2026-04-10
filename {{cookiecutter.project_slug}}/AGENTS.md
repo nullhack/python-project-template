@@ -60,10 +60,17 @@ This project includes custom skills for OpenCode:
 
 ## Available Agents
 
+<<<<<<< HEAD
 - **developer**: Main development agent with complete TDD workflow and QA integration
 - **architect**: Software architect for design review, pattern selection, and SOLID compliance
 - **requirements-gatherer**: Business analyst for requirements elicitation and feature analysis
 - **overseer**: Quality assurance specialist enforcing standards at mandatory checkpoints
+=======
+- **developer**: Main development agent with complete 7-phase TDD workflow
+- **architect**: Design review and approval agent for SOLID/object calisthenics compliance
+- **overseer**: Quality assurance agent - reviews work after each test implementation, requests changes if needed
+- **requirements-gatherer**: Gathers project requirements, updates documentation, creates analysis for architect
+>>>>>>> origin/main
 - **repo-manager**: Repository management for Git operations, PRs, commits, and releases
 
 ## Development Commands
@@ -204,7 +211,25 @@ Then run `/init` to generate a fresh `AGENTS.md` based on your project's current
 
 #### Epic-based feature development with QA gates
 ```bash
+<<<<<<< HEAD
 # For each feature in the epic:
+=======
+# 0. Gather requirements first (for new projects)
+@requirements-gatherer  # Ask questions, create analysis, update docs
+@architect              # Review analysis and approve design
+@developer              # Start implementation with approved TODO
+
+# 1. Define and implement a feature
+@developer /skill feature-definition
+@developer /skill prototype-script  
+@developer /skill tdd
+@overseer               # Review tests - request changes if needed
+@developer /skill signature-design
+@architect             # Review design
+@developer /skill implementation
+@developer /skill code-quality
+@overseer               # Final review before moving on
+>>>>>>> origin/main
 
 # 1. Requirements & Analysis
 @requirements-gatherer  # Gather detailed requirements
