@@ -29,6 +29,27 @@ def test_version_called_should_return_correct_string() -> None:
     assert result == expected
 
 
+@pytest.mark.unit
+def test_version_called_should_log_correct_message(caplog) -> None:
+    """
+    Given: pyproject.toml exists with version
+    When: version() is called
+    Then: Should log the exact version message format
+    """
+    # Read expected version from same source
+    pyproject_path = Path(__file__).parent.parent / "pyproject.toml"
+    with Path(pyproject_path).open("rb") as f:
+        expected_version = tomllib.load(f)["project"]["version"]
+
+    # Capture logs at INFO level
+    with caplog.at_level(logging.INFO):
+        result = m.version()
+
+    # Verify the exact log message format
+    assert f"Version: {expected_version}" in caplog.text
+    assert result == expected_version
+
+
 @pytest.mark.system
 @example(verbosity="DEBUG")
 @example(verbosity="INFO")

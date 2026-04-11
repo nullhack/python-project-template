@@ -30,7 +30,7 @@ dev = [
     "ruff>=0.11.5",
     "taskipy>=1.14.1",
     "hypothesis>=6.148.4",
-    "cosmic-ray>=8.4.3",
+    "mutmut>=2.5.2",
     "pyright>=1.1.407",
 ]
 
@@ -160,13 +160,26 @@ git add -A && \
 git commit -m "Publish API documentation" && \
 git push origin gh-pages --force && \
 git checkout main"""
-mut-report = """
-  uv run cosmic-ray new-config mut.toml && \
-  uv run cosmic-ray init mut.toml mut.sqlite && \
-  uv run cosmic-ray --verbosity=INFO baseline mut.toml && \
-  uv run cosmic-ray exec mut.toml mut.sqlite && \
-  uv run cr-html mut.sqlite > docs/mut_report.html && \
-  rm mut.toml && \
-  rm mut.sqlite
+mut = """
+mkdir -p docs/mutation && \
+uv run mutmut run && \
+uv run mutmut results --all true > docs/mutation/results.txt && \
+echo "Mutation Testing Summary" > docs/mutation/summary.txt && \
+echo "=======================" >> docs/mutation/summary.txt && \
+uv run mutmut results >> docs/mutation/summary.txt && \
+echo "" >> docs/mutation/summary.txt && \
+echo "Generated: $(date)" >> docs/mutation/summary.txt
 """
+mut-clean = "rm -rf .mutmut-cache mutants/"
 static-check = "pyright"
+
+[tool.mutmut]
+paths_to_mutate = ["python_package_template/"]
+pytest_add_cli_args_test_selection = ["tests/"]
+timeout = 30.0
+also_copy = ["main.py"]
+do_not_mutate = [
+    "**/*_test.py",
+    "**/test_*.py",
+    "**/conftest.py",
+]
