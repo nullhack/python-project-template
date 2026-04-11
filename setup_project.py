@@ -13,11 +13,14 @@ Usage:
     python setup_project.py detect-fields
 """
 
+import logging
 import shutil
 from datetime import datetime
 from pathlib import Path
 
 import fire
+
+logger = logging.getLogger(__name__)
 
 TEMPLATES_DIR = Path(__file__).parent / ".opencode" / "templates"
 ROOT_DIR = Path(__file__).parent
@@ -47,7 +50,7 @@ def copy_and_rename_package(src_name: str, dst_name: str) -> None:
         if dst_dir.exists():
             shutil.rmtree(dst_dir)
         shutil.copytree(src_dir, dst_dir, dirs_exist_ok=True)
-        print(f"Copied package: {src_name} -> {dst_name}")
+        logger.info("Copied package: %s -> %s", src_name, dst_name)
 
         for py_file in dst_dir.rglob("*.py"):
             content = py_file.read_text(encoding="utf-8")

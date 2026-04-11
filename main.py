@@ -20,7 +20,7 @@ LOGGER_LEVELS = {
 ValidVerbosity = Literal["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]
 
 
-def main(verbosity: ValidVerbosity = "INFO"):
+def main(verbosity: ValidVerbosity = "INFO") -> None:
     """Run with --verbosity=LEVEL (DEBUG, INFO, WARNING, ERROR, CRITICAL)."""
     # Validate verbosity at runtime
     verbosity_upper = verbosity.upper()
