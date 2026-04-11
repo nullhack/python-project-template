@@ -83,6 +83,20 @@ task doc-serve
 task doc-build
 ```
 
+## Docker Commands
+
+```bash
+# Development with Docker
+docker-compose up                              # Start development environment
+docker-compose --profile test up               # Run test suite
+docker-compose --profile quality up            # Code quality checks
+
+# Production
+docker build --target production -t app:prod . # Build production image
+docker-compose -f docker-compose.prod.yml up   # Production testing
+docker-compose -f docker-compose.prod.yml --profile security up  # Security scan
+```
+
 ## Documentation
 
 This project uses **pdoc** for API documentation generation:
