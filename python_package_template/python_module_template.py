@@ -1,45 +1,38 @@
 """Module Docstring."""
 
 import logging
+import tomllib
+from pathlib import Path
 
-# TODO(eol): Check how to write todos!
-# https://docs.astral.sh/ruff/rules/missing-todo-link/
 
 logger = logging.getLogger("python_module_template")
-logger.info("This is a {word}", extra={"word": "Log"})
 
 
-class Calculator:
-    """Class for simple calculator operations."""
+def version() -> str:
+    """Log version at INFO level.
 
-    @staticmethod
-    def divide(a: float, b: float) -> float:
-        """Divide a by b.
+    Returns:
+        Version string from pyproject.toml.
 
-        Args:
-            a (float): Dividend.
-            b (float): Divisor.
+    Examples:
+        >>> result = version()  # doctest: +ELLIPSIS
+        >>> isinstance(result, str)
+        True
+        >>> len(result) > 0
+        True
+        >>> '.' in result  # Version should contain dots
+        True
 
-        Returns:
-            float: The result of the division.
+    """
+    pyproject_path = Path(__file__).parent.parent / "pyproject.toml"
 
-        Raises:
-            ZeroDivisionError: if b is 0.
-            TypeError: if a or b are not float numbers.
+    with Path(pyproject_path).open("rb") as f:
+        data = tomllib.load(f)
 
-        Examples:
-            You can run this function as following.
-
-            >>> Calculator.divide(2,1)
-            2.0
-
-        """
-        if b == 0:
-            raise ZeroDivisionError
-        if type(a) not in (float, int) or type(b) not in (float, int):
-            raise TypeError
-        return a / b
+    version_str = data["project"]["version"]
+    logger.info("Version: %s", version_str)
+    return version_str
 
 
 if __name__ == "__main__":
-    logger.warning("RUNNING!")
+    version()

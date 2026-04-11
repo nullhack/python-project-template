@@ -1,30 +1,41 @@
 """Test main file."""
 
 import logging
+from typing import Literal
+
 import fire
+
+from python_package_template.python_module_template import version
 
 logger = logging.getLogger(__name__)
 
-def set_logging(verbosity: int = 0) -> None:
-    mapping = {
-        1: logging.WARNING,
-        2: logging.INFO,
-        3: logging.DEBUG,
-    }
-    level = mapping.get(verbosity, logging.ERROR)
-    logging.basicConfig(
-        level=level,
-        format="%(levelname)s - %(name)s: %(message)s"
-    )
+LOGGER_LEVELS = {
+    "DEBUG": logging.DEBUG,
+    "INFO": logging.INFO,
+    "WARNING": logging.WARNING,
+    "ERROR": logging.ERROR,
+    "CRITICAL": logging.CRITICAL,
+}
 
-def main(verbosity: int = 0):
-    """Run with --verbosity=N (0..3+)"""
-    set_logging(verbosity)
-    logger.debug("debug")
-    logger.info("info")
-    logger.warning("warning")
-    logger.error("error")
-    return "done"
+ValidVerbosity = Literal["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]
+
+
+def main(verbosity: ValidVerbosity = "INFO"):
+    """Run with --verbosity=LEVEL (DEBUG, INFO, WARNING, ERROR, CRITICAL)."""
+    # Validate verbosity at runtime
+    verbosity_upper = verbosity.upper()
+    if verbosity_upper not in LOGGER_LEVELS:
+        valid_levels = ", ".join(LOGGER_LEVELS.keys())
+        raise ValueError(
+            f"Invalid verbosity level '{verbosity}'. Valid options: {valid_levels}"
+        )
+
+    logging.basicConfig(
+        level=LOGGER_LEVELS[verbosity_upper],
+        format="%(levelname)s - %(name)s: %(message)s",
+    )
+    version()
+
 
 if __name__ == "__main__":
     fire.Fire(main)

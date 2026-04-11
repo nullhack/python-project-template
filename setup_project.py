@@ -13,13 +13,11 @@ Usage:
     python setup_project.py detect-fields
 """
 
-import re
 import shutil
 from datetime import datetime
 from pathlib import Path
 
 import fire
-
 
 TEMPLATES_DIR = Path(__file__).parent / ".opencode" / "templates"
 ROOT_DIR = Path(__file__).parent
@@ -65,7 +63,7 @@ def detect_fields() -> None:
     print("-" * 50)
     print(f"  1. GitHub Username: {ORIGINAL_GITHUB_USERNAME}")
     print(f"  2. Project Name: {ORIGINAL_PROJECT_NAME}")
-    print(f"  3. Project Description: 'Python template...'")
+    print("  3. Project Description: 'Python template...'")
     print(f"  4. Author Name: {ORIGINAL_AUTHOR_NAME}")
     print(f"  5. Author Email: {ORIGINAL_AUTHOR_EMAIL}")
     print(f"  6. Package Name: {ORIGINAL_PACKAGE_NAME}")
