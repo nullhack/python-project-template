@@ -25,7 +25,7 @@ dev = [
     "pdoc>=14.0",
     "pytest>=8.3.5",
     "pytest-cov>=6.1.1",
-    "pytest-html-plus>=0.5",
+    "pytest-html>=4.1.1",
     "pytest-mock>=3.14.0",
     "ruff>=0.11.5",
     "taskipy>=1.14.1",
@@ -74,7 +74,7 @@ mccabe.max-complexity = 10
 pydocstyle.convention = "google"
 
 [tool.ruff.lint.per-file-ignores]
-"tests/**" = ["S101", "ANN", "D205", "D212", "D415"]
+"tests/**" = ["S101", "ANN", "D205", "D212", "D415", "D100", "D103"]
 
 [tool.pytest.ini_options]
 minversion = "6.0"
@@ -96,8 +96,7 @@ addopts = """
 --color=yes \
 --tb=short \
 -q \
---html-output=docs/tests \
---json-report=final_report.json \
+--html=docs/tests/report.html \
 """
 testpaths = [
     "tests",
