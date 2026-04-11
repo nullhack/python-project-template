@@ -1,4 +1,5 @@
 version: 2
+# SECURITY: Automated dependency updates with security-focused grouping
 updates:
   # Enable version updates for Python packages
   - package-ecosystem: "pip"
