@@ -173,6 +173,10 @@ echo "Generated: $(date)" >> docs/mutation/summary.txt
 mut-clean = "rm -rf .mutmut-cache mutants/"
 static-check = "pyright"
 
+[tool.pyright]
+exclude = ["mutants/**", ".mutmut-cache/**"]
+include = ["python_package_template", "tests", "main.py", "setup_project.py"]
+
 [tool.mutmut]
 paths_to_mutate = ["python_package_template/"]
 pytest_add_cli_args_test_selection = ["tests/"]
@@ -182,6 +186,7 @@ do_not_mutate = [
     "**/*_test.py",
     "**/test_*.py",
     "**/conftest.py",
+    "**/__init__.py"
 ]
 
 [dependency-groups]

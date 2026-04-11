@@ -3,13 +3,14 @@
 import logging
 import tomllib
 from pathlib import Path
+from typing import cast
 from unittest.mock import patch
 
 import pytest
 from hypothesis import assume, example, given
 from hypothesis import strategies as st
 
-from main import main
+from main import ValidVerbosity, main
 from python_package_template import python_module_template as m
 
 
@@ -90,8 +91,8 @@ def test_main_with_verbosity_level_should_control_version_output(
     with patch(
         "main.logging.basicConfig", side_effect=mock_basic_config
     ) as mock_basic_config:
-        # Call main() directly with the verbosity level
-        main(verbosity)
+        # Call main() directly with the verbosity level (cast to satisfy type checker)
+        main(cast(ValidVerbosity, verbosity))
 
         # Verify that logging.basicConfig was called with the correct level
         mock_basic_config.assert_called_once()
@@ -126,8 +127,9 @@ def test_main_with_invalid_verbosity_should_raise_value_error() -> None:
     Then: Should raise ValueError with helpful message
     """
     # Test that calling main() with invalid verbosity raises ValueError
+    # Use cast to bypass type checking for this intentionally invalid test
     with pytest.raises(ValueError, match=r"Invalid verbosity level") as exc_info:
-        main("INVALID_LEVEL")
+        main(cast(ValidVerbosity, "INVALID_LEVEL"))  # type: ignore[arg-type]
 
     # Verify the error message contains expected details
     error_message = str(exc_info.value)
