@@ -9,24 +9,19 @@ Each session should read both TODO.md and EPICS.md to understand current state.
 
 ---
 
-## Current Epic: V2 Template Initialization System
-## Current Feature: Project Initializer Agent
+## Current Epic: Project Foundation
+## Current Feature: Project Setup
 
-### Phase 1: Requirements Gathering
-- [x] @requirements-gatherer: Conducted stakeholder interview
-- [x] Created feature analysis document (docs/features/v2-template-initialization-analysis.md)
-- [x] Defined acceptance criteria for V2 initiative
-- [ ] QA: @overseer reviews requirements completeness
-
-### Phase 2: Agent Architecture Design
-- [ ] @architect: Review V2 analysis and approve approach
-- [ ] Design project-initializer agent specification
-- [ ] Define template file processing architecture
-- [ ] Approve placeholder format and validation rules
+### Phase 0: Initial Setup
+- [x] Project created via cookiecutter template
+- [ ] Review and update `README.md` with project-specific description
+- [ ] Install dependencies: `uv venv && uv pip install -e '.[dev]'`
+- [ ] Verify base tests pass: `task test`
+- [ ] Initialize EPICS.md with first business epic
 
 ### QA Checkpoint
-- [ ] @overseer: Review V2 requirements analysis
-- [ ] QA Status: ⏸️ Pending - Requirements review needed
+- [ ] @overseer: Review project setup completeness
+- [ ] QA Status: ⏸️ Pending
 
 ---
 
@@ -77,13 +72,13 @@ When starting a new feature, copy these phases:
 
 | Date       | Session Summary                                    |
 |------------|----------------------------------------------------|
-| 2026-04-10 | V2 requirements gathering completed, analysis document created |
+| (date)     | Project scaffolded via cookiecutter, TODO created  |
 
 ---
 
 ## Notes for Next Session
 
-- **Next Step**: @architect review of V2 analysis document (docs/features/v2-template-initialization-analysis.md)
-- **Key Decisions Made**: Dedicated agent, minimal templating, fresh projects only, no V1 compatibility
-- **Focus Areas**: Template file processing architecture, agent integration design, error handling strategy
-- **Deliverable**: Approved architectural design for project-initializer agent implementation
+- Start with **Phase 1**: update `README.md` with project-specific content
+- Then proceed to **Phase 2**: define the core features
+- Run `task test` to verify the base template tests pass before making changes
+- See `AGENTS.md` for project details and available commands

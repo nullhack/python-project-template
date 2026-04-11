@@ -1,15 +1,15 @@
 [project]
 name = "python-project-template"
-version = "0.1.20260410"
+version = "0.1.20260411"
 description = "Python template with some awesome tools to quickstart any Python project"
 readme = "README.md"
 requires-python = ">=3.13"
 license = { file = "LICENSE" }
 authors = [
-    { name = "USER_NAME", email = "user@example.com" }
+    { name = "eol", email = "nullhack@users.noreply.github.com" }
 ]
 maintainers = [
-    { name = "USER_NAME", email = "user@example.com" }
+    { name = "eol", email = "nullhack@users.noreply.github.com" }
 ]
 dependencies = [
     "dotenv>=0.9.9",
@@ -25,7 +25,7 @@ dev = [
     "pdoc>=14.0",
     "pytest>=8.3.5",
     "pytest-cov>=6.1.1",
-    "pytest-html>=4.1.1",
+    "pytest-html-plus>=0.5",
     "pytest-mock>=3.14.0",
     "ruff>=0.11.5",
     "taskipy>=1.14.1",
@@ -96,8 +96,8 @@ addopts = """
 --color=yes \
 --tb=short \
 -q \
---html=docs/tests/report.html \
---self-contained-html \
+--html-output=docs/tests \
+--json-report=final_report.json \
 """
 testpaths = [
     "tests",

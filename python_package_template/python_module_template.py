@@ -2,7 +2,7 @@
 
 import logging
 
-# TODO(USER_NAME): Check how to write todos!
+# TODO(eol): Check how to write todos!
 # https://docs.astral.sh/ruff/rules/missing-todo-link/
 
 logger = logging.getLogger("python_module_template")
