@@ -1,6 +1,6 @@
 [project]
 name = "python-project-template"
-version = "0.1.20260411"
+version = "2.0.20260411"
 description = "Python template with some awesome tools to quickstart any Python project"
 readme = "README.md"
 requires-python = ">=3.13"
@@ -173,6 +173,10 @@ echo "Generated: $(date)" >> docs/mutation/summary.txt
 mut-clean = "rm -rf .mutmut-cache mutants/"
 static-check = "pyright"
 
+[tool.pyright]
+exclude = ["mutants/**", ".mutmut-cache/**"]
+include = ["python_package_template", "tests", "main.py", "setup_project.py"]
+
 [tool.mutmut]
 paths_to_mutate = ["python_package_template/"]
 pytest_add_cli_args_test_selection = ["tests/"]
@@ -182,6 +186,7 @@ do_not_mutate = [
     "**/*_test.py",
     "**/test_*.py",
     "**/conftest.py",
+    "**/__init__.py"
 ]
 
 [dependency-groups]

@@ -31,10 +31,10 @@ jobs:
     
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4.1.1
         
       - name: Install uv
-        uses: astral-sh/setup-uv@v4
+        uses: astral-sh/setup-uv@cdfb2ee6dde255817c739680168ad81e184c4bfb # v4.0.0
         with:
           enable-cache: true
           cache-dependency-glob: "uv.lock"
@@ -77,14 +77,14 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: ["3.12", "3.13"]
+        python-version: ["3.13"]
         
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4.1.1
         
       - name: Install uv
-        uses: astral-sh/setup-uv@v4
+        uses: astral-sh/setup-uv@cdfb2ee6dde255817c739680168ad81e184c4bfb # v4.0.0
         with:
           enable-cache: true
           cache-dependency-glob: "uv.lock"
@@ -102,7 +102,7 @@ jobs:
         
       - name: Upload coverage reports
         if: matrix.python-version == '3.13' && (github.ref == 'refs/heads/main' || github.event_name == 'pull_request')
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@50769540e7f4bd5e21e526ee35c689e35e0d6874 # v4.4.0
         with:
           name: coverage-reports
           path: |
@@ -112,7 +112,7 @@ jobs:
           
       - name: Upload coverage to Codecov (optional)
         if: matrix.python-version == '3.13' && (github.ref == 'refs/heads/main' || github.event_name == 'pull_request')
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@015f24e6818733317a2da2edd6290ab26238649a # v5.0.2
         with:
           files: ./coverage.xml
           fail_ci_if_error: false
@@ -129,10 +129,10 @@ jobs:
     
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4.1.1
         
       - name: Install uv
-        uses: astral-sh/setup-uv@v4
+        uses: astral-sh/setup-uv@cdfb2ee6dde255817c739680168ad81e184c4bfb # v4.0.0
         with:
           enable-cache: true
           cache-dependency-glob: "uv.lock"
@@ -158,14 +158,14 @@ jobs:
           uv run --isolated --no-project --with dist/*.tar.gz python -c "import python_package_template; print('✓ Source dist install successful')"
           
       - name: Upload build artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@50769540e7f4bd5e21e526ee35c689e35e0d6874 # v4.4.0
         with:
           name: python-package-distributions
           path: dist/
           retention-days: 30
           
       - name: Upload documentation
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@50769540e7f4bd5e21e526ee35c689e35e0d6874 # v4.4.0
         with:
           name: documentation
           path: docs/api/
