@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# ruff: noqa: T201
 """Setup a new Python project from the template.
 
 This script copies template files from .opencode/templates/ to the project root,
@@ -13,14 +14,11 @@ Usage:
     python setup_project.py detect-fields
 """
 
-import logging
 import shutil
 from datetime import datetime
 from pathlib import Path
 
 import fire
-
-logger = logging.getLogger(__name__)
 
 TEMPLATES_DIR = Path(__file__).parent / ".opencode" / "templates"
 ROOT_DIR = Path(__file__).parent
@@ -50,7 +48,7 @@ def copy_and_rename_package(src_name: str, dst_name: str) -> None:
         if dst_dir.exists():
             shutil.rmtree(dst_dir)
         shutil.copytree(src_dir, dst_dir, dirs_exist_ok=True)
-        logger.info("Copied package: %s -> %s", src_name, dst_name)
+        print(f"Copied package: {src_name} -> {dst_name}")
 
         for py_file in dst_dir.rglob("*.py"):
             content = py_file.read_text(encoding="utf-8")
