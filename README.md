@@ -13,123 +13,96 @@
 [![Code Style](https://img.shields.io/badge/code%20style-ruff-000000.svg?style=for-the-badge)](https://github.com/astral-sh/ruff)
 [![Security](https://img.shields.io/badge/security-ruff%20%2B%20CodeQL-green?style=for-the-badge)](https://docs.astral.sh/ruff/rules/#flake8-bandit-s)
 
-> **Ship production-ready Python projects faster with AI-powered development workflows and modern containerization**
+> **Ship production-ready Python projects faster with AI-powered development workflows**
 
-### Development Version: [v0.1.20260411](https://github.com/nullhack/python-project-template/releases/tag/v0.1.20260411) - Enhanced Docker Edition
+### Current Version: [v2.0.20260411 - Armored Pangolin](https://github.com/nullhack/python-project-template/releases/tag/v2.0.20260411)
 
-**Revolutionary Python template** delivering enterprise-grade projects with **OpenCode AI agents**, **distroless Docker containers**, **TDD/BDD workflows**, and **security-first containerization**.
+**Modern Python template** delivering enterprise-grade projects with **OpenCode AI agents**, **TDD/BDD workflows**, and **intelligent development assistance**.
 
 ## ✨ What You Get
 
 🤖 **Enterprise AI Development Team** - 5 specialized agents: Developer, Architect, Business Analyst, QA Specialist, Release Engineer  
-🐳 **Modern Containerization** - Multi-stage Docker builds with distroless production images and security scanning  
-🔒 **Security-First Approach** - Non-root containers, vulnerability scanning, and minimal attack surface  
-⚡ **Zero-Config Development** - Hot reload, automated testing, and instant deployment workflows  
 🏗️ **SOLID Architecture** - Object Calisthenics, Dependency Inversion, Protocol-based design with architect review  
 🎯 **Mandatory QA Gates** - 4 quality checkpoints enforced by QA specialist throughout development  
+⚡ **Modern Development** - Fast uv package manager, pytest + Hypothesis testing, ruff linting  
+🔒 **Security-First** - CodeQL analysis, vulnerability scanning, and security-focused workflows  
 🔄 **Smart Releases** - Hybrid calver versioning with AI-generated themed names  
-📋 **Epic-Based Workflow** - Requirements-driven development with automatic feature progression
+📋 **Epic-Based Workflow** - Requirements-driven development with automatic feature progression  
+🛠️ **Simple Setup** - Clone, setup, OpenCode - start building immediately
 
 ## 🎯 Perfect For
 
-- **Startups** needing production-ready containers from day one
-- **DevOps Teams** requiring secure, optimized Docker workflows  
-- **Enterprises** demanding zero-compromise security and quality
 - **Developers** wanting AI-assisted development with modern tooling
-- **Projects** scaling from development to production seamlessly
+- **Teams** needing structured development workflows with quality gates
+- **Projects** requiring comprehensive testing and quality assurance
+- **Startups** wanting to build production-ready applications quickly
+- **Anyone** seeking a modern Python development experience
 
 ## 🚀 Quick Start
 
-### Prerequisites
-
-Install the essential tools:
+### Simple 3-Step Setup
 
 ```bash
-# Install OpenCode AI assistant
-curl -fsSL https://opencode.ai/install.sh | sh
-
-# Install UV package manager (5-10x faster than pip)
-curl -LsSf https://astral.sh/uv/install.sh | sh
-
-# Install Docker with BuildKit support
-# Follow: https://docs.docker.com/get-docker/
-```
-
-### Choose Your Development Style
-
-#### 🐳 **Docker-First Development** *(Recommended)*
-
-```bash
-# Clone the template
+# 1. Clone the template
 git clone https://github.com/nullhack/python-project-template.git your-project
 cd your-project
 
-# Start development environment with hot reload
-docker-compose up
+# 2. Setup development environment (installs uv automatically if needed)
+./setup.py  # Creates virtual environment and installs dependencies
 
-# Initialize AI development environment
-opencode && /init
-
-# Start an epic with requirements gathering
-@requirements-gatherer  # Business analysis and stakeholder interviews
-@developer /skill epic-workflow start-epic "MVP Features"
+# 3. Start AI-powered development
+opencode
 ```
 
-#### ⚡ **Native Development**
+That's it! Your development environment is ready.
+
+### Start Building with AI Agents
 
 ```bash
-# Clone and setup locally
-git clone https://github.com/nullhack/python-project-template.git your-project
-cd your-project
+# In OpenCode, gather requirements first
+@requirements-gatherer  # Interviews stakeholders, analyzes needs
 
-# Setup development environment
-uv venv && uv pip install -e '.[dev]'
+# Then start structured development 
+@developer /skill epic-workflow start-epic "Your Feature Name"
 
-# Validate everything works
-task test && task lint && task static-check
-
-# Initialize AI development
-opencode && /init
+# Or jump straight into feature development
+@developer /skill feature-definition
+@developer /skill tdd
+@developer /skill implementation
 ```
 
-## 🐳 Modern Docker Workflows
+## 🛠️ Development Workflow
 
-### Development Environment
+### Daily Commands
 
 ```bash
-# Full development stack with hot reload
-docker-compose up
+# Run your application
+task run
 
-# Specific development services
-docker-compose up app          # Main application
-docker-compose up docs         # Documentation server (localhost:8080)
+# Test suite (fast tests + coverage)
+task test
 
-# Quality assurance workflows
-docker-compose --profile test up        # Complete test suite
-docker-compose --profile quality up     # Linting and type checking
+# Code quality checks
+task lint              # Ruff linting and formatting
+task static-check      # Type checking with pyright
+
+# Documentation
+task doc-serve         # Live documentation server
+task doc-build         # Build static docs
+
+# Development utilities
+task test-fast         # Quick tests (skip slow ones)
+task test-slow         # Integration tests only
 ```
 
-### Production Deployment
+### Quality Assurance
 
-```bash
-# Build security-hardened production image
-docker build --target production -t your-project:prod .
-
-# Production testing environment
-docker-compose -f docker-compose.prod.yml up
-
-# Security and performance validation
-docker-compose -f docker-compose.prod.yml --profile security up     # Vulnerability scanning
-docker-compose -f docker-compose.prod.yml --profile load-test up    # Load testing
-```
-
-### Container Security Features
-
-- **🔒 Distroless Production Images** - Minimal attack surface, no shell access
-- **👤 Non-Root Execution** - Enhanced security throughout all container stages  
-- **🛡️ Vulnerability Scanning** - Automated Trivy security scanning in CI/CD
-- **📊 Resource Limits** - Production-ready CPU and memory constraints
-- **🚫 Read-Only Filesystem** - Immutable production containers
+The template enforces high standards automatically:
+- **100% Test Coverage** - Comprehensive testing with pytest + hypothesis
+- **Type Safety** - Full type annotations with pyright checking
+- **Code Quality** - Ruff linting with security rules (flake8-bandit)
+- **Security** - CodeQL analysis and vulnerability scanning
+- **Documentation** - Auto-generated API docs with pdoc
 
 ## 🏛️ Architecture & Workflow
 
@@ -162,11 +135,11 @@ Complex projects span multiple AI sessions using shared state management:
 
 ## 🔧 Technology Stack
 
-**🐳 Containerization** 
-- Docker multi-stage builds with BuildKit optimization
-- Distroless production images (gcr.io/distroless/python3)
-- Security scanning with Trivy integration
-- Hot reload development containers
+**⚡ Modern Python Stack**
+- UV package manager (5-10x faster than pip)
+- Python 3.13 with latest language features  
+- Task automation with taskipy
+- Comprehensive testing with pytest + hypothesis
 
 **🤖 AI Development Team**
 - **@developer**: TDD workflow implementation with QA integration
