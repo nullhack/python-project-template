@@ -9,8 +9,8 @@ import pytest
 from hypothesis import assume, example, given
 from hypothesis import strategies as st
 
-from python_package_template import python_module_template as m
 from main import main
+from python_package_template import python_module_template as m
 
 
 @pytest.mark.unit
@@ -60,7 +60,8 @@ def test_main_with_verbosity_level_should_control_version_output(
     """
     Given: Different verbosity levels
     When: main() is called with that verbosity
-    Then: Version should appear in logs for DEBUG and INFO levels, but not for WARNING and above
+    Then: Version should appear in logs for DEBUG and INFO levels,
+          but not for WARNING and above
     """
     assume(verbosity != "CRITICAL")
 
@@ -88,13 +89,13 @@ def test_main_with_verbosity_level_should_control_version_output(
 
     with patch(
         "main.logging.basicConfig", side_effect=mock_basic_config
-    ) as mock_basicConfig:
+    ) as mock_basic_config:
         # Call main() directly with the verbosity level
         main(verbosity)
 
         # Verify that logging.basicConfig was called with the correct level
-        mock_basicConfig.assert_called_once()
-        args, kwargs = mock_basicConfig.call_args
+        mock_basic_config.assert_called_once()
+        _args, kwargs = mock_basic_config.call_args
         assert kwargs["level"] == expected_level
 
     # Check the captured log output
@@ -105,12 +106,15 @@ def test_main_with_verbosity_level_should_control_version_output(
     if verbosity in ["WARNING", "ERROR", "CRITICAL"]:
         # These levels should NOT show INFO messages since INFO < WARNING/ERROR/CRITICAL
         assert f"Version: {expected_version}" not in log_output, (
-            f"Expected no version messages at {verbosity} level, but got output: {log_output!r}"
+            f"Expected no version messages at {verbosity} level, "
+            f"but got output: {log_output!r}"
         )
     else:
-        # DEBUG and INFO levels should show INFO messages since INFO >= DEBUG and INFO >= INFO
+        # DEBUG and INFO levels should show INFO messages
+        # since INFO >= DEBUG and INFO >= INFO
         assert f"Version: {expected_version}" in log_output, (
-            f"Expected version message at {verbosity} level, but got output: {log_output!r}"
+            f"Expected version message at {verbosity} level, "
+            f"but got output: {log_output!r}"
         )
 
 
@@ -122,7 +126,7 @@ def test_main_with_invalid_verbosity_should_raise_value_error() -> None:
     Then: Should raise ValueError with helpful message
     """
     # Test that calling main() with invalid verbosity raises ValueError
-    with pytest.raises(ValueError) as exc_info:
+    with pytest.raises(ValueError, match=r"Invalid verbosity level") as exc_info:
         main("INVALID_LEVEL")
 
     # Verify the error message contains expected details

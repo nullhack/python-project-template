@@ -16,7 +16,7 @@ Usage:
 import logging
 import shutil
 import sys
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 
 import fire
@@ -68,7 +68,7 @@ def copy_and_rename_package(src_name: str, dst_name: str) -> None:
 
 def detect_fields() -> None:
     """Show what fields would need changing."""
-    today = datetime.now().strftime("%Y%m%d")
+    today = datetime.now(timezone.utc).strftime("%Y%m%d")
     logger.info("\nFields that would need to be changed in templates:")
     logger.info("-" * 50)
     logger.info("  1. GitHub Username: %s", ORIGINAL_GITHUB_USERNAME)
@@ -114,8 +114,8 @@ def run(
     project_description: str,
     author_name: str = "Your Name",
     author_email: str = "[EMAIL]",
-    package_name: str = None,
-    module_name: str = None,
+    package_name: str | None = None,
+    module_name: str | None = None,
 ) -> None:
     """Run the setup script with provided parameters."""
     if package_name is None:
@@ -132,7 +132,7 @@ def run(
         ORIGINAL_MODULE_NAME: module_name,
     }
 
-    today = datetime.now().strftime("%Y%m%d")
+    today = datetime.now(timezone.utc).strftime("%Y%m%d")
     replacements["0.1.20260411"] = f"0.1.{today}"
     replacements[
         "Python template with some awesome tools to quickstart any Python project"
@@ -171,7 +171,8 @@ def run(
     logger.info("  2. Run: uv venv && uv pip install -e '.[dev]'")
     logger.info("  3. Run: task test && task lint && task static-check")
     logger.info(
-        "  4. Initialize secrets baseline: uv run detect-secrets scan --baseline .secrets.baseline"
+        "  4. Initialize secrets baseline: "
+        "uv run detect-secrets scan --baseline .secrets.baseline"
     )
 
 
