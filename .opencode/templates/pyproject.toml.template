@@ -30,7 +30,7 @@ dev = [
     "ruff>=0.11.5",
     "taskipy>=1.14.1",
     "hypothesis>=6.148.4",
-    "cosmic-ray>=8.4.3",
+    "mutmut>=2.5.2",
     "pyright>=1.1.407",
 ]
 
@@ -160,13 +160,12 @@ git add -A && \
 git commit -m "Publish API documentation" && \
 git push origin gh-pages --force && \
 git checkout main"""
-mut-report = """
-  uv run cosmic-ray new-config mut.toml && \
-  uv run cosmic-ray init mut.toml mut.sqlite && \
-  uv run cosmic-ray --verbosity=INFO baseline mut.toml && \
-  uv run cosmic-ray exec mut.toml mut.sqlite && \
-  uv run cr-html mut.sqlite > docs/mut_report.html && \
-  rm mut.toml && \
-  rm mut.sqlite
-"""
+mut = "mutmut run"
+mut-clean = "mutmut reset && rm -rf docs/mutation/"
 static-check = "pyright"
+
+[dependency-groups]
+dev = [
+    "detect-secrets>=1.5.0",
+    "safety>=3.7.0",
+]

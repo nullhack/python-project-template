@@ -71,12 +71,39 @@ def detect_fields() -> None:
     print(f"  8. Version: starts with 0.1.{today}")
 
 
+def copy_directory_structure(src_dir: Path, dst_dir: Path, replacements: dict) -> None:
+    """Copy directory structure recursively, processing template files."""
+    if dst_dir.exists():
+        shutil.rmtree(dst_dir)
+    dst_dir.mkdir(parents=True, exist_ok=True)
+
+    for item in src_dir.rglob("*"):
+        if item.is_file():
+            # Calculate relative path and destination
+            rel_path = item.relative_to(src_dir)
+            dst_path = dst_dir / rel_path
+            dst_path.parent.mkdir(parents=True, exist_ok=True)
+
+            # Process template files
+            if item.suffix == ".template":
+                content = item.read_text(encoding="utf-8")
+                content = substitute_values(content, replacements)
+                # Remove .template extension
+                dst_path = dst_path.with_suffix("")
+                dst_path.write_text(content, encoding="utf-8")
+                print(f"Created: {dst_path.relative_to(ROOT_DIR)}")
+            else:
+                # Copy non-template files as-is
+                shutil.copy2(item, dst_path)
+                print(f"Copied: {dst_path.relative_to(ROOT_DIR)}")
+
+
 def run(
     github_username: str,
     project_name: str,
     project_description: str,
     author_name: str = "Your Name",
-    author_email: str = "you@example.com",
+    author_email: str = "[EMAIL]",
     package_name: str = None,
     module_name: str = None,
 ) -> None:
@@ -108,15 +135,23 @@ def run(
     print(f"Module: {module_name}")
     print()
 
+    # Process root-level template files
     for template_file in TEMPLATES_DIR.glob("*.template"):
         content = template_file.read_text(encoding="utf-8")
         content = substitute_values(content, replacements)
 
-        dst_name = template_file.stem.replace(".template", "")
+        dst_name = template_file.stem
         dst_path = ROOT_DIR / dst_name
         dst_path.write_text(content, encoding="utf-8")
         print(f"Created: {dst_path.relative_to(ROOT_DIR)}")
 
+    # Process .github directory structure
+    github_templates_dir = TEMPLATES_DIR / ".github"
+    if github_templates_dir.exists():
+        github_dst_dir = ROOT_DIR / ".github"
+        copy_directory_structure(github_templates_dir, github_dst_dir, replacements)
+
+    # Copy and rename package directory
     if package_name != ORIGINAL_PACKAGE_NAME:
         copy_and_rename_package(ORIGINAL_PACKAGE_NAME, package_name)
 
@@ -125,6 +160,9 @@ def run(
     print("  1. Review and update README.md with project-specific content")
     print("  2. Run: uv venv && uv pip install -e '.[dev]'")
     print("  3. Run: task test && task lint && task static-check")
+    print(
+        "  4. Initialize secrets baseline: uv run detect-secrets scan --baseline .secrets.baseline"
+    )
 
 
 if __name__ == "__main__":

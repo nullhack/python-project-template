@@ -1,0 +1,71 @@
+version: 2
+updates:
+  # Enable version updates for Python packages
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "06:00"
+      timezone: "UTC"
+    # Group related updates into a single PR
+    groups:
+      dev-dependencies:
+        patterns:
+          - "pytest*"
+          - "ruff*"
+          - "mypy*"
+          - "pyright*" 
+          - "black*"
+          - "bandit*"
+          - "safety*"
+          - "detect-secrets*"
+          - "taskipy*"
+          - "pdoc*"
+          - "hypothesis*"
+          - "mutmut*"
+        update-types:
+          - "minor"
+          - "patch"
+      security-updates:
+        patterns:
+          - "*"
+        update-types:
+          - "security"
+    # Configuration options
+    open-pull-requests-limit: 5
+    # Allow auto-merge for security updates
+    allow:
+      - dependency-type: "all"
+    # Commit message configuration
+    commit-message:
+      prefix: "deps"
+      prefix-development: "deps-dev"
+      include: "scope"
+    # Reviewers (uncomment and modify as needed)
+    # reviewers:
+    #   - "your-username"
+    # assignees:
+    #   - "your-username"
+    # Labels for PRs
+    labels:
+      - "dependencies"
+    # Increase version update PR limit for security patches
+    pull-request-branch-name:
+      separator: "/"
+
+  # Enable version updates for GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "06:00"
+      timezone: "UTC"
+    open-pull-requests-limit: 3
+    commit-message:
+      prefix: "ci"
+      include: "scope"
+    labels:
+      - "github-actions"
+      - "dependencies"

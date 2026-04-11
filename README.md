@@ -7,6 +7,12 @@
 [![MIT License][license-shield]][license-url]
 [![Coverage](https://img.shields.io/badge/coverage-100%25-brightgreen?style=for-the-badge)](docs/coverage/index.html)
 
+[![CI Status](https://github.com/nullhack/python-project-template/workflows/CI/badge.svg?style=for-the-badge)](https://github.com/nullhack/python-project-template/actions/workflows/ci.yml)
+[![CodeQL](https://github.com/nullhack/python-project-template/workflows/CodeQL%20Security%20Analysis/badge.svg?style=for-the-badge)](https://github.com/nullhack/python-project-template/actions/workflows/codeql.yml)
+[![Python](https://img.shields.io/badge/python-3.12%20%7C%203.13-blue?style=for-the-badge)](https://www.python.org/downloads/)
+[![Code Style](https://img.shields.io/badge/code%20style-ruff-000000.svg?style=for-the-badge)](https://github.com/astral-sh/ruff)
+[![Security](https://img.shields.io/badge/security-ruff%20%2B%20CodeQL-green?style=for-the-badge)](https://docs.astral.sh/ruff/rules/#flake8-bandit-s)
+
 > Python template with some awesome tools to quickstart any Python project
 
 **AI-Enhanced Python Project** built with enterprise-grade architecture, TDD workflows, and zero-config quality standards.
