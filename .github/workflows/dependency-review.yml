@@ -24,10 +24,8 @@ jobs:
         with:
           # Fail the build if vulnerabilities are found
           fail-on-severity: moderate
-          # Allow GPL licenses (adjust as needed for your project)
+          # Allow only these licenses (automatically denies others including AGPL)
           allow-licenses: GPL-2.0, GPL-3.0, LGPL-2.1, LGPL-3.0, MIT, Apache-2.0, BSD-2-Clause, BSD-3-Clause
-          # Deny specific licenses (adjust as needed)  
-          deny-licenses: AGPL-1.0, AGPL-3.0
           # Create a summary comment on the PR
           comment-summary-in-pr: true
           
@@ -41,7 +39,7 @@ jobs:
         uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4.1.1
         
       - name: Install uv
-        uses: astral-sh/setup-uv@d19427ac7c4a6a471caeb4f19c27e9026d98d1d8 # v4.0.0
+        uses: astral-sh/setup-uv@cdfb2ee6dde255817c739680168ad81e184c4bfb # v4.0.0
         
       - name: Set up Python
         run: uv python install 3.13
