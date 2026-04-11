@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# ruff: noqa: T201
 """Setup a new Python project from the template.
 
 This script copies template files from .opencode/templates/ to the project root,
@@ -14,11 +13,21 @@ Usage:
     python setup_project.py detect-fields
 """
 
+import logging
 import shutil
+import sys
 from datetime import datetime
 from pathlib import Path
 
 import fire
+
+# Configure logging for user feedback
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(message)s",
+    handlers=[logging.StreamHandler(sys.stdout)],
+)
+logger = logging.getLogger(__name__)
 
 TEMPLATES_DIR = Path(__file__).parent / ".opencode" / "templates"
 ROOT_DIR = Path(__file__).parent
@@ -48,28 +57,28 @@ def copy_and_rename_package(src_name: str, dst_name: str) -> None:
         if dst_dir.exists():
             shutil.rmtree(dst_dir)
         shutil.copytree(src_dir, dst_dir, dirs_exist_ok=True)
-        print(f"Copied package: {src_name} -> {dst_name}")
+        logger.info("Copied package: %s -> %s", src_name, dst_name)
 
         for py_file in dst_dir.rglob("*.py"):
             content = py_file.read_text(encoding="utf-8")
             content = content.replace(src_name, dst_name)
             py_file.write_text(content, encoding="utf-8")
-            print(f"  Renamed in: {py_file.relative_to(ROOT_DIR)}")
+            logger.info("  Renamed in: %s", py_file.relative_to(ROOT_DIR))
 
 
 def detect_fields() -> None:
     """Show what fields would need changing."""
     today = datetime.now().strftime("%Y%m%d")
-    print("\nFields that would need to be changed in templates:")
-    print("-" * 50)
-    print(f"  1. GitHub Username: {ORIGINAL_GITHUB_USERNAME}")
-    print(f"  2. Project Name: {ORIGINAL_PROJECT_NAME}")
-    print("  3. Project Description: 'Python template...'")
-    print(f"  4. Author Name: {ORIGINAL_AUTHOR_NAME}")
-    print(f"  5. Author Email: {ORIGINAL_AUTHOR_EMAIL}")
-    print(f"  6. Package Name: {ORIGINAL_PACKAGE_NAME}")
-    print(f"  7. Module Name: {ORIGINAL_MODULE_NAME}")
-    print(f"  8. Version: starts with 0.1.{today}")
+    logger.info("\nFields that would need to be changed in templates:")
+    logger.info("-" * 50)
+    logger.info("  1. GitHub Username: %s", ORIGINAL_GITHUB_USERNAME)
+    logger.info("  2. Project Name: %s", ORIGINAL_PROJECT_NAME)
+    logger.info("  3. Project Description: 'Python template...'")
+    logger.info("  4. Author Name: %s", ORIGINAL_AUTHOR_NAME)
+    logger.info("  5. Author Email: %s", ORIGINAL_AUTHOR_EMAIL)
+    logger.info("  6. Package Name: %s", ORIGINAL_PACKAGE_NAME)
+    logger.info("  7. Module Name: %s", ORIGINAL_MODULE_NAME)
+    logger.info("  8. Version: starts with 0.1.%s", today)
 
 
 def copy_directory_structure(src_dir: Path, dst_dir: Path, replacements: dict) -> None:
@@ -92,11 +101,11 @@ def copy_directory_structure(src_dir: Path, dst_dir: Path, replacements: dict) -
                 # Remove .template extension
                 dst_path = dst_path.with_suffix("")
                 dst_path.write_text(content, encoding="utf-8")
-                print(f"Created: {dst_path.relative_to(ROOT_DIR)}")
+                logger.info("Created: %s", dst_path.relative_to(ROOT_DIR))
             else:
                 # Copy non-template files as-is
                 shutil.copy2(item, dst_path)
-                print(f"Copied: {dst_path.relative_to(ROOT_DIR)}")
+                logger.info("Copied: %s", dst_path.relative_to(ROOT_DIR))
 
 
 def run(
@@ -129,12 +138,12 @@ def run(
         "Python template with some awesome tools to quickstart any Python project"
     ] = project_description
 
-    print(f"\nSetting up project: {project_name}")
-    print(f"Description: {project_description}")
-    print(f"GitHub: github.com/{github_username}/{project_name}")
-    print(f"Package: {package_name}")
-    print(f"Module: {module_name}")
-    print()
+    logger.info("\nSetting up project: %s", project_name)
+    logger.info("Description: %s", project_description)
+    logger.info("GitHub: github.com/%s/%s", github_username, project_name)
+    logger.info("Package: %s", package_name)
+    logger.info("Module: %s", module_name)
+    logger.info("")
 
     # Process root-level template files
     for template_file in TEMPLATES_DIR.glob("*.template"):
@@ -144,7 +153,7 @@ def run(
         dst_name = template_file.stem
         dst_path = ROOT_DIR / dst_name
         dst_path.write_text(content, encoding="utf-8")
-        print(f"Created: {dst_path.relative_to(ROOT_DIR)}")
+        logger.info("Created: %s", dst_path.relative_to(ROOT_DIR))
 
     # Process .github directory structure
     github_templates_dir = TEMPLATES_DIR / ".github"
@@ -156,12 +165,12 @@ def run(
     if package_name != ORIGINAL_PACKAGE_NAME:
         copy_and_rename_package(ORIGINAL_PACKAGE_NAME, package_name)
 
-    print("\nProject setup complete!")
-    print("\nNext steps:")
-    print("  1. Review and update README.md with project-specific content")
-    print("  2. Run: uv venv && uv pip install -e '.[dev]'")
-    print("  3. Run: task test && task lint && task static-check")
-    print(
+    logger.info("\nProject setup complete!")
+    logger.info("\nNext steps:")
+    logger.info("  1. Review and update README.md with project-specific content")
+    logger.info("  2. Run: uv venv && uv pip install -e '.[dev]'")
+    logger.info("  3. Run: task test && task lint && task static-check")
+    logger.info(
         "  4. Initialize secrets baseline: uv run detect-secrets scan --baseline .secrets.baseline"
     )
 
