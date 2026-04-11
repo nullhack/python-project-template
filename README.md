@@ -179,25 +179,24 @@ task doc-build        # Static API documentation generation
 
 ```bash
 # Development workflows
-docker-compose up                              # Hot reload development
-docker-compose --profile test up               # Complete test suite
-docker-compose --profile quality up            # Code quality pipeline
+docker-compose up                     # Hot reload development environment
+docker-compose --profile test up      # Run complete test suite
+docker-compose --profile docs up      # Documentation server (localhost:8080)
+docker-compose --profile quality up   # Code quality checks (lint + typecheck)
 
-# Production workflows  
-docker build --target production -t app:prod . # Security-optimized build
-docker-compose -f docker-compose.prod.yml up   # Production testing
-docker-compose -f docker-compose.prod.yml --profile security up  # Vulnerability scan
+# Build standalone image
+docker build -t python-template .     # Build development image
 ```
 
 ## 📈 Quality Metrics & Standards
 
 - ✅ **100% Test Coverage** - Branch and line coverage with pytest-cov
-- ✅ **Security Hardened** - Distroless containers, non-root execution, vulnerability scanning  
+- ✅ **Container Ready** - Docker development environment with hot reload and debugging
 - ✅ **Static Type Safety** - Complete type hints with protocol-based interfaces
 - ✅ **Zero Linting Issues** - Automated Ruff formatting and style enforcement
 - ✅ **Property-Based Testing** - Hypothesis for robust edge case validation
 - ✅ **Architecture Compliance** - AI-enforced SOLID principles and Object Calisthenics
-- ✅ **Container Security** - Minimal attack surface with read-only production filesystems
+- ✅ **Development Friendly** - Hot reload, debugging support, and integrated tooling
 
 ## 🚀 Release Management
 
@@ -221,8 +220,8 @@ docker run your-project:latest
 @repo-manager /skill git-release
 # Example: Creates v1.2.20260411 "Secure Fortress" (Docker security improvements)
 
-# Deploy with confidence
-docker-compose -f docker-compose.prod.yml up --detach
+# Run your application
+docker-compose up --detach
 ```
 
 ## 🤝 Contributing
@@ -255,9 +254,7 @@ Standing on the shoulders of giants:
 - [OpenCode](https://opencode.ai) - Revolutionary AI-powered development platform
 - [UV](https://astral.sh/uv/) - Blazing fast Python package and project manager
 - [Ruff](https://astral.sh/ruff/) - Extremely fast Python linter and formatter  
-- [Docker](https://docker.com) - Industry-standard containerization platform
-- [Distroless](https://github.com/GoogleContainerTools/distroless) - Google's minimal container images
-- [Trivy](https://trivy.dev/) - Comprehensive security scanner
+- [Docker](https://docker.com) - Containerization for development environment
 - [Hypothesis](https://hypothesis.readthedocs.io/) - Property-based testing framework
 
 ---
