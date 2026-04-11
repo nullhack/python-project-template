@@ -7,11 +7,8 @@
 [![MIT License][license-shield]][license-url]
 [![Coverage](https://img.shields.io/badge/coverage-100%25-brightgreen?style=for-the-badge)](docs/coverage/index.html)
 
-[![CI Status](https://github.com/nullhack/python-project-template/workflows/CI/badge.svg?style=for-the-badge)](https://github.com/nullhack/python-project-template/actions/workflows/ci.yml)
-[![CodeQL](https://github.com/nullhack/python-project-template/workflows/CodeQL%20Security%20Analysis/badge.svg?style=for-the-badge)](https://github.com/nullhack/python-project-template/actions/workflows/codeql.yml)
+[![CI](https://img.shields.io/github/actions/workflow/status/nullhack/python-project-template/ci.yml?style=for-the-badge&label=CI)](https://github.com/nullhack/python-project-template/actions/workflows/ci.yml)
 [![Python](https://img.shields.io/badge/python-3.13-blue?style=for-the-badge)](https://www.python.org/downloads/)
-[![Code Style](https://img.shields.io/badge/code%20style-ruff-000000.svg?style=for-the-badge)](https://github.com/astral-sh/ruff)
-[![Security](https://img.shields.io/badge/security-ruff%20%2B%20CodeQL-green?style=for-the-badge)](https://docs.astral.sh/ruff/rules/#flake8-bandit-s)
 
 > **Ship production-ready Python projects faster with AI-powered development workflows**
 
@@ -179,25 +176,24 @@ task doc-build        # Static API documentation generation
 
 ```bash
 # Development workflows
-docker-compose up                              # Hot reload development
-docker-compose --profile test up               # Complete test suite
-docker-compose --profile quality up            # Code quality pipeline
+docker-compose up                     # Hot reload development environment
+docker-compose --profile test up      # Run complete test suite
+docker-compose --profile docs up      # Documentation server (localhost:8080)
+docker-compose --profile quality up   # Code quality checks (lint + typecheck)
 
-# Production workflows  
-docker build --target production -t app:prod . # Security-optimized build
-docker-compose -f docker-compose.prod.yml up   # Production testing
-docker-compose -f docker-compose.prod.yml --profile security up  # Vulnerability scan
+# Build standalone image
+docker build -t python-template .     # Build development image
 ```
 
 ## 📈 Quality Metrics & Standards
 
 - ✅ **100% Test Coverage** - Branch and line coverage with pytest-cov
-- ✅ **Security Hardened** - Distroless containers, non-root execution, vulnerability scanning  
+- ✅ **Container Ready** - Docker development environment with hot reload and debugging
 - ✅ **Static Type Safety** - Complete type hints with protocol-based interfaces
 - ✅ **Zero Linting Issues** - Automated Ruff formatting and style enforcement
 - ✅ **Property-Based Testing** - Hypothesis for robust edge case validation
 - ✅ **Architecture Compliance** - AI-enforced SOLID principles and Object Calisthenics
-- ✅ **Container Security** - Minimal attack surface with read-only production filesystems
+- ✅ **Development Friendly** - Hot reload, debugging support, and integrated tooling
 
 ## 🚀 Release Management
 
@@ -221,8 +217,8 @@ docker run your-project:latest
 @repo-manager /skill git-release
 # Example: Creates v1.2.20260411 "Secure Fortress" (Docker security improvements)
 
-# Deploy with confidence
-docker-compose -f docker-compose.prod.yml up --detach
+# Run your application
+docker-compose up --detach
 ```
 
 ## 🤝 Contributing
@@ -255,9 +251,7 @@ Standing on the shoulders of giants:
 - [OpenCode](https://opencode.ai) - Revolutionary AI-powered development platform
 - [UV](https://astral.sh/uv/) - Blazing fast Python package and project manager
 - [Ruff](https://astral.sh/ruff/) - Extremely fast Python linter and formatter  
-- [Docker](https://docker.com) - Industry-standard containerization platform
-- [Distroless](https://github.com/GoogleContainerTools/distroless) - Google's minimal container images
-- [Trivy](https://trivy.dev/) - Comprehensive security scanner
+- [Docker](https://docker.com) - Containerization for development environment
 - [Hypothesis](https://hypothesis.readthedocs.io/) - Property-based testing framework
 
 ---

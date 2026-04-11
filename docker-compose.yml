@@ -1,86 +1,45 @@
 # Docker Compose for python-project-template
-# Development-focused setup with hot reload and debugging capabilities
+# Simplified development setup
 
 services:
   # =============================================================================
-  # Main development service
+  # Main application
   # =============================================================================
   app:
     build:
       context: .
       dockerfile: Dockerfile
-      target: development
-      args:
-        - TESTBUILD=false  # Skip tests in dev mode for faster startup
-    container_name: python-template-dev
+    container_name: python-template-app
     volumes:
       # Hot reload: mount source code
-      - ./python_package_template:/app/python_package_template:ro
-      - ./tests:/app/tests:ro  
+      - ./python_package_template:/app/python_package_template
+      - ./tests:/app/tests
       - ./pyproject.toml:/app/pyproject.toml:ro
-      # Persistent volumes for development artifacts  
-      - dev-cache:/app/.pytest_cache
-      - dev-coverage:/app/htmlcov
-      - dev-docs:/app/docs
+    ports:
+      - "8000:8000"    # Main application
+      - "8080:8080"    # Documentation server
+      - "5678:5678"    # Debug port
     environment:
       - PYTHONPATH=/app
       - PYTHONUNBUFFERED=1
-      - PYTHONDONTWRITEBYTECODE=1
       - DEVELOPMENT=true
-    ports:
-      - "8000:8000"    # Main application port
-      - "8080:8080"    # Documentation server (pdoc)
-      - "5678:5678"    # Debug port (debugpy)
     command: python -m python_package_template.python_module_template
-    healthcheck:
-      test: ["CMD", "python", "-m", "python_package_template.python_module_template"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 10s
     restart: unless-stopped
 
   # =============================================================================
-  # Test runner service
+  # Test runner
   # =============================================================================  
   test:
     build:
       context: .
-      dockerfile: Dockerfile  
-      target: test
-      args:
-        - TESTBUILD=true
+      dockerfile: Dockerfile
     container_name: python-template-test
     volumes:
       - ./:/app:ro
-      - test-reports:/app/docs/tests
-      - test-coverage:/app/docs/coverage  
-      - test-mutation:/app/docs/mutation
     environment:
       - PYTHONPATH=/app
       - PYTHONUNBUFFERED=1
     command: task test
-    profiles:
-      - test
-      
-  # =============================================================================
-  # Fast test runner (development)
-  # =============================================================================
-  test-fast:
-    build:
-      context: .
-      dockerfile: Dockerfile
-      target: development
-      args:
-        - TESTBUILD=false
-    container_name: python-template-test-fast  
-    volumes:
-      - ./:/app:ro
-      - test-cache:/app/.pytest_cache
-    environment:
-      - PYTHONPATH=/app
-      - PYTHONUNBUFFERED=1
-    command: task test-fast
     profiles:
       - test
 
@@ -91,14 +50,10 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-      target: development  
-      args:
-        - TESTBUILD=false
     container_name: python-template-docs
     volumes:
       - ./python_package_template:/app/python_package_template:ro
       - ./pyproject.toml:/app/pyproject.toml:ro
-      - dev-docs:/app/docs
     ports:
       - "8080:8080"
     environment:
@@ -106,80 +61,26 @@ services:
     command: task doc-serve
     profiles:
       - docs
-    healthcheck:
-      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:8080"]
-      interval: 30s
-      timeout: 5s
-      retries: 3
 
   # =============================================================================
-  # Code quality and linting service
+  # Code quality checks
   # =============================================================================
-  lint:
+  quality:
     build:
       context: .
       dockerfile: Dockerfile
-      target: development
-      args:
-        - TESTBUILD=false  
-    container_name: python-template-lint
+    container_name: python-template-quality
     volumes:
       - ./:/app:ro
     environment:
       - PYTHONPATH=/app
-    command: task lint
-    profiles:
-      - quality
-
-  # =============================================================================
-  # Static type checking service
-  # =============================================================================
-  typecheck:
-    build:
-      context: .
-      dockerfile: Dockerfile
-      target: development
-      args:
-        - TESTBUILD=false
-    container_name: python-template-typecheck
-    volumes:
-      - ./:/app:ro
-    environment:
-      - PYTHONPATH=/app  
-    command: task static-check
+    command: bash -c "task lint && task static-check"
     profiles:
       - quality
 
 # =============================================================================
-# Named volumes for persistent development data
-# =============================================================================
-volumes:
-  dev-cache:
-    driver: local
-    name: python-template-dev-cache
-  dev-coverage:
-    driver: local  
-    name: python-template-dev-coverage
-  dev-docs:
-    driver: local
-    name: python-template-dev-docs
-  test-reports:
-    driver: local
-    name: python-template-test-reports  
-  test-coverage:
-    driver: local
-    name: python-template-test-coverage
-  test-mutation:
-    driver: local
-    name: python-template-test-mutation
-  test-cache:
-    driver: local
-    name: python-template-test-cache
-
-# =============================================================================
-# Networks (using default bridge network)
+# Networks
 # =============================================================================
 networks:
   default:
     name: python-template-network
-    driver: bridge
