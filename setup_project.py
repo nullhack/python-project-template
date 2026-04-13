@@ -5,39 +5,46 @@ This script copies template files from .opencode/templates/ to the project root,
 substituting templated fields with the provided parameters.
 
 Usage:
-    python setup_project.py run --github-username <username> --project-name <name>
-                              --project-description <desc> [--author-name <name>]
-                              [--author-email <email>] [--package-name <name>]
-                              [--module-name <name>]
+    # Interactive mode (prompts for any missing values)
+    python setup_project.py
 
-    python setup_project.py detect-fields
+    # With parameters
+    python setup_project.py --github-username myuser --project-name my-project \
+        --project-description "My project description" --author-name "My Name"
+
+    # Accept defaults for missing values
+    python setup_project.py --github-username myuser --yes
 """
 
-import logging
+import argparse
+import json
+import os
 import shutil
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
-
-import fire
-
-# Configure logging for user feedback
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(message)s",
-    handlers=[logging.StreamHandler(sys.stdout)],
-)
-logger = logging.getLogger(__name__)
+from typing import TextIO
 
 TEMPLATES_DIR = Path(__file__).parent / ".opencode" / "templates"
 ROOT_DIR = Path(__file__).parent
+DEFAULTS_FILE = ROOT_DIR / "project_defaults.json"
 
-ORIGINAL_PROJECT_NAME = "python-project-template"
-ORIGINAL_PACKAGE_NAME = "python_package_template"
-ORIGINAL_MODULE_NAME = "python_module_template"
-ORIGINAL_GITHUB_USERNAME = "nullhack"
-ORIGINAL_AUTHOR_NAME = "eol"
-ORIGINAL_AUTHOR_EMAIL = "nullhack@users.noreply.github.com"
+
+def log_message(message: str, file: TextIO | None = None) -> None:
+    """Log message to stdout or stderr."""
+    if file:
+        file.write(f"{message}\n")
+        file.flush()
+    else:
+        sys.stdout.write(f"{message}\n")
+        sys.stdout.flush()
+
+
+def load_defaults() -> dict:
+    """Load defaults from JSON file."""
+    if DEFAULTS_FILE.exists():
+        return json.loads(DEFAULTS_FILE.read_text(encoding="utf-8"))
+    return {}
 
 
 def substitute_values(content: str, replacements: dict) -> str:
@@ -48,133 +55,375 @@ def substitute_values(content: str, replacements: dict) -> str:
     return result
 
 
-def copy_and_rename_package(src_name: str, dst_name: str) -> None:
-    """Copy package directory and rename references inside."""
-    src_dir = ROOT_DIR / src_name
-    dst_dir = ROOT_DIR / dst_name
+def prompt_for_value(key: str, default: str | None = None) -> str:
+    """Prompt user for a value."""
+    prompt = f"{key}"
+    if default:
+        prompt += f" [{default}]"
+    prompt += ": "
+    value = input(prompt)
+    return value or (default or "")
 
-    if src_dir.exists():
-        if dst_dir.exists():
-            shutil.rmtree(dst_dir)
-        shutil.copytree(src_dir, dst_dir, dirs_exist_ok=True)
-        logger.info("Copied package: %s -> %s", src_name, dst_name)
 
-        for py_file in dst_dir.rglob("*.py"):
-            content = py_file.read_text(encoding="utf-8")
-            content = content.replace(src_name, dst_name)
-            py_file.write_text(content, encoding="utf-8")
-            logger.info("  Renamed in: %s", py_file.relative_to(ROOT_DIR))
+def process_templates(replacements: dict) -> None:
+    """Process template files and create them in the root directory."""
+    for template_file in TEMPLATES_DIR.glob("*.template"):
+        dst_name = template_file.stem
+
+        if dst_name == "project_defaults":
+            continue
+
+        content = template_file.read_text(encoding="utf-8")
+        content = substitute_values(content, replacements)
+
+        dst_path = ROOT_DIR / dst_name
+        dst_path.write_text(content, encoding="utf-8")
+        log_message(f"Created: {dst_path.relative_to(ROOT_DIR)}")
+
+    github_templates_dir = TEMPLATES_DIR / ".github"
+    if github_templates_dir.exists():
+        github_dst_dir = ROOT_DIR / ".github"
+        if github_dst_dir.exists():
+            shutil.rmtree(github_dst_dir)
+        github_dst_dir.mkdir(parents=True, exist_ok=True)
+
+        for item in github_templates_dir.rglob("*"):
+            if item.is_file():
+                rel_path = item.relative_to(github_templates_dir)
+                dst_path = github_dst_dir / rel_path
+                dst_path.parent.mkdir(parents=True, exist_ok=True)
+
+                if item.suffix == ".template":
+                    content = item.read_text(encoding="utf-8")
+                    content = substitute_values(content, replacements)
+                    dst_path = dst_path.with_suffix("")
+                    dst_path.write_text(content, encoding="utf-8")
+                    log_message(f"Created: {dst_path.relative_to(ROOT_DIR)}")
+                else:
+                    shutil.copy2(item, dst_path)
+                    log_message(f"Copied: {dst_path.relative_to(ROOT_DIR)}")
+
+
+def apply_defaults(
+    github_username: str | None,
+    project_name: str | None,
+    project_description: str | None,
+    author_name: str | None,
+    author_email: str | None,
+    defaults: dict,
+) -> tuple:
+    """Apply defaults from JSON file when yes or dry_run is set."""
+    return (
+        github_username or defaults.get("github_username"),
+        project_name or defaults.get("project_name"),
+        project_description or defaults.get("project_description"),
+        author_name or defaults.get("author_name"),
+        author_email or defaults.get("author_email"),
+    )
+
+
+def check_interactive(
+    github_username: str | None,
+    project_name: str | None,
+    project_description: str | None,
+    author_name: str | None,
+    author_email: str | None,
+    yes: bool,
+    dry_run: bool,
+) -> bool:
+    """Check if interactive mode is needed."""
+    return (
+        not yes
+        and not dry_run
+        and any(
+            val is None
+            for val in (
+                github_username,
+                project_name,
+                project_description,
+                author_name,
+                author_email,
+            )
+        )
+    )
+
+
+def prompt_missing_values(
+    github_username: str | None,
+    project_name: str | None,
+    project_description: str | None,
+    author_name: str | None,
+    author_email: str | None,
+    defaults: dict,
+) -> tuple:
+    """Prompt for missing values in interactive mode."""
+    log_message("\n--- Interactive Mode ---")
+    log_message("Press Enter to accept default value shown in brackets\n")
+
+    return (
+        github_username
+        or prompt_for_value("GitHub Username", defaults.get("github_username")),
+        project_name or prompt_for_value("Project Name", defaults.get("project_name")),
+        project_description
+        or prompt_for_value("Project Description", defaults.get("project_description")),
+        author_name or prompt_for_value("Author Name", defaults.get("author_name")),
+        author_email or prompt_for_value("Author Email", defaults.get("author_email")),
+    )
+
+
+def run(
+    github_username: str | None = None,
+    project_name: str | None = None,
+    project_description: str | None = None,
+    author_name: str | None = None,
+    author_email: str | None = None,
+    yes: bool = False,
+    dry_run: bool = False,
+) -> None:
+    """Run the setup script with provided parameters."""
+    defaults = load_defaults()
+
+    if yes or dry_run:
+        (
+            github_username,
+            project_name,
+            project_description,
+            author_name,
+            author_email,
+        ) = apply_defaults(
+            github_username,
+            project_name,
+            project_description,
+            author_name,
+            author_email,
+            defaults,
+        )
+
+    is_interactive = check_interactive(
+        github_username,
+        project_name,
+        project_description,
+        author_name,
+        author_email,
+        yes,
+        dry_run,
+    )
+
+    if is_interactive:
+        (
+            github_username,
+            project_name,
+            project_description,
+            author_name,
+            author_email,
+        ) = prompt_missing_values(
+            github_username,
+            project_name,
+            project_description,
+            author_name,
+            author_email,
+            defaults,
+        )
+
+    if not all(
+        [github_username, project_name, project_description, author_name, author_email]
+    ):
+        log_message("Error: Missing required values", file=sys.stderr)
+        sys.exit(1)
+
+    today = datetime.now(timezone.utc).strftime("%Y%m%d")
+
+    original_project = defaults.get("project_name", "python-project-template")
+    original_desc = defaults.get(
+        "project_description",
+        "Python template with some awesome tools to quickstart any Python project",
+    )
+    original_user = defaults.get("github_username", "nullhack")
+    original_author = defaults.get("author_name", "eol")
+    original_email = defaults.get("author_email", "nullhack@users.noreply.github.com")
+
+    replacements = {
+        original_user: github_username,
+        original_author: author_name,
+        original_email: author_email,
+        original_project: project_name,
+        "0.1.20260411": f"0.1.{today}",
+        original_desc: project_description,
+    }
+
+    log_message(f"\nSetting up project: {project_name}")
+    log_message(f"Description: {project_description}")
+    log_message(f"GitHub: github.com/{github_username}/{project_name}")
+    log_message(f"Author: {author_name} <{author_email}>")
+    log_message("")
+
+    if dry_run:
+        log_message("--- Dry Run: No files created ---")
+        return
+
+    process_templates(replacements)
+
+    if project_name:
+        rename_parent_folder(project_name)
+
+    if github_username and project_name and author_name and author_email:
+        show_git_setup_instructions(
+            github_username, project_name, author_name, author_email
+        )
+
+    log_message("\nProject setup complete!")
+    log_message("\nNext steps:")
+    log_message("  1. Run the Git configuration commands shown above")
+    log_message("  2. Review and update templated files (README.md, AGENTS.md, etc.)")
+    log_message("  3. Run: uv venv && uv pip install -e '.[dev]'")
+
+
+def show_git_setup_instructions(
+    github_username: str, project_name: str, author_name: str, author_email: str
+) -> None:
+    """Show Git configuration instructions for manual setup."""
+    new_remote_url = f"https://github.com/{github_username}/{project_name}.git"
+
+    log_message("\n" + "=" * 60)
+    log_message("Git Configuration Required")
+    log_message("=" * 60)
+    log_message("Please run the following Git commands to complete setup:")
+    log_message("")
+    log_message("# Configure Git user (repository-specific)")
+    log_message(f'git config user.name "{author_name}"')
+    log_message(f'git config user.email "{author_email}"')
+    log_message("")
+    log_message("# Update remote origin URL")
+    log_message(f"git remote set-url origin {new_remote_url}")
+    log_message("")
+    log_message("# Or add origin if it doesn't exist")
+    log_message(f"git remote add origin {new_remote_url}")
+    log_message("")
+    log_message("=" * 60)
+
+
+def rename_parent_folder(project_name: str) -> None:
+    """Rename the parent folder to match the project name."""
+    current_dir = Path.cwd()
+    parent_dir = current_dir.parent
+    current_name = current_dir.name
+
+    # Convert project name to a valid directory name
+    safe_project_name = project_name.replace(" ", "-").lower()
+
+    if current_name != safe_project_name:
+        new_path = parent_dir / safe_project_name
+
+        # Check if target directory already exists
+        if new_path.exists():
+            log_message(
+                f"Warning: Directory '{safe_project_name}' already exists in parent."
+            )
+            log_message("Skipping parent folder rename.")
+            return
+
+        try:
+            # Rename the current directory
+            current_dir.rename(new_path)
+            log_message(
+                f"Renamed parent folder from '{current_name}' to '{safe_project_name}'"
+            )
+
+            # Change working directory to the new location
+            os.chdir(new_path)
+            log_message(f"Changed working directory to: {new_path}")
+
+        except OSError as e:
+            log_message(f"Warning: Could not rename parent folder: {e}")
+            log_message("Continuing with setup in current directory.")
+    else:
+        log_message(
+            f"Parent folder name '{current_name}' already matches project name."
+        )
 
 
 def detect_fields() -> None:
     """Show what fields would need changing."""
+    defaults = load_defaults()
     today = datetime.now(timezone.utc).strftime("%Y%m%d")
-    logger.info("\nFields that would need to be changed in templates:")
-    logger.info("-" * 50)
-    logger.info("  1. GitHub Username: %s", ORIGINAL_GITHUB_USERNAME)
-    logger.info("  2. Project Name: %s", ORIGINAL_PROJECT_NAME)
-    logger.info("  3. Project Description: 'Python template...'")
-    logger.info("  4. Author Name: %s", ORIGINAL_AUTHOR_NAME)
-    logger.info("  5. Author Email: %s", ORIGINAL_AUTHOR_EMAIL)
-    logger.info("  6. Package Name: %s", ORIGINAL_PACKAGE_NAME)
-    logger.info("  7. Module Name: %s", ORIGINAL_MODULE_NAME)
-    logger.info("  8. Version: starts with 0.1.%s", today)
-
-
-def copy_directory_structure(src_dir: Path, dst_dir: Path, replacements: dict) -> None:
-    """Copy directory structure recursively, processing template files."""
-    if dst_dir.exists():
-        shutil.rmtree(dst_dir)
-    dst_dir.mkdir(parents=True, exist_ok=True)
-
-    for item in src_dir.rglob("*"):
-        if item.is_file():
-            # Calculate relative path and destination
-            rel_path = item.relative_to(src_dir)
-            dst_path = dst_dir / rel_path
-            dst_path.parent.mkdir(parents=True, exist_ok=True)
-
-            # Process template files
-            if item.suffix == ".template":
-                content = item.read_text(encoding="utf-8")
-                content = substitute_values(content, replacements)
-                # Remove .template extension
-                dst_path = dst_path.with_suffix("")
-                dst_path.write_text(content, encoding="utf-8")
-                logger.info("Created: %s", dst_path.relative_to(ROOT_DIR))
-            else:
-                # Copy non-template files as-is
-                shutil.copy2(item, dst_path)
-                logger.info("Copied: %s", dst_path.relative_to(ROOT_DIR))
-
-
-def run(
-    github_username: str,
-    project_name: str,
-    project_description: str,
-    author_name: str = "Your Name",
-    author_email: str = "[EMAIL]",
-    package_name: str | None = None,
-    module_name: str | None = None,
-) -> None:
-    """Run the setup script with provided parameters."""
-    if package_name is None:
-        package_name = project_name.replace("-", "_")
-    if module_name is None:
-        module_name = package_name
-
-    replacements = {
-        ORIGINAL_GITHUB_USERNAME: github_username,
-        ORIGINAL_AUTHOR_NAME: author_name,
-        ORIGINAL_AUTHOR_EMAIL: author_email,
-        ORIGINAL_PROJECT_NAME: project_name,
-        ORIGINAL_PACKAGE_NAME: package_name,
-        ORIGINAL_MODULE_NAME: module_name,
-    }
-
-    today = datetime.now(timezone.utc).strftime("%Y%m%d")
-    replacements["0.1.20260411"] = f"0.1.{today}"
-    replacements[
-        "Python template with some awesome tools to quickstart any Python project"
-    ] = project_description
-
-    logger.info("\nSetting up project: %s", project_name)
-    logger.info("Description: %s", project_description)
-    logger.info("GitHub: github.com/%s/%s", github_username, project_name)
-    logger.info("Package: %s", package_name)
-    logger.info("Module: %s", module_name)
-    logger.info("")
-
-    # Process root-level template files
-    for template_file in TEMPLATES_DIR.glob("*.template"):
-        content = template_file.read_text(encoding="utf-8")
-        content = substitute_values(content, replacements)
-
-        dst_name = template_file.stem
-        dst_path = ROOT_DIR / dst_name
-        dst_path.write_text(content, encoding="utf-8")
-        logger.info("Created: %s", dst_path.relative_to(ROOT_DIR))
-
-    # Process .github directory structure
-    github_templates_dir = TEMPLATES_DIR / ".github"
-    if github_templates_dir.exists():
-        github_dst_dir = ROOT_DIR / ".github"
-        copy_directory_structure(github_templates_dir, github_dst_dir, replacements)
-
-    # Copy and rename package directory
-    if package_name != ORIGINAL_PACKAGE_NAME:
-        copy_and_rename_package(ORIGINAL_PACKAGE_NAME, package_name)
-
-    logger.info("\nProject setup complete!")
-    logger.info("\nNext steps:")
-    logger.info("  1. Review and update README.md with project-specific content")
-    logger.info("  2. Run: uv venv && uv pip install -e '.[dev]'")
-    logger.info("  3. Run: task test && task lint && task static-check")
-    logger.info(
-        "  4. Initialize secrets baseline: "
-        "uv run detect-secrets scan --baseline .secrets.baseline"
+    log_message("\nTemplated fields in templates:")
+    log_message("-" * 50)
+    log_message(f"  1. GitHub Username: {defaults.get('github_username', 'N/A')}")
+    log_message(f"  2. Project Name: {defaults.get('project_name', 'N/A')}")
+    log_message(
+        f"  3. Project Description: '{defaults.get('project_description', 'N/A')}'"
     )
+    log_message(f"  4. Author Name: {defaults.get('author_name', 'N/A')}")
+    log_message(f"  5. Author Email: {defaults.get('author_email', 'N/A')}")
+    log_message(f"  6. Version: starts with 0.1.{today}")
+
+
+def main() -> None:
+    """Main entry point."""
+    parser = argparse.ArgumentParser(
+        description="Setup a new Python project from the template.",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog=__doc__,
+    )
+
+    parser.add_argument(
+        "--github-username",
+        help="GitHub username or organization",
+    )
+    parser.add_argument(
+        "--project-name",
+        help="Project name",
+    )
+    parser.add_argument(
+        "--project-description",
+        help="Project description",
+    )
+    parser.add_argument(
+        "--author-name",
+        help="Author name",
+    )
+    parser.add_argument(
+        "--author-email",
+        help="Author email",
+    )
+    parser.add_argument(
+        "-y",
+        "--yes",
+        action="store_true",
+        help="Accept defaults for missing values (non-interactive)",
+    )
+    parser.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="Show what would be done without creating files",
+    )
+    parser.add_argument(
+        "command",
+        nargs="?",
+        choices=["run", "detect-fields"],
+        help="Command to run",
+    )
+
+    args = parser.parse_args()
+
+    if args.command == "detect-fields":
+        detect_fields()
+        return
+
+    if args.command == "run" or not args.command:
+        run(
+            github_username=args.github_username,
+            project_name=args.project_name,
+            project_description=args.project_description,
+            author_name=args.author_name,
+            author_email=args.author_email,
+            yes=args.yes,
+            dry_run=args.dry_run,
+        )
+        return
+
+    parser.print_help()
 
 
 if __name__ == "__main__":
-    fire.Fire({"run": run, "detect-fields": detect_fields})
+    main()

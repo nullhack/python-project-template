@@ -10,8 +10,8 @@ import pytest
 from hypothesis import assume, example, given
 from hypothesis import strategies as st
 
+from app import version as m
 from main import ValidVerbosity, main
-from python_package_template import python_module_template as m
 
 
 @pytest.mark.unit
@@ -83,7 +83,7 @@ def test_main_with_verbosity_level_should_control_version_output(
     # Mock logging.basicConfig to use our custom handler instead
     def mock_basic_config(**kwargs):
         # Set up the logger with our custom handler for testing
-        logger = logging.getLogger("python_module_template")
+        logger = logging.getLogger("app")
         logger.handlers.clear()
         logger.addHandler(handler)
         logger.setLevel(kwargs.get("level", logging.INFO))
