@@ -70,37 +70,42 @@ For complete test patterns and guidelines, see:
 
 ## BDD Test Docstrings
 
-All test functions must include Given/When/Then docstrings for the pytest-html-plus report.
+All test functions must include Gherkin-style docstrings with proper newlines. The **preferred** format uses `Example:` with mandatory newlines.
 
-### Format
+### Preferred Format: Example with Newlines
+
+The **preferred** docstring format uses `Example:` followed by `Given:`/`When:`/`Then:` with **mandatory newlines**:
 
 ```python
-def test_condition_should_outcome():
+def test_user_login_with_valid_credentials_should_grant_access():
     """
-    Given: [precondition or context]
-    When: [action or trigger]
-    Then: [expected result]
+    Example: Successful user authentication
+    Given: A registered user with valid credentials exists in the system
+    When: The user submits correct username and password
+    Then: Access should be granted to the application
     """
 ```
 
-### Examples
+**CRITICAL**: Newlines are required:
+- Docstrings must start with newline: `"""\n`
+- Docstrings must end with newline: `\n"""`
+
+### Alternative Formats Accepted
+
+You may also use these acceptable formats:
 
 ```python
-def test_empty_input_should_raise_validation_error():
+# Scenario format (acceptable, suggest Example)
+def test_invalid_login_should_deny_access():
     """
-    Given: An empty string input
-    When: Validation is called
-    Then: Should raise ValidationError with 'required' message
-    """
-
-def test_valid_email_should_pass_validation():
-    """
-    Given: A properly formatted email address
-    When: EmailValidator.validate() is called
-    Then: Should return True without errors
+    Scenario: Invalid login attempt
+    Given: A user with incorrect credentials
+    When: Login is attempted
+    Then: Access should be denied
     """
 
-def test_divide_by_zero_should_raise_error():
+# Minimal Given/When/Then (acceptable)
+def test_division_by_zero_should_raise_error():
     """
     Given: A Calculator instance
     When: divide(10, 0) is called
@@ -110,7 +115,45 @@ def test_divide_by_zero_should_raise_error():
 
 ### Why BDD Docstrings?
 
-1. **pytest-html-plus**: The HTML report displays docstrings as test names, making it easy to understand what each test verifies
+1. **pytest-html**: The HTML report displays docstrings as test names, making it easy to understand what each test verifies
+2. **Documentation**: Docstrings serve as living documentation of test intent
+3. **Debugging**: When a test fails, the docstring immediately shows what scenario was being tested
+
+### CRITICAL: Newline Requirements
+
+**STRICT**: Docstrings MUST start and end with newlines:
+
+```python
+# ✅ CORRECT
+def test_valid_case():
+    """
+    Example: Valid scenario
+    Given: Preconditions
+    When: Action occurs
+    Then: Expected outcome
+    """
+
+# ❌ WRONG - Missing starting newline
+def test_invalid_case():
+    """Example: Invalid scenario
+    Given: Preconditions"""
+
+# ❌ WRONG - Missing ending newline
+def test_invalid_case():
+    """
+    Example: Invalid scenario
+    Given: Preconditions"""
+
+# ❌ WRONG - Both missing
+def test_invalid_case():
+    """Example: Invalid scenario"""
+```
+
+### Examples
+
+### Why BDD Docstrings?
+
+1. **pytest-html**: The HTML report displays docstrings as test names, making it easy to understand what each test verifies
 2. **Documentation**: Docstrings serve as living documentation of test intent
 3. **Debugging**: When a test fails, the docstring immediately shows what scenario was being tested
 

@@ -153,7 +153,7 @@ docker build -t your-project-name .     # Build development image
 |----------|-------|
 | **Package Management** | UV (blazing fast pip/poetry replacement) |
 | **Code Quality** | Ruff (linting + formatting), PyRight (type checking) |
-| **Testing** | PyTest + Hypothesis (property-based testing), pytest-html-plus (BDD reports) |
+| **Testing** | PyTest + Hypothesis (property-based testing), pytest-html (BDD reports) |
 | **AI Integration** | OpenCode agents for development automation |
 | **Documentation** | pdoc with search functionality |
 | **Containerization** | Docker development environment with hot reload |
