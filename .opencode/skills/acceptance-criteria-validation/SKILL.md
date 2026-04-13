@@ -1,6 +1,6 @@
 ---
-name: gherkin-validation
-description: Validate BDD docstrings with UUID format preference and proper Gherkin syntax
+name: acceptance-criteria-validation
+description: Validate acceptance criteria format with UUID traceability and Given/When/Then structure
 license: MIT
 compatibility: opencode
 metadata:
@@ -9,11 +9,11 @@ metadata:
 ---
 
 ## What I do
-Validate BDD docstrings in test functions using UUID format for traceability. Ensure proper newline formatting and provide helpful suggestions.
+Validate acceptance criteria format in test functions using UUID traceability. Ensure proper newline formatting and provide helpful suggestions.
 
 ## When to use me
-- During TDD phase to validate test docstring formats
-- In QA enforcement to check BDD compliance
+- During TDD phase to validate acceptance criteria format
+- In QA enforcement to check acceptance criteria compliance
 - When reviewing test files for documentation standards
 - As part of automated quality checks
 
@@ -34,11 +34,10 @@ def test_user_login_with_valid_credentials_should_grant_access():
 ### Structure
 - UUID followed by colon and brief description (ends with period)
 - Blank line after description
-- Gherkin steps: Given/When/Then with mandatory newlines
+- Acceptance criteria keywords: Given/When/Then with mandatory newlines
 - Each step on its own line
 
-### Extended Gherkin Keywords
-All valid Gherkin keywords are supported:
+### Acceptance Criteria Keywords
 - **Given**: Preconditions or context
 - **When**: Action or trigger
 - **Then**: Expected outcome
@@ -68,13 +67,13 @@ Given: No starting newline"""
 Given: No ending newline"""
 ```
 
-### 2. Gherkin Keyword Validation
-- Must use valid Gherkin keywords
+### 2. Keyword Validation
+- Must use valid acceptance criteria keywords
 - Keywords must be followed by a colon `:`
 - Content after colon must be meaningful (not empty)
 
 ### 3. Structure Requirements
-- At minimum: One Gherkin keyword with content
+- At minimum: One keyword with content
 - Recommended: Logical flow (Given → When → Then)
 
 ## Validation Guidelines
@@ -82,7 +81,7 @@ Given: No ending newline"""
 ### Docstring Validation Checklist
 - [ ] Docstring starts with newline: `"""\n`
 - [ ] Docstring ends with newline before closing quotes
-- [ ] Valid Gherkin keywords present (Given, When, Then, etc.)
+- [ ] Valid keywords present (Given, When, Then, etc.)
 - [ ] Keywords followed by meaningful content (not empty)
 - [ ] Proper colon after each keyword
 
@@ -93,29 +92,7 @@ For improving docstrings to required UUID format:
 "Test docstring must start with acceptance criteria UUID for traceability"
 
 # For missing structure
-"Add 'Given:' context and 'When:' action to complete the test scenario"
-```
-
-### suggest_uuid_format(docstring: str) -> str
-Convert legacy formats to required UUID format:
-```python
-# Input: Legacy format
-original = """
-User login validation.
-Given: Valid credentials
-When: Login submitted
-Then: Access granted
-"""
-
-# Output: UUID-based format
-suggested = suggest_uuid_format(original)
-# """
-# 123e4567-e89b-12d3-a456-426614174000: User login validation.
-# 
-# Given: Valid credentials exist in system
-# When: Login credentials are submitted
-# Then: Access should be granted to user
-# """
+"Add 'Given:' context and 'When:' action to complete the acceptance criteria"
 ```
 
 ## Common Issues & Solutions
@@ -135,13 +112,13 @@ Then: Result
 """
 ```
 
-### Issue: Invalid Gherkin Keywords
+### Issue: Invalid Keywords
 ```python
 # Problem
 """
 Provided: Invalid keyword
 During: Wrong keyword
-Should: Not a Gherkin keyword
+Should: Not a valid keyword
 """
 
 # Solution
@@ -184,7 +161,7 @@ When creating new tests, enforce UUID traceability format:
 "Test docstring must start with acceptance criteria UUID for traceability"
 
 # For missing structure
-"Add 'Given:' context and 'When:' action to complete the test scenario"
+"Add 'Given:' context and 'When:' action to complete the acceptance criteria"
 ```
 
 ## Manual Validation Checklist
@@ -200,13 +177,13 @@ When reviewing test files manually, check:
    - UUID must match acceptance criteria from feature doc
    - Blank line required after UUID line
 
-3. **Gherkin Keywords**
+3. **Acceptance Criteria Keywords**
    - Use Given:, When:, Then:, And:, But:
    - Each keyword must have content after the colon
    - Follow logical flow from precondition to outcome
 
 4. **Structure Validation**
-   - UUID line + blank line + Gherkin steps
+   - UUID line + blank line + acceptance criteria steps
    - At minimum: Given/When/Then structure
    - Ensure logical flow from precondition to outcome
 
@@ -214,7 +191,7 @@ When reviewing test files manually, check:
 
 ### Strictness Levels
 ```yaml
-gherkin_validation:
+acceptance_criteria_validation:
   strictness: "uuid_required"  # "uuid_required", "accept_any"
   require_newlines: true
   min_keywords: 2  # Minimum Given/When/Then structure
@@ -224,8 +201,7 @@ gherkin_validation:
 ### Project Integration
 ```python
 # In pyproject.toml
-[tool.gherkin-validation]
-preferred_format = "example"
+[tool.acceptance-criteria-validation]
 strict_newlines = true
 suggest_improvements = true
 fail_on_invalid = true
@@ -233,7 +209,7 @@ fail_on_invalid = true
 
 ## Validation Workflow
 
-1. **Parse docstring** for Gherkin keywords
+1. **Parse docstring** for acceptance criteria keywords
 2. **Check newline formatting** (strict requirement)
 3. **Validate keyword syntax** and content
 4. **Validate UUID traceability** format

@@ -68,13 +68,13 @@ def test_any_valid_name_provided_slugify_should_be_idempotent(name):
 For complete test patterns and guidelines, see:
 [Reference: Test Patterns](../reference/test-patterns.md)
 
-## BDD Test Docstrings
+## Acceptance Criteria Test Docstrings
 
-All test functions must include Gherkin-style docstrings with UUID traceability. Each test maps to an acceptance criteria UUID from the feature specification.
+All test functions must include acceptance criteria docstrings with UUID traceability. Each test maps to an acceptance criteria UUID from the feature specification.
 
-### Required Format: UUID with Gherkin Steps
+### Required Format: UUID with Acceptance Criteria Steps
 
-The docstring format uses UUID from acceptance criteria followed by Gherkin steps with **mandatory newlines**:
+The docstring format uses UUID from acceptance criteria followed by Given/When/Then steps with **mandatory newlines**:
 
 ```python
 def test_user_login_with_valid_credentials_should_grant_access():
@@ -99,7 +99,7 @@ python -c "import uuid; print(uuid.uuid4())"
 
 Each acceptance criteria gets a unique UUID, and tests reference that UUID for traceability.
 
-### Why BDD Docstrings?
+### Why Acceptance Criteria Docstrings?
 
 1. **pytest-html**: The HTML report displays docstrings as test names, making it easy to understand what each test verifies
 2. **Documentation**: Docstrings serve as living documentation of test intent
@@ -134,12 +134,6 @@ def test_invalid_case():
 def test_invalid_case():
     """123e4567-e89b-12d3-a456-426614174000: Invalid scenario."""
 ```
-
-### Why BDD Docstrings?
-
-1. **pytest-html**: The HTML report displays docstrings as test names, making it easy to understand what each test verifies
-2. **Documentation**: Docstrings serve as living documentation of test intent
-3. **Debugging**: When a test fails, the docstring immediately shows what scenario was being tested
 
 ### Multi-line Scenarios
 

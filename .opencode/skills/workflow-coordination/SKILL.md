@@ -88,7 +88,7 @@ Phase 3: Architecture Analysis
 Phase 4: Test Development (TDD)
 ├── [ ] /skill prototype-script (if validation needed - optional)
 ├── [ ] Implement test bodies from manager-created signatures
-├── [ ] Write BDD tests with UUID format:
+├── [ ] Write acceptance criteria tests with UUID format:
 │   """[UUID]: [Test description].
 │   
 │   Given: [Preconditions]
@@ -106,7 +106,7 @@ Phase 4: Test Development (TDD)
 
 **QA Gate Checklist**:
 - [ ] All acceptance criteria have test coverage
-- [ ] BDD docstrings use proper format with newlines
+- [ ] Acceptance criteria docstrings use proper format with newlines
 - [ ] Test naming follows convention
 - [ ] File naming follows convention
 - [ ] Hypothesis used appropriately for pure functions

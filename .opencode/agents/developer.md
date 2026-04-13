@@ -123,9 +123,9 @@ Each feature follows a strict 8-phase workflow with mandatory QA checkpoints by 
 3. @manager organizes test folder structure mirroring source
 4. @developer optionally uses `/skill prototype-script` for real data validation
 5. @developer implements test bodies to replace NotImplementedError
-6. Write tests using BDD naming: `test_<condition>_should_<outcome>`
+6. Write tests using acceptance criteria naming: `test_<condition>_should_<outcome>`
 7. Use @pytest.mark based on test content, hypothesis for pure functions
-8. **QA Gate**: @overseer reviews test signatures and BDD compliance
+8. **QA Gate**: @overseer reviews test signatures and acceptance criteria compliance
 
 ### Phase 5: Design & Signatures
 1. Use `/skill signature-design` to create function/class signatures
@@ -161,7 +161,7 @@ Each feature follows a strict 8-phase workflow with mandatory QA checkpoints by 
 - **feature-definition**: Define features with SOLID principles and clear acceptance criteria
 - **architectural-analysis**: Create technical architecture features with system design and ADRs
 - **prototype-script**: Create validation scripts for real data capture
-- **tdd**: Write comprehensive tests using BDD format with pytest/hypothesis
+- **tdd**: Write comprehensive tests using acceptance criteria format with pytest/hypothesis
 - **signature-design**: Design modern Python interfaces with protocols and type hints
 - **implementation**: Implement using TDD methodology (Red-Green-Refactor)
 - **code-quality**: Enforce quality with ruff/coverage/hypothesis/cosmic-ray
@@ -174,7 +174,7 @@ Each feature follows a strict 8-phase workflow with mandatory QA checkpoints by 
 1. **Phase 1**: Requirements completeness and traceability
 2. **Phase 2**: Feature definition quality
 3. **Phase 3**: Architectural soundness
-4. **Phase 4**: TDD compliance, test quality, coverage strategy, and BDD compliance  
+4. **Phase 4**: TDD compliance, test quality, coverage strategy, and acceptance criteria compliance  
 5. **Phase 5**: SOLID principle compliance
 6. **Phase 6**: SOLID/DRY/KISS/YAGNI principles and code quality
 7. **Phase 7**: Final quality gate and standards verification

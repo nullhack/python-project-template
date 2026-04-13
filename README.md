@@ -70,7 +70,7 @@ This template creates a production-ready Python project with:
 ### 🏗️ **Enterprise Architecture & Quality**
 - **SOLID principles** - Enforced through AI architecture reviews via OpenCode agents
 - **Object Calisthenics** - Clean, behavior-rich code patterns enforced by QA workflows
-- **100% test coverage** - TDD workflows with BDD docstrings and property-based testing (Hypothesis)
+- **100% test coverage** - TDD workflows with acceptance criteria docstrings and property-based testing (Hypothesis)
 - **Mutation testing** - mutmut integration for test quality validation
 - **Zero-config tooling** - UV, taskipy, Ruff, PyTest, Hypothesis, PyRight pre-configured
 
@@ -116,7 +116,7 @@ Complex projects are developed across multiple AI sessions. `TODO.md` at the roo
 
 - **🎯 SOLID Principles** - Single responsibility, dependency inversion, clean interfaces
 - **🔧 Object Calisthenics** - No primitives, small classes, behavior-rich objects  
-- **🧪 TDD Testing** - BDD-style tests with Given/When/Then docstrings, 100% coverage requirement
+- **🧪 TDD Testing** - Acceptance criteria format with Given/When/Then docstrings, 100% coverage requirement
 - **🔬 Property-Based Testing** - Hypothesis integration for robust edge case validation
 - **🧬 Mutation Testing** - mutmut for genetic algorithm-based test quality assurance
 - **⚡ Modern Toolchain** - UV, taskipy, Ruff, PyTest, Hypothesis, PyRight
@@ -182,7 +182,7 @@ docker build -t your-project-name .   # Build development image
 | **Package Management** | UV (blazing fast pip/poetry replacement) |
 | **Task Automation** | taskipy (configured in pyproject.toml) |
 | **Code Quality** | Ruff (linting + formatting), PyRight (type checking) |
-| **Testing** | PyTest + Hypothesis (property-based testing), pytest-html (BDD reports) |
+| **Testing** | PyTest + Hypothesis (property-based testing), pytest-html (acceptance criteria reports) |
 | **Mutation Testing** | mutmut (genetic algorithm-based mutation testing) |
 | **Coverage** | pytest-cov (100% coverage requirement) |
 | **AI Integration** | OpenCode agents and skills for development automation |
@@ -196,7 +196,7 @@ docker build -t your-project-name .   # Build development image
 - ✅ **Zero Linting Issues** - Ruff automated formatting and Google-style conventions
 - ✅ **Property-Based Testing** - Hypothesis integration for robust validation
 - ✅ **Mutation Testing** - mutmut for genetic algorithm-based test quality validation
-- ✅ **BDD Test Style** - Given/When/Then docstrings with pytest-html reporting
+- ✅ **Acceptance Criteria Format** - Given/When/Then docstrings with pytest-html reporting
 - ✅ **Architecture Compliance** - AI-enforced SOLID principles through OpenCode agents
 
 ## 🚀 Deployment Ready

@@ -50,7 +50,7 @@ When starting a new feature, copy these phases:
 - [ ] @developer implements test bodies from signatures
 - [ ] /skill prototype-script (if validation needed - optional)
 - [ ] Use @pytest.mark based on test content, hypothesis for pure functions
-- [ ] Write BDD-style tests with Given/When/Then
+- [ ] Write acceptance criteria tests with Given/When/Then
 - [ ] QA: @overseer reviews test quality
 
 ### Phase 5: Design & Signatures

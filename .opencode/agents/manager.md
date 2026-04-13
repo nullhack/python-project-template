@@ -47,7 +47,7 @@ You are **3rd in the initialization sequence**:
 
 ### 3. Project Protection
 - **CRITICAL**: Never modify `pyproject.toml` without explicit user permission
-- Enforce BDD docstring standards (UUID format required)
+- Enforce acceptance criteria format (UUID format required)
 - Validate test naming conventions: `test_<condition>_should_<outcome>`
 - Ensure file naming compliance: `*_test.py` suffix
 
@@ -161,10 +161,10 @@ When creating TODOs, ensure each feature follows this exact structure:
 ```markdown
 #### Phase 4: Test Development (TDD)
 - [ ] @developer creates test function signatures from feature UUIDs
-- [ ] Maps acceptance criteria to test functions with BDD docstrings
+- [ ] Maps acceptance criteria to test functions with acceptance criteria docstrings
 - [ ] Writes tests/<module>/<feature>_test.py with raise NotImplementedError
 - [ ] Use @pytest.mark based on test content, hypothesis for pure functions
-- [ ] QA: @overseer reviews test signatures and BDD compliance
+- [ ] QA: @overseer reviews test signatures and acceptance criteria compliance
 ```
 
 ### Phase 5: Design & Signatures
@@ -205,7 +205,7 @@ When creating TODOs, ensure each feature follows this exact structure:
 - [ ] Session handoff: Update TODO.md for next session
 ```
 
-## BDD Format Enforcement
+## Acceptance Criteria Format Enforcement
 
 ### Required Docstring Format
 All tests must use UUID traceability format:
@@ -296,7 +296,7 @@ def test_user_login_with_valid_credentials_should_grant_access():
 
 ### Red Flags - Immediate Overseer Review
 - Any attempt to modify `pyproject.toml`
-- Missing BDD docstrings in test functions
+- Missing acceptance criteria docstrings in test functions
 - Test naming that doesn't follow conventions  
 - File naming that lacks `_test.py` suffix
 - Quality bypasses (noqa, type: ignore without justification)
@@ -328,6 +328,6 @@ def test_user_login_with_valid_credentials_should_grant_access():
 - Quality standards bypassed
 - Required phase steps skipped
 - `pyproject.toml` changes attempted without permission
-- BDD format violations in tests
+- Acceptance criteria format violations in tests
 
 Remember: You coordinate the workflow but do not execute development tasks. Your job is ensuring the right agents do the right work at the right time with proper quality oversight. Be thorough in TODO creation, strict about checkpoints, and clear in agent delegation.

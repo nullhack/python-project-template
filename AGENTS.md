@@ -40,7 +40,7 @@ This project includes custom skills for OpenCode:
 - **feature-definition**: Define features with SOLID principles and clear requirements
 - **architectural-analysis**: Create technical architecture features that complement business features with system design and ADRs
 - **prototype-script**: Create quick validation scripts with real data capture
-- **gherkin-validation**: Validate BDD docstrings with UUID format for traceability
+- **acceptance-criteria-validation**: Validate acceptance criteria format with UUID traceability
 - **tdd**: Write comprehensive tests using TDD with pytest/hypothesis — includes decision guide for when to use plain TDD, Hypothesis (property-based), or Hypothesis stateful testing
 - **signature-design**: Design modern Python interfaces with protocols and type hints
 - **implementation**: Implement using TDD methodology with real prototype data
@@ -128,7 +128,7 @@ Generated docs are in `docs/api/` - open `docs/api/index.html` to browse.
 
 ## Test Conventions
 
-This project uses BDD-style tests with the following conventions:
+This project uses acceptance criteria format with UUID traceability:
 
 ### Test File Naming
 
@@ -140,7 +140,7 @@ Test filenames should follow <descriptive-group-name>_test.py
 def test_<condition>_should_<outcome>(): ...
 ```
 
-### BDD Docstrings
+### Acceptance Criteria Format
 All test functions must have Given/When/Then docstrings:
 ```python
 def test_federation_created_should_have_active_status():
@@ -177,12 +177,12 @@ task test
 ```
 
 ### Checking Test Compliance
-- **pytest-html report**: `docs/tests/report.html` - BDD docstrings displayed
+- **pytest-html report**: `docs/tests/report.html` - Acceptance criteria displayed
 - **Coverage report**: `docs/coverage/index.html` - View coverage by file
 
 ## Code Quality Standards
 
-- **Linting**: ruff with Google style conventions (D205, D212, D415 disabled for test files to allow BDD docstrings)
+- **Linting**: ruff with Google style conventions (D205, D212, D415 disabled for test files to allow acceptance criteria)
 - **Type Checking**: pyright
 - **Test Coverage**: Minimum 100%
 - **Python Version**: >=3.13
@@ -294,7 +294,7 @@ Then run `/init` to generate a fresh `AGENTS.md` based on your project's current
 **The @overseer agent enforces mandatory QA checkpoints with zero tolerance:**
 1. After requirements gathering - completeness review
 2. After architecture analysis - architectural soundness review
-3. After TDD phase - test quality review (BDD docstrings, naming conventions)
+3. After TDD phase - test quality review (acceptance criteria format, naming conventions)
 4. After signature design - SOLID/DRY/KISS review
 5. After implementation - Object Calisthenics compliance
 6. Before feature completion - final approval
