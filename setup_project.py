@@ -104,6 +104,73 @@ def process_templates(replacements: dict) -> None:
                     log_message(f"Copied: {dst_path.relative_to(ROOT_DIR)}")
 
 
+def apply_defaults(
+    github_username: str | None,
+    project_name: str | None,
+    project_description: str | None,
+    author_name: str | None,
+    author_email: str | None,
+    defaults: dict,
+) -> tuple:
+    """Apply defaults from JSON file when yes or dry_run is set."""
+    return (
+        github_username or defaults.get("github_username"),
+        project_name or defaults.get("project_name"),
+        project_description or defaults.get("project_description"),
+        author_name or defaults.get("author_name"),
+        author_email or defaults.get("author_email"),
+    )
+
+
+def check_interactive(
+    github_username: str | None,
+    project_name: str | None,
+    project_description: str | None,
+    author_name: str | None,
+    author_email: str | None,
+    yes: bool,
+    dry_run: bool,
+) -> bool:
+    """Check if interactive mode is needed."""
+    return (
+        not yes
+        and not dry_run
+        and any(
+            val is None
+            for val in (
+                github_username,
+                project_name,
+                project_description,
+                author_name,
+                author_email,
+            )
+        )
+    )
+
+
+def prompt_missing_values(
+    github_username: str | None,
+    project_name: str | None,
+    project_description: str | None,
+    author_name: str | None,
+    author_email: str | None,
+    defaults: dict,
+) -> tuple:
+    """Prompt for missing values in interactive mode."""
+    log_message("\n--- Interactive Mode ---")
+    log_message("Press Enter to accept default value shown in brackets\n")
+
+    return (
+        github_username
+        or prompt_for_value("GitHub Username", defaults.get("github_username")),
+        project_name or prompt_for_value("Project Name", defaults.get("project_name")),
+        project_description
+        or prompt_for_value("Project Description", defaults.get("project_description")),
+        author_name or prompt_for_value("Author Name", defaults.get("author_name")),
+        author_email or prompt_for_value("Author Email", defaults.get("author_email")),
+    )
+
+
 def run(
     github_username: str | None = None,
     project_name: str | None = None,
@@ -117,49 +184,46 @@ def run(
     defaults = load_defaults()
 
     if yes or dry_run:
-        github_username = github_username or defaults.get("github_username")
-        project_name = project_name or defaults.get("project_name")
-        project_description = project_description or defaults.get("project_description")
-        author_name = author_name or defaults.get("author_name")
-        author_email = author_email or defaults.get("author_email")
-
-    interactive = (
-        not yes
-        and not dry_run
-        and any(
-            (val is None)
-            for key, val in {
-                "github_username": github_username,
-                "project_name": project_name,
-                "project_description": project_description,
-                "author_name": author_name,
-                "author_email": author_email,
-            }.items()
+        (
+            github_username,
+            project_name,
+            project_description,
+            author_name,
+            author_email,
+        ) = apply_defaults(
+            github_username,
+            project_name,
+            project_description,
+            author_name,
+            author_email,
+            defaults,
         )
+
+    is_interactive = check_interactive(
+        github_username,
+        project_name,
+        project_description,
+        author_name,
+        author_email,
+        yes,
+        dry_run,
     )
 
-    if interactive:
-        log_message("\n--- Interactive Mode ---")
-        log_message("Press Enter to accept default value shown in brackets\n")
-
-        if not github_username:
-            github_username = prompt_for_value(
-                "GitHub Username", defaults.get("github_username")
-            )
-        if not project_name:
-            project_name = prompt_for_value(
-                "Project Name", defaults.get("project_name")
-            )
-        if not project_description:
-            project_description = prompt_for_value(
-                "Project Description", defaults.get("project_description")
-            )
-        if not author_name:
-            author_name = prompt_for_value("Author Name", defaults.get("author_name"))
-        if not author_email:
-            author_email = prompt_for_value(
-                "Author Email", defaults.get("author_email")
-            )
+    if is_interactive:
+        (
+            github_username,
+            project_name,
+            project_description,
+            author_name,
+            author_email,
+        ) = prompt_missing_values(
+            github_username,
+            project_name,
+            project_description,
+            author_name,
+            author_email,
+            defaults,
+        )
 
     if not all(
         [github_username, project_name, project_description, author_name, author_email]
@@ -199,11 +263,9 @@ def run(
 
     process_templates(replacements)
 
-    # Rename parent folder based on project name
     if project_name:
         rename_parent_folder(project_name)
 
-    # Show Git configuration instructions
     if github_username and project_name and author_name and author_email:
         show_git_setup_instructions(
             github_username, project_name, author_name, author_email
