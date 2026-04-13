@@ -88,7 +88,7 @@ Define explicit delegation rules and provide guidance for proper agent handoffs 
 **Delegation pattern:**
 ```markdown
 1. Review REQUIREMENTS.md for technical feasibility
-2. Create/update EPICS.md with technical architecture
+2. Create/update docs/roadmap.md with technical breakdown
 3. Validate SOLID principle compliance
 4. → Call @manager when architecture approved
 ```
@@ -164,7 +164,7 @@ Define explicit delegation rules and provide guidance for proper agent handoffs 
 **Validation**: Architect confirms technical feasibility
 
 #### Architecture → Planning  
-**Trigger**: EPICS.md updated with technical design
+**Trigger**: docs/roadmap.md updated with technical breakdown
 **Action**: @architect → @manager
 **Validation**: Manager creates detailed TODOs
 

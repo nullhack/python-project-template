@@ -9,12 +9,12 @@ metadata:
 ---
 
 ## What I do
-Manage the complete 7-step development cycle with proper phase progression, mandatory QA gates, and epic/TODO alignment with requirements.
+Manage the complete 7-step development cycle with proper phase progression, mandatory QA gates, and feature/TODO alignment with requirements.
 
 ## When to use me
 - When coordinating feature development
 - During phase transitions in the development cycle
-- When managing epic progression
+- When managing feature progression
 - When validating workflow compliance
 
 ## 7-Phase Development Cycle
@@ -29,7 +29,7 @@ Phase 1: Requirements Review
 ├── [ ] Review REQUIREMENTS.md for feature details
 ├── [ ] Verify business value alignment
 ├── [ ] Validate acceptance criteria completeness
-├── [ ] Confirm epic alignment
+├── [ ] Confirm feature alignment
 ├── [ ] Ensure Example format in acceptance criteria
 └── QA: @overseer reviews requirements
 ```
@@ -54,7 +54,7 @@ Phase 2: Feature Definition
 ├── [ ] Define scope boundaries
 ├── [ ] Identify integration points
 ├── [ ] Estimate effort
-├── [ ] Update EPICS.md with feature details
+├── [ ] Update docs/roadmap.md with feature details
 └── QA: @overseer reviews definition
 ```
 
@@ -74,9 +74,9 @@ Phase 2: Feature Definition
 Phase 3: Test Development (TDD)
 ├── [ ] /skill prototype-script (if validation needed)
 ├── [ ] /skill tdd
-├── [ ] Write BDD tests with Example format:
-│   """
-│   Example: [What test demonstrates]
+├── [ ] Write BDD tests with UUID format:
+│   """[UUID]: [Test description].
+│   
 │   Given: [Preconditions]
 │   When: [Action/trigger]
 │   Then: [Expected outcome]
@@ -176,7 +176,7 @@ Phase 6: Final Quality Assurance
 
 ```
 Phase 7: Feature Completion
-├── [ ] Update EPICS.md - mark feature complete
+├── [ ] Move feature to docs/features/completed/
 ├── [ ] /skill epic-workflow next-feature
 ├── [ ] Move to next feature OR close epic
 ├── [ ] Update TODO.md
@@ -201,7 +201,7 @@ Every phase includes mandatory @overseer review:
 ## QA Checkpoint Request: Phase [X] - [Feature Name]
 
 **Phase**: [X] - [Phase Name]
-**Feature**: [Feature from EPICS.md]
+**Feature**: [Feature from docs/roadmap.md]
 **QA Focus**: [What overseer should review]
 
 **Completed Tasks**:
@@ -221,7 +221,7 @@ Every phase includes mandatory @overseer review:
 Each feature in TODO.md follows this structure:
 
 ```markdown
-## Current Epic: [Epic Name from EPICS.md]
+## Current Feature: [Feature from docs/roadmap.md]
 ## Current Feature: [Feature Name]
 
 ### Phase 1: Requirements Review
@@ -231,7 +231,7 @@ Each feature in TODO.md follows this structure:
 
 ### Phase 2: Feature Definition
 - [ ] @developer /skill feature-definition
-- [ ] Updates EPICS.md technical details
+- [ ] Updates docs/roadmap.md technical details
 - [ ] QA: @overseer reviews definition quality
 
 [... all 7 phases ...]
@@ -244,10 +244,10 @@ Each feature in TODO.md follows this structure:
 | 3 | @developer | In Progress | @overseer Pending |
 ```
 
-### EPICS Integration
-- Epic progress updates EPICS.md status
-- Feature completion marks in EPICS.md
-- QA history logged in EPICS.md
+### Roadmap Integration
+- Feature progress updates docs/roadmap.md status
+- Feature completion moves to docs/features/completed/
+- QA history tracked in TODO.md session log
 - Requirements traceability maintained
 
 ## Session Workflow Integration
@@ -255,7 +255,7 @@ Each feature in TODO.md follows this structure:
 ### Start of Session
 ```markdown
 # 1. Read TODO.md - Understand current state
-# 2. Read EPICS.md - Review epic progress
+# 2. Read docs/roadmap.md - Review feature breakdown
 # 3. Identify current phase
 # 4. Continue from checkpoint
 ```
@@ -316,7 +316,7 @@ Each feature in TODO.md follows this structure:
 
 ### Pre-Development Validation
 - [ ] REQUIREMENTS.md exists in docs/requirements/
-- [ ] EPICS.md updated with technical design
+- [ ] docs/roadmap.md updated with technical design
 - [ ] TODO.md created with 7-phase structure
 - [ ] QA checkpoints embedded
 
@@ -329,7 +329,7 @@ Each feature in TODO.md follows this structure:
 ### Post-Development Validation
 - [ ] All phases complete
 - [ ] All QA approvals received
-- [ ] EPICS.md marked complete
+- [ ] docs/roadmap.md updated
 - [ ] TODO.md updated for session handoff
 
 Remember: The 7-phase development cycle ensures quality at every step. Never bypass QA checkpoints - they exist to maintain standards and catch issues early.

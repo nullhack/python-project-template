@@ -25,29 +25,26 @@ I enable epic-based development where each epic contains multiple features. Afte
 - When tracking progress across complex multi-feature development
 - When ensuring QA gates are enforced at each checkpoint
 
-## Epic Structure
+## Feature Tracking
 
-Epics are tracked in `EPICS.md` with this format:
+Features are tracked in `docs/roadmap.md` (architect breakdown) and `docs/features/backlog/` (business definitions):
 
 ```markdown
-# Project Epics
+# docs/roadmap.md
 
-## Epic: [Epic Name]
+## Feature: [Feature Name]
 **Status**: In Progress | Complete
-**Business Value**: [Why this epic matters]
+**Business Value**: [Why this feature matters]
 
-### Features:
-1. **[Feature Name]** - Status: Complete ✅
-   - Acceptance Criteria: [What defines done]
-   - QA Status: Approved by @overseer on YYYY-MM-DD
-   
-2. **[Feature Name]** - Status: In Progress 🔄
-   - Acceptance Criteria: [What defines done]
-   - QA Status: Pending
-   
-3. **[Feature Name]** - Status: Pending ⏸️
-   - Acceptance Criteria: [What defines done]
-   - QA Status: Not Started
+### Technical Breakdown
+- [Deliverable 1]
+- [Deliverable 2]
+
+# docs/features/backlog/<feature>.md
+
+## Feature: [Feature Name]
+**Business Description**: [What it does]
+**Acceptance Criteria**: [What defines done]
 ```
 
 ## Feature Development Cycle
@@ -55,7 +52,7 @@ Epics are tracked in `EPICS.md` with this format:
 ### 1. Feature Initiation
 When starting a new feature:
 ```
-1. Read EPICS.md to find next pending feature
+1. Read docs/roadmap.md to find next pending feature
 2. Call @requirements-gatherer if feature needs clarification
 3. Update feature status to "In Progress 🔄"
 4. Create feature-specific TODO in TODO.md
@@ -90,19 +87,22 @@ Phase 4: Final Quality Assurance
 
 ### 3. Feature Completion
 ```
-1. Update feature status to "Complete ✅"
-2. Record QA approval date and agent
-3. Automatically identify next pending feature
-4. Start new feature cycle or close epic
+1. Verify all TODO items complete
+2. Overseer reviews and approves final QA
+3. @overseer moves feature to docs/features/completed/ with metadata:
+   - Test coverage (which UUIDs have tests)
+   - QA approval date
+   - Links to test files
+4. Clear TODO.md for next feature
 ```
 
 ## Automatic Feature Progression
 
 After completing a feature:
-1. The system checks for next pending feature in the epic
+1. The system checks for next pending feature in roadmap
 2. If found, automatically initiates the new feature cycle
-3. If no pending features, marks epic as complete
-4. Suggests next epic from backlog
+3. If no pending features, all features are complete
+4. Suggests next feature from docs/features/backlog/
 
 ## QA Enforcement Protocol
 
@@ -115,7 +115,7 @@ After completing a feature:
 If @overseer requests changes:
 - Development cannot proceed until issues resolved
 - Changes must be re-reviewed
-- QA status tracked in EPICS.md
+- QA status tracked in TODO.md session log
 
 ## Integration with TODO.md
 

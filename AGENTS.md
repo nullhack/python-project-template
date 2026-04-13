@@ -8,10 +8,13 @@ This project uses a **session workflow** that allows complex development to span
 
 ### How it works
 
-1. **`TODO.md`** at the project root is the shared state between sessions
-2. Every session starts by reading `TODO.md` to find the current phase
-3. Every session ends by updating `TODO.md` with progress and handoff notes
-4. This makes the project AI-agnostic: any agent, any time can continue
+1. **`TODO.md`** at the project root is the current session work
+2. **`docs/roadmap.md`** is the architect's technical breakdown of all features
+3. **`docs/features/backlog/`** contains feature definitions (business language)
+4. **`docs/features/completed/`** contains delivered features with test links
+5. Every session starts by reading `TODO.md` and `docs/roadmap.md`
+6. Every session ends by updating `TODO.md` with progress and handoff notes
+7. This makes the project AI-agnostic: any agent, any time can continue
 
 ### Starting a new session
 ```bash
@@ -25,7 +28,7 @@ This project includes custom skills for OpenCode:
 
 ### Session Management
 - **session-workflow**: Manage multi-session development - read TODO.md, continue from last checkpoint, update progress and hand off cleanly
-- **epic-workflow**: Manage epic-based development with automatic feature progression and mandatory QA gates
+- **epic-workflow**: Manage feature-based development with automatic progression and mandatory QA gates
 
 ### Workflow Coordination
 - **workflow-coordination**: Orchestrate 7-phase development cycle with agent delegation and checkpoint enforcement

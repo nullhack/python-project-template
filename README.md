@@ -26,21 +26,30 @@ cd python-project-template
 # 2. Install UV package manager (if not installed)
 curl -LsSf https://astral.sh/uv/install.sh | sh
 
-# 3. Customize the template for your project
+# 3. **IMPORTANT**: Customize the template for your project
 python setup_project.py
+# This interactive script will:
+# - Rename directories from 'app' to your package name
+# - Update pyproject.toml with your project details  
+# - Fix Docker configuration paths
+# - Replace all template placeholders
 
-# 4. Follow the Git configuration commands shown
-# (setup_project.py will display the exact commands)
+# 4. Follow the Git configuration commands shown by setup_project.py
+# Example: git remote set-url origin https://github.com/yourname/yourproject
 
-# 5. Initialize AI development environment (optional)
-opencode && /init
-
-# 6. Setup development environment  
+# 5. Setup development environment  
 uv venv && uv pip install -e '.[dev]'
 
-# 7. Validate everything works
+# 6. Validate everything works
 task test && task lint && task static-check
+
+# 7. Initialize AI development environment (optional)
+opencode && /init
 ```
+
+**⚠️ Template State Notice**: This project is currently in "template state" with placeholder values. The `setup_project.py` script **must** be run to properly configure Docker, package paths, and project metadata before development.
+
+**Requirements**: Python 3.13+ and UV package manager are required.
 
 ## 🎯 What This Template Provides
 
@@ -48,9 +57,10 @@ This template creates a production-ready Python project with:
 
 ### 🔧 **Project Setup & Customization**
 - **Automated setup script** (`setup_project.py`) - Interactive customization with your project details
-- **Smart folder renaming** - Automatically renames directories to match your project
+- **Smart folder renaming** - Automatically renames `app/` directory to match your project
+- **Docker path fixing** - Updates Docker configuration to match your project structure  
 - **Git configuration** - Provides ready-to-use Git commands for remotes and user setup
-- **Template processing** - Replaces all placeholders with your actual project information
+- **Template processing** - Replaces all placeholders in pyproject.toml and configuration files
 
 ### 🤖 **AI-Enhanced Development Workflow**  
 - **Multi-session continuity** - Projects span multiple AI sessions with shared state in `TODO.md`
@@ -58,10 +68,11 @@ This template creates a production-ready Python project with:
 - **Skills system** - Modular workflows for TDD, feature definition, prototyping, and releases
 
 ### 🏗️ **Enterprise Architecture & Quality**
-- **SOLID principles** - Enforced through AI architecture reviews
-- **Object Calisthenics** - Clean, behavior-rich code patterns  
-- **100% test coverage** - TDD workflows with property-based testing (Hypothesis)
-- **Zero-config tooling** - UV, Ruff, PyTest, PyRight pre-configured
+- **SOLID principles** - Enforced through AI architecture reviews via OpenCode agents
+- **Object Calisthenics** - Clean, behavior-rich code patterns enforced by QA workflows
+- **100% test coverage** - TDD workflows with BDD docstrings and property-based testing (Hypothesis)
+- **Mutation testing** - mutmut integration for test quality validation
+- **Zero-config tooling** - UV, taskipy, Ruff, PyTest, Hypothesis, PyRight pre-configured
 
 ## 🤖 AI-Powered Development
 
@@ -104,46 +115,63 @@ Complex projects are developed across multiple AI sessions. `TODO.md` at the roo
 ## 🏗️ Architecture & Standards
 
 - **🎯 SOLID Principles** - Single responsibility, dependency inversion, clean interfaces
-- **🔧 Object Calisthenics** - No primitives, small classes, behavior-rich objects
-- **🧪 TDD Testing** - 100% coverage requirement with property-based tests
-- **⚡ Modern Toolchain** - UV, Ruff, PyTest, Hypothesis, PyRight
-- **🚀 Smart Releases** - Calver versioning with AI-generated themed names
+- **🔧 Object Calisthenics** - No primitives, small classes, behavior-rich objects  
+- **🧪 TDD Testing** - BDD-style tests with Given/When/Then docstrings, 100% coverage requirement
+- **🔬 Property-Based Testing** - Hypothesis integration for robust edge case validation
+- **🧬 Mutation Testing** - mutmut for genetic algorithm-based test quality assurance
+- **⚡ Modern Toolchain** - UV, taskipy, Ruff, PyTest, Hypothesis, PyRight
+- **🚀 Smart Releases** - Hybrid major.minor.calver versioning with AI-generated themed names
 
 ## 📋 Development Commands
 
+This project uses **taskipy** for task automation (configured in `pyproject.toml`):
+
 ```bash
 # Core development workflow
-task run              # Execute main application
-task test             # Run comprehensive test suite  
-task lint             # Format and lint code
-task static-check     # Type safety validation
-task doc-serve        # Live pdoc documentation server
-task doc-build        # Build static pdoc API docs
+task run              # Execute version module (demo command)
+task test             # Run comprehensive test suite with coverage
+task test-fast        # Run fast tests only (skip slow tests)
+task test-slow        # Run only slow tests (marked with @pytest.mark.slow)
+task lint             # Format and lint code with ruff
+task static-check     # Type safety validation with pyright
+
+# Documentation
+task doc-serve        # Live pdoc documentation server (localhost:8080)
+task doc-build        # Build static pdoc API docs to docs/api/
 task doc-publish      # Publish API docs to GitHub Pages
 
 # Quality assurance
-task test-report      # Detailed coverage report
-task mut-report       # Mutation testing (optional)
+task test-report      # Detailed coverage report (included in task test)
+task mut              # Mutation testing with mutmut
+task mut-clean        # Reset mutation testing cache
 ```
 
 ## 🐳 Docker Usage
 
-Simple Docker setup for development with hot reload and integrated tooling.
+**⚠️ Important**: Run `python setup_project.py` first to configure the template before using Docker.
+
+Docker provides development environment with hot reload and integrated tooling:
 
 ```bash
-# Development workflows
-docker-compose up                     # Hot reload development environment
+# Development environment with hot reload
+docker-compose up                     # Main application (ports 8000, 8080, 5678)
+
+# Specialized services (use profiles)
 docker-compose --profile test up      # Run complete test suite
-docker-compose --profile docs up      # Documentation server (localhost:8080)
+docker-compose --profile docs up      # Documentation server (localhost:8080)  
 docker-compose --profile quality up   # Code quality checks (lint + typecheck)
 
-# Build standalone image (after running setup_project.py)
-docker build -t your-project-name .     # Build development image
+# Build standalone image
+docker build -t your-project-name .   # Build development image
 ```
 
-**Note**: Run `python setup_project.py` first to replace template variables before using Docker.
+**Current Docker Configuration:**
+- **Main service**: Hot reload development with volume mounts
+- **Test profile**: Full test suite execution
+- **Docs profile**: Live documentation server  
+- **Quality profile**: Linting and type checking
 
-- **🛠️ Development**: Hot reload, separate services for testing/docs/quality checks
+**Note**: The Docker configuration currently references template paths and requires `setup_project.py` to be run for proper functionality.
 
 
 
@@ -152,37 +180,43 @@ docker build -t your-project-name .     # Build development image
 | Category | Tools |
 |----------|-------|
 | **Package Management** | UV (blazing fast pip/poetry replacement) |
+| **Task Automation** | taskipy (configured in pyproject.toml) |
 | **Code Quality** | Ruff (linting + formatting), PyRight (type checking) |
 | **Testing** | PyTest + Hypothesis (property-based testing), pytest-html (BDD reports) |
-| **AI Integration** | OpenCode agents for development automation |
-| **Documentation** | pdoc with search functionality |
-| **Containerization** | Docker development environment with hot reload |
+| **Mutation Testing** | mutmut (genetic algorithm-based mutation testing) |
+| **Coverage** | pytest-cov (100% coverage requirement) |
+| **AI Integration** | OpenCode agents and skills for development automation |
+| **Documentation** | pdoc with search functionality and GitHub Pages publishing |
+| **Containerization** | Docker development environment with hot reload and service profiles |
 
 ## 📈 Quality Metrics
 
-- ✅ **100% Test Coverage** - Comprehensive test suite including edge cases
-- ✅ **Static Type Safety** - Full type hints with protocol-based interfaces  
-- ✅ **Zero Linting Issues** - Automated formatting and style enforcement
-- ✅ **Property-Based Testing** - Hypothesis for robust validation
-- ✅ **Architecture Compliance** - AI-enforced SOLID principles
+- ✅ **100% Test Coverage** - pytest-cov with fail-under=100 requirement
+- ✅ **Static Type Safety** - PyRight type checking with full type hints  
+- ✅ **Zero Linting Issues** - Ruff automated formatting and Google-style conventions
+- ✅ **Property-Based Testing** - Hypothesis integration for robust validation
+- ✅ **Mutation Testing** - mutmut for genetic algorithm-based test quality validation
+- ✅ **BDD Test Style** - Given/When/Then docstrings with pytest-html reporting
+- ✅ **Architecture Compliance** - AI-enforced SOLID principles through OpenCode agents
 
 ## 🚀 Deployment Ready
 
-Projects generated from this template include Docker support:
+Projects generated from this template include Docker support for development:
 
 ```bash
-# In your generated project
+# After running setup_project.py in your configured project
 docker build -t your-project-name .
-docker run your-project-name
+docker run -p 8000:8000 your-project-name
 
-# Docker Compose development
-docker-compose up                     # Development environment
-docker-compose --profile test up      # Run tests  
+# Docker Compose development environment
+docker-compose up                     # Development environment with hot reload
+docker-compose --profile test up      # Run test suite
 docker-compose --profile docs up      # Documentation server
+docker-compose --profile quality up   # Code quality checks
 
-# API documentation (generated projects)
+# API documentation
 task doc-build  # Generates docs/api/index.html
-task doc-serve  # http://localhost:8080
+task doc-serve  # http://localhost:8080 (live server)
 ```
 
 ## 🤝 Contributing

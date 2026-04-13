@@ -12,7 +12,7 @@ tools:
   task: true
   skill: true
 ---
-You are a specialized developer agent for the Python Project Template project.
+You are a specialized developer agent for this project.
 
 ## Session Start Protocol
 
@@ -105,7 +105,7 @@ Projects are organized into Epics containing Features. Each feature follows a st
 1. Use `/skill feature-definition` to refine technical requirements
 2. Create clear functional and non-functional requirements  
 3. Follow SOLID principles and object calisthenics in planning
-4. Update EPICS.md with feature details
+4. Update docs/roadmap.md with feature details
 
 ### Phase 2: Prototype Validation
 1. Use `/skill prototype-script` to create quick validation scripts
@@ -119,12 +119,8 @@ Projects are organized into Epics containing Features. Each feature follows a st
 2. Write tests using BDD naming: `test_<condition>_should_<outcome>`
 3. Include Given/When/Then docstrings in all tests
 4. Ensure tests fail initially (RED phase)
-<<<<<<< HEAD
-5. **QA Gate**: @overseer reviews test quality and coverage strategy
-=======
 5. **After test implementation, call `@overseer` to review the work and request changes if needed**
 6. Only proceed after overseer approval
->>>>>>> origin/main
 
 ### Phase 4: Signature Design  
 1. Use `/skill signature-design` to create function/class signatures
@@ -151,17 +147,13 @@ Projects are organized into Epics containing Features. Each feature follows a st
 3. Verify type checking: `task static-check`
 4. Validate coverage ≥100%: `task test`
 5. Run property-based tests with Hypothesis
-<<<<<<< HEAD
-6. **QA Gate**: @overseer final approval before feature completion
+6. **Call `@overseer` for final review before considering the feature complete**
 
 ### Phase 8: Feature Completion
-1. Update EPICS.md - mark feature complete with QA approval date
-2. System automatically checks for next pending feature in epic
+1. Move feature to `docs/features/completed/` with metadata
+2. System automatically checks for next pending feature
 3. If more features exist, return to Phase 0/1 for next feature
-4. If epic complete, proceed to PR creation
-=======
-6. **Call `@overseer` for final review before considering the feature complete**
->>>>>>> origin/main
+4. If all complete, proceed to PR creation
 
 ## Available Skills
 - **session-workflow**: Manage multi-session development - read TODO.md, continue from checkpoint, update progress

@@ -17,14 +17,14 @@ Validate BDD docstrings in test functions, with a preference for Example format 
 - When reviewing test files for documentation standards
 - As part of automated quality checks
 
-## Preferred Format: Example-based
+## Required Format: UUID-based Traceability
 
-The **preferred** format uses `Example:` followed by `Given:`/`When:`/`Then:` with mandatory newlines:
+All test docstrings must use acceptance criteria UUID for traceability, followed by Gherkin steps:
 
 ```python
 def test_user_login_with_valid_credentials_should_grant_access():
-    """
-    Example: Successful user authentication
+    """123e4567-e89b-12d3-a456-426614174000: Successful user authentication.
+
     Given: A registered user with valid credentials exists in the system  
     When: The user submits correct username and password
     Then: Access should be granted to the application
@@ -77,20 +77,20 @@ All valid Gherkin keywords are supported:
 Docstrings MUST start and end with newlines:
 ```python
 # ✅ CORRECT
-"""
-Example: Valid format
+"""123e4567-e89b-12d3-a456-426614174000: Valid format.
+
 Given: Proper newlines
 When: Validation runs
 Then: Should pass
 """
 
 # ❌ WRONG - Missing newlines
-"""Example: Invalid format
+"""123e4567-e89b-12d3-a456-426614174000: Invalid format.
 Given: No starting newline"""
 
 # ❌ WRONG - Missing ending newline  
 """
-Example: Invalid format
+123e4567-e89b-12d3-a456-426614174000: Invalid format.
 Given: No ending newline"""
 ```
 
@@ -114,33 +114,34 @@ Given: No ending newline"""
 - [ ] Proper colon after each keyword
 
 ### Suggestion Messages
-For improving docstrings when not using preferred Example format:
+For improving docstrings when not using required UUID format:
 ```python
-# For Scenario format
-"Consider using 'Example:' instead of 'Scenario:' for more concrete test documentation"
+# For missing UUID
+"Test docstring must start with acceptance criteria UUID for traceability"
 
-# For Feature format  
-"Feature-level docstring detected. Consider 'Example:' for individual test cases"
+# For old Example format  
+"Convert 'Example:' to UUID format: 'uuid: description.' with blank line before Gherkin steps"
 
 # For missing structure
 "Add 'Given:' context and 'When:' action to complete the test scenario"
 ```
 
-### suggest_example_format(docstring: str) -> str
-Convert other formats to preferred Example format:
+### suggest_uuid_format(docstring: str) -> str
+Convert other formats to required UUID format:
 ```python
-# Input: Scenario-based
+# Input: Old Example format
 original = """
-Scenario: User login
+Example: User login
 Given: Valid credentials
 When: Login submitted
 Then: Access granted
 """
 
-# Output: Example-based suggestion
-suggested = suggest_example_format(original)
+# Output: UUID-based suggestion
+suggested = suggest_uuid_format(original)
 # """
-# Example: User login validation
+# 123e4567-e89b-12d3-a456-426614174000: User login validation.
+# 
 # Given: Valid credentials exist in system
 # When: Login credentials are submitted
 # Then: Access should be granted to user
@@ -200,20 +201,20 @@ Then: Clear expected outcome
 
 ## Quality Guidance
 
-### Prefer Example Format
-When creating new tests, guide developers toward Example format:
-- More concrete and illustrative
-- Clearly shows what the test demonstrates
-- Better documentation value
-- Easier to understand for stakeholders
+### Require UUID Format
+When creating new tests, enforce UUID traceability format:
+- Links tests to specific acceptance criteria
+- Provides bidirectional traceability
+- Enables coverage verification
+- Supports compliance requirements
 
 ### Suggestion Messages
 ```python
-# For Scenario format
-"Consider using 'Example:' instead of 'Scenario:' for more concrete test documentation"
+# For missing UUID
+"Test docstring must start with acceptance criteria UUID for traceability"
 
-# For Feature format  
-"Feature-level docstring detected. Consider 'Example:' for individual test cases"
+# For old Example format  
+"Convert 'Example:' to UUID format with blank line before Gherkin steps"
 
 # For missing structure
 "Add 'Given:' context and 'When:' action to complete the test scenario"
@@ -227,19 +228,19 @@ When reviewing test files manually, check:
    - Docstrings must start with newline: `"""\n`
    - Docstrings must end with newline: `\n"""`
 
-2. **Gherkin Keywords**
-   - Use Example:, Given:, When:, Then:, And:, But:
-   - Feature: and Scenario: also valid
-   - Each keyword must have content after the colon
+2. **UUID Traceability**
+   - First line must be UUID: description format
+   - UUID must match acceptance criteria from feature doc
+   - Blank line required after UUID line
 
-3. **Format Preference**
-   - Guide toward Example format for new tests
-   - Accept Scenario and Feature formats as alternatives
-   - Provide suggestions for improvement
+3. **Gherkin Keywords**
+   - Use Given:, When:, Then:, And:, But:
+   - Each keyword must have content after the colon
+   - Follow logical flow from precondition to outcome
 
 4. **Structure Validation**
+   - UUID line + blank line + Gherkin steps
    - At minimum: Given/When/Then structure
-   - Preferred: Complete Example with Given/When/Then
    - Ensure logical flow from precondition to outcome
 
 ## Configuration Options

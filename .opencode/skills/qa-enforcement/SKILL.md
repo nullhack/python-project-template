@@ -265,8 +265,8 @@ All test functions must use proper Gherkin format with Example preference:
 
 ```python
 def test_user_login_with_valid_credentials_should_grant_access():
-    """
-    Example: Successful user authentication
+    """123e4567-e89b-12d3-a456-426614174000: Successful user authentication.
+
     Given: A registered user with valid credentials exists
     When: The user submits correct username and password  
     Then: Access should be granted to the application

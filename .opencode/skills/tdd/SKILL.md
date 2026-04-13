@@ -70,16 +70,16 @@ For complete test patterns and guidelines, see:
 
 ## BDD Test Docstrings
 
-All test functions must include Gherkin-style docstrings with proper newlines. The **preferred** format uses `Example:` with mandatory newlines.
+All test functions must include Gherkin-style docstrings with UUID traceability. Each test maps to an acceptance criteria UUID from the feature specification.
 
-### Preferred Format: Example with Newlines
+### Required Format: UUID with Gherkin Steps
 
-The **preferred** docstring format uses `Example:` followed by `Given:`/`When:`/`Then:` with **mandatory newlines**:
+The docstring format uses UUID from acceptance criteria followed by Gherkin steps with **mandatory newlines**:
 
 ```python
 def test_user_login_with_valid_credentials_should_grant_access():
-    """
-    Example: Successful user authentication
+    """123e4567-e89b-12d3-a456-426614174000: Successful user authentication.
+
     Given: A registered user with valid credentials exists in the system
     When: The user submits correct username and password
     Then: Access should be granted to the application
@@ -90,28 +90,14 @@ def test_user_login_with_valid_credentials_should_grant_access():
 - Docstrings must start with newline: `"""\n`
 - Docstrings must end with newline: `\n"""`
 
-### Alternative Formats Accepted
+### UUID Source
 
-You may also use these acceptable formats:
-
-```python
-# Scenario format (acceptable, suggest Example)
-def test_invalid_login_should_deny_access():
-    """
-    Scenario: Invalid login attempt
-    Given: A user with incorrect credentials
-    When: Login is attempted
-    Then: Access should be denied
-    """
-
-# Minimal Given/When/Then (acceptable)
-def test_division_by_zero_should_raise_error():
-    """
-    Given: A Calculator instance
-    When: divide(10, 0) is called
-    Then: Should raise ZeroDivisionError
-    """
+The UUID comes from the acceptance criteria in `docs/features/backlog/<feature>.md`. Generate UUIDs using:
+```bash
+python -c "import uuid; print(uuid.uuid4())"
 ```
+
+Each acceptance criteria gets a unique UUID, and tests reference that UUID for traceability.
 
 ### Why BDD Docstrings?
 
@@ -126,30 +112,28 @@ def test_division_by_zero_should_raise_error():
 ```python
 # ✅ CORRECT
 def test_valid_case():
-    """
-    Example: Valid scenario
+    """123e4567-e89b-12d3-a456-426614174000: Valid scenario.
+
     Given: Preconditions
-    When: Action occurs
+    When: Action
     Then: Expected outcome
     """
 
-# ❌ WRONG - Missing starting newline
+# ❌ WRONG - Missing starting newline  
 def test_invalid_case():
-    """Example: Invalid scenario
+    """123e4567-e89b-12d3-a456-426614174000: Invalid scenario.
     Given: Preconditions"""
 
 # ❌ WRONG - Missing ending newline
 def test_invalid_case():
     """
-    Example: Invalid scenario
+    123e4567-e89b-12d3-a456-426614174000: Invalid scenario.
     Given: Preconditions"""
 
 # ❌ WRONG - Both missing
 def test_invalid_case():
-    """Example: Invalid scenario"""
+    """123e4567-e89b-12d3-a456-426614174000: Invalid scenario."""
 ```
-
-### Examples
 
 ### Why BDD Docstrings?
 
