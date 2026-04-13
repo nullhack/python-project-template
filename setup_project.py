@@ -18,14 +18,26 @@ Usage:
 
 import argparse
 import json
+import os
 import shutil
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
+from typing import TextIO
 
 TEMPLATES_DIR = Path(__file__).parent / ".opencode" / "templates"
 ROOT_DIR = Path(__file__).parent
 DEFAULTS_FILE = ROOT_DIR / "project_defaults.json"
+
+
+def log_message(message: str, file: TextIO | None = None) -> None:
+    """Log message to stdout or stderr."""
+    if file:
+        file.write(f"{message}\n")
+        file.flush()
+    else:
+        sys.stdout.write(f"{message}\n")
+        sys.stdout.flush()
 
 
 def load_defaults() -> dict:
@@ -50,7 +62,7 @@ def prompt_for_value(key: str, default: str | None = None) -> str:
         prompt += f" [{default}]"
     prompt += ": "
     value = input(prompt)
-    return value if value else (default or "")
+    return value or (default or "")
 
 
 def process_templates(replacements: dict) -> None:
@@ -66,7 +78,7 @@ def process_templates(replacements: dict) -> None:
 
         dst_path = ROOT_DIR / dst_name
         dst_path.write_text(content, encoding="utf-8")
-        print(f"Created: {dst_path.relative_to(ROOT_DIR)}")
+        log_message(f"Created: {dst_path.relative_to(ROOT_DIR)}")
 
     github_templates_dir = TEMPLATES_DIR / ".github"
     if github_templates_dir.exists():
@@ -86,10 +98,10 @@ def process_templates(replacements: dict) -> None:
                     content = substitute_values(content, replacements)
                     dst_path = dst_path.with_suffix("")
                     dst_path.write_text(content, encoding="utf-8")
-                    print(f"Created: {dst_path.relative_to(ROOT_DIR)}")
+                    log_message(f"Created: {dst_path.relative_to(ROOT_DIR)}")
                 else:
                     shutil.copy2(item, dst_path)
-                    print(f"Copied: {dst_path.relative_to(ROOT_DIR)}")
+                    log_message(f"Copied: {dst_path.relative_to(ROOT_DIR)}")
 
 
 def run(
@@ -127,8 +139,8 @@ def run(
     )
 
     if interactive:
-        print("\n--- Interactive Mode ---")
-        print("Press Enter to accept default value shown in brackets\n")
+        log_message("\n--- Interactive Mode ---")
+        log_message("Press Enter to accept default value shown in brackets\n")
 
         if not github_username:
             github_username = prompt_for_value(
@@ -152,7 +164,7 @@ def run(
     if not all(
         [github_username, project_name, project_description, author_name, author_email]
     ):
-        print("Error: Missing required values", file=sys.stderr)
+        log_message("Error: Missing required values", file=sys.stderr)
         sys.exit(1)
 
     today = datetime.now(timezone.utc).strftime("%Y%m%d")
@@ -175,36 +187,111 @@ def run(
         original_desc: project_description,
     }
 
-    print(f"\nSetting up project: {project_name}")
-    print(f"Description: {project_description}")
-    print(f"GitHub: github.com/{github_username}/{project_name}")
-    print(f"Author: {author_name} <{author_email}>")
-    print("")
+    log_message(f"\nSetting up project: {project_name}")
+    log_message(f"Description: {project_description}")
+    log_message(f"GitHub: github.com/{github_username}/{project_name}")
+    log_message(f"Author: {author_name} <{author_email}>")
+    log_message("")
 
     if dry_run:
-        print("--- Dry Run: No files created ---")
+        log_message("--- Dry Run: No files created ---")
         return
 
     process_templates(replacements)
 
-    print("\nProject setup complete!")
-    print("\nNext steps:")
-    print("  1. Review and update templated files (README.md, AGENTS.md, etc.)")
-    print("  2. Run: uv venv && uv pip install -e '.[dev]'")
+    # Rename parent folder based on project name
+    rename_parent_folder(project_name)
+
+    # Show Git configuration instructions
+    show_git_setup_instructions(
+        github_username, project_name, author_name, author_email
+    )
+
+    log_message("\nProject setup complete!")
+    log_message("\nNext steps:")
+    log_message("  1. Run the Git configuration commands shown above")
+    log_message("  2. Review and update templated files (README.md, AGENTS.md, etc.)")
+    log_message("  3. Run: uv venv && uv pip install -e '.[dev]'")
+
+
+def show_git_setup_instructions(
+    github_username: str, project_name: str, author_name: str, author_email: str
+) -> None:
+    """Show Git configuration instructions for manual setup."""
+    new_remote_url = f"https://github.com/{github_username}/{project_name}.git"
+
+    log_message("\n" + "=" * 60)
+    log_message("Git Configuration Required")
+    log_message("=" * 60)
+    log_message("Please run the following Git commands to complete setup:")
+    log_message("")
+    log_message("# Configure Git user (repository-specific)")
+    log_message(f'git config user.name "{author_name}"')
+    log_message(f'git config user.email "{author_email}"')
+    log_message("")
+    log_message("# Update remote origin URL")
+    log_message(f"git remote set-url origin {new_remote_url}")
+    log_message("")
+    log_message("# Or add origin if it doesn't exist")
+    log_message(f"git remote add origin {new_remote_url}")
+    log_message("")
+    log_message("=" * 60)
+
+
+def rename_parent_folder(project_name: str) -> None:
+    """Rename the parent folder to match the project name."""
+    current_dir = Path.cwd()
+    parent_dir = current_dir.parent
+    current_name = current_dir.name
+
+    # Convert project name to a valid directory name
+    safe_project_name = project_name.replace(" ", "-").lower()
+
+    if current_name != safe_project_name:
+        new_path = parent_dir / safe_project_name
+
+        # Check if target directory already exists
+        if new_path.exists():
+            log_message(
+                f"Warning: Directory '{safe_project_name}' already exists in parent."
+            )
+            log_message("Skipping parent folder rename.")
+            return
+
+        try:
+            # Rename the current directory
+            current_dir.rename(new_path)
+            log_message(
+                f"Renamed parent folder from '{current_name}' to '{safe_project_name}'"
+            )
+
+            # Change working directory to the new location
+            os.chdir(new_path)
+            log_message(f"Changed working directory to: {new_path}")
+
+        except OSError as e:
+            log_message(f"Warning: Could not rename parent folder: {e}")
+            log_message("Continuing with setup in current directory.")
+    else:
+        log_message(
+            f"Parent folder name '{current_name}' already matches project name."
+        )
 
 
 def detect_fields() -> None:
     """Show what fields would need changing."""
     defaults = load_defaults()
     today = datetime.now(timezone.utc).strftime("%Y%m%d")
-    print("\nTemplated fields in templates:")
-    print("-" * 50)
-    print(f"  1. GitHub Username: {defaults.get('github_username', 'N/A')}")
-    print(f"  2. Project Name: {defaults.get('project_name', 'N/A')}")
-    print(f"  3. Project Description: '{defaults.get('project_description', 'N/A')}'")
-    print(f"  4. Author Name: {defaults.get('author_name', 'N/A')}")
-    print(f"  5. Author Email: {defaults.get('author_email', 'N/A')}")
-    print(f"  6. Version: starts with 0.1.{today}")
+    log_message("\nTemplated fields in templates:")
+    log_message("-" * 50)
+    log_message(f"  1. GitHub Username: {defaults.get('github_username', 'N/A')}")
+    log_message(f"  2. Project Name: {defaults.get('project_name', 'N/A')}")
+    log_message(
+        f"  3. Project Description: '{defaults.get('project_description', 'N/A')}'"
+    )
+    log_message(f"  4. Author Name: {defaults.get('author_name', 'N/A')}")
+    log_message(f"  5. Author Email: {defaults.get('author_email', 'N/A')}")
+    log_message(f"  6. Version: starts with 0.1.{today}")
 
 
 def main() -> None:
