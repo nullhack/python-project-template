@@ -2,6 +2,35 @@
 
 All notable changes to this template will be documented in this file.
 
+## [v2.2.20260413] - Luminous Kestrel - 2026-04-13
+
+### Added
+- **Architecture-First Feature System** - New directory structure separating business and architecture features
+- **Architectural Analysis Skill** - Systematic architecture documentation for each feature
+- **8-Phase Development Cycle** - Expanded from 7-phase with dedicated Architecture Analysis phase
+
+### Changed
+- **BDD → Acceptance Criteria** - Renamed gherkin-validation to acceptance-criteria-validation for accurate terminology
+- **Consistency Updates** - Fixed phase numbering, cross-references, and documentation across all agents and skills
+- **Epic-Workflow Refactor** - Converted from epic-based to feature-selection with architecture-first priority
+- **Manager Agent** - Enhanced with test signature creation capabilities
+
+### Migration Notes
+- No breaking changes in this release
+- Projects can continue using existing workflow
+
+## [v2.1.20260413] - Polished Gecko - 2026-04-13
+
+### Added
+- Docker simplification and cleanup
+- V2 Development Workflow with CI/CD fixes
+- Template refactoring for generic app package
+- Enhanced QA enforcement skills
+
+### Changed
+- Complexity fixes for CI compliance
+- CodeQL config conflict resolved
+
 ## [v2.0.20260411] - Armored Pangolin - 2026-04-11
 
 ### 🚀 MAJOR RELEASE - V1 → V2 Architecture Transition

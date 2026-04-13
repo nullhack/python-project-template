@@ -1,6 +1,6 @@
 [project]
 name = "test-project"
-version = "0.1.20260413"
+version = "2.2.20260413"
 description = "A test project"
 readme = "README.md"
 requires-python = ">=3.13"
@@ -166,6 +166,5 @@ static-check = "pyright"
 
 [dependency-groups]
 dev = [
-    "detect-secrets>=1.5.0",
     "safety>=3.7.0",
 ]
