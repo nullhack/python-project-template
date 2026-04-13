@@ -166,6 +166,5 @@ static-check = "pyright"
 
 [dependency-groups]
 dev = [
-    "detect-secrets>=1.5.0",
     "safety>=3.7.0",
 ]

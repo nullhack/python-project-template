@@ -3,8 +3,8 @@ description: Release Engineer managing Git workflows, pull requests, and hybrid 
 mode: subagent
 temperature: 0.3
 tools:
-  write: false
-  edit: false
+  write: true
+  edit: true
   read: true
   grep: true
   glob: true
@@ -106,37 +106,70 @@ Follow conventional commits:
 ## Release Management
 
 ### Release Process
-1. **Prepare Release Branch**
+1. **Analyze Since Last Release**
    ```bash
-   git checkout develop
-   git pull origin develop
-   git checkout -b release/v{major}.{minor}.{YYYYMMDD}
+   last_tag=$(git describe --tags --abbrev=0)
+   git log ${last_tag}..HEAD --oneline
+   gh pr list --state merged --limit 20 --json title,number,labels
    ```
 
-2. **Analyze PR Sentiment**
-   - Use `gh pr list --state merged --base develop` 
-   - Analyze PR titles/descriptions for themes
-   - Generate appropriate adjective-animal name
+2. **Generate Release Name and Body**
+   Based on commit/PR analysis:
+   - Identify dominant theme (features, cleanup, fixes, refactoring)
+   - Select unique adjective-animal pair not used before
+   - Write poetic tagline
+   - Explain why this name fits
 
-3. **Update Version**
+3. **Update Version and Changelog**
    - Update `pyproject.toml` version field
-   - Update `CHANGELOG.md` with PR summaries
+   - Add entry to `CHANGELOG.md` at top (after title header)
    - Commit version bump
 
-4. **Create Release**
-   ```bash
-   git checkout main
-   git merge release/v{version}
-   git tag v{version}
-   git push origin main --tags
-   gh release create v{version} --title "{adjective} {animal}" --notes-from-tag
+4. **Create Beautiful GitHub Release**
+   The release notes MUST follow this exact format:
+   ```markdown
+   # Release v{version} - {Adjective Animal} {emoji}
+
+    > *"{poetic tagline}"*
+
+    ## Changelog
+
+   ### Features
+   - feat: description (#PR)
+
+   ### Bug Fixes
+   - fix: description (#PR)
+
+   ### Refactoring
+   - refactor: description (#PR)
+
+   ### Documentation
+   - docs: description (#PR)
+
+   ### Merges
+   - Merge pull request #XX from branch
+
+   ## Summary
+
+   2-3 sentence summary of what this release accomplishes.
+
+   ---
+   **SHA**: `{short_sha}`
    ```
 
-5. **Sync Develop**
+5. **Execute Release**
    ```bash
-   git checkout develop  
-   git merge main
-   git push origin develop
+   # Create and push tag
+   git tag -a v{version} -m "Release v{version} - {Adjective Animal}"
+   git push origin v{version}
+
+   # Create GitHub release with formatted notes
+   gh release create v{version} \
+     --title "Release v{version} - {Adjective Animal}" \
+     --notes "$(cat <<'EOF'
+   {formatted release notes as shown above}
+   EOF
+   )"
    ```
 
 ## Available Skills

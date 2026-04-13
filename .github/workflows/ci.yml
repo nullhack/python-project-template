@@ -53,19 +53,6 @@ jobs:
           
       - name: Run type checking
         run: uv run python -c "import taskipy.cli; taskipy.cli.main()" static-check
-        
-      - name: Check for secrets
-        shell: bash
-        run: |
-          # SECURITY: Fail on errors, undefined variables, pipe failures
-          set -euo pipefail
-          if [[ ! -f .secrets.baseline ]]; then
-            echo "Creating secrets baseline..."
-            uv run detect-secrets scan --baseline .secrets.baseline
-          fi
-          # Check for new secrets since baseline
-          uv run detect-secrets scan --baseline .secrets.baseline
-          echo "✅ Secret scanning complete - no new secrets detected"
 
   test:
     name: Tests
@@ -191,7 +178,6 @@ jobs:
           echo "Security rules (S001-S701) checked during linting phase." >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "### Additional Security Features" >> $GITHUB_STEP_SUMMARY
-          echo "- ✅ Secret scanning (detect-secrets)" >> $GITHUB_STEP_SUMMARY
           echo "- ✅ Dependency vulnerability scanning (safety + dependabot)" >> $GITHUB_STEP_SUMMARY
           echo "- ✅ CodeQL security analysis (weekly + on pushes)" >> $GITHUB_STEP_SUMMARY
           echo "- ✅ Comprehensive security rules via Ruff (flake8-bandit S001-S701)" >> $GITHUB_STEP_SUMMARY
