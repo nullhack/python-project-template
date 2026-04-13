@@ -31,7 +31,7 @@ dev = [
     "taskipy>=1.14.1",
     "hypothesis>=6.148.4",
     "mutmut>=2.5.2",
-    "pyright>=1.1.407",
+    "pyright>=1.1.408",
 ]
 
 [tool.setuptools]
