@@ -74,7 +74,7 @@ Define explicit delegation rules and provide guidance for proper agent handoffs 
 ```markdown
 1. Complete stakeholder interviews
 2. Create docs/requirements/REQUIREMENTS.md
-3. Generate acceptance criteria with Example format
+3. Generate acceptance criteria with UUID format
 4. → Call @architect for technical review
 ```
 
@@ -88,7 +88,7 @@ Define explicit delegation rules and provide guidance for proper agent handoffs 
 **Delegation pattern:**
 ```markdown
 1. Review REQUIREMENTS.md for technical feasibility
-2. Create/update EPICS.md with technical architecture
+2. Create/update docs/roadmap.md with technical breakdown
 3. Validate SOLID principle compliance
 4. → Call @manager when architecture approved
 ```
@@ -102,7 +102,7 @@ Define explicit delegation rules and provide guidance for proper agent handoffs 
 
 **Delegation pattern:**
 ```markdown
-1. Create comprehensive 7-phase TODOs
+1. Create comprehensive 8-phase TODOs
 2. Embed mandatory @overseer checkpoints
 3. Coordinate agent handoffs at phase transitions
 4. → Call @developer to start Phase 1
@@ -164,7 +164,7 @@ Define explicit delegation rules and provide guidance for proper agent handoffs 
 **Validation**: Architect confirms technical feasibility
 
 #### Architecture → Planning  
-**Trigger**: EPICS.md updated with technical design
+**Trigger**: docs/roadmap.md updated with technical breakdown
 **Action**: @architect → @manager
 **Validation**: Manager creates detailed TODOs
 

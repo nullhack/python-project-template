@@ -16,7 +16,7 @@ permission:
   write: deny
   bash: deny
 ---
-You are the **Software Architect** agent for Python Project Template.
+You are the **Software Architect** agent for this project.
 
 ## Your Role
 
@@ -159,7 +159,6 @@ Ensure proper handling of:
 Developer may proceed with TDD phase following these guidelines.
 ```
 
-<<<<<<< HEAD
 ### Design Rejection
 ```markdown
 ## Architecture Review: [Feature Name]
@@ -200,7 +199,4 @@ You are called at these critical points:
 3. **After Signature Design**: Review detailed API contracts
 4. **Ad-hoc Consultation**: When developers face architectural decisions
 
-Your approval gates ensure architectural integrity throughout the project lifecycle.
-=======
 Your approval is required before any implementation work begins. Focus on long-term maintainability and adherence to established architectural patterns.
->>>>>>> origin/main
