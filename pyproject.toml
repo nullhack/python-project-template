@@ -1,15 +1,15 @@
 [project]
-name = "python-project-template"
-version = "2.0.20260411"
-description = "Python template with some awesome tools to quickstart any Python project"
+name = "test-project"
+version = "0.1.20260413"
+description = "A test project"
 readme = "README.md"
 requires-python = ">=3.13"
 license = { file = "LICENSE" }
 authors = [
-    { name = "eol", email = "nullhack@users.noreply.github.com" }
+    { name = "Test Author", email = "testuser@users.noreply.github.com" }
 ]
 maintainers = [
-    { name = "eol", email = "nullhack@users.noreply.github.com" }
+    { name = "Test Author", email = "testuser@users.noreply.github.com" }
 ]
 dependencies = [
     "dotenv>=0.9.9",
@@ -17,8 +17,8 @@ dependencies = [
 ]
 
 [project.urls]
-Repository = "https://github.com/nullhack/python-project-template"
-Documentation = "https://github.com/nullhack/python-project-template/tree/main/docs/api/"
+Repository = "https://github.com/testuser/test-project"
+Documentation = "https://github.com/testuser/test-project/tree/main/docs/api/"
 
 [project.optional-dependencies]
 dev = [
@@ -35,7 +35,7 @@ dev = [
 ]
 
 [tool.setuptools]
-packages = ["python_package_template"]
+packages = ["app"]
 
 [tool.ruff.lint]
 ignore = []
@@ -100,7 +100,7 @@ addopts = """
 """
 testpaths = [
     "tests",
-    "python_package_template"
+    "app"
 ]
 python_files = ["*_test.py"]
 python_functions = ["test_*"]
@@ -119,14 +119,14 @@ exclude_lines = [
     ]
 
 [tool.taskipy.tasks]
-run = "python -m python_package_template.python_module_template"
+run = "python -m app.version"
 test-report = """\
 pytest \
   --doctest-modules \
   --cov-config=pyproject.toml \
   --cov-report html:docs/coverage \
   --cov-report term:skip-covered \
-  --cov=python_package_template \
+  --cov=app \
   --cov-fail-under=100 \
   --hypothesis-show-statistics \
 """
@@ -148,8 +148,8 @@ pytest -m slow \
 ruff-check = "ruff check . --fix"
 ruff-format = "ruff format ."
 lint = "task ruff-check && task ruff-format"
-doc-serve = "pdoc ./python_package_template --host localhost --port 8080"
-doc-build = "pdoc ./python_package_template -o docs/api --search"
+doc-serve = "pdoc ./app --host localhost --port 8080"
+doc-build = "pdoc ./app -o docs/api --search"
 doc-publish = """\
 task doc-build && \
 git checkout gh-pages 2>/dev/null || git checkout -b gh-pages && \
@@ -160,42 +160,12 @@ git add -A && \
 git commit -m "Publish API documentation" && \
 git push origin gh-pages --force && \
 git checkout main"""
-mut = """
-mkdir -p docs/mutation && \
-uv run mutmut run && \
-uv run mutmut results --all true > docs/mutation/results.txt && \
-echo "Mutation Testing Summary" > docs/mutation/summary.txt && \
-echo "=======================" >> docs/mutation/summary.txt && \
-uv run mutmut results >> docs/mutation/summary.txt && \
-echo "" >> docs/mutation/summary.txt && \
-echo "Generated: $(date)" >> docs/mutation/summary.txt
-"""
-mut-clean = "rm -rf .mutmut-cache mutants/"
+mut = "mutmut run"
+mut-clean = "mutmut reset && rm -rf docs/mutation/"
 static-check = "pyright"
-
-[tool.mutmut]
-paths_to_mutate = ["python_package_template/"]
-pytest_add_cli_args_test_selection = ["tests/"]
-timeout = 30.0
-also_copy = ["main.py"]
-do_not_mutate = [
-    "**/*_test.py",
-    "**/test_*.py",
-    "**/conftest.py",
-]
 
 [dependency-groups]
 dev = [
     "detect-secrets>=1.5.0",
-    "hypothesis>=6.151.12",
-    "mutmut>=3.5.0",
-    "pdoc>=16.0.0",
-    "pyright>=1.1.408",
-    "pytest>=8.3.5",
-    "pytest-cov>=6.1.1",
-    "pytest-html>=4.1.1",
-    "pytest-mock>=3.15.1",
-    "ruff>=0.11.5",
     "safety>=3.7.0",
-    "taskipy>=1.14.1",
 ]

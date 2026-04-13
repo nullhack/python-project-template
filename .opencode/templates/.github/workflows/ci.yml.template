@@ -130,11 +130,11 @@ jobs:
         
       - name: Verify package installation (wheel)
         run: |
-          uv run --isolated --no-project --with dist/*.whl python -c "import python_package_template; print('✓ Wheel install successful')"
+          uv run --isolated --no-project --with dist/*.whl python -c "import app; print('✓ Wheel install successful')"
           
       - name: Verify package installation (sdist)
         run: |
-          uv run --isolated --no-project --with dist/*.tar.gz python -c "import python_package_template; print('✓ Source dist install successful')"
+          uv run --isolated --no-project --with dist/*.tar.gz python -c "import app; print('✓ Source dist install successful')"
           
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4

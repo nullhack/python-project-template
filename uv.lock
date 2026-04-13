@@ -829,78 +829,6 @@ wheels = [
 ]
 
 [[package]]
-name = "python-project-template"
-version = "0.1.20260411"
-source = { virtual = "." }
-dependencies = [
-    { name = "dotenv" },
-    { name = "fire" },
-]
-
-[package.optional-dependencies]
-dev = [
-    { name = "hypothesis" },
-    { name = "mutmut" },
-    { name = "pdoc" },
-    { name = "pyright" },
-    { name = "pytest" },
-    { name = "pytest-cov" },
-    { name = "pytest-html" },
-    { name = "pytest-mock" },
-    { name = "ruff" },
-    { name = "taskipy" },
-]
-
-[package.dev-dependencies]
-dev = [
-    { name = "detect-secrets" },
-    { name = "hypothesis" },
-    { name = "mutmut" },
-    { name = "pdoc" },
-    { name = "pyright" },
-    { name = "pytest" },
-    { name = "pytest-cov" },
-    { name = "pytest-html" },
-    { name = "pytest-mock" },
-    { name = "ruff" },
-    { name = "safety" },
-    { name = "taskipy" },
-]
-
-[package.metadata]
-requires-dist = [
-    { name = "dotenv", specifier = ">=0.9.9" },
-    { name = "fire", specifier = ">=0.7.1" },
-    { name = "hypothesis", marker = "extra == 'dev'", specifier = ">=6.148.4" },
-    { name = "mutmut", marker = "extra == 'dev'", specifier = ">=2.5.2" },
-    { name = "pdoc", marker = "extra == 'dev'", specifier = ">=14.0" },
-    { name = "pyright", marker = "extra == 'dev'", specifier = ">=1.1.407" },
-    { name = "pytest", marker = "extra == 'dev'", specifier = ">=8.3.5" },
-    { name = "pytest-cov", marker = "extra == 'dev'", specifier = ">=6.1.1" },
-    { name = "pytest-html", marker = "extra == 'dev'", specifier = ">=4.1.1" },
-    { name = "pytest-mock", marker = "extra == 'dev'", specifier = ">=3.14.0" },
-    { name = "ruff", marker = "extra == 'dev'", specifier = ">=0.11.5" },
-    { name = "taskipy", marker = "extra == 'dev'", specifier = ">=1.14.1" },
-]
-provides-extras = ["dev"]
-
-[package.metadata.requires-dev]
-dev = [
-    { name = "detect-secrets", specifier = ">=1.5.0" },
-    { name = "hypothesis", specifier = ">=6.151.12" },
-    { name = "mutmut", specifier = ">=3.5.0" },
-    { name = "pdoc", specifier = ">=16.0.0" },
-    { name = "pyright", specifier = ">=1.1.408" },
-    { name = "pytest", specifier = ">=8.3.5" },
-    { name = "pytest-cov", specifier = ">=6.1.1" },
-    { name = "pytest-html", specifier = ">=4.1.1" },
-    { name = "pytest-mock", specifier = ">=3.15.1" },
-    { name = "ruff", specifier = ">=0.11.5" },
-    { name = "safety", specifier = ">=3.7.0" },
-    { name = "taskipy", specifier = ">=1.14.1" },
-]
-
-[[package]]
 name = "pyyaml"
 version = "6.0.3"
 source = { registry = "https://pypi.org/simple" }
@@ -1235,6 +1163,58 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/46/79/cf31d7a93a8fdc6aa0fbb665be84426a8c5a557d9240b6239e9e11e35fc5/termcolor-3.3.0.tar.gz", hash = "sha256:348871ca648ec6a9a983a13ab626c0acce02f515b9e1983332b17af7979521c5", size = 14434, upload-time = "2025-12-29T12:55:21.882Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/33/d1/8bb87d21e9aeb323cc03034f5eaf2c8f69841e40e4853c2627edf8111ed3/termcolor-3.3.0-py3-none-any.whl", hash = "sha256:cf642efadaf0a8ebbbf4bc7a31cec2f9b5f21a9f726f4ccbb08192c9c26f43a5", size = 7734, upload-time = "2025-12-29T12:55:20.718Z" },
+]
+
+[[package]]
+name = "test-project"
+version = "0.1.20260413"
+source = { virtual = "." }
+dependencies = [
+    { name = "dotenv" },
+    { name = "fire" },
+]
+
+[package.optional-dependencies]
+dev = [
+    { name = "hypothesis" },
+    { name = "mutmut" },
+    { name = "pdoc" },
+    { name = "pyright" },
+    { name = "pytest" },
+    { name = "pytest-cov" },
+    { name = "pytest-html" },
+    { name = "pytest-mock" },
+    { name = "ruff" },
+    { name = "taskipy" },
+]
+
+[package.dev-dependencies]
+dev = [
+    { name = "detect-secrets" },
+    { name = "safety" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "dotenv", specifier = ">=0.9.9" },
+    { name = "fire", specifier = ">=0.7.1" },
+    { name = "hypothesis", marker = "extra == 'dev'", specifier = ">=6.148.4" },
+    { name = "mutmut", marker = "extra == 'dev'", specifier = ">=2.5.2" },
+    { name = "pdoc", marker = "extra == 'dev'", specifier = ">=14.0" },
+    { name = "pyright", marker = "extra == 'dev'", specifier = ">=1.1.407" },
+    { name = "pytest", marker = "extra == 'dev'", specifier = ">=8.3.5" },
+    { name = "pytest-cov", marker = "extra == 'dev'", specifier = ">=6.1.1" },
+    { name = "pytest-html", marker = "extra == 'dev'", specifier = ">=4.1.1" },
+    { name = "pytest-mock", marker = "extra == 'dev'", specifier = ">=3.14.0" },
+    { name = "ruff", marker = "extra == 'dev'", specifier = ">=0.11.5" },
+    { name = "taskipy", marker = "extra == 'dev'", specifier = ">=1.14.1" },
+]
+provides-extras = ["dev"]
+
+[package.metadata.requires-dev]
+dev = [
+    { name = "detect-secrets", specifier = ">=1.5.0" },
+    { name = "safety", specifier = ">=3.7.0" },
 ]
 
 [[package]]

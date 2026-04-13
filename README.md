@@ -1,4 +1,4 @@
-# 🚀 AI-Enhanced Python Project Template
+# Python Project Template
 
 [![Contributors][contributors-shield]][contributors-url]
 [![Forks][forks-shield]][forks-url]
@@ -7,289 +7,224 @@
 [![MIT License][license-shield]][license-url]
 [![Coverage](https://img.shields.io/badge/coverage-100%25-brightgreen?style=for-the-badge)](docs/coverage/index.html)
 
-[![CI Status](https://github.com/nullhack/python-project-template/workflows/CI/badge.svg?style=for-the-badge)](https://github.com/nullhack/python-project-template/actions/workflows/ci.yml)
-[![CodeQL](https://github.com/nullhack/python-project-template/workflows/CodeQL%20Security%20Analysis/badge.svg?style=for-the-badge)](https://github.com/nullhack/python-project-template/actions/workflows/codeql.yml)
+[![CI](https://img.shields.io/github/actions/workflow/status/nullhack/python-project-template/ci.yml?style=for-the-badge&label=CI)](https://github.com/nullhack/python-project-template/actions/workflows/ci.yml)
 [![Python](https://img.shields.io/badge/python-3.13-blue?style=for-the-badge)](https://www.python.org/downloads/)
-[![Code Style](https://img.shields.io/badge/code%20style-ruff-000000.svg?style=for-the-badge)](https://github.com/astral-sh/ruff)
-[![Security](https://img.shields.io/badge/security-ruff%20%2B%20CodeQL-green?style=for-the-badge)](https://docs.astral.sh/ruff/rules/#flake8-bandit-s)
 
-> **Ship production-ready Python projects faster with AI-powered development workflows and modern containerization**
+> Python template with some awesome tools to quickstart any Python project
 
-### Development Version: [v0.1.20260411](https://github.com/nullhack/python-project-template/releases/tag/v0.1.20260411) - Enhanced Docker Edition
+**🚀 Enterprise Python Project Template** - AI-enhanced development template with TDD workflows, quality standards, and zero-config tooling.
 
-**Revolutionary Python template** delivering enterprise-grade projects with **OpenCode AI agents**, **distroless Docker containers**, **TDD/BDD workflows**, and **security-first containerization**.
+## ⚡ Quick Start
 
-## ✨ What You Get
-
-🤖 **Enterprise AI Development Team** - 5 specialized agents: Developer, Architect, Business Analyst, QA Specialist, Release Engineer  
-🐳 **Modern Containerization** - Multi-stage Docker builds with distroless production images and security scanning  
-🔒 **Security-First Approach** - Non-root containers, vulnerability scanning, and minimal attack surface  
-⚡ **Zero-Config Development** - Hot reload, automated testing, and instant deployment workflows  
-🏗️ **SOLID Architecture** - Object Calisthenics, Dependency Inversion, Protocol-based design with architect review  
-🎯 **Mandatory QA Gates** - 4 quality checkpoints enforced by QA specialist throughout development  
-🔄 **Smart Releases** - Hybrid calver versioning with AI-generated themed names  
-📋 **Epic-Based Workflow** - Requirements-driven development with automatic feature progression
-
-## 🎯 Perfect For
-
-- **Startups** needing production-ready containers from day one
-- **DevOps Teams** requiring secure, optimized Docker workflows  
-- **Enterprises** demanding zero-compromise security and quality
-- **Developers** wanting AI-assisted development with modern tooling
-- **Projects** scaling from development to production seamlessly
-
-## 🚀 Quick Start
-
-### Prerequisites
-
-Install the essential tools:
+### Using This Template
 
 ```bash
-# Install OpenCode AI assistant
-curl -fsSL https://opencode.ai/install.sh | sh
+# 1. Clone the template
+git clone https://github.com/nullhack/python-project-template
+cd python-project-template
 
-# Install UV package manager (5-10x faster than pip)
+# 2. Install UV package manager (if not installed)
 curl -LsSf https://astral.sh/uv/install.sh | sh
 
-# Install Docker with BuildKit support
-# Follow: https://docs.docker.com/get-docker/
-```
+# 3. Customize the template for your project
+python setup_project.py
 
-### Choose Your Development Style
+# 4. Follow the Git configuration commands shown
+# (setup_project.py will display the exact commands)
 
-#### 🐳 **Docker-First Development** *(Recommended)*
-
-```bash
-# Clone the template
-git clone https://github.com/nullhack/python-project-template.git your-project
-cd your-project
-
-# Start development environment with hot reload
-docker-compose up
-
-# Initialize AI development environment
+# 5. Initialize AI development environment (optional)
 opencode && /init
 
-# Start an epic with requirements gathering
-@requirements-gatherer  # Business analysis and stakeholder interviews
-@developer /skill epic-workflow start-epic "MVP Features"
-```
-
-#### ⚡ **Native Development**
-
-```bash
-# Clone and setup locally
-git clone https://github.com/nullhack/python-project-template.git your-project
-cd your-project
-
-# Setup development environment
+# 6. Setup development environment  
 uv venv && uv pip install -e '.[dev]'
 
-# Validate everything works
+# 7. Validate everything works
 task test && task lint && task static-check
-
-# Initialize AI development
-opencode && /init
 ```
 
-## 🐳 Modern Docker Workflows
+## 🎯 What This Template Provides
 
-### Development Environment
+This template creates a production-ready Python project with:
 
-```bash
-# Full development stack with hot reload
-docker-compose up
+### 🔧 **Project Setup & Customization**
+- **Automated setup script** (`setup_project.py`) - Interactive customization with your project details
+- **Smart folder renaming** - Automatically renames directories to match your project
+- **Git configuration** - Provides ready-to-use Git commands for remotes and user setup
+- **Template processing** - Replaces all placeholders with your actual project information
 
-# Specific development services
-docker-compose up app          # Main application
-docker-compose up docs         # Documentation server (localhost:8080)
+### 🤖 **AI-Enhanced Development Workflow**  
+- **Multi-session continuity** - Projects span multiple AI sessions with shared state in `TODO.md`
+- **Specialized agents** - Built-in agents for architecture, development, QA, and repository management
+- **Skills system** - Modular workflows for TDD, feature definition, prototyping, and releases
 
-# Quality assurance workflows
-docker-compose --profile test up        # Complete test suite
-docker-compose --profile quality up     # Linting and type checking
-```
+### 🏗️ **Enterprise Architecture & Quality**
+- **SOLID principles** - Enforced through AI architecture reviews
+- **Object Calisthenics** - Clean, behavior-rich code patterns  
+- **100% test coverage** - TDD workflows with property-based testing (Hypothesis)
+- **Zero-config tooling** - UV, Ruff, PyTest, PyRight pre-configured
 
-### Production Deployment
+## 🤖 AI-Powered Development
 
-```bash
-# Build security-hardened production image
-docker build --target production -t your-project:prod .
+This project includes built-in AI agents to accelerate your development.
 
-# Production testing environment
-docker-compose -f docker-compose.prod.yml up
+### Multi-Session Development
 
-# Security and performance validation
-docker-compose -f docker-compose.prod.yml --profile security up     # Vulnerability scanning
-docker-compose -f docker-compose.prod.yml --profile load-test up    # Load testing
-```
-
-### Container Security Features
-
-- **🔒 Distroless Production Images** - Minimal attack surface, no shell access
-- **👤 Non-Root Execution** - Enhanced security throughout all container stages  
-- **🛡️ Vulnerability Scanning** - Automated Trivy security scanning in CI/CD
-- **📊 Resource Limits** - Production-ready CPU and memory constraints
-- **🚫 Read-Only Filesystem** - Immutable production containers
-
-## 🏛️ Architecture & Workflow
-
-### Epic-Based Development with Mandatory QA Gates
-
-1. **Requirements Gathering** → `@requirements-gatherer` conducts stakeholder interviews using BABOK methodology
-2. **🔒 QA Gate #1** → `@overseer` enforces requirements completeness review  
-3. **Test-Driven Development** → `@developer /skill tdd` creates BDD-style tests with pytest + Hypothesis
-4. **🔒 QA Gate #2** → `@overseer` reviews test quality and coverage standards
-5. **Design & Architecture** → `@architect` ensures SOLID patterns and design review  
-6. **Implementation** → `@developer /skill implementation` follows TDD Red-Green-Refactor cycle
-7. **🔒 QA Gate #3** → `@overseer` validates SOLID/DRY/KISS compliance  
-8. **Final Quality** → `@developer /skill code-quality` runs comprehensive quality checks
-9. **🔒 QA Gate #4** → `@overseer` provides final approval before feature completion
-10. **Automatic Progression** → System advances to next feature in epic
-
-**🚫 Development cannot proceed without @overseer approval at each mandatory gate**
-
-### Multi-Session Development State
-
-Complex projects span multiple AI sessions using shared state management:
+Complex projects are developed across multiple AI sessions. `TODO.md` at the root acts as the shared state — any AI agent can pick up exactly where the last session stopped.
 
 ```bash
-# Start any session: read TODO.md, understand current state, continue work
+# Start any session: read state, orient, continue
 @developer /skill session-workflow
 
-# End any session: update TODO.md, commit progress, hand off to next session  
+# End any session: update TODO.md, commit progress, hand off
 @developer /skill session-workflow
 ```
 
-## 🔧 Technology Stack
+### Feature Development Workflow
 
-**🐳 Containerization** 
-- Docker multi-stage builds with BuildKit optimization
-- Distroless production images (gcr.io/distroless/python3)
-- Security scanning with Trivy integration
-- Hot reload development containers
+```bash
+# Define new features with SOLID principles
+@developer /skill feature-definition
 
-**🤖 AI Development Team**
-- **@developer**: TDD workflow implementation with QA integration
-- **@architect**: SOLID principles and design pattern enforcement  
-- **@requirements-gatherer**: Business analysis using BABOK methodology
-- **@overseer**: Quality gates and mandatory checkpoint enforcement
-- **@repo-manager**: Release management and deployment workflows
+# Create prototypes and validate concepts  
+@developer /skill prototype-script
 
-**⚡ Modern Python Stack**
-- Python 3.13+ with advanced type hints and protocols
-- UV package manager (5-10x faster dependency management)
-- Ruff formatting and linting (replaces 8+ tools)
-- PyTest + Hypothesis for comprehensive testing
+# Write comprehensive tests first (TDD)
+@developer /skill tdd
 
-**📊 Quality Assurance**
-- 100% test coverage requirement with branch coverage
-- Property-based testing for edge case discovery
-- Static type checking with Pyright
-- Mutation testing with mutmut for test quality validation
+# Get architecture review before implementing
+@architect
+
+# Implement with guided TDD workflow
+@developer /skill implementation
+
+# Create releases with smart versioning
+@repo-manager /skill git-release
+```
+
+## 🏗️ Architecture & Standards
+
+- **🎯 SOLID Principles** - Single responsibility, dependency inversion, clean interfaces
+- **🔧 Object Calisthenics** - No primitives, small classes, behavior-rich objects
+- **🧪 TDD Testing** - 100% coverage requirement with property-based tests
+- **⚡ Modern Toolchain** - UV, Ruff, PyTest, Hypothesis, PyRight
+- **🚀 Smart Releases** - Calver versioning with AI-generated themed names
 
 ## 📋 Development Commands
 
-### Native Development
-
 ```bash
-# Core workflow
+# Core development workflow
 task run              # Execute main application
-task test             # Complete test suite with coverage
-task test-fast        # Fast tests (skip slow integration tests)
-task lint             # Ruff formatting and linting
-task static-check     # Pyright type checking
-task doc-serve        # Live documentation server
-task doc-build        # Static API documentation generation
+task test             # Run comprehensive test suite  
+task lint             # Format and lint code
+task static-check     # Type safety validation
+task doc-serve        # Live pdoc documentation server
+task doc-build        # Build static pdoc API docs
+task doc-publish      # Publish API docs to GitHub Pages
+
+# Quality assurance
+task test-report      # Detailed coverage report
+task mut-report       # Mutation testing (optional)
 ```
 
-### Docker Development
+## 🐳 Docker Usage
+
+Simple Docker setup for development with hot reload and integrated tooling.
 
 ```bash
 # Development workflows
-docker-compose up                              # Hot reload development
-docker-compose --profile test up               # Complete test suite
-docker-compose --profile quality up            # Code quality pipeline
+docker-compose up                     # Hot reload development environment
+docker-compose --profile test up      # Run complete test suite
+docker-compose --profile docs up      # Documentation server (localhost:8080)
+docker-compose --profile quality up   # Code quality checks (lint + typecheck)
 
-# Production workflows  
-docker build --target production -t app:prod . # Security-optimized build
-docker-compose -f docker-compose.prod.yml up   # Production testing
-docker-compose -f docker-compose.prod.yml --profile security up  # Vulnerability scan
+# Build standalone image (after running setup_project.py)
+docker build -t your-project-name .     # Build development image
 ```
 
-## 📈 Quality Metrics & Standards
+**Note**: Run `python setup_project.py` first to replace template variables before using Docker.
 
-- ✅ **100% Test Coverage** - Branch and line coverage with pytest-cov
-- ✅ **Security Hardened** - Distroless containers, non-root execution, vulnerability scanning  
-- ✅ **Static Type Safety** - Complete type hints with protocol-based interfaces
-- ✅ **Zero Linting Issues** - Automated Ruff formatting and style enforcement
-- ✅ **Property-Based Testing** - Hypothesis for robust edge case validation
-- ✅ **Architecture Compliance** - AI-enforced SOLID principles and Object Calisthenics
-- ✅ **Container Security** - Minimal attack surface with read-only production filesystems
+- **🛠️ Development**: Hot reload, separate services for testing/docs/quality checks
 
-## 🚀 Release Management
 
-### Smart Versioning & Naming
 
-- **Hybrid Calver**: `v{major}.{minor}.{YYYYMMDD}` format
-- **AI-Generated Names**: Themed releases based on PR content analysis
-  - Performance: `"Swift Falcon"` `"Lightning Cheetah"`
-  - Security: `"Guardian Shield"` `"Vigilant Owl"`  
-  - Features: `"Creative Fox"` `"Innovative Dolphin"`
-  - Infrastructure: `"Solid Foundation"` `"Robust Castle"`
+## 🔧 Technology Stack
 
-### Deployment Ready
+| Category | Tools |
+|----------|-------|
+| **Package Management** | UV (blazing fast pip/poetry replacement) |
+| **Code Quality** | Ruff (linting + formatting), PyRight (type checking) |
+| **Testing** | PyTest + Hypothesis (property-based testing), pytest-html (BDD reports) |
+| **AI Integration** | OpenCode agents for development automation |
+| **Documentation** | pdoc with search functionality |
+| **Containerization** | Docker development environment with hot reload |
+
+## 📈 Quality Metrics
+
+- ✅ **100% Test Coverage** - Comprehensive test suite including edge cases
+- ✅ **Static Type Safety** - Full type hints with protocol-based interfaces  
+- ✅ **Zero Linting Issues** - Automated formatting and style enforcement
+- ✅ **Property-Based Testing** - Hypothesis for robust validation
+- ✅ **Architecture Compliance** - AI-enforced SOLID principles
+
+## 🚀 Deployment Ready
+
+Projects generated from this template include Docker support:
 
 ```bash
-# Build production-ready container
-docker build --target production -t your-project:latest .
-docker run your-project:latest
+# In your generated project
+docker build -t your-project-name .
+docker run your-project-name
 
-# Smart release with AI naming
-@repo-manager /skill git-release
-# Example: Creates v1.2.20260411 "Secure Fortress" (Docker security improvements)
+# Docker Compose development
+docker-compose up                     # Development environment
+docker-compose --profile test up      # Run tests  
+docker-compose --profile docs up      # Documentation server
 
-# Deploy with confidence
-docker-compose -f docker-compose.prod.yml up --detach
+# API documentation (generated projects)
+task doc-build  # Generates docs/api/index.html
+task doc-serve  # http://localhost:8080
 ```
 
 ## 🤝 Contributing
 
-Help make this template the gold standard for Python development:
+Help improve this template for the entire Python community:
 
-- 🐛 **Bug Reports & Fixes** - Improve stability and reliability
-- ✨ **New AI Agents & Skills** - Expand development automation  
-- 🐳 **Container Optimizations** - Enhance security and performance
-- 📚 **Documentation** - Help others succeed faster
-- 🎯 **Workflow Improvements** - Streamline development processes
+### Template Improvements
 
 ```bash
-# Quick contribution workflow
-git clone https://github.com/nullhack/python-project-template.git
+# Fork and improve the template
+git clone https://github.com/your-username/python-project-template  
 cd python-project-template
-@developer /skill feature-definition    # Define your improvement
-@developer /skill tdd                  # Test-driven implementation
-@repo-manager /skill pr-management     # Professional PR creation
+
+# Test your changes
+python setup_project.py --dry-run --github-username testuser --yes
+
+# Add new skills, agents, or template features
+# Submit pull request with improvements
 ```
+
+### Areas for Contribution
+- **New Skills** - Add specialized workflows (deployment, security, performance)
+- **Agent Enhancements** - Improve existing agents or add new specialized ones  
+- **Template Updates** - Better project structures, additional tooling, improved defaults
+- **Documentation** - Usage guides, examples, best practices
 
 ## 📄 License
 
-MIT License - see [`LICENSE`](LICENSE) for details.
+Distributed under the MIT License. See [LICENSE](LICENSE) for details.
 
-## 🙏 Built With Excellence
+## 🙏 Built With
 
-Standing on the shoulders of giants:
-
-- [OpenCode](https://opencode.ai) - Revolutionary AI-powered development platform
-- [UV](https://astral.sh/uv/) - Blazing fast Python package and project manager
-- [Ruff](https://astral.sh/ruff/) - Extremely fast Python linter and formatter  
-- [Docker](https://docker.com) - Industry-standard containerization platform
-- [Distroless](https://github.com/GoogleContainerTools/distroless) - Google's minimal container images
-- [Trivy](https://trivy.dev/) - Comprehensive security scanner
-- [Hypothesis](https://hypothesis.readthedocs.io/) - Property-based testing framework
+- [Python Project Template](https://github.com/nullhack/python-project-template) - Enterprise-grade Python project template
+- [OpenCode](https://opencode.ai) - AI-powered development platform
+- [UV](https://astral.sh/uv/) - Modern Python package manager
+- [Ruff](https://astral.sh/ruff/) - Extremely fast Python linter
 
 ---
 
-**[⭐ Star this repo](https://github.com/nullhack/python-project-template) to power your next breakthrough project!**
+**Author:** eol ([@nullhack](https://github.com/nullhack))  
+**Project:** [python-project-template](https://github.com/nullhack/python-project-template)  
+**Documentation:** [nullhack.github.io/python-project-template](https://nullhack.github.io/python-project-template)
 
 <!-- MARKDOWN LINKS & IMAGES -->
 [contributors-shield]: https://img.shields.io/github/contributors/nullhack/python-project-template.svg?style=for-the-badge

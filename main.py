@@ -5,7 +5,7 @@ from typing import Literal
 
 import fire
 
-from python_package_template.python_module_template import version
+from app.version import version
 
 logger = logging.getLogger(__name__)
 
@@ -20,7 +20,7 @@ LOGGER_LEVELS = {
 ValidVerbosity = Literal["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]
 
 
-def main(verbosity: ValidVerbosity = "INFO"):
+def main(verbosity: ValidVerbosity = "INFO") -> None:
     """Run with --verbosity=LEVEL (DEBUG, INFO, WARNING, ERROR, CRITICAL)."""
     # Validate verbosity at runtime
     verbosity_upper = verbosity.upper()

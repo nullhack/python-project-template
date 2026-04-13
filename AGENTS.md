@@ -27,13 +27,21 @@ This project includes custom skills for OpenCode:
 - **session-workflow**: Manage multi-session development - read TODO.md, continue from last checkpoint, update progress and hand off cleanly
 - **epic-workflow**: Manage epic-based development with automatic feature progression and mandatory QA gates
 
+### Workflow Coordination
+- **workflow-coordination**: Orchestrate 7-phase development cycle with agent delegation and checkpoint enforcement
+- **delegation-coordination**: Agent delegation matrix and routing rules for proper task assignment
+
 ### Development Workflow
 - **feature-definition**: Define features with SOLID principles and clear requirements
-- **prototype-script**: Create quick validation scripts with real data capture  
+- **prototype-script**: Create quick validation scripts with real data capture
+- **gherkin-validation**: Validate Gherkin syntax with Example format preference for BDD scenarios
 - **tdd**: Write comprehensive tests using TDD with pytest/hypothesis — includes decision guide for when to use plain TDD, Hypothesis (property-based), or Hypothesis stateful testing
 - **signature-design**: Design modern Python interfaces with protocols and type hints
 - **implementation**: Implement using TDD methodology with real prototype data
 - **code-quality**: Enforce quality with ruff, coverage, hypothesis, and cosmic-ray mutation testing
+
+### Requirements Management
+- **requirements-management**: Create and maintain REQUIREMENTS.md with hybrid business+technical format
 
 ### Repository Management
 - **git-release**: Create semantic releases with hybrid major.minor.calver versioning and themed naming
@@ -45,10 +53,11 @@ This project includes custom skills for OpenCode:
 
 ## Available Agents
 
+- **manager**: Development workflow coordinator orchestrating 7-phase development cycle with proper delegation
 - **developer**: Main development agent with complete 7-phase TDD workflow and QA integration
 - **architect**: Software architect for design review, pattern selection, and SOLID compliance
 - **requirements-gatherer**: Business analyst for requirements elicitation and feature analysis
-- **overseer**: Quality assurance specialist enforcing standards at mandatory checkpoints
+- **overseer**: Quality assurance specialist enforcing standards at mandatory checkpoints with zero tolerance
 - **repo-manager**: Repository management for Git operations, PRs, commits, and releases
 
 ## Development Commands
@@ -130,6 +139,17 @@ All test functions must have Given/When/Then docstrings:
 ```python
 def test_federation_created_should_have_active_status():
     """
+    Given: A valid federation with required fields
+    When: Federation is created
+    Then: Status should be active
+    """
+```
+
+**Preferred Format**: Use `Example:` instead of `Scenario:` with mandatory newlines:
+```python
+def test_federation_created_should_have_active_status():
+    """
+    Example: Federation creation with valid data
     Given: A valid federation with required fields
     When: Federation is created
     Then: Status should be active
@@ -222,27 +242,27 @@ Then run `/init` to generate a fresh `AGENTS.md` based on your project's current
 @developer /skill code-quality
 @overseer               # Final review before moving on
 
-# 1. Requirements & Analysis
+# 2. Requirements & Analysis
 @requirements-gatherer  # Gather detailed requirements
 @overseer              # QA checkpoint: requirements review
 
-# 2. Test Development
+# 3. Test Development
 @developer /skill tdd  # Write BDD tests
 @overseer             # QA checkpoint: test quality review
 
-# 3. Design & Architecture  
+# 4. Design & Architecture  
 @developer /skill signature-design
 @architect            # Approve design and patterns
 
-# 4. Implementation
+# 5. Implementation
 @developer /skill implementation
 @overseer             # QA checkpoint: SOLID/DRY/KISS review
 
-# 5. Final Quality
+# 6. Final Quality
 @developer /skill code-quality
 @overseer             # QA checkpoint: final approval
 
-# 6. Feature completion - system auto-progresses to next
+# 7. Feature completion - system auto-progresses to next
 @developer /skill epic-workflow next-feature
 ```
 
@@ -265,10 +285,13 @@ Then run `/init` to generate a fresh `AGENTS.md` based on your project's current
 
 ### Quality Assurance Protocol
 
-**The @overseer agent enforces mandatory QA checkpoints:**
+**The @overseer agent enforces mandatory QA checkpoints with zero tolerance:**
 1. After requirements gathering - completeness review
-2. After TDD phase - test quality review
-3. After implementation - SOLID/DRY/KISS review
-4. Before feature completion - final approval
+2. After TDD phase - test quality review (BDD docstrings, naming conventions)
+3. After signature design - SOLID/DRY/KISS review
+4. After implementation - Object Calisthenics compliance
+5. Before feature completion - final approval
 
 **Development cannot proceed without @overseer approval at each gate.**
+
+The @overseer agent also provides auto-delegation recovery for single-shot tasks and enforces all 9 Object Calisthenics rules strictly.
