@@ -5,7 +5,7 @@ from typing import Literal
 
 import fire
 
-from python_package_template.python_module_template import version
+from app.version import version
 
 logger = logging.getLogger(__name__)
 
