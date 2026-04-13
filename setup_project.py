@@ -200,12 +200,14 @@ def run(
     process_templates(replacements)
 
     # Rename parent folder based on project name
-    rename_parent_folder(project_name)
+    if project_name:
+        rename_parent_folder(project_name)
 
     # Show Git configuration instructions
-    show_git_setup_instructions(
-        github_username, project_name, author_name, author_email
-    )
+    if github_username and project_name and author_name and author_email:
+        show_git_setup_instructions(
+            github_username, project_name, author_name, author_email
+        )
 
     log_message("\nProject setup complete!")
     log_message("\nNext steps:")
