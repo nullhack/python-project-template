@@ -23,7 +23,7 @@ Documentation = "https://github.com/testuser/test-project/tree/main/docs/api/"
 [project.optional-dependencies]
 dev = [
     "pdoc>=14.0",
-    "pytest>=8.3.5",
+    "pytest>=9.0.3",
     "pytest-cov>=6.1.1",
     "pytest-html>=4.1.1",
     "pytest-mock>=3.14.0",
