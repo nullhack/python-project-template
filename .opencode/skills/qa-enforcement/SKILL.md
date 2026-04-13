@@ -1,6 +1,6 @@
 ---
 name: qa-enforcement
-description: Comprehensive quality enforcement with SOLID principles, Object Calisthenics, BDD validation, and zero-tolerance bypass policy
+description: Comprehensive quality enforcement with SOLID principles, Object Calisthenics, acceptance criteria validation, and zero-tolerance bypass policy
 license: MIT
 compatibility: opencode
 metadata:
@@ -9,7 +9,7 @@ metadata:
 ---
 
 ## What I do
-Enforce comprehensive quality standards including all 9 Object Calisthenics rules, SOLID/DRY/KISS/YAGNI principles, BDD docstring validation, and maintain zero tolerance for quality bypasses.
+Enforce comprehensive quality standards including all 9 Object Calisthenics rules, SOLID/DRY/KISS/YAGNI principles, acceptance criteria validation, and maintain zero tolerance for quality bypasses.
 
 ## When to use me
 - During overseer QA checkpoints at each development phase
@@ -258,15 +258,15 @@ if result.is_successful():
 - Avoid speculative generality and future-proofing
 - Focus on current requirements, not imagined future needs
 
-### 4. BDD Test Quality Standards
+### 4. Acceptance Criteria Test Quality Standards
 
 #### Mandatory Docstring Format
-All test functions must use proper Gherkin format with Example preference:
+All test functions must use UUID traceability format:
 
 ```python
 def test_user_login_with_valid_credentials_should_grant_access():
-    """
-    Example: Successful user authentication
+    """123e4567-e89b-12d3-a456-426614174000: Successful user authentication.
+
     Given: A registered user with valid credentials exists
     When: The user submits correct username and password  
     Then: Access should be granted to the application
@@ -277,8 +277,7 @@ def test_user_login_with_valid_credentials_should_grant_access():
 - **Function naming**: `test_<condition>_should_<outcome>` (STRICT)
 - **File naming**: `*_test.py` suffix (STRICT)
 - **Newline requirement**: `"""\n<content>\n"""` (STRICT)
-- **Gherkin keywords**: Valid keywords with meaningful content
-- **Format preference**: Example > Scenario > Feature
+- **Acceptance criteria keywords**: Given/When/Then with meaningful content
 
 ### 5. Zero Tolerance Policy
 
@@ -336,12 +335,12 @@ def analyze_solid_compliance(module_path: str) -> SolidAnalysis:
     )
 ```
 
-### 3. BDD Format Validation
+### 3. Acceptance Criteria Format Validation
 ```python
-def validate_bdd_compliance(test_file: str) -> BddValidationResult:
-    """Validate BDD format compliance in test files."""
-    # Use gherkin-validation skill
-    from gherkin_validation import validate_test_docstring
+def validate_acceptance_criteria_compliance(test_file: str) -> AcceptanceCriteriaValidationResult:
+    """Validate acceptance criteria format compliance in test files."""
+    # Use acceptance-criteria-validation skill
+    from acceptance_criteria_validation import validate_test_docstring
     
     test_functions = extract_test_functions(test_file)
     results = []
@@ -356,22 +355,22 @@ def validate_bdd_compliance(test_file: str) -> BddValidationResult:
         if not validation.is_valid:
             results.append(f"Function {func.name}: {validation.issues}")
     
-    return BddValidationResult(is_compliant=len(results) == 0, issues=results)
+    return AcceptanceCriteriaValidationResult(is_compliant=len(results) == 0, issues=results)
 ```
 
 ## Quality Gate Checklist
 
 ### Pre-Implementation Gate
 - [ ] Requirements align with business value
-- [ ] Acceptance criteria use Example format
+- [ ] Acceptance criteria use UUID format
 - [ ] Technical design follows SOLID principles
 - [ ] Architecture supports Object Calisthenics compliance
 
 ### Post-TDD Gate  
 - [ ] All test functions follow `test_<condition>_should_<outcome>` naming
 - [ ] All test files use `*_test.py` naming convention
-- [ ] All test docstrings use proper Gherkin format with newlines
-- [ ] Example format preferred, alternatives acceptable
+- [ ] All test docstrings use proper UUID format with newlines
+- [ ] Given/When/Then structure required for acceptance criteria
 - [ ] Test coverage strategy is comprehensive
 
 ### Post-Implementation Gate
@@ -395,7 +394,7 @@ def validate_bdd_compliance(test_file: str) -> BddValidationResult:
 ### Auto-Delegation Triggers
 When violations are detected:
 - **Object Calisthenics violations** → Auto-delegate to `@architect`
-- **BDD format violations** → Auto-delegate to `@developer`  
+- **Acceptance criteria format violations** → Auto-delegate to `@developer`  
 - **Naming convention violations** → Auto-delegate to `@developer`
 - **SOLID violations** → Auto-delegate to `@architect`
 - **Quality bypasses** → Auto-delegate to `@developer`

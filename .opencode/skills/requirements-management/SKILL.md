@@ -74,31 +74,29 @@ Create comprehensive requirements documentation in `docs/requirements/REQUIREMEN
 - Database: [Type]
 - Infrastructure: [Platform]
 
-## Acceptance Criteria (Example Format)
+## Acceptance Criteria (UUID Format)
 
 ### Feature: [Feature Name]
+
+Generate UUID for each acceptance criteria:
+```bash
+python -c "import uuid; print(uuid.uuid4())"
 ```
-Example: [Descriptive test scenario]
+
+### 123e4567-e89b-12d3-a456-426614174000
 Given: [Preconditions or initial system state]
 When: [User action or system trigger]
 Then: [Expected outcome or system response]
-```
 
-Additional scenarios:
-```
-Example: [Alternative scenario]
+### 123e4567-e89b-12d3-a456-426614174001
 Given: [Different preconditions]
-When: [Different action]
+When: [Different action]  
 Then: [Different outcome]
-```
 
-### Edge Cases to Handle
-```
-Example: [Edge case scenario]
+### 123e4567-e89b-12d3-a456-426614174002
 Given: [Edge case preconditions]
 When: [Edge case action]
 Then: [Expected handling]
-```
 
 ## Documentation Files Structure
 
@@ -117,7 +115,7 @@ docs/requirements/
 ### Before Interview
 1. **Research**: Understand the domain and problem space
 2. **Prepare Questions**: Business value, user needs, constraints
-3. **Set Expectations**: Explain Example format for acceptance criteria
+3. **Set Expectations**: Explain UUID format for acceptance criteria
 
 ### Interview Questions Template
 1. "What problem are you trying to solve?"
@@ -297,4 +295,4 @@ After requirements are complete, document for architect:
 5. **Risks**: Identified potential issues
 6. **Dependencies**: External systems and requirements
 
-The architect will use this to create EPICS.md with technical design decisions.
+The architect will use this to create docs/roadmap.md with technical breakdown.

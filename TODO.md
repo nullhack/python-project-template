@@ -1,7 +1,7 @@
 # Python Project Template - Development TODO
 
-This file tracks current feature development within epics. For epic/feature tracking, see EPICS.md.
-Each session should read both TODO.md and EPICS.md to understand current state.
+This file tracks current feature development. For full feature list, see docs/roadmap.md and docs/features/business/backlog/ and docs/features/architecture/backlog/.
+Each session should read TODO.md and docs/roadmap.md to understand current state.
 
 **Convention:** `[ ]` = pending, `[x]` = done, `[~]` = in progress, `[-]` = skipped
 
@@ -9,15 +9,14 @@ Each session should read both TODO.md and EPICS.md to understand current state.
 
 ---
 
-## Current Epic: Project Foundation
 ## Current Feature: Project Setup
 
 ### Phase 0: Initial Setup
-- [x] Project created via cookiecutter template
+- [x] Project created via template
 - [ ] Review and update `README.md` with project-specific description
 - [ ] Install dependencies: `uv venv && uv pip install -e '.[dev]'`
 - [ ] Verify base tests pass: `task test`
-- [ ] Initialize EPICS.md with first business epic
+- [ ] Create first feature in docs/features/business/backlog/
 
 ### QA Checkpoint
 - [ ] @overseer: Review project setup completeness
@@ -25,46 +24,55 @@ Each session should read both TODO.md and EPICS.md to understand current state.
 
 ---
 
-## Feature Development Phases (Template)
+## Feature Development Phases (8-Phase Template)
 
 When starting a new feature, copy these phases:
 
-### Phase 1: Requirements Gathering
-- [ ] @requirements-gatherer: Conduct stakeholder interview
-- [ ] Create feature analysis document
-- [ ] Define acceptance criteria
-- [ ] QA: @overseer reviews requirements
+### Phase 1: Requirements Review
+- [ ] Read feature from docs/features/[architecture|business]/backlog/
+- [ ] Validate acceptance criteria completeness and UUIDs
+- [ ] Confirm feature alignment with requirements
+- [ ] QA: @overseer reviews requirements completeness
 
-### Phase 2: Feature Definition  
-- [ ] @developer /skill feature-definition
-- [ ] Document technical requirements
-- [ ] Update EPICS.md with feature details
+### Phase 2: Feature Definition
+- [ ] Read and understand feature acceptance criteria
+- [ ] Identify technical scope and integration points
+- [ ] Confirm feature is ready for test signature creation
 
-### Phase 3: Test Development
-- [ ] @developer /skill prototype-script (if needed)
-- [ ] @developer /skill tdd
-- [ ] Write BDD-style tests with Given/When/Then
+### Phase 3: Architecture Analysis
+- [ ] @architect /skill architectural-analysis (if architecture feature)
+- [ ] Analyze component responsibilities and interfaces
+- [ ] Document architectural decisions (ADRs) if significant
+- [ ] QA: @overseer reviews architectural soundness
+
+### Phase 4: Test Development (TDD)
+- [ ] @manager creates test signatures from feature UUIDs
+- [ ] @developer implements test bodies from signatures
+- [ ] /skill prototype-script (if validation needed - optional)
+- [ ] Use @pytest.mark based on test content, hypothesis for pure functions
+- [ ] Write acceptance criteria tests with Given/When/Then
 - [ ] QA: @overseer reviews test quality
 
-### Phase 4: Design & Architecture
+### Phase 5: Design & Signatures
 - [ ] @developer /skill signature-design
 - [ ] @architect: Review and approve design
 - [ ] Address architectural feedback
 
-### Phase 5: Implementation
+### Phase 6: Implementation
 - [ ] @developer /skill implementation
 - [ ] Implement using TDD (Red-Green-Refactor)
+- [ ] Replace NotImplementedError with actual test logic
 - [ ] QA: @overseer reviews SOLID/DRY/KISS compliance
 
-### Phase 6: Final Quality Assurance
+### Phase 7: Final Quality Assurance
 - [ ] @developer /skill code-quality
 - [ ] Run all quality checks (lint, type-check, test)
 - [ ] QA: @overseer final approval
 
-### Phase 7: Feature Completion
-- [ ] Update EPICS.md - mark feature complete
+### Phase 8: Feature Completion
+- [ ] Move feature to docs/features/[architecture|business]/completed/ when done
 - [ ] @developer /skill epic-workflow next-feature
-- [ ] Proceed to next feature or close epic
+- [ ] Proceed to next feature
 
 ---
 
@@ -72,7 +80,7 @@ When starting a new feature, copy these phases:
 
 | Date       | Session Summary                                    |
 |------------|----------------------------------------------------|
-| (date)     | Project scaffolded via cookiecutter, TODO created  |
+| (date)     | Project scaffolded via template, TODO created  |
 
 ---
 
