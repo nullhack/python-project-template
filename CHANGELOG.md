@@ -68,7 +68,7 @@ This represents a fundamental architectural shift from V1 (template validation w
 
 ### Added
 - **AI-Enhanced Development Workflow** - Complete OpenCode integration for AI-powered development
-- **Developer Agent** - Main development agent with 7-phase TDD workflow
+- **Developer Agent** - Main development agent with 8-phase TDD workflow
 - **Architect Agent** - Design review agent for SOLID principles and object calisthenics compliance
 - **Repository Manager Agent** - Git operations, PRs, and themed releases management
 - **Development Skills** - feature-definition, prototype-script, tdd, signature-design, implementation, code-quality

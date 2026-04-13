@@ -150,9 +150,9 @@ Projects are organized into Epics containing Features. Each feature follows a st
 6. **Call `@overseer` for final review before considering the feature complete**
 
 ### Phase 8: Feature Completion
-1. Move feature to `docs/features/completed/` with metadata
+1. Move feature to `docs/features/[architecture|business]/completed/` with metadata
 2. System automatically checks for next pending feature
-3. If more features exist, return to Phase 0/1 for next feature
+3. If more features exist, return to Phase 1 for next feature
 4. If all complete, proceed to PR creation
 
 ## Available Skills

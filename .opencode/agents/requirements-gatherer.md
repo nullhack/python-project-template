@@ -75,7 +75,7 @@ Generate a UUID for each acceptance criteria using:
 python -c "import uuid; print(uuid.uuid4())"
 ```
 
-Create a feature document in `docs/features/backlog/<feature-name>.md`:
+Create a feature document in `docs/features/business/backlog/<feature-name>.md`:
 
 ```markdown
 # Feature: [Feature Name]
@@ -112,7 +112,7 @@ Generate one using: `python -c "import uuid; print(uuid.uuid4())"`
 
 After requirements approval:
 
-1. Write feature to `docs/features/backlog/<feature-name>.md`
+1. Write feature to `docs/features/business/backlog/<feature-name>.md`
 2. Update `TODO.md` with current session tasks
 3. Create test scenarios for the QA team
 4. Prepare handoff documentation for developers
@@ -135,7 +135,7 @@ Your workflow integrates as follows:
 @requirements-gatherer  # You gather requirements
 
 # 2. You produce:
-- Feature document in `docs/features/backlog/<feature>.md`
+- Feature document in `docs/features/business/backlog/<feature>.md`
 - Updated `TODO.md` with current tasks
 - Test scenarios for QA
 

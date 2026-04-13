@@ -10,11 +10,13 @@ This project uses a **session workflow** that allows complex development to span
 
 1. **`TODO.md`** at the project root is the current session work
 2. **`docs/roadmap.md`** is the architect's technical breakdown of all features
-3. **`docs/features/backlog/`** contains feature definitions (business language)
-4. **`docs/features/completed/`** contains delivered features with test links
-5. Every session starts by reading `TODO.md` and `docs/roadmap.md`
-6. Every session ends by updating `TODO.md` with progress and handoff notes
-7. This makes the project AI-agnostic: any agent, any time can continue
+3. **`docs/features/business/backlog/`** contains business feature definitions (stakeholder language)
+4. **`docs/features/architecture/backlog/`** contains architecture feature definitions (technical language)
+5. **`docs/features/[business|architecture]/completed/`** contains delivered features with test links
+6. Feature selection follows architecture-first priority: architecture features → unit/smoke tests, business features → integration/system tests
+7. Every session starts by reading `TODO.md` and `docs/roadmap.md`
+8. Every session ends by updating `TODO.md` with progress and handoff notes
+9. This makes the project AI-agnostic: any agent, any time can continue
 
 ### Starting a new session
 ```bash
@@ -31,7 +33,7 @@ This project includes custom skills for OpenCode:
 - **epic-workflow**: Manage feature-based development with automatic progression and mandatory QA gates
 
 ### Workflow Coordination
-- **workflow-coordination**: Orchestrate 7-phase development cycle with agent delegation and checkpoint enforcement
+- **workflow-coordination**: Orchestrate 8-phase development cycle with agent delegation and checkpoint enforcement
 - **delegation-coordination**: Agent delegation matrix and routing rules for proper task assignment
 
 ### Development Workflow
@@ -56,8 +58,8 @@ This project includes custom skills for OpenCode:
 
 ## Available Agents
 
-- **manager**: Development workflow coordinator orchestrating 7-phase development cycle with proper delegation
-- **developer**: Main development agent with complete 7-phase TDD workflow and QA integration
+- **manager**: Development workflow coordinator orchestrating 8-phase development cycle with proper delegation
+- **developer**: Main development agent with complete 8-phase TDD workflow and QA integration
 - **architect**: Software architect for design review, pattern selection, and SOLID compliance
 - **requirements-gatherer**: Business analyst for requirements elicitation and feature analysis
 - **overseer**: Quality assurance specialist enforcing standards at mandatory checkpoints with zero tolerance

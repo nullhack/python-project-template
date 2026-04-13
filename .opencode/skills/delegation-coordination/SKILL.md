@@ -102,7 +102,7 @@ Define explicit delegation rules and provide guidance for proper agent handoffs 
 
 **Delegation pattern:**
 ```markdown
-1. Create comprehensive 7-phase TODOs
+1. Create comprehensive 8-phase TODOs
 2. Embed mandatory @overseer checkpoints
 3. Coordinate agent handoffs at phase transitions
 4. → Call @developer to start Phase 1

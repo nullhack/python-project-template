@@ -92,7 +92,7 @@ def test_user_login_with_valid_credentials_should_grant_access():
 
 ### UUID Source
 
-The UUID comes from the acceptance criteria in `docs/features/backlog/<feature>.md`. Generate UUIDs using:
+The UUID comes from the acceptance criteria in `docs/features/business/backlog/<feature>.md` or `docs/features/architecture/backlog/<feature>.md`. Generate UUIDs using:
 ```bash
 python -c "import uuid; print(uuid.uuid4())"
 ```
