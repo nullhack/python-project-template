@@ -115,7 +115,7 @@ docs/requirements/
 ### Before Interview
 1. **Research**: Understand the domain and problem space
 2. **Prepare Questions**: Business value, user needs, constraints
-3. **Set Expectations**: Explain Example format for acceptance criteria
+3. **Set Expectations**: Explain UUID format for acceptance criteria
 
 ### Interview Questions Template
 1. "What problem are you trying to solve?"

@@ -74,7 +74,7 @@ Define explicit delegation rules and provide guidance for proper agent handoffs 
 ```markdown
 1. Complete stakeholder interviews
 2. Create docs/requirements/REQUIREMENTS.md
-3. Generate acceptance criteria with Example format
+3. Generate acceptance criteria with UUID format
 4. → Call @architect for technical review
 ```
 

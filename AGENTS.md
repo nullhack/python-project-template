@@ -38,8 +38,9 @@ This project includes custom skills for OpenCode:
 
 ### Development Workflow
 - **feature-definition**: Define features with SOLID principles and clear requirements
+- **architectural-analysis**: Create technical architecture features that complement business features with system design and ADRs
 - **prototype-script**: Create quick validation scripts with real data capture
-- **gherkin-validation**: Validate Gherkin syntax with Example format preference for BDD scenarios
+- **gherkin-validation**: Validate BDD docstrings with UUID format for traceability
 - **tdd**: Write comprehensive tests using TDD with pytest/hypothesis — includes decision guide for when to use plain TDD, Hypothesis (property-based), or Hypothesis stateful testing
 - **signature-design**: Design modern Python interfaces with protocols and type hints
 - **implementation**: Implement using TDD methodology with real prototype data
@@ -150,11 +151,12 @@ def test_federation_created_should_have_active_status():
     """
 ```
 
-**Preferred Format**: Use `Example:` instead of `Scenario:` with mandatory newlines:
+**Test Docstring Format**: Use UUID format with mandatory newlines:
 ```python
 def test_federation_created_should_have_active_status():
     """
-    Example: Federation creation with valid data
+    123e4567-e89b-12d3-a456-426614174000: Federation creation with valid data.
+
     Given: A valid federation with required fields
     When: Federation is created
     Then: Status should be active
@@ -224,56 +226,55 @@ Then run `/init` to generate a fresh `AGENTS.md` based on your project's current
 #### Starting a new project
 ```bash
 # 1. Start with requirements gathering
-@requirements-gatherer  # Interview stakeholders, create analysis
-@architect             # Review requirements and approve approach
-@developer /skill epic-workflow start-epic "Core Features"
+@requirements-gatherer  # Interview stakeholders, create business features
+@architect              # Review requirements, create architecture features
+@manager                 # Select first feature, create TODO with test signatures
+@developer               # Implement through 8-phase cycle
 ```
 
-#### Epic-based feature development with QA gates
+#### Architecture-first feature development with QA gates
 
 # 0. Gather requirements first (for new projects)
-@requirements-gatherer  # Ask questions, create analysis, update docs
-@architect              # Review analysis and approve design
-@developer              # Start implementation with approved TODO
+@requirements-gatherer  # Ask questions, create analysis, update business features
+@architect              # Review analysis, create architecture features
 
-# 1. Define and implement a feature
-@developer /skill feature-definition
-@developer /skill prototype-script  
-@developer /skill tdd
-@overseer               # Review tests - request changes if needed
-@developer /skill signature-design
-@architect             # Review design
-@developer /skill implementation
-@developer /skill code-quality
-@overseer               # Final review before moving on
+# 1. Select and implement a feature (architecture-first priority)
+@manager                # Select from architecture/backlog first, create test signatures
+@developer /skill epic-workflow next-feature  # Start feature development
 
-# 2. Requirements & Analysis
-@requirements-gatherer  # Gather detailed requirements
+# 2. Phase 1-2: Requirements & Feature Definition
+@requirements-gatherer  # Validate feature acceptance criteria
 @overseer              # QA checkpoint: requirements review
 
-# 3. Test Development
-@developer /skill tdd  # Write BDD tests
+# 3. Phase 3: Architecture Analysis
+@architect /skill architectural-analysis  # Create technical architecture
+@overseer             # QA checkpoint: architectural soundness review
+
+# 4. Phase 4: Test Development  
+@developer /skill prototype-script  # Optional real data validation
+@developer /skill tdd  # Write tests from manager's test signatures
 @overseer             # QA checkpoint: test quality review
 
-# 4. Design & Architecture  
+# 5. Phase 5: Design & Signatures
 @developer /skill signature-design
 @architect            # Approve design and patterns
 
-# 5. Implementation
+# 6. Phase 6: Implementation
 @developer /skill implementation
 @overseer             # QA checkpoint: SOLID/DRY/KISS review
 
-# 6. Final Quality
+# 7. Phase 7: Final Quality
 @developer /skill code-quality
 @overseer             # QA checkpoint: final approval
 
-# 7. Feature completion - system auto-progresses to next
-@developer /skill epic-workflow next-feature
+# 8. Phase 8: Feature completion - move to completed and select next
+@developer /skill epic-workflow complete-feature
+@manager /skill epic-workflow next-feature  # Select next feature
 ```
 
 #### Creating releases
 ```bash
-# After all epic features complete
+# After all features complete
 @overseer             # Final pre-release QA review
 @repo-manager /skill pr-management
 @repo-manager /skill git-release
@@ -292,10 +293,11 @@ Then run `/init` to generate a fresh `AGENTS.md` based on your project's current
 
 **The @overseer agent enforces mandatory QA checkpoints with zero tolerance:**
 1. After requirements gathering - completeness review
-2. After TDD phase - test quality review (BDD docstrings, naming conventions)
-3. After signature design - SOLID/DRY/KISS review
-4. After implementation - Object Calisthenics compliance
-5. Before feature completion - final approval
+2. After architecture analysis - architectural soundness review
+3. After TDD phase - test quality review (BDD docstrings, naming conventions)
+4. After signature design - SOLID/DRY/KISS review
+5. After implementation - Object Calisthenics compliance
+6. Before feature completion - final approval
 
 **Development cannot proceed without @overseer approval at each gate.**
 

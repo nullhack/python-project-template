@@ -1,6 +1,6 @@
 ---
 name: workflow-coordination
-description: Enforce 7-step development cycle with proper phase progression and QA gates
+description: Enforce 8-phase development cycle with proper phase progression and QA gates
 license: MIT
 compatibility: opencode
 metadata:

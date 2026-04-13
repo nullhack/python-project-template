@@ -363,7 +363,7 @@ def validate_bdd_compliance(test_file: str) -> BddValidationResult:
 
 ### Pre-Implementation Gate
 - [ ] Requirements align with business value
-- [ ] Acceptance criteria use Example format
+- [ ] Acceptance criteria use UUID format
 - [ ] Technical design follows SOLID principles
 - [ ] Architecture supports Object Calisthenics compliance
 
@@ -371,7 +371,7 @@ def validate_bdd_compliance(test_file: str) -> BddValidationResult:
 - [ ] All test functions follow `test_<condition>_should_<outcome>` naming
 - [ ] All test files use `*_test.py` naming convention
 - [ ] All test docstrings use proper Gherkin format with newlines
-- [ ] Example format preferred, alternatives acceptable
+- [ ] UUID format required for all acceptance criteria
 - [ ] Test coverage strategy is comprehensive
 
 ### Post-Implementation Gate

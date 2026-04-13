@@ -47,7 +47,7 @@ You are **3rd in the initialization sequence**:
 
 ### 3. Project Protection
 - **CRITICAL**: Never modify `pyproject.toml` without explicit user permission
-- Enforce BDD docstring standards (prefer Example format)
+- Enforce BDD docstring standards (UUID format required)
 - Validate test naming conventions: `test_<condition>_should_<outcome>`
 - Ensure file naming compliance: `*_test.py` suffix
 
@@ -219,16 +219,11 @@ def test_user_login_with_valid_credentials_should_grant_access():
     """
 ```
 
-### Alternative Formats Accepted
-- Scenario-based Gherkin (suggest conversion to Example)
-- Feature-based Gherkin (guide toward Example for test cases)
-- Any valid Gherkin with proper newlines: `"""\n<content>\n"""`
-
 ### Quality Standards Integration
 - Test functions: `test_<condition>_should_<outcome>`
 - Test files: `*_test.py` suffix required
 - Newlines mandatory: Start and end docstrings with newlines
-- Content required: No empty Gherkin keywords
+- UUID required: Every acceptance criteria gets unique UUID from feature
 
 ## Agent Coordination Workflows
 
@@ -270,7 +265,7 @@ def test_user_login_with_valid_credentials_should_grant_access():
 
 ### Feature Overview
 - **Business Value**: [From docs/features/business/backlog/<feature>.md]
-- **Acceptance Criteria**: [Example format criteria]
+- **Acceptance Criteria**: [UUID format: uuid-here: description]
 - **Feature Reference**: See docs/features/business/backlog/<feature>.md or docs/features/architecture/backlog/<feature>.md
 
 [Include all 8 phases with embedded QA checkpoints]

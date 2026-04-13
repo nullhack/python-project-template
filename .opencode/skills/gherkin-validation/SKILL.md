@@ -1,6 +1,6 @@
 ---
 name: gherkin-validation
-description: Validate BDD docstrings with Example format preference and proper Gherkin syntax
+description: Validate BDD docstrings with UUID format preference and proper Gherkin syntax
 license: MIT
 compatibility: opencode
 metadata:
@@ -9,7 +9,7 @@ metadata:
 ---
 
 ## What I do
-Validate BDD docstrings in test functions, with a preference for Example format while accepting any valid Gherkin syntax. Ensure proper newline formatting and provide helpful suggestions.
+Validate BDD docstrings in test functions using UUID format for traceability. Ensure proper newline formatting and provide helpful suggestions.
 
 ## When to use me
 - During TDD phase to validate test docstring formats
@@ -19,7 +19,7 @@ Validate BDD docstrings in test functions, with a preference for Example format 
 
 ## Required Format: UUID-based Traceability
 
-All test docstrings must use acceptance criteria UUID for traceability, followed by Gherkin steps:
+All test docstrings MUST use acceptance criteria UUID for traceability:
 
 ```python
 def test_user_login_with_valid_credentials_should_grant_access():
@@ -31,45 +31,19 @@ def test_user_login_with_valid_credentials_should_grant_access():
     """
 ```
 
-## Alternative Formats Accepted
-
-### Scenario-based Format
-```python
-def test_invalid_login_should_reject_access():
-    """
-    Scenario: Invalid login attempt
-    Given: A user with incorrect credentials
-    When: Login is attempted
-    Then: Access should be denied
-    And: Error message should be displayed
-    """
-```
-
-### Feature-based Format
-```python
-def test_password_reset_flow_should_work():
-    """
-    Feature: Password reset functionality
-    Scenario: User requests password reset
-    Given: A registered user exists
-    When: Password reset is requested
-    Then: Reset email should be sent
-    And: Temporary token should be generated
-    """
-```
+### Structure
+- UUID followed by colon and brief description (ends with period)
+- Blank line after description
+- Gherkin steps: Given/When/Then with mandatory newlines
+- Each step on its own line
 
 ### Extended Gherkin Keywords
 All valid Gherkin keywords are supported:
-- **Feature**: High-level description
-- **Scenario**: Specific test case
-- **Example**: Concrete illustration (preferred)
 - **Given**: Preconditions or context
-- **When**: Actions or events
-- **Then**: Expected outcomes
-- **And**: Additional conditions/actions/outcomes
-- **But**: Negative conditions/actions/outcomes
-- **Background**: Common setup for multiple scenarios
-- **Rule**: Business rule description
+- **When**: Action or trigger
+- **Then**: Expected outcome
+- **And**: Additional conditions
+- **But**: Contradiction conditions
 
 ## Validation Rules
 
@@ -102,7 +76,6 @@ Given: No ending newline"""
 ### 3. Structure Requirements
 - At minimum: One Gherkin keyword with content
 - Recommended: Logical flow (Given → When → Then)
-- Example format preferred but not required
 
 ## Validation Guidelines
 
@@ -114,30 +87,27 @@ Given: No ending newline"""
 - [ ] Proper colon after each keyword
 
 ### Suggestion Messages
-For improving docstrings when not using required UUID format:
+For improving docstrings to required UUID format:
 ```python
 # For missing UUID
 "Test docstring must start with acceptance criteria UUID for traceability"
-
-# For old Example format  
-"Convert 'Example:' to UUID format: 'uuid: description.' with blank line before Gherkin steps"
 
 # For missing structure
 "Add 'Given:' context and 'When:' action to complete the test scenario"
 ```
 
 ### suggest_uuid_format(docstring: str) -> str
-Convert other formats to required UUID format:
+Convert legacy formats to required UUID format:
 ```python
-# Input: Old Example format
+# Input: Legacy format
 original = """
-Example: User login
+User login validation.
 Given: Valid credentials
 When: Login submitted
 Then: Access granted
 """
 
-# Output: UUID-based suggestion
+# Output: UUID-based format
 suggested = suggest_uuid_format(original)
 # """
 # 123e4567-e89b-12d3-a456-426614174000: User login validation.
@@ -213,9 +183,6 @@ When creating new tests, enforce UUID traceability format:
 # For missing UUID
 "Test docstring must start with acceptance criteria UUID for traceability"
 
-# For old Example format  
-"Convert 'Example:' to UUID format with blank line before Gherkin steps"
-
 # For missing structure
 "Add 'Given:' context and 'When:' action to complete the test scenario"
 ```
@@ -248,7 +215,7 @@ When reviewing test files manually, check:
 ### Strictness Levels
 ```yaml
 gherkin_validation:
-  strictness: "prefer_example"  # "prefer_example", "accept_any", "require_example"
+  strictness: "uuid_required"  # "uuid_required", "accept_any"
   require_newlines: true
   min_keywords: 2  # Minimum Given/When/Then structure
   allow_empty_sections: false
@@ -269,8 +236,8 @@ fail_on_invalid = true
 1. **Parse docstring** for Gherkin keywords
 2. **Check newline formatting** (strict requirement)
 3. **Validate keyword syntax** and content
-4. **Determine format type** (Example, Scenario, Feature, etc.)
-5. **Generate suggestions** if not using preferred format
+4. **Validate UUID traceability** format
+5. **Generate suggestions** if not using required UUID format
 6. **Report results** with specific improvement guidance
 
-Remember: The goal is to guide developers toward the preferred Example format while maintaining flexibility and not breaking existing valid Gherkin documentation.
+Remember: All test docstrings MUST use UUID traceability format.

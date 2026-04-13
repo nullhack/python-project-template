@@ -211,7 +211,7 @@ ALL of these conditions are met (NO exceptions):
 - All checklist items pass completely
 - No SOLID principle violations
 - All 9 Object Calisthenics rules satisfied
-- BDD docstrings in preferred Example format with newlines
+- BDD docstrings in UUID format with newlines
 - Test naming follows `test_<condition>_should_<outcome>` pattern
 - File naming uses `*_test.py` suffix
 - No critical security issues
@@ -389,14 +389,14 @@ Function: `test_login_works()`
 
 Problems:
 1. Function name violates convention (should be test_<condition>_should_<outcome>)
-2. Missing BDD docstring with Example format
+2. Missing BDD docstring with UUID format
 3. No Given/When/Then structure
 
 → AUTO-DELEGATING to @developer
 
 Instructions:
 1. Rename function to descriptive format
-2. Add proper BDD docstring with Example format
+2. Add proper BDD docstring with UUID format
 3. Ensure newlines: """\\n<content>\\n"""
 4. Request re-review when complete
 
