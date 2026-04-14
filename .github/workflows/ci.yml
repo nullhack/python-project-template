@@ -46,13 +46,13 @@ jobs:
         run: uv sync --locked --all-extras --dev
         
       - name: Run ruff linting (includes security checks)
-        run: uv run python -c "import taskipy.cli; taskipy.cli.main()" ruff-check
+        run: uv run task ruff-check
         
       - name: Check ruff formatting
-        run: uv run python -c "import taskipy.cli; taskipy.cli.main()" ruff-format --check
+        run: uv run task ruff-format-check
           
       - name: Run type checking
-        run: uv run python -c "import taskipy.cli; taskipy.cli.main()" static-check
+        run: uv run task static-check
 
   test:
     name: Tests
@@ -81,11 +81,11 @@ jobs:
         run: uv sync --locked --all-extras --dev
         
       - name: Run fast tests
-        run: uv run python -c "import taskipy.cli; taskipy.cli.main()" test-fast
+        run: uv run task test-fast
         
       - name: Run full test suite (main branch and PRs only)
         if: github.ref == 'refs/heads/main' || github.event_name == 'pull_request'
-        run: uv run python -c "import taskipy.cli; taskipy.cli.main()" test
+        run: uv run task test
         
       - name: Upload coverage reports
         if: matrix.python-version == '3.13' && (github.ref == 'refs/heads/main' || github.event_name == 'pull_request')
@@ -131,7 +131,7 @@ jobs:
         run: uv sync --locked --all-extras --dev
         
       - name: Build documentation
-        run: uv run python -c "import taskipy.cli; taskipy.cli.main()" doc-build
+        run: uv run task doc-build
         
       - name: Build package
         run: uv build

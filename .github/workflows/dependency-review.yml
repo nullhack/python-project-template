@@ -24,8 +24,8 @@ jobs:
         with:
           # Fail the build if vulnerabilities are found
           fail-on-severity: moderate
-          # Allow only these licenses (automatically denies others including AGPL)
-          allow-licenses: GPL-2.0, GPL-3.0, LGPL-2.1, LGPL-3.0, MIT, Apache-2.0, BSD-2-Clause, BSD-3-Clause
+          # Deny copyleft and non-permissive licenses explicitly
+          deny-licenses: AGPL-3.0, GPL-2.0-only, GPL-3.0-only, LGPL-2.0-only, LGPL-2.1-only, LGPL-3.0-only, SSPL-1.0, BUSL-1.1
           # Create a summary comment on the PR
           comment-summary-in-pr: true
           
