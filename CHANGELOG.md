@@ -2,6 +2,35 @@
 
 All notable changes to this template will be documented in this file.
 
+## [v3.0.20260414] - Drifting Axolotl - 2026-04-14
+
+### Breaking Changes
+- **Workflow redesigned**: 8-phase/6-role system replaced with 6-step/3-role (Product Owner, Developer, Reviewer)
+- **Roles removed**: architect, manager, repo-manager, requirements-gatherer, overseer agents deleted
+- **Feature directories restructured**: `docs/features/{business,architecture}/` replaced with flat `docs/features/{backlog,in-progress,completed}/`
+
+### Added
+- **product-owner agent**: Defines scope, acceptance criteria, picks features, accepts deliveries (Steps 1 + 6)
+- **reviewer agent**: Read+bash only, runs all commands, produces APPROVED/REJECTED report (Step 5)
+- **scope skill**: PO guide for writing user stories + UUID acceptance criteria
+- **verify skill**: Reviewer guide for running commands and code review checklist
+- **Unified docs site**: `docs/index.html` landing page linking to API Reference, Coverage, Test Results
+- **ghp-import**: One-liner `task doc-publish` replaces complex inline Python
+
+### Changed
+- **developer agent**: Owns all of Steps 2-4+6 including architecture, tests, code, and release
+- **9 skills rewritten**: session-workflow, tdd, implementation, code-quality, pr-management, git-release, create-skill (lean, <150 lines each)
+- **Test markers reduced**: from 11 (with duplicate) to 3: `unit`, `integration`, `slow`
+- **doc-build**: Now generates all three outputs (pdoc API + pytest-cov HTML + pytest-html)
+- **CI workflow**: Cleaned up to use `uv run task <name>` consistently
+- **setup-project agent**: No longer uses setup_project.py; agent applies changes directly
+
+### Removed
+- 11 skills deleted (architectural-analysis, delegation-coordination, epic-workflow, feature-definition, qa-enforcement, requirements-management, signature-design, workflow-coordination, prototype-script, create-agent, reference/)
+- `setup_project.py` script and `.opencode/templates/` directory
+- Wrong `dotenv` dependency (replaced nothing — was unused)
+- `mutmut` dev dependency (YAGNI)
+
 ## [v2.2.20260413] - Luminous Kestrel - 2026-04-13
 
 ### Added
