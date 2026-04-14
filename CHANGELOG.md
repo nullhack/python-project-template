@@ -2,6 +2,34 @@
 
 All notable changes to this template will be documented in this file.
 
+## [v3.1.20260414] - Tidal Capybara - 2026-04-14
+
+### Added
+- **extend-criteria skill**: New skill for any agent to add acceptance criteria discovered mid-flight or post-merge, with decision rule (gap within scope vs. new feature), per-role procedures, and commit protocol
+- **Source: field on acceptance criteria**: Mandatory traceability field on every criterion (`stakeholder | po | developer | reviewer | bug`) — records who originated the requirement
+
+### Changed
+- **Test function naming**: `test_<short_title>` replaces `test_<condition>_should_<outcome>`
+- **Test docstring first line**: UUID only (no trailing description) — `"""<uuid>\n\nGiven: ...`
+- **development commands**: All skill and agent files now use `uv run task` consistently (not bare `task`)
+- **tests/ layout**: Documented as flat (no unit/ or integration/ subdirectories)
+- **pytest.skip prohibition**: Aligned across files — allowed with written justification in the docstring
+- **Marker decision table**: Moved to tdd/SKILL.md only (developer's decision, not PO's)
+- **mv to in-progress**: Ownership reassigned to developer Step 2 (not PO scope step)
+- **TODO.md status markers**: Added `[~]` (in progress) and `[-]` (cancelled) to documented legend
+- **--doctest-modules**: Documented in implementation/SKILL.md (task test runs doctest modules)
+- **verify/SKILL.md**: Report template uses flat `tests/<file>:<function>` path format
+- **exit code wording**: `exit non-124` (was ambiguous `exit 0 or 124`) in developer.md
+- **README.md**: `uv sync --all-extras` and `uv run task` commands throughout
+
+### Fixed
+- Removed stale `docs/features/in-progress/auto-publish-docs.md`
+- Split compound acceptance criterion (two outcomes in one Then) into two single-outcome criteria
+- Added `@pytest.mark.slow` to Hypothesis tests in reference implementation
+- Added `# Given / # When / # Then` body comments to all reference tests
+- Removed duplicate assertion from `test_version_logs_correct_message`
+- Moved `StringIO` import from test body to module-level imports
+
 ## [v3.0.20260414] - Drifting Axolotl - 2026-04-14
 
 ### Breaking Changes
