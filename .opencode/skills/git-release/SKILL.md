@@ -30,13 +30,14 @@ v1.2.20260415  →  v1.3.20260415   (same-day second release)
 
 Each release gets a unique adjective-animal name. Analyze the commits and PRs since the last release, identify the theme, and choose a name that reflects it.
 
-**Good adjectives**: `electric`, `radiant`, `crystalline`, `luminous`, `surging`, `aurora`, `verdant`, `boundless`, `tidal`, `velvet`
+Choose any adjective and any animal (use scientific name, not common name). The only constraints:
 
-**Good animals** (avoid overused: fox, owl, dolphin, cheetah): `narwhal`, `axolotl`, `capybara`, `quokka`, `pangolin`, `kestrel`, `jellyfish`, `manta`, `cuttlefish`, `kingfisher`, `ibis`, `firefly`, `dragonfly`
+1. **Thematic fit**: the name should reflect what this release does
+2. **No repetition**: neither the adjective nor the animal may appear in a previous release
 
 Check previous names to avoid repetition:
 ```bash
-git tag -l --sort=-v:refname | head -10
+gh release list --limit 20
 ```
 
 ## Release Process
@@ -90,13 +91,15 @@ git commit -m "chore(release): bump version to v{version} - {Adjective Animal}"
 
 ### 6. Create GitHub release
 
+Assign the SHA first so it expands correctly inside the notes string:
+
 ```bash
+SHA=$(git rev-parse --short HEAD)
 gh release create "v{version}" \
   --title "v{version} - {Adjective Animal}" \
-  --notes "$(cat <<'EOF'
-# v{version} - {Adjective Animal}
+  --notes "# v{version} - {Adjective Animal}
 
-> *"{one-line poetic tagline matching the release theme}"*
+> *\"{one-line tagline matching the release theme}\"*
 
 ## Changelog
 
@@ -114,9 +117,7 @@ gh release create "v{version}" \
 2-3 sentences describing what this release accomplishes and why the name fits.
 
 ---
-**SHA**: `$(git rev-parse --short HEAD)`
-EOF
-)"
+**SHA**: \`${SHA}\`"
 ```
 
 ## Quality Checklist
