@@ -133,4 +133,11 @@ rm -f project_defaults.json
 Tell the user:
 - What was changed
 - The git remote is now set to their repo
-- Next step: `git add -A && git commit -m "chore: initialize project from python-project-template" && git push -u origin main`
+- Next steps:
+  ```bash
+  # Commit the setup
+  git add -A && git commit -m "chore: initialize project from python-project-template" && git push -u origin main
+
+  # Optional: rename the project folder (do this from the parent directory)
+  cd .. && mv python-project-template <project-name>
+  ```
