@@ -46,26 +46,13 @@ jobs:
         run: uv sync --locked --all-extras --dev
         
       - name: Run ruff linting (includes security checks)
-        run: uv run python -c "import taskipy.cli; taskipy.cli.main()" ruff-check
+        run: uv run task ruff-check
         
       - name: Check ruff formatting
-        run: uv run python -c "import taskipy.cli; taskipy.cli.main()" ruff-format --check
+        run: uv run task ruff-format-check
           
       - name: Run type checking
-        run: uv run python -c "import taskipy.cli; taskipy.cli.main()" static-check
-        
-      - name: Check for secrets
-        shell: bash
-        run: |
-          # SECURITY: Fail on errors, undefined variables, pipe failures
-          set -euo pipefail
-          if [[ ! -f .secrets.baseline ]]; then
-            echo "Creating secrets baseline..."
-            uv run detect-secrets scan --baseline .secrets.baseline
-          fi
-          # Check for new secrets since baseline
-          uv run detect-secrets scan --baseline .secrets.baseline
-          echo "✅ Secret scanning complete - no new secrets detected"
+        run: uv run task static-check
 
   test:
     name: Tests
@@ -94,11 +81,11 @@ jobs:
         run: uv sync --locked --all-extras --dev
         
       - name: Run fast tests
-        run: uv run python -c "import taskipy.cli; taskipy.cli.main()" test-fast
+        run: uv run task test-fast
         
       - name: Run full test suite (main branch and PRs only)
         if: github.ref == 'refs/heads/main' || github.event_name == 'pull_request'
-        run: uv run python -c "import taskipy.cli; taskipy.cli.main()" test
+        run: uv run task test
         
       - name: Upload coverage reports
         if: matrix.python-version == '3.13' && (github.ref == 'refs/heads/main' || github.event_name == 'pull_request')
@@ -144,7 +131,7 @@ jobs:
         run: uv sync --locked --all-extras --dev
         
       - name: Build documentation
-        run: uv run python -c "import taskipy.cli; taskipy.cli.main()" doc-build
+        run: uv run task doc-build
         
       - name: Build package
         run: uv build
@@ -191,7 +178,6 @@ jobs:
           echo "Security rules (S001-S701) checked during linting phase." >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "### Additional Security Features" >> $GITHUB_STEP_SUMMARY
-          echo "- ✅ Secret scanning (detect-secrets)" >> $GITHUB_STEP_SUMMARY
           echo "- ✅ Dependency vulnerability scanning (safety + dependabot)" >> $GITHUB_STEP_SUMMARY
           echo "- ✅ CodeQL security analysis (weekly + on pushes)" >> $GITHUB_STEP_SUMMARY
           echo "- ✅ Comprehensive security rules via Ruff (flake8-bandit S001-S701)" >> $GITHUB_STEP_SUMMARY

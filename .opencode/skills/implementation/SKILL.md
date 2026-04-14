@@ -1,88 +1,166 @@
 ---
 name: implementation
-description: Implement functions and classes using TDD approach with all tests passing after each method completion
-license: MIT
-compatibility: opencode
-metadata:
-  audience: developers
-  workflow: feature-development
+description: Step 4 — Red-Green-Refactor cycle, one test at a time, with commit per green test
+version: "1.0"
+author: developer
+audience: developer
+workflow: feature-lifecycle
 ---
 
-## What I do
-Guide the implementation of functions and classes following Test-Driven Development, ensuring all tests pass after implementing each method using real data from prototypes.
+# Implementation
 
-## When to use me
-Use this after architect approval to implement the actual functionality, working method by method with tests passing at each step.
+Make the failing tests pass one at a time. Each green test gets its own commit. Refactor only after tests are green.
 
-## Implementation Strategy
+## The Cycle
 
-- Implement one method/function at a time
-- Use test data embedded in test files (copied from prototypes)
-- Ensure all tests pass after each method completion
-- Follow the designed signatures exactly
-- Maintain code quality standards throughout
-
-## Using Test Data
-
-After prototype phase:
-1. Test data is embedded directly in test files
-2. Implementation uses this test data to validate correctness
-3. Prototype directory has been deleted
-
-For test data patterns, see: [Reference: Test Patterns](../reference/test-patterns.md)
-
-## Red-Green-Refactor Cycle
-
-1. **RED**: Tests are already written and failing
-2. **GREEN**: Implement minimal code to pass the test
-3. **REFACTOR**: Improve implementation while keeping tests green
-
-## Method-by-Method Implementation
-
-Implement one method at a time:
-1. Start with constructor/\_\_init\_\_
-2. Implement one public method
-3. Run tests - should pass for this method
-4. Continue to next method
-
-## Quality Gates After Each Method
-
-After implementing each method, verify:
-- All related tests pass
-- Code coverage remains at target level
-- No linting errors introduced
-- Type checking passes
-
-## Running Tests
-
-```bash
-# Run tests after implementing each method
-task test
-
-# Check coverage
-task test --cov
-
-# Run linting
-task lint
-
-# Run type checking
-task static-check
+```
+Pick one failing test
+  → RED: confirm it fails
+  → GREEN: write the minimum code to make it pass
+  → REFACTOR: clean up, apply principles
+  → COMMIT
+  → pick next failing test
 ```
 
-## Implementation Checklist
+Never write production code before picking a specific failing test. Never refactor while tests are red.
 
-✅ **Before starting each method:**
-- Understand what tests expect this method to do
-- Review test data for expected values
+## Implementation Order
 
-✅ **After completing each method:**
-- Run tests - should pass for this method
-- Check code coverage hasn't dropped
-- Run linting - should pass
-- Verify type checking passes
+1. Start with the simplest test: data classes, value objects, pure functions
+2. Work outward: state machines, I/O, orchestration
+3. Follow the order of acceptance criteria in the feature doc
 
-✅ **After completing all methods:**
-- All tests pass
-- Coverage meets minimum requirement
-- Linting passes
-- Type checking passes
+## Architecture Section (do this first)
+
+Before writing any production code, add `## Architecture` to `docs/features/in-progress/<name>.md`:
+
+```markdown
+## Architecture
+
+### Module Structure
+- `<package>/domain/entity.py` — data classes and value objects
+- `<package>/domain/service.py` — business logic
+- `<package>/storage/repository.py` — persistence interface
+
+### Key Decisions
+ADR-001: <title>
+Decision: <what>
+Reason: <why in one sentence>
+Alternatives considered: <what was rejected and why>
+
+### Build Changes (needs PO approval: yes/no)
+- New runtime dependency: <name> — reason: <why>
+- New package in pyproject.toml packages list: <name>
+- Changed entry point: <old> → <new>
+```
+
+If any build changes need PO approval, stop and ask before proceeding.
+
+## Signature Design
+
+Design signatures before writing bodies. Use Python protocols for abstractions:
+
+```python
+from typing import Protocol
+from dataclasses import dataclass
+
+# Value objects: frozen + slots
+@dataclass(frozen=True, slots=True)
+class EmailAddress:
+    """A validated email address."""
+
+    value: str
+
+    def __post_init__(self) -> None:
+        """Validate the email format on creation."""
+        if "@" not in self.value:
+            raise ValueError(f"Invalid email: {self.value!r}")
+
+# Protocol for dependency inversion
+class UserRepository(Protocol):
+    """Persistence interface for users."""
+
+    def save(self, user: "User") -> None: ...
+    def find_by_email(self, email: EmailAddress) -> "User | None": ...
+
+# Google docstrings on all public functions
+def register_user(email: EmailAddress, repo: UserRepository) -> "User":
+    """Register a new user with the given email address.
+
+    Args:
+        email: The validated email address for the new user.
+        repo: Repository for persisting the user.
+
+    Returns:
+        The newly created and persisted user.
+
+    Raises:
+        DuplicateEmailError: If the email is already registered.
+    """
+```
+
+## RED — Confirm the Test Fails
+
+```bash
+pytest tests/unit/<file>_test.py::test_<name> -v
+```
+
+Expected: `FAILED` or `ERROR`. If it passes before you've written code, the test is wrong — fix it.
+
+## GREEN — Minimum Implementation
+
+Write the least code that makes the test pass. Apply during GREEN:
+- **YAGNI**: if the test doesn't require it, don't write it
+- **KISS**: the simplest code that passes
+
+Do NOT apply during GREEN: DRY, SOLID, Object Calisthenics — those come in refactor.
+
+```bash
+pytest tests/unit/<file>_test.py::test_<name> -v   # must be PASSED
+task test                                            # must all still pass
+```
+
+## REFACTOR — Apply Principles (in priority order)
+
+1. **DRY**: extract duplication
+2. **SOLID**: split classes that have grown beyond one responsibility
+3. **Object Calisthenics** (enforce all 9 rules):
+   1. One level of indentation per method — extract inner blocks to helpers
+   2. No `else` after `return` — return early, flatten the happy path
+   3. Wrap all primitives — `EmailAddress(str)` not raw `str` for domain concepts
+   4. First-class collections — wrap `list[User]` in a `UserList` class
+   5. One dot per line — `user.address` then `address.city`, never `user.address.city`
+   6. No abbreviations — `calculate` not `calc`, `manager` not `mgr`
+   7. Small entities — functions ≤ 20 lines, classes ≤ 50 lines
+   8. ≤ 2 instance variables — extract to value objects or split the class
+   9. No getters/setters — use commands (`activate()`) and queries (`is_active()`)
+4. **Type hints**: add/fix type annotations on all public functions and classes
+5. **Docstrings**: Google-style on all public functions and classes
+
+```bash
+task test          # must still pass
+task lint          # must exit 0
+task static-check  # must exit 0
+```
+
+## COMMIT
+
+```bash
+git add -A
+git commit -m "feat(<feature-name>): implement <what this test covers>"
+```
+
+Then move to the next failing test.
+
+## Self-Verification Before Handoff
+
+After all tests are green, before telling the reviewer you are ready:
+
+```bash
+task lint                # exit 0
+task static-check        # exit 0, 0 errors
+task test                # exit 0, all pass, coverage 100%
+timeout 10s task run     # exit 0 or non-124; exit 124 = hung process = fix it
+```
+
+All four must pass. Do not hand off broken work.

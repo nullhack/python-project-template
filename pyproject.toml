@@ -1,6 +1,6 @@
 [project]
 name = "test-project"
-version = "2.2.20260413"
+version = "3.0.20260414"
 description = "A test project"
 readme = "README.md"
 requires-python = ">=3.13"
@@ -12,7 +12,6 @@ maintainers = [
     { name = "Test Author", email = "testuser@users.noreply.github.com" }
 ]
 dependencies = [
-    "dotenv>=0.9.9",
     "fire>=0.7.1",
 ]
 
@@ -30,8 +29,8 @@ dev = [
     "ruff>=0.11.5",
     "taskipy>=1.14.1",
     "hypothesis>=6.148.4",
-    "mutmut>=2.5.2",
     "pyright>=1.1.407",
+    "ghp-import>=2.1.0",
 ]
 
 [tool.setuptools]
@@ -40,33 +39,33 @@ packages = ["app"]
 [tool.ruff.lint]
 ignore = []
 select = [
-  "A", 
-  "ANN", 
-  "ASYNC", 
-  "B", 
-  "C4", 
-  "C9", 
-  "D", 
-  "DTZ", 
-  "E", 
-  "ERA", 
-  "F", 
-  "FURB", 
-  "G", 
-  "I", 
-  "ICN", 
-  "LOG", 
-  "N", 
-  "NPY", 
-  "PD", 
-  "PT", 
-  "PTH", 
-  "R", 
-  "RUF", 
-  "S", 
-  "SIM", 
-  "T20", 
-  "TD", 
+  "A",
+  "ANN",
+  "ASYNC",
+  "B",
+  "C4",
+  "C9",
+  "D",
+  "DTZ",
+  "E",
+  "ERA",
+  "F",
+  "FURB",
+  "G",
+  "I",
+  "ICN",
+  "LOG",
+  "N",
+  "NPY",
+  "PD",
+  "PT",
+  "PTH",
+  "R",
+  "RUF",
+  "S",
+  "SIM",
+  "T20",
+  "TD",
   "W",
 ]
 preview = true
@@ -80,16 +79,8 @@ pydocstyle.convention = "google"
 minversion = "6.0"
 markers = [
     "slow: marks tests as slow (deselect with '-m \"not slow\"')",
-    "unit",
-    "integration",
-    "system",
-    "acceptance",
-    "regression",
-    "smoke",
-    "sanity",
-    "performance",
-    "security",
-    "performance",
+    "unit: isolated tests for a single function or class",
+    "integration: tests covering multiple components together",
 ]
 addopts = """
 --maxfail=10 \
@@ -98,13 +89,10 @@ addopts = """
 -q \
 --html=docs/tests/report.html \
 """
-testpaths = [
-    "tests",
-    "app"
-]
+testpaths = ["tests"]
 python_files = ["*_test.py"]
 python_functions = ["test_*"]
-render_collapsed = true
+render_collapsed = "all"
 
 [tool.coverage.report]
 exclude_lines = [
@@ -115,11 +103,11 @@ exclude_lines = [
     "raise AssertionError",
     "raise NotImplementedError",
     "if 0:",
-    "if __name__ == .__main__.:"
-    ]
+    "if __name__ == .__main__.:",
+]
 
 [tool.taskipy.tasks]
-run = "python -m app.version"
+run = "python -m app"
 test-report = """\
 pytest \
   --doctest-modules \
@@ -131,41 +119,30 @@ pytest \
   --hypothesis-show-statistics \
 """
 test = """\
-python -c "import subprocess, sys; print('Running Smoke Tests...'); sys.exit(0 if subprocess.run(['pytest', '-m', 'smoke']).returncode in (0,5) else 1)" && \
-python -c "import subprocess, sys; print('Running Unit Tests...'); sys.exit(0 if subprocess.run(['pytest', '-m', 'unit', '-m', 'not slow']).returncode in (0,5) else 1)" && \
-python -c "import subprocess, sys; print('Running Integration Tests...'); sys.exit(0 if subprocess.run(['pytest', '-m', 'integration', '-m', 'not slow']).returncode in (0,5) else 1)" && \
-python -c "print('Running Tests...');" && \
+pytest -m "not slow" -q && \
 task test-report\
 """
-test-fast = """\
-python -c "import subprocess, sys; print('Running Smoke Tests...'); sys.exit(0 if subprocess.run(['pytest', '-m', 'smoke']).returncode in (0,5) else 1)" && \
-python -c "import subprocess, sys; print('Running Unit Tests...'); sys.exit(0 if subprocess.run(['pytest', '-m', 'unit', '-m', 'not slow']).returncode in (0,5) else 1)" && \
-python -c "import subprocess, sys; print('Running Integration Tests...'); sys.exit(0 if subprocess.run(['pytest', '-m', 'integration', '-m', 'not slow']).returncode in (0,5) else 1)" \
-"""
-test-slow = """\
-pytest -m slow \
-"""
+test-fast = "pytest -m \"not slow\" -q"
+test-slow = "pytest -m slow"
 ruff-check = "ruff check . --fix"
 ruff-format = "ruff format ."
+ruff-format-check = "ruff format . --check"
 lint = "task ruff-check && task ruff-format"
 doc-serve = "pdoc ./app --host localhost --port 8080"
-doc-build = "pdoc ./app -o docs/api --search"
-doc-publish = """\
-task doc-build && \
-git checkout gh-pages 2>/dev/null || git checkout -b gh-pages && \
-git rm -rf . && \
-git clean -fd && \
-cp -r docs/api/. . && \
-git add -A && \
-git commit -m "Publish API documentation" && \
-git push origin gh-pages --force && \
-git checkout main"""
-mut = "mutmut run"
-mut-clean = "mutmut reset && rm -rf docs/mutation/"
+doc-build = """\
+pdoc ./app -o docs/api --search && \
+pytest \
+  --cov-config=pyproject.toml \
+  --cov-report html:docs/coverage \
+  --cov=app \
+  --html=docs/tests/report.html \
+  --self-contained-html \
+  -q \
+"""
+doc-publish = "task doc-build && ghp-import -n -p -f docs"
 static-check = "pyright"
 
 [dependency-groups]
 dev = [
-    "detect-secrets>=1.5.0",
     "safety>=3.7.0",
 ]

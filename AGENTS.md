@@ -1,304 +1,188 @@
 # Python Project Template
 
-Python template with some awesome tools to quickstart any Python project
+A Python template to quickstart any project with a production-ready workflow, quality tooling, and AI-assisted development.
 
-## Session-Based Development
+## Workflow Overview
 
-This project uses a **session workflow** that allows complex development to span multiple AI sessions. Any AI agent can continue work from where the last session stopped.
+Features flow through 6 steps with a WIP limit of 1 feature at a time. The filesystem enforces WIP:
+- `docs/features/backlog/` — features waiting to be worked on
+- `docs/features/in-progress/` — exactly one feature being built right now
+- `docs/features/completed/` — accepted and shipped features
 
-### How it works
-
-1. **`TODO.md`** at the project root is the current session work
-2. **`docs/roadmap.md`** is the architect's technical breakdown of all features
-3. **`docs/features/business/backlog/`** contains business feature definitions (stakeholder language)
-4. **`docs/features/architecture/backlog/`** contains architecture feature definitions (technical language)
-5. **`docs/features/[business|architecture]/completed/`** contains delivered features with test links
-6. Feature selection follows architecture-first priority: architecture features → unit/smoke tests, business features → integration/system tests
-7. Every session starts by reading `TODO.md` and `docs/roadmap.md`
-8. Every session ends by updating `TODO.md` with progress and handoff notes
-9. This makes the project AI-agnostic: any agent, any time can continue
-
-### Starting a new session
-```bash
-# The developer agent reads TODO.md automatically
-@developer /skill session-workflow
+```
+STEP 1: SCOPE          (product-owner)  → define user stories + acceptance criteria
+STEP 2: BOOTSTRAP+ARCH (developer)      → set up build, design module structure
+STEP 3: TEST FIRST     (developer)      → write failing tests mapped to UUIDs
+STEP 4: IMPLEMENT      (developer)      → Red-Green-Refactor, commit per green test
+STEP 5: VERIFY         (reviewer)       → run all commands, review code
+STEP 6: ACCEPT         (product-owner)  → demo, validate, merge, tag
 ```
 
-## Available Skills
+**PO picks the next feature from backlog. Developer never self-selects.**
 
-This project includes custom skills for OpenCode:
+## Agents
 
-### Session Management
-- **session-workflow**: Manage multi-session development - read TODO.md, continue from last checkpoint, update progress and hand off cleanly
-- **epic-workflow**: Manage feature-based development with automatic progression and mandatory QA gates
+- **product-owner** — defines scope, acceptance criteria, picks features, accepts deliveries
+- **developer** — architecture, tests, code, git, releases (Steps 2–4 + release)
+- **reviewer** — runs commands and reviews code at Step 5, produces APPROVED/REJECTED report
+- **setup-project** — one-time setup to initialize a new project from this template
 
-### Workflow Coordination
-- **workflow-coordination**: Orchestrate 8-phase development cycle with agent delegation and checkpoint enforcement
-- **delegation-coordination**: Agent delegation matrix and routing rules for proper task assignment
+## Skills
 
-### Development Workflow
-- **feature-definition**: Define features with SOLID principles and clear requirements
-- **architectural-analysis**: Create technical architecture features that complement business features with system design and ADRs
-- **prototype-script**: Create quick validation scripts with real data capture
-- **acceptance-criteria-validation**: Validate acceptance criteria format with UUID traceability
-- **tdd**: Write comprehensive tests using TDD with pytest/hypothesis — includes decision guide for when to use plain TDD, Hypothesis (property-based), or Hypothesis stateful testing
-- **signature-design**: Design modern Python interfaces with protocols and type hints
-- **implementation**: Implement using TDD methodology with real prototype data
-- **code-quality**: Enforce quality with ruff, coverage, hypothesis, and cosmic-ray mutation testing
-
-### Requirements Management
-- **requirements-management**: Create and maintain REQUIREMENTS.md with hybrid business+technical format
-
-### Repository Management
-- **git-release**: Create semantic releases with hybrid major.minor.calver versioning and themed naming
-- **pr-management**: Create and manage pull requests with proper formatting and workflow integration
-
-### Meta Skills
-- **create-skill**: Creates new OpenCode skills following the skill definition standard
-- **create-agent**: Creates new OpenCode subagents following the agent definition standard
-
-## Available Agents
-
-- **manager**: Development workflow coordinator orchestrating 8-phase development cycle with proper delegation
-- **developer**: Main development agent with complete 8-phase TDD workflow and QA integration
-- **architect**: Software architect for design review, pattern selection, and SOLID compliance
-- **requirements-gatherer**: Business analyst for requirements elicitation and feature analysis
-- **overseer**: Quality assurance specialist enforcing standards at mandatory checkpoints with zero tolerance
-- **repo-manager**: Repository management for Git operations, PRs, commits, and releases
+| Skill | Used By | Step |
+|---|---|---|
+| `session-workflow` | all agents | every session |
+| `scope` | product-owner | 1 |
+| `tdd` | developer | 3 |
+| `implementation` | developer | 4 |
+| `verify` | reviewer | 5 |
+| `code-quality` | developer | pre-handoff |
+| `pr-management` | developer | 6 |
+| `git-release` | developer | 6 |
+| `create-skill` | developer | meta |
 
 ## Development Commands
 
 ```bash
 # Install dependencies
-uv venv
-uv pip install '.[dev]'
+uv venv && uv pip install '.[dev]'
 
-# Run the application
+# Run the application (for humans)
 task run
 
-# Run tests (full suite with coverage report)
-task test
+# Run the application with timeout (for agents — prevents hanging on infinite loops)
+# Exit code 124 means the process was killed; treat as FAIL
+timeout 10s task run
 
-# Run fast tests only (skip slow tests)
+# Run tests (fast, no coverage)
 task test-fast
+
+# Run full test suite with coverage
+task test
 
 # Run slow tests only
 task test-slow
 
-# Run linting
+# Lint and format
 task lint
 
-# Run type checking
+# Type checking
 task static-check
 
 # Serve documentation
 task doc-serve
-
-# Build documentation
-task doc-build
 ```
-
-## Docker Commands
-
-```bash
-# Development with Docker
-docker-compose up                              # Start development environment
-docker-compose --profile test up               # Run test suite
-docker-compose --profile quality up            # Code quality checks
-
-# Production
-docker build --target production -t app:prod . # Build production image
-docker-compose -f docker-compose.prod.yml up   # Production testing
-docker-compose -f docker-compose.prod.yml --profile security up  # Security scan
-```
-
-## Documentation
-
-This project uses **pdoc** for API documentation generation:
-
-```bash
-# Serve documentation locally
-task doc-serve
-
-# Build static documentation with search
-task doc-build
-```
-
-Generated docs are in `docs/api/` - open `docs/api/index.html` to browse.
 
 ## Test Conventions
 
-This project uses acceptance criteria format with UUID traceability:
+### Markers (3 only)
+- `@pytest.mark.unit` — isolated, one function/class, no external state
+- `@pytest.mark.integration` — multiple components, external state (DB, network, filesystem)
+- `@pytest.mark.slow` — takes > 50ms; additionally applied to DB, Hypothesis, and terminal I/O tests
 
-### Test File Naming
+Every test gets exactly one of `unit` or `integration`. Slow tests additionally get `slow`.
 
-Test filenames should follow <descriptive-group-name>_test.py
+### File and Function Naming
+```
+<descriptive-group-name>_test.py         # file name
+test_<condition>_should_<outcome>        # function name
+```
 
-### Test Function Naming
+### Docstring Format (mandatory)
 ```python
-# Format: test_<condition>_should_<outcome>
-def test_<condition>_should_<outcome>(): ...
+def test_user_with_invalid_email_should_raise_validation_error():
+    """a1b2c3d4-e5f6-7890-abcd-ef1234567890: Email validation rejects invalid input.
+
+    Given: An email address without an @ symbol
+    When: EmailAddress is constructed
+    Then: A ValueError is raised with a descriptive message
+    """
+    # Given
+    invalid = "not-an-email"
+    # When / Then
+    with pytest.raises(ValueError):
+        EmailAddress(invalid)
 ```
 
-### Acceptance Criteria Format
-All test functions must have Given/When/Then docstrings:
-```python
-def test_federation_created_should_have_active_status():
-    """
-    Given: A valid federation with required fields
-    When: Federation is created
-    Then: Status should be active
-    """
-```
-
-**Test Docstring Format**: Use UUID format with mandatory newlines:
-```python
-def test_federation_created_should_have_active_status():
-    """
-    123e4567-e89b-12d3-a456-426614174000: Federation creation with valid data.
-
-    Given: A valid federation with required fields
-    When: Federation is created
-    Then: Status should be active
-    """
-```
-
-### Running Tests
-
-```bash
-# Run fast tests (skip slow tests)
-task test-fast
-
-# Run only slow tests
-task test-slow
-
-# Full test suite with coverage
-task test
-```
-
-### Checking Test Compliance
-- **pytest-html report**: `docs/tests/report.html` - Acceptance criteria displayed
-- **Coverage report**: `docs/coverage/index.html` - View coverage by file
+Rules:
+- First line: `<uuid>: <short description ending with a period>`
+- Mandatory blank line between first line and Given
+- `# Given`, `# When`, `# Then` comments in the test body
+- Assert behavior, not structure — no `isinstance()`, `type()`, or internal attributes
+- Never use `noqa`, `pytest.skip`, or `type: ignore`
 
 ## Code Quality Standards
 
-- **Linting**: ruff with Google style conventions (D205, D212, D415 disabled for test files to allow acceptance criteria)
-- **Type Checking**: pyright
-- **Test Coverage**: Minimum 100%
-- **Python Version**: >=3.13
-- **Test Markers**: `slow` marks tests >50ms (SQLite, Hypothesis, web routes)
+- **Principles (in priority order)**: YAGNI > KISS > DRY > SOLID > Object Calisthenics
+- **Linting**: ruff, Google docstring convention, `noqa` forbidden
+- **Type checking**: pyright, 0 errors required
+- **Coverage**: 100% (measured against your actual package, not `app` unless that is your package)
+- **Function length**: ≤ 20 lines
+- **Class length**: ≤ 50 lines
+- **Max nesting**: 2 levels
+- **Instance variables**: ≤ 2 per class
+
+## Feature Document Format
+
+One file per feature, lives in `docs/features/`. PO writes the top sections; developer adds `## Architecture`.
+
+```markdown
+# Feature: <Name>
+
+## User Stories
+- As a <role>, I want <goal> so that <benefit>
+
+## Acceptance Criteria
+- `<uuid>`: <Short description ending with a period>.
+  Given: <precondition>
+  When: <action>
+  Then: <single observable outcome>
+  Test strategy: unit | integration
+
+## Notes
+<constraints, risks, out-of-scope items>
+
+## Architecture  ← Developer adds this in Step 2
+### Module Structure
+### Key Decisions (ADRs)
+### Build Changes (needs PO approval: yes/no)
+```
 
 ## Release Management
 
-This project uses a hybrid versioning system: `v{major}.{minor}.{YYYYMMDD}`
+Version format: `v{major}.{minor}.{YYYYMMDD}`
 
-### Version Examples
-- `v1.2.20260302` - Version 1.2, release on March 2, 2026
-- `v1.3.20260313` - Version 1.3, release on March 13, 2026
-- `v1.4.20260313` - Version 1.4, second release same day (increment minor)
+- Minor bump for new features; major bump for breaking changes
+- Same-day second release: increment minor, keep same date
+- Each release gets a unique adjective-animal name generated from the PR/commit content
 
-### Release Naming
-Releases use AI-generated adjective-animal names. Each release gets a unique name based on PR content. Examples:
-- `v1.5.20260403 - Crystal Jellyfish` (documentation overhaul)
-- `v1.6.20260404 - Velvet Manta` (refactoring)
-- `v1.7.20260405 - Electric Firefly` (performance)
+Use `@developer /skill git-release` for the full release process.
 
-The AI analyzes PR content and generates creative, unique names containing a characteristic/adjectiv and an animal name
+## Session Management
 
-### Creating Releases
-Use the repo-manager agent:
+Every session: load `skill session-workflow`. Read `TODO.md` first, update it at the end.
+
+`TODO.md` is a 15-line bookmark — not a project journal:
+```markdown
+# Current Work
+
+Feature: <name>
+Step: <1-6> (<step name>)
+Source: docs/features/in-progress/<name>.md
+
+## Progress
+- [x] `<uuid>`: <description>
+- [ ] `<uuid>`: <description>  ← next
+
+## Next
+<One actionable sentence>
+```
+
+## Setup
+
+To initialize a new project from this template:
 ```bash
-@repo-manager /skill git-release
+@setup-project
 ```
 
-## Using OpenCode
-
-Initialize OpenCode in this project:
-```bash
-opencode
-/opencode
-```
-
-Then run `/init` to generate a fresh `AGENTS.md` based on your project's current state.
-
-### Example Workflows
-
-#### Starting a new project
-```bash
-# 1. Start with requirements gathering
-@requirements-gatherer  # Interview stakeholders, create business features
-@architect              # Review requirements, create architecture features
-@manager                 # Select first feature, create TODO with test signatures
-@developer               # Implement through 8-phase cycle
-```
-
-#### Architecture-first feature development with QA gates
-
-# 0. Gather requirements first (for new projects)
-@requirements-gatherer  # Ask questions, create analysis, update business features
-@architect              # Review analysis, create architecture features
-
-# 1. Select and implement a feature (architecture-first priority)
-@manager                # Select from architecture/backlog first, create test signatures
-@developer /skill epic-workflow next-feature  # Start feature development
-
-# 2. Phase 1-2: Requirements & Feature Definition
-@requirements-gatherer  # Validate feature acceptance criteria
-@overseer              # QA checkpoint: requirements review
-
-# 3. Phase 3: Architecture Analysis
-@architect /skill architectural-analysis  # Create technical architecture
-@overseer             # QA checkpoint: architectural soundness review
-
-# 4. Phase 4: Test Development  
-@developer /skill prototype-script  # Optional real data validation
-@developer /skill tdd  # Write tests from manager's test signatures
-@overseer             # QA checkpoint: test quality review
-
-# 5. Phase 5: Design & Signatures
-@developer /skill signature-design
-@architect            # Approve design and patterns
-
-# 6. Phase 6: Implementation
-@developer /skill implementation
-@overseer             # QA checkpoint: SOLID/DRY/KISS review
-
-# 7. Phase 7: Final Quality
-@developer /skill code-quality
-@overseer             # QA checkpoint: final approval
-
-# 8. Phase 8: Feature completion - move to completed and select next
-@developer /skill epic-workflow complete-feature
-@manager /skill epic-workflow next-feature  # Select next feature
-```
-
-#### Creating releases
-```bash
-# After all features complete
-@overseer             # Final pre-release QA review
-@repo-manager /skill pr-management
-@repo-manager /skill git-release
-```
-
-#### Session management
-```bash
-# Start of session
-@developer /skill session-workflow  # Read TODO.md, understand state
-
-# End of session
-@developer /skill session-workflow  # Update TODO.md, commit changes
-```
-
-### Quality Assurance Protocol
-
-**The @overseer agent enforces mandatory QA checkpoints with zero tolerance:**
-1. After requirements gathering - completeness review
-2. After architecture analysis - architectural soundness review
-3. After TDD phase - test quality review (acceptance criteria format, naming conventions)
-4. After signature design - SOLID/DRY/KISS review
-5. After implementation - Object Calisthenics compliance
-6. Before feature completion - final approval
-
-**Development cannot proceed without @overseer approval at each gate.**
-
-The @overseer agent also provides auto-delegation recovery for single-shot tasks and enforces all 9 Object Calisthenics rules strictly.
+The setup agent will ask for your project name, GitHub username, author info, and configure all template placeholders.

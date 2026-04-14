@@ -5,18 +5,14 @@
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
 [![MIT License][license-shield]][license-url]
-[![Coverage](https://img.shields.io/badge/coverage-100%25-brightgreen?style=for-the-badge)](docs/coverage/index.html)
+[![Coverage](https://img.shields.io/badge/coverage-100%25-brightgreen?style=for-the-badge)](https://nullhack.github.io/python-project-template/coverage/)
 
 [![CI](https://img.shields.io/github/actions/workflow/status/nullhack/python-project-template/ci.yml?style=for-the-badge&label=CI)](https://github.com/nullhack/python-project-template/actions/workflows/ci.yml)
 [![Python](https://img.shields.io/badge/python-3.13-blue?style=for-the-badge)](https://www.python.org/downloads/)
 
-> Python template with some awesome tools to quickstart any Python project
+> Python template to quickstart any project with production-ready workflow, quality tooling, and AI-assisted development.
 
-**🚀 Enterprise Python Project Template** - AI-enhanced development template with TDD workflows, quality standards, and zero-config tooling.
-
-## ⚡ Quick Start
-
-### Using This Template
+## Quick Start
 
 ```bash
 # 1. Clone the template
@@ -26,238 +22,150 @@ cd python-project-template
 # 2. Install UV package manager (if not installed)
 curl -LsSf https://astral.sh/uv/install.sh | sh
 
-# 3. **IMPORTANT**: Customize the template for your project
-python setup_project.py
-# This interactive script will:
-# - Rename directories from 'app' to your package name
-# - Update pyproject.toml with your project details  
-# - Fix Docker configuration paths
-# - Replace all template placeholders
-
-# 4. Follow the Git configuration commands shown by setup_project.py
-# Example: git remote set-url origin https://github.com/yourname/yourproject
-
-# 5. Setup development environment  
+# 3. Set up the development environment
 uv venv && uv pip install -e '.[dev]'
 
-# 6. Validate everything works
-task test && task lint && task static-check
+# 4. Customize template placeholders for your project
+opencode && @setup-project
 
-# 7. Initialize AI development environment (optional)
-opencode && /init
+# 5. Validate everything works
+task test && task lint && task static-check && timeout 10s task run
 ```
 
-**⚠️ Template State Notice**: This project is currently in "template state" with placeholder values. The `setup_project.py` script **must** be run to properly configure Docker, package paths, and project metadata before development.
+## What This Template Provides
 
-**Requirements**: Python 3.13+ and UV package manager are required.
+### Development Workflow
 
-## 🎯 What This Template Provides
+A **6-step Kanban workflow** with WIP=1 (one feature at a time), enforced by the filesystem:
 
-This template creates a production-ready Python project with:
+```
+docs/features/backlog/       ← features waiting to be worked on
+docs/features/in-progress/   ← exactly one feature being built
+docs/features/completed/     ← accepted and shipped features
+```
 
-### 🔧 **Project Setup & Customization**
-- **Automated setup script** (`setup_project.py`) - Interactive customization with your project details
-- **Smart folder renaming** - Automatically renames `app/` directory to match your project
-- **Docker path fixing** - Updates Docker configuration to match your project structure  
-- **Git configuration** - Provides ready-to-use Git commands for remotes and user setup
-- **Template processing** - Replaces all placeholders in pyproject.toml and configuration files
+**3 roles, 6 steps:**
 
-### 🤖 **AI-Enhanced Development Workflow**  
-- **Multi-session continuity** - Projects span multiple AI sessions with shared state in `TODO.md`
-- **Specialized agents** - Built-in agents for architecture, development, QA, and repository management
-- **Skills system** - Modular workflows for TDD, feature definition, prototyping, and releases
+| Step | Role | What happens |
+|------|------|-------------|
+| 1. SCOPE | Product Owner | User stories + UUID acceptance criteria |
+| 2. BOOTSTRAP + ARCH | Developer | Build system, module structure, ADRs |
+| 3. TEST FIRST | Developer | Failing tests mapped 1:1 to UUID criteria |
+| 4. IMPLEMENT | Developer | Red→Green→Refactor, commit per green test |
+| 5. VERIFY | Reviewer | Run all commands, code review, UUID traceability |
+| 6. ACCEPT | Product Owner | Demo, validate, merge, tag |
 
-### 🏗️ **Enterprise Architecture & Quality**
-- **SOLID principles** - Enforced through AI architecture reviews via OpenCode agents
-- **Object Calisthenics** - Clean, behavior-rich code patterns enforced by QA workflows
-- **100% test coverage** - TDD workflows with acceptance criteria docstrings and property-based testing (Hypothesis)
-- **Mutation testing** - mutmut integration for test quality validation
-- **Zero-config tooling** - UV, taskipy, Ruff, PyTest, Hypothesis, PyRight pre-configured
-
-## 🤖 AI-Powered Development
-
-This project includes built-in AI agents to accelerate your development.
-
-### Multi-Session Development
-
-Complex projects are developed across multiple AI sessions. `TODO.md` at the root acts as the shared state — any AI agent can pick up exactly where the last session stopped.
+### AI Agents
 
 ```bash
-# Start any session: read state, orient, continue
-@developer /skill session-workflow
-
-# End any session: update TODO.md, commit progress, hand off
-@developer /skill session-workflow
+@product-owner   # Defines features, picks from backlog, accepts deliveries
+@developer       # Architecture, tests, code, git, releases
+@reviewer        # Runs commands, reviews code — read+bash only
+@setup-project   # One-time template initialization
 ```
 
-### Feature Development Workflow
+### Skills
 
 ```bash
-# Define new features with SOLID principles
-@developer /skill feature-definition
-
-# Create prototypes and validate concepts  
-@developer /skill prototype-script
-
-# Write comprehensive tests first (TDD)
-@developer /skill tdd
-
-# Get architecture review before implementing
-@architect
-
-# Implement with guided TDD workflow
-@developer /skill implementation
-
-# Create releases with smart versioning
-@repo-manager /skill git-release
+/skill session-workflow    # Read TODO.md, continue, hand off cleanly
+/skill scope               # Write user stories + acceptance criteria
+/skill tdd                 # TDD: file naming, docstring format, markers
+/skill implementation      # Red-Green-Refactor, architecture, ADRs
+/skill code-quality        # ruff, pyright, coverage, complexity limits
+/skill verify              # Step 5 verification checklist
+/skill pr-management       # Branch naming, PR template, squash merge
+/skill git-release         # Hybrid calver versioning, themed naming
+/skill create-skill        # Add new skills to the system
 ```
 
-## 🏗️ Architecture & Standards
-
-- **🎯 SOLID Principles** - Single responsibility, dependency inversion, clean interfaces
-- **🔧 Object Calisthenics** - No primitives, small classes, behavior-rich objects  
-- **🧪 TDD Testing** - Acceptance criteria format with Given/When/Then docstrings, 100% coverage requirement
-- **🔬 Property-Based Testing** - Hypothesis integration for robust edge case validation
-- **🧬 Mutation Testing** - mutmut for genetic algorithm-based test quality assurance
-- **⚡ Modern Toolchain** - UV, taskipy, Ruff, PyTest, Hypothesis, PyRight
-- **🚀 Smart Releases** - Hybrid major.minor.calver versioning with AI-generated themed names
-
-## 📋 Development Commands
-
-This project uses **taskipy** for task automation (configured in `pyproject.toml`):
+## Development Commands
 
 ```bash
-# Core development workflow
-task run              # Execute version module (demo command)
-task test             # Run comprehensive test suite with coverage
-task test-fast        # Run fast tests only (skip slow tests)
-task test-slow        # Run only slow tests (marked with @pytest.mark.slow)
-task lint             # Format and lint code with ruff
-task static-check     # Type safety validation with pyright
-
-# Documentation
-task doc-serve        # Live pdoc documentation server (localhost:8080)
-task doc-build        # Build static pdoc API docs to docs/api/
-task doc-publish      # Publish API docs to GitHub Pages
-
-# Quality assurance
-task test-report      # Detailed coverage report (included in task test)
-task mut              # Mutation testing with mutmut
-task mut-clean        # Reset mutation testing cache
+task run              # Run the application (humans)
+timeout 10s task run  # Run with timeout (agents — exit 124 = hung = FAIL)
+task test             # Full test suite with coverage report
+task test-fast        # Tests without coverage (faster iteration)
+task test-slow        # Only slow tests
+task lint             # ruff check + format
+task static-check     # pyright type checking
+task doc-build        # Generate API docs + coverage + test reports
+task doc-publish      # Publish unified docs site to GitHub Pages
+task doc-serve        # Live API doc server at localhost:8080
 ```
 
-## 🐳 Docker Usage
+## Code Quality Standards
 
-**⚠️ Important**: Run `python setup_project.py` first to configure the template before using Docker.
+| Standard | Target |
+|----------|--------|
+| Coverage | 100% |
+| Type checking | pyright, 0 errors |
+| Linting | ruff, 0 issues, Google docstrings |
+| Function length | ≤ 20 lines |
+| Class length | ≤ 50 lines |
+| Max nesting | 2 levels |
+| Principles | YAGNI > KISS > DRY > SOLID > Object Calisthenics |
 
-Docker provides development environment with hot reload and integrated tooling:
+## Test Conventions
 
-```bash
-# Development environment with hot reload
-docker-compose up                     # Main application (ports 8000, 8080, 5678)
+```python
+def test_<condition>_should_<outcome>():
+    """a1b2c3d4-e5f6-7890-abcd-ef1234567890: Short description ending with a period.
 
-# Specialized services (use profiles)
-docker-compose --profile test up      # Run complete test suite
-docker-compose --profile docs up      # Documentation server (localhost:8080)  
-docker-compose --profile quality up   # Code quality checks (lint + typecheck)
-
-# Build standalone image
-docker build -t your-project-name .   # Build development image
+    Given: precondition
+    When: action
+    Then: single observable outcome
+    """
+    # Given
+    ...
+    # When
+    ...
+    # Then
+    ...
 ```
 
-**Current Docker Configuration:**
-- **Main service**: Hot reload development with volume mounts
-- **Test profile**: Full test suite execution
-- **Docs profile**: Live documentation server  
-- **Quality profile**: Linting and type checking
+**Markers**: `@pytest.mark.unit` · `@pytest.mark.integration` · `@pytest.mark.slow`
 
-**Note**: The Docker configuration currently references template paths and requires `setup_project.py` to be run for proper functionality.
-
-
-
-## 🔧 Technology Stack
+## Technology Stack
 
 | Category | Tools |
 |----------|-------|
-| **Package Management** | UV (blazing fast pip/poetry replacement) |
-| **Task Automation** | taskipy (configured in pyproject.toml) |
-| **Code Quality** | Ruff (linting + formatting), PyRight (type checking) |
-| **Testing** | PyTest + Hypothesis (property-based testing), pytest-html (acceptance criteria reports) |
-| **Mutation Testing** | mutmut (genetic algorithm-based mutation testing) |
-| **Coverage** | pytest-cov (100% coverage requirement) |
-| **AI Integration** | OpenCode agents and skills for development automation |
-| **Documentation** | pdoc with search functionality and GitHub Pages publishing |
-| **Containerization** | Docker development environment with hot reload and service profiles |
+| Package management | uv |
+| Task automation | taskipy |
+| Linting + formatting | Ruff |
+| Type checking | PyRight |
+| Testing | pytest + Hypothesis |
+| Coverage | pytest-cov (100% required) |
+| Documentation | pdoc + ghp-import |
+| AI development | OpenCode agents + skills |
 
-## 📈 Quality Metrics
+## Documentation Site
 
-- ✅ **100% Test Coverage** - pytest-cov with fail-under=100 requirement
-- ✅ **Static Type Safety** - PyRight type checking with full type hints  
-- ✅ **Zero Linting Issues** - Ruff automated formatting and Google-style conventions
-- ✅ **Property-Based Testing** - Hypothesis integration for robust validation
-- ✅ **Mutation Testing** - mutmut for genetic algorithm-based test quality validation
-- ✅ **Acceptance Criteria Format** - Given/When/Then docstrings with pytest-html reporting
-- ✅ **Architecture Compliance** - AI-enforced SOLID principles through OpenCode agents
+Published at [nullhack.github.io/python-project-template](https://nullhack.github.io/python-project-template):
+- **API Reference** — pdoc-generated from source docstrings
+- **Coverage Report** — line-by-line coverage breakdown
+- **Test Results** — full pytest run results
 
-## 🚀 Deployment Ready
+## Release Versioning
 
-Projects generated from this template include Docker support for development:
+Format: `v{major}.{minor}.{YYYYMMDD}`
 
-```bash
-# After running setup_project.py in your configured project
-docker build -t your-project-name .
-docker run -p 8000:8000 your-project-name
+Each release gets a unique **adjective-animal** name generated from the commit/PR content.
 
-# Docker Compose development environment
-docker-compose up                     # Development environment with hot reload
-docker-compose --profile test up      # Run test suite
-docker-compose --profile docs up      # Documentation server
-docker-compose --profile quality up   # Code quality checks
-
-# API documentation
-task doc-build  # Generates docs/api/index.html
-task doc-serve  # http://localhost:8080 (live server)
-```
-
-## 🤝 Contributing
-
-Help improve this template for the entire Python community:
-
-### Template Improvements
+## Contributing
 
 ```bash
-# Fork and improve the template
-git clone https://github.com/your-username/python-project-template  
-cd python-project-template
-
-# Test your changes
-python setup_project.py --dry-run --github-username testuser --yes
-
-# Add new skills, agents, or template features
-# Submit pull request with improvements
+git clone https://github.com/nullhack/python-project-template
+uv venv && uv pip install -e '.[dev]'
+task test && task lint
 ```
 
-### Areas for Contribution
-- **New Skills** - Add specialized workflows (deployment, security, performance)
-- **Agent Enhancements** - Improve existing agents or add new specialized ones  
-- **Template Updates** - Better project structures, additional tooling, improved defaults
-- **Documentation** - Usage guides, examples, best practices
+## License
 
-## 📄 License
-
-Distributed under the MIT License. See [LICENSE](LICENSE) for details.
-
-## 🙏 Built With
-
-- [Python Project Template](https://github.com/nullhack/python-project-template) - Enterprise-grade Python project template
-- [OpenCode](https://opencode.ai) - AI-powered development platform
-- [UV](https://astral.sh/uv/) - Modern Python package manager
-- [Ruff](https://astral.sh/ruff/) - Extremely fast Python linter
+MIT — see [LICENSE](LICENSE).
 
 ---
 
-**Author:** eol ([@nullhack](https://github.com/nullhack))  
-**Project:** [python-project-template](https://github.com/nullhack/python-project-template)  
+**Author:** eol ([@nullhack](https://github.com/nullhack))
 **Documentation:** [nullhack.github.io/python-project-template](https://nullhack.github.io/python-project-template)
 
 <!-- MARKDOWN LINKS & IMAGES -->

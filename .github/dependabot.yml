@@ -1,5 +1,5 @@
 version: 2
-# SECURITY: Automated dependency updates with security-focused grouping
+# Automated dependency updates for Python packages
 updates:
   # Enable version updates for Python packages
   - package-ecosystem: "pip"
@@ -20,7 +20,6 @@ updates:
           - "black*"
           - "bandit*"
           - "safety*"
-          - "detect-secrets*"
           - "taskipy*"
           - "pdoc*"
           - "hypothesis*"
@@ -28,11 +27,6 @@ updates:
         update-types:
           - "minor"
           - "patch"
-      security-updates:
-        patterns:
-          - "*"
-        update-types:
-          - "security"
     # Configuration options
     open-pull-requests-limit: 5
     # Allow auto-merge for security updates
