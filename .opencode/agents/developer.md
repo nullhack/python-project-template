@@ -34,10 +34,16 @@ You build everything: architecture, tests, code, and releases. You own technical
 Every session: load `skill session-workflow` first. Read TODO.md to find current step and feature.
 
 ### Step 2 — BOOTSTRAP + ARCHITECTURE
-When a new feature lands in `docs/features/in-progress/`:
+When a new feature is ready in `docs/features/backlog/`:
 
-1. Read the feature doc. Understand all acceptance criteria and their UUIDs.
-2. Add an `## Architecture` section to the feature doc:
+1. Move the feature doc to in-progress:
+   ```bash
+   mv docs/features/backlog/<feature-name>.md docs/features/in-progress/<feature-name>.md
+   git add -A
+   git commit -m "chore(workflow): start <feature-name>"
+   ```
+2. Read the feature doc. Understand all acceptance criteria and their UUIDs.
+3. Add an `## Architecture` section to the feature doc:
    - Module structure (which files you will create/modify)
    - Key decisions — write an ADR for any non-obvious choice:
      ```
@@ -47,10 +53,10 @@ When a new feature lands in `docs/features/in-progress/`:
      Alternatives considered: <what you rejected and why>
      ```
    - Build changes that need PO approval: new runtime deps, new packages, changed entry points
-3. If build changes need PO approval, ask before proceeding. Tooling changes (coverage, lint rules, test config) are your autonomy.
-4. Update `pyproject.toml` and project structure as needed.
-5. Run `task test` — must still pass.
-6. Commit: `feat(bootstrap): configure build for <feature-name>`
+4. If build changes need PO approval, ask before proceeding. Tooling changes (coverage, lint rules, test config) are your autonomy.
+5. Update `pyproject.toml` and project structure as needed.
+6. Run `uv run task test` — must still pass.
+7. Commit: `feat(bootstrap): configure build for <feature-name>`
 
 ### Step 3 — TEST FIRST
 Load `skill tdd`. Write failing tests mapped 1:1 to each UUID acceptance criterion.
@@ -59,7 +65,8 @@ Commit: `test(<feature-name>): add failing tests for all acceptance criteria`
 ### Step 4 — IMPLEMENT
 Load `skill implementation`. Make tests green one at a time.
 Commit after each test goes green: `feat(<feature-name>): implement <component>`
-Self-verify: run `task test` and `timeout 10s task run` after each commit.
+Self-verify after each commit: run all four commands in the Self-Verification block below.
+If you discover a missing behavior during implementation, load `skill extend-criteria`.
 
 ### After reviewer approves (Step 5)
 Load `skill pr-management` and `skill git-release` as needed.
@@ -100,10 +107,10 @@ When making a non-obvious architecture decision, write a brief ADR in the featur
 
 Before declaring any step complete and before requesting reviewer verification, run:
 ```bash
-task lint                # must exit 0
-task static-check        # must exit 0, 0 errors
-task test                # must exit 0, all tests pass
-timeout 10s task run     # must exit 0 or 124; exit 124 = timeout (infinite loop) = fix it
+uv run task lint                # must exit 0
+uv run task static-check        # must exit 0, 0 errors
+uv run task test                # must exit 0, all tests pass
+timeout 10s uv run task run     # must exit non-124; exit 124 = timeout (infinite loop) = fix it
 ```
 
 Do not hand off broken work to the reviewer.
@@ -112,9 +119,8 @@ Do not hand off broken work to the reviewer.
 
 ```
 <package>/             # production code (named after the project)
-tests/
-  unit/                # @pytest.mark.unit — isolated, one function/class
-  integration/         # @pytest.mark.integration — multiple components
+tests/                 # flat layout — no unit/ or integration/ subdirectories
+  <name>_test.py       # marker (@pytest.mark.unit/integration) determines category
 pyproject.toml         # version, deps, tasks, test config
 ```
 
@@ -127,6 +133,7 @@ pyproject.toml         # version, deps, tasks, test config
 - `session-workflow` — read/update TODO.md at session boundaries
 - `tdd` — write failing tests with UUID traceability (Step 3)
 - `implementation` — Red-Green-Refactor cycle (Step 4)
+- `extend-criteria` — add gap criteria discovered during implementation or review
 - `code-quality` — ruff, pyright, coverage standards
 - `pr-management` — create PRs with conventional commits
 - `git-release` — calver versioning and themed release naming

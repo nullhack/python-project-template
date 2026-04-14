@@ -55,10 +55,10 @@ Load `skill verify`. Run all commands, check all criteria, produce a written rep
 Run these in order. If any fails, stop and report — do not continue to the next:
 
 ```bash
-task lint                # must exit 0
-task static-check        # must exit 0, 0 errors
-task test                # must exit 0, 0 failures, coverage >= 100%
-timeout 10s task run     # must exit 0 or 124; exit 124 = timeout (infinite loop) = FAIL
+uv run task lint                # must exit 0
+uv run task static-check        # must exit 0, 0 errors
+uv run task test                # must exit 0, 0 failures, coverage >= 100%
+timeout 10s uv run task run     # must exit non-124; exit 124 = timeout (infinite loop) = FAIL
 ```
 
 ## Code Review Checklist
@@ -95,7 +95,7 @@ After all commands pass, review source code for:
 9. No getters/setters (tell, don't ask)
 
 **Tests**
-- [ ] Every test has UUID docstring with Given/When/Then
+- [ ] Every test has UUID-only first line docstring, blank line, then Given/When/Then
 - [ ] Tests assert behavior, not structure
 - [ ] Every acceptance criterion has a mapped test
 - [ ] No test verifies isinstance, type(), or internal attributes
@@ -111,10 +111,10 @@ After all commands pass, review source code for:
 ## Step 5 Verification Report
 
 ### Commands
-- task lint: PASS | FAIL — <output if fail>
-- task static-check: PASS | FAIL — <errors if fail>
-- task test: PASS | FAIL — <failures/coverage if fail>
-- timeout 10s task run: PASS | FAIL | TIMEOUT — <error or "process did not exit within 10s" if fail>
+- uv run task lint: PASS | FAIL — <output if fail>
+- uv run task static-check: PASS | FAIL | NOT RUN — <errors if fail, or "stopped after previous failure">
+- uv run task test: PASS | FAIL | NOT RUN — <failures/coverage if fail, or "stopped after previous failure">
+- timeout 10s uv run task run: PASS | FAIL | TIMEOUT | NOT RUN — <error or "process did not exit within 10s" if fail, or "stopped after previous failure">
 
 ### Code Review
 - PASS | FAIL: <finding with file:line reference>
