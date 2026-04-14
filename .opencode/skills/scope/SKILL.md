@@ -1,6 +1,6 @@
 ---
 name: scope
-description: Step 1 — define user stories, acceptance criteria with UUID traceability, and test strategy
+description: Step 1 — define user stories and acceptance criteria with UUID traceability
 version: "1.0"
 author: product-owner
 audience: product-owner
@@ -19,10 +19,11 @@ When the PO is starting a new feature. The output is a feature document in `docs
 
 ### 1. Create the Feature Document
 
-Create `docs/features/backlog/<feature-name>.md`. Use kebab-case for the filename.
+Create `docs/features/backlog/<verb>-<object>.md`. Filename must be kebab-case, imperative verb first, 2–4 words.
+Examples: `display-version.md`, `authenticate-user.md`, `export-metrics-csv.md`
 
 ```markdown
-# Feature: <Name>
+# Feature: <Verb> <Object>
 
 ## User Stories
 - As a <role>, I want <goal> so that <benefit>
@@ -30,10 +31,11 @@ Create `docs/features/backlog/<feature-name>.md`. Use kebab-case for the filenam
 ## Acceptance Criteria
 
 - `<uuid>`: <Short description>.
+  Source: <stakeholder | po | developer | reviewer | bug>
+
   Given: <precondition>
   When: <action>
   Then: <expected outcome>
-  Test strategy: unit | integration
 
 ## Notes
 <constraints, risks, out-of-scope items, dependencies>
@@ -65,17 +67,24 @@ python -c "import uuid; print(uuid.uuid4())"
 **Format** (mandatory — exactly this structure):
 ```markdown
 - `a1b2c3d4-e5f6-7890-abcd-ef1234567890`: Ball bounces off top wall.
+  Source: stakeholder
+
   Given: A ball moving upward reaches y=0
   When: The physics engine processes the next frame
   Then: The ball velocity y-component becomes positive
-  Test strategy: unit
 ```
+
+**Source values** (choose exactly one):
+- `stakeholder` — an external stakeholder gave this requirement to the PO
+- `po` — the PO originated this criterion independently
+- `developer` — a gap found during Step 4 implementation
+- `reviewer` — a gap found during Step 5 verification
+- `bug` — a post-merge regression; the feature doc was reopened
 
 **Rules**:
 - UUID must be unique across the entire project, not just this feature
 - First line: UUID + colon + short description ending with a period
-- Given/When/Then on separate indented lines
-- Test strategy is `unit` (isolated) or `integration` (multiple components)
+- `Source:` on the next line, followed by a blank line, then Given/When/Then
 - Use plain English, not technical jargon in Given/When/Then
 - "Then" must be a single observable, measurable outcome — no "and"
 
@@ -85,42 +94,28 @@ python -c "import uuid; print(uuid.uuid4())"
 - Multiple behaviors in one criterion (split them)
 - Criteria that test implementation details ("Then: the Strategy pattern is used")
 
-### 4. Identify Test Strategy Per Criterion
-
-For each criterion, decide:
-
-| Strategy | Use When |
-|---|---|
-| `unit` | One function or class in isolation; no external dependencies |
-| `integration` | Multiple components working together; external state (DB, filesystem, network) |
-
-When in doubt, start with `unit`. The developer may upgrade to `integration` if the implementation requires it.
-
-### 5. Review Checklist
+### 4. Review Checklist
 
 Before committing:
+- [ ] Filename is `<verb>-<object>.md`, imperative verb first, 2–4 words
+- [ ] Title matches filename: `# Feature: <Verb> <Object>` in Title Case
 - [ ] Every user story has at least one acceptance criterion
 - [ ] Every UUID is unique (check existing feature docs)
-- [ ] Every criterion has Given/When/Then and a test strategy
+- [ ] Every criterion has a `Source:` field with one of the five valid values
+- [ ] Every criterion has Given/When/Then
+- [ ] Blank line between `Source:` and `Given:`
 - [ ] "Then" is a single, observable, measurable outcome
 - [ ] No criterion tests implementation details
 - [ ] Out-of-scope items are explicitly listed in Notes
 
-### 6. Commit and Notify Developer
+### 5. Commit and Notify Developer
 
 ```bash
 git add docs/features/backlog/<feature-name>.md
 git commit -m "feat(scope): define <feature-name> acceptance criteria"
 ```
 
-Then move the feature to in-progress when ready to start:
-```bash
-mv docs/features/backlog/<feature-name>.md docs/features/in-progress/<feature-name>.md
-git add -A
-git commit -m "chore(workflow): start <feature-name>"
-```
-
-Update TODO.md to reflect the new current feature.
+The developer moves the feature from `backlog/` to `in-progress/` as the first act of Step 2.
 
 ## MoSCoW Prioritization
 

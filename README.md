@@ -23,13 +23,13 @@ cd python-project-template
 curl -LsSf https://astral.sh/uv/install.sh | sh
 
 # 3. Set up the development environment
-uv venv && uv pip install -e '.[dev]'
+uv sync --all-extras
 
 # 4. Customize template placeholders for your project
 opencode && @setup-project
 
 # 5. Validate everything works
-task test && task lint && task static-check && timeout 10s task run
+uv run task test && uv run task lint && uv run task static-check && timeout 10s uv run task run
 ```
 
 ## What This Template Provides
@@ -81,16 +81,16 @@ docs/features/completed/     ← accepted and shipped features
 ## Development Commands
 
 ```bash
-task run              # Run the application (humans)
-timeout 10s task run  # Run with timeout (agents — exit 124 = hung = FAIL)
-task test             # Full test suite with coverage report
-task test-fast        # Tests without coverage (faster iteration)
-task test-slow        # Only slow tests
-task lint             # ruff check + format
-task static-check     # pyright type checking
-task doc-build        # Generate API docs + coverage + test reports
-task doc-publish      # Publish unified docs site to GitHub Pages
-task doc-serve        # Live API doc server at localhost:8080
+uv run task run              # Run the application (humans)
+timeout 10s uv run task run  # Run with timeout (agents — exit 124 = hung = FAIL)
+uv run task test             # Full test suite with coverage report
+uv run task test-fast        # Tests without coverage (faster iteration)
+uv run task test-slow        # Only slow tests
+uv run task lint             # ruff check + format
+uv run task static-check     # pyright type checking
+uv run task doc-build        # Generate API docs + coverage + test reports
+uv run task doc-publish      # Publish unified docs site to GitHub Pages
+uv run task doc-serve        # Live API doc server at localhost:8080
 ```
 
 ## Code Quality Standards
@@ -108,8 +108,8 @@ task doc-serve        # Live API doc server at localhost:8080
 ## Test Conventions
 
 ```python
-def test_<condition>_should_<outcome>():
-    """a1b2c3d4-e5f6-7890-abcd-ef1234567890: Short description ending with a period.
+def test_<short_title>():
+    """a1b2c3d4-e5f6-7890-abcd-ef1234567890
 
     Given: precondition
     When: action
@@ -155,8 +155,8 @@ Each release gets a unique **adjective-animal** name generated from the commit/P
 
 ```bash
 git clone https://github.com/nullhack/python-project-template
-uv venv && uv pip install -e '.[dev]'
-task test && task lint
+uv sync --all-extras
+uv run task test && uv run task lint
 ```
 
 ## License

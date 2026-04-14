@@ -102,7 +102,7 @@ def register_user(email: EmailAddress, repo: UserRepository) -> "User":
 ## RED — Confirm the Test Fails
 
 ```bash
-pytest tests/unit/<file>_test.py::test_<name> -v
+uv run pytest tests/<file>_test.py::test_<name> -v
 ```
 
 Expected: `FAILED` or `ERROR`. If it passes before you've written code, the test is wrong — fix it.
@@ -116,8 +116,8 @@ Write the least code that makes the test pass. Apply during GREEN:
 Do NOT apply during GREEN: DRY, SOLID, Object Calisthenics — those come in refactor.
 
 ```bash
-pytest tests/unit/<file>_test.py::test_<name> -v   # must be PASSED
-task test                                            # must all still pass
+uv run pytest tests/<file>_test.py::test_<name> -v   # must be PASSED
+uv run task test                                      # must all still pass
 ```
 
 ## REFACTOR — Apply Principles (in priority order)
@@ -137,10 +137,12 @@ task test                                            # must all still pass
 4. **Type hints**: add/fix type annotations on all public functions and classes
 5. **Docstrings**: Google-style on all public functions and classes
 
+> **Note**: `uv run task test` runs `--doctest-modules`, which executes code examples embedded in source docstrings. Keep `Examples:` blocks in Google-style docstrings valid and executable. If an example should not be run, mark it with `# doctest: +SKIP`.
+
 ```bash
-task test          # must still pass
-task lint          # must exit 0
-task static-check  # must exit 0
+uv run task test          # must still pass
+uv run task lint          # must exit 0
+uv run task static-check  # must exit 0
 ```
 
 ## COMMIT
@@ -157,10 +159,10 @@ Then move to the next failing test.
 After all tests are green, before telling the reviewer you are ready:
 
 ```bash
-task lint                # exit 0
-task static-check        # exit 0, 0 errors
-task test                # exit 0, all pass, coverage 100%
-timeout 10s task run     # exit 0 or non-124; exit 124 = hung process = fix it
+uv run task lint                # exit 0
+uv run task static-check        # exit 0, 0 errors
+uv run task test                # exit 0, all pass, coverage 100%
+timeout 10s uv run task run     # exit non-124; exit 124 = hung process = fix it
 ```
 
 All four must pass. Do not hand off broken work.

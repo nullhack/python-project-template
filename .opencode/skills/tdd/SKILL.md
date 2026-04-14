@@ -23,30 +23,30 @@ Write tests before writing any production code. Every test must fail when first 
 
 ## Test File Structure
 
-Mirror the source tree. File naming: `<descriptive-name>_test.py` — never `test_<name>.py`.
+File naming: `<descriptive-name>_test.py` — never `test_<name>.py`. All test files live directly in `tests/` (flat layout, no subdirectories).
 
 | Source | Test |
 |---|---|
-| `<package>/module.py` | `tests/unit/module_test.py` |
-| `<package>/domain/service.py` | `tests/unit/domain/service_test.py` |
-| `<package>/api/routes.py` | `tests/integration/api/routes_test.py` |
+| `<package>/module.py` | `tests/module_test.py` |
+| `<package>/domain/service.py` | `tests/service_test.py` |
+| `<package>/api/routes.py` | `tests/routes_test.py` |
 
 ## Test Function Naming
 
 ```
-test_<condition>_should_<outcome>
+test_<short_title>
 ```
 
 Examples:
-- `test_ball_hitting_top_wall_should_reverse_vertical_velocity`
-- `test_user_with_invalid_email_should_raise_validation_error`
-- `test_empty_cart_should_return_zero_total`
+- `test_ball_bounces_off_top_wall`
+- `test_email_requires_at_symbol`
+- `test_empty_cart_returns_zero_total`
 
 ## Docstring Format (mandatory)
 
 ```python
-def test_ball_hitting_top_wall_should_reverse_vertical_velocity():
-    """a1b2c3d4-e5f6-7890-abcd-ef1234567890: Ball bounces off top wall.
+def test_ball_bounces_off_top_wall():
+    """a1b2c3d4-e5f6-7890-abcd-ef1234567890
 
     Given: A ball moving upward reaches y=0
     When: The physics engine processes the next frame
@@ -61,11 +61,11 @@ def test_ball_hitting_top_wall_should_reverse_vertical_velocity():
 ```
 
 **Rules**:
-- First line: `<uuid>: <short description ending with a period>`
-- Mandatory blank line between first line and Given
+- First line: `<uuid>` only — no description
+- Mandatory blank line between UUID and Given
 - Given/When/Then on separate indented lines
 - `# Given`, `# When`, `# Then` comments in the test body mirror the docstring
-- UUID must exactly match the acceptance criterion UUID in the feature doc
+- UUID must exactly match the UUID on the criterion's first line in the feature doc
 
 ## Markers
 
@@ -77,14 +77,24 @@ Slow tests additionally get `@pytest.mark.slow` (anything > 50ms: DB, network, H
 
 ```python
 @pytest.mark.unit
-def test_ball_hitting_top_wall_should_reverse_vertical_velocity():
+def test_ball_bounces_off_top_wall():
     ...
 
 @pytest.mark.integration
 @pytest.mark.slow
-def test_checkout_flow_should_persist_order_to_database():
+def test_checkout_persists_order_to_database():
     ...
 ```
+
+### Choosing a Marker
+
+| Marker | Use When |
+|---|---|
+| `unit` | One function or class in isolation; no external dependencies |
+| `integration` | Multiple components working together; external state (DB, filesystem, network) |
+| `slow` | Test takes > 50ms — add alongside `unit` or `integration`, never alone |
+
+When in doubt, start with `unit`. Upgrade to `integration` if the implementation requires external state.
 
 ## Hypothesis Tests
 
@@ -100,8 +110,8 @@ from hypothesis import strategies as st
 @example(x=0.0)
 @example(x=-100.0)
 @settings(max_examples=200)
-def test_compute_distance_should_always_return_non_negative(x: float) -> None:
-    """b2c3d4e5-f6a7-8901-bcde-f12345678901: Distance is always non-negative.
+def test_compute_distance_always_non_negative(x: float) -> None:
+    """b2c3d4e5-f6a7-8901-bcde-f12345678901
 
     Given: Any floating point input value
     When: compute_distance is called

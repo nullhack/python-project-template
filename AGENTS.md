@@ -39,38 +39,39 @@ STEP 6: ACCEPT         (product-owner)  → demo, validate, merge, tag
 | `code-quality` | developer | pre-handoff |
 | `pr-management` | developer | 6 |
 | `git-release` | developer | 6 |
+| `extend-criteria` | any agent | when a gap is found |
 | `create-skill` | developer | meta |
 
 ## Development Commands
 
 ```bash
 # Install dependencies
-uv venv && uv pip install '.[dev]'
+uv sync --all-extras
 
 # Run the application (for humans)
-task run
+uv run task run
 
 # Run the application with timeout (for agents — prevents hanging on infinite loops)
 # Exit code 124 means the process was killed; treat as FAIL
-timeout 10s task run
+timeout 10s uv run task run
 
 # Run tests (fast, no coverage)
-task test-fast
+uv run task test-fast
 
 # Run full test suite with coverage
-task test
+uv run task test
 
 # Run slow tests only
-task test-slow
+uv run task test-slow
 
 # Lint and format
-task lint
+uv run task lint
 
 # Type checking
-task static-check
+uv run task static-check
 
 # Serve documentation
-task doc-serve
+uv run task doc-serve
 ```
 
 ## Test Conventions
@@ -85,13 +86,13 @@ Every test gets exactly one of `unit` or `integration`. Slow tests additionally 
 ### File and Function Naming
 ```
 <descriptive-group-name>_test.py         # file name
-test_<condition>_should_<outcome>        # function name
+test_<short_title>                       # function name
 ```
 
 ### Docstring Format (mandatory)
 ```python
-def test_user_with_invalid_email_should_raise_validation_error():
-    """a1b2c3d4-e5f6-7890-abcd-ef1234567890: Email validation rejects invalid input.
+def test_email_requires_at_symbol():
+    """a1b2c3d4-e5f6-7890-abcd-ef1234567890
 
     Given: An email address without an @ symbol
     When: EmailAddress is constructed
@@ -99,17 +100,19 @@ def test_user_with_invalid_email_should_raise_validation_error():
     """
     # Given
     invalid = "not-an-email"
-    # When / Then
+    # When
+    # Then
     with pytest.raises(ValueError):
         EmailAddress(invalid)
 ```
 
 Rules:
-- First line: `<uuid>: <short description ending with a period>`
-- Mandatory blank line between first line and Given
+- First line: `<uuid>` only — no description
+- Mandatory blank line between UUID and Given
 - `# Given`, `# When`, `# Then` comments in the test body
 - Assert behavior, not structure — no `isinstance()`, `type()`, or internal attributes
-- Never use `noqa`, `pytest.skip`, or `type: ignore`
+- Never use `noqa` or `type: ignore`
+- Never use `pytest.skip` or `pytest.mark.xfail` without written justification in the docstring
 
 ## Code Quality Standards
 
@@ -126,18 +129,23 @@ Rules:
 
 One file per feature, lives in `docs/features/`. PO writes the top sections; developer adds `## Architecture`.
 
+**Naming:** `<verb>-<object>.md` — imperative verb first, kebab-case, 2–4 words.
+Examples: `display-version.md`, `authenticate-user.md`, `export-metrics-csv.md`
+Title matches: `# Feature: <Verb> <Object>` in Title Case.
+
 ```markdown
-# Feature: <Name>
+# Feature: <Verb> <Object>
 
 ## User Stories
 - As a <role>, I want <goal> so that <benefit>
 
 ## Acceptance Criteria
 - `<uuid>`: <Short description ending with a period>.
+  Source: <stakeholder | po | developer | reviewer | bug>
+
   Given: <precondition>
   When: <action>
   Then: <single observable outcome>
-  Test strategy: unit | integration
 
 ## Notes
 <constraints, risks, out-of-scope items>
@@ -147,6 +155,15 @@ One file per feature, lives in `docs/features/`. PO writes the top sections; dev
 ### Key Decisions (ADRs)
 ### Build Changes (needs PO approval: yes/no)
 ```
+
+**Source field values:**
+- `stakeholder` — an external stakeholder gave this requirement to the PO
+- `po` — the PO originated this criterion independently
+- `developer` — a gap found during Step 4 implementation
+- `reviewer` — a gap found during Step 5 verification
+- `bug` — a post-merge regression; the feature doc was reopened
+
+**Gaps and Defects:** When any agent finds a missing behavior, load `skill extend-criteria`. It provides the decision rule (gap within scope vs. new feature), UUID assignment, and commit protocol. For post-merge defects, the feature doc moves from `completed/` back to `in-progress/`.
 
 ## Release Management
 
@@ -171,8 +188,10 @@ Step: <1-6> (<step name>)
 Source: docs/features/in-progress/<name>.md
 
 ## Progress
-- [x] `<uuid>`: <description>
-- [ ] `<uuid>`: <description>  ← next
+- [x] `<uuid>`: <description>          ← done
+- [~] `<uuid>`: <description>          ← in progress
+- [ ] `<uuid>`: <description>          ← next
+- [-] `<uuid>`: <description>          ← cancelled
 
 ## Next
 <One actionable sentence>

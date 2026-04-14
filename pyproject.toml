@@ -1,28 +1,28 @@
 [project]
-name = "test-project"
-version = "3.0.20260414"
-description = "A test project"
+name = "python-project-template"
+version = "3.1.20260414"
+description = "Python template with some awesome tools to quickstart any Python project"
 readme = "README.md"
 requires-python = ">=3.13"
 license = { file = "LICENSE" }
 authors = [
-    { name = "Test Author", email = "testuser@users.noreply.github.com" }
+    { name = "eol", email = "nullhack@users.noreply.github.com" }
 ]
 maintainers = [
-    { name = "Test Author", email = "testuser@users.noreply.github.com" }
+    { name = "eol", email = "nullhack@users.noreply.github.com" }
 ]
 dependencies = [
     "fire>=0.7.1",
 ]
 
 [project.urls]
-Repository = "https://github.com/testuser/test-project"
-Documentation = "https://github.com/testuser/test-project/tree/main/docs/api/"
+Repository = "https://github.com/nullhack/python-project-template"
+Documentation = "https://github.com/nullhack/python-project-template/tree/main/docs/api/"
 
 [project.optional-dependencies]
 dev = [
     "pdoc>=14.0",
-    "pytest>=8.3.5",
+    "pytest>=9.0.3",
     "pytest-cov>=6.1.1",
     "pytest-html>=4.1.1",
     "pytest-mock>=3.14.0",

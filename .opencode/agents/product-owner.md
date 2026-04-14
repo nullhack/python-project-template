@@ -53,28 +53,43 @@ Every criterion must have a UUID (generate with `python -c "import uuid; print(u
 
 ```markdown
 - `<uuid>`: <Short description>.
+  Source: <stakeholder | po | developer | reviewer | bug>
+
   Given: <precondition>
   When: <action>
   Then: <expected outcome>
-  Test strategy: unit | integration
 ```
 
 All UUIDs must be unique. Every story must have at least one criterion. Every criterion must be independently testable.
 
+**Source field** (mandatory): records who originated this criterion.
+- `stakeholder` — an external stakeholder gave this requirement to the PO
+- `po` — the PO originated this criterion independently
+- `developer` — a gap found during Step 4 implementation
+- `reviewer` — a gap found during Step 5 verification
+- `bug` — a post-merge regression; the feature doc was reopened
+
+When adding criteria discovered after initial scope, load `skill extend-criteria`.
+
 ## Feature Document Structure
 
+Filename: `<verb>-<object>.md` — imperative verb first, kebab-case, 2–4 words.
+Examples: `display-version.md`, `authenticate-user.md`, `export-metrics-csv.md`
+Title matches: `# Feature: <Verb> <Object>` in Title Case.
+
 ```markdown
-# Feature: <Name>
+# Feature: <Verb> <Object>
 
 ## User Stories
 - As a <role>, I want <goal> so that <benefit>
 
 ## Acceptance Criteria
 - `<uuid>`: <Short description>.
+  Source: <stakeholder | po>
+
   Given: ...
   When: ...
   Then: ...
-  Test strategy: unit | integration
 
 ## Notes
 <constraints, risks, out-of-scope items>
