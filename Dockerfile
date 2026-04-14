@@ -46,6 +46,6 @@ CMD ["python", "-m", "python_package_template.python_module_template"]
 
 # Labels
 LABEL maintainer="eol"
-LABEL version="2.0.20260411" 
-LABEL description="Python project template - simplified Docker setup"
+LABEL version="3.0.20260414"
+LABEL description="Python template with some awesome tools to quickstart any Python project"
 LABEL org.opencontainers.image.source="https://github.com/nullhack/python-project-template"
