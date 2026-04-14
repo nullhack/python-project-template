@@ -51,7 +51,7 @@ def test_version_called_should_log_correct_message(caplog) -> None:
     assert result == expected_version
 
 
-@pytest.mark.system
+@pytest.mark.integration
 @example(verbosity="DEBUG")
 @example(verbosity="INFO")
 @given(verbosity=st.sampled_from(["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]))
@@ -129,7 +129,7 @@ def test_main_with_invalid_verbosity_should_raise_value_error() -> None:
     # Test that calling main() with invalid verbosity raises ValueError
     # Use cast to bypass type checking for this intentionally invalid test
     with pytest.raises(ValueError, match=r"Invalid verbosity level") as exc_info:
-        main(cast(ValidVerbosity, "INVALID_LEVEL"))  # type: ignore[arg-type]
+        main(cast(ValidVerbosity, "INVALID_LEVEL"))
 
     # Verify the error message contains expected details
     error_message = str(exc_info.value)
