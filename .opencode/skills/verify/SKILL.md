@@ -21,7 +21,6 @@ After the developer signals Step 4 is complete. Do not start verification until 
 
 Read `docs/features/in-progress/<feature-name>.md`. Extract:
 - All UUIDs and their descriptions
-- The test strategy for each criterion (unit/integration)
 
 ### 2. Check Commit History
 
@@ -39,22 +38,22 @@ Verify:
 Run each command. Record the exact exit code and output summary.
 
 ```bash
-task lint
+uv run task lint
 ```
 Expected: exit 0, no issues. If ruff makes auto-fixes, that is a FAIL (developer should have run lint before handing off).
 
 ```bash
-task static-check
+uv run task static-check
 ```
 Expected: exit 0, `0 errors, 0 warnings` from pyright.
 
 ```bash
-task test
+uv run task test
 ```
 Expected: exit 0, all tests pass, coverage ≥ 100%.
 
 ```bash
-timeout 10s task run
+timeout 10s uv run task run
 ```
 Expected: exit 0 (app completes) or any non-124 exit. **Exit code 124 means the process was killed by timeout — the app hung or is an infinite loop. This is a FAIL.** For interactive/long-running apps, check that startup completes without error before the timeout.
 
@@ -64,10 +63,12 @@ Expected: exit 0 (app completes) or any non-124 exit. **Exit code 124 means the 
 
 For each acceptance criterion UUID in the feature doc:
 - Find the corresponding test function using `grep -r "<uuid>" tests/`
-- Verify the test function name follows `test_<condition>_should_<outcome>`
-- Verify the test docstring contains the UUID on the first line
+- Verify the test function name follows `test_<short_title>`
+- Verify the test docstring contains only the UUID on the first line (no description)
 
 Flag any UUID with no corresponding test as UNCOVERED.
+
+If you identify a missing behavior that has no acceptance criterion, load `skill extend-criteria` to determine whether it is a gap within scope (add criterion with `Source: reviewer`) or a new feature to escalate to the PO.
 
 ### 5. Code Review
 
@@ -103,7 +104,7 @@ Read the source files changed in this feature. Check:
 9. No getters/setters; use commands and queries
 
 **Tests**
-- Every test has UUID docstring: `<uuid>: <description>.` on the first line, blank line, then Given/When/Then
+- Every test has UUID docstring: `<uuid>` only on the first line, blank line, then Given/When/Then
 - Tests assert behavior, not structure (no `isinstance`, no `type()`, no internal attribute access)
 - `# Given`, `# When`, `# Then` comments in test body
 - No `pytest.skip`, no `pytest.mark.xfail` without explicit justification
@@ -123,15 +124,15 @@ Read the source files changed in this feature. Check:
 ### Commands
 | Command | Result | Notes |
 |---------|--------|-------|
-| task lint | PASS / FAIL | <details if fail> |
-| task static-check | PASS / FAIL | <errors if fail> |
-| task test | PASS / FAIL | <failures or coverage% if fail> |
-| timeout 10s task run | PASS / FAIL / TIMEOUT | <error or timeout if fail> |
+| uv run task lint | PASS / FAIL | <details if fail> |
+| uv run task static-check | PASS / FAIL | <errors if fail> |
+| uv run task test | PASS / FAIL | <failures or coverage% if fail> |
+| timeout 10s uv run task run | PASS / FAIL / TIMEOUT | <error or timeout if fail> |
 
 ### UUID Traceability
 | UUID | Description | Test | Status |
 |------|-------------|------|--------|
-| `<uuid>` | <description> | `tests/unit/<file>:<function>` | COVERED / NOT COVERED |
+| `<uuid>` | <description> | `tests/<file>:<function>` | COVERED / NOT COVERED |
 
 ### Code Review Findings
 - PASS: <aspect>
