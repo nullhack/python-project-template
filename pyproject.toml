@@ -22,7 +22,7 @@ Documentation = "https://github.com/nullhack/python-project-template/tree/main/d
 [project.optional-dependencies]
 dev = [
     "pdoc>=14.0",
-    "pytest>=8.3.5",
+    "pytest>=9.0.3",
     "pytest-cov>=6.1.1",
     "pytest-html>=4.1.1",
     "pytest-mock>=3.14.0",
