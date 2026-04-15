@@ -30,7 +30,7 @@ Never write production code before picking a specific failing test. Never refact
 2. Work outward: state machines, I/O, orchestration
 3. Follow the order of acceptance criteria in the feature doc
 
-## Architecture Section (do this first)
+## Architecture Section (do this first, then verify against AC)
 
 Before writing any production code, add `## Architecture` to `docs/features/in-progress/<name>.md`:
 
@@ -55,6 +55,8 @@ Alternatives considered: <what was rejected and why>
 ```
 
 If any build changes need PO approval, stop and ask before proceeding.
+
+**Architecture contradiction check**: After writing the Architecture section, compare each ADR against each AC. If any architectural decision contradicts or circumvents an acceptance criterion (e.g., "demo-first" vs. "when the user presses W"), flag it and resolve with the PO before writing any production code. This is not optional.
 
 ## Signature Design
 
@@ -137,6 +139,31 @@ uv run task test                                      # must all still pass
 4. **Type hints**: add/fix type annotations on all public functions and classes
 5. **Docstrings**: Google-style on all public functions and classes
 
+### Refactor Self-Check Gates
+
+After refactor, before committing, run through this table. Each row is a mandatory check:
+
+| If you see... | Then you must... | Before committing |
+|---|---|---|
+| Function > 20 lines | Extract helper | Verify line count |
+| Nesting > 2 levels | Extract to function | Verify max depth |
+| Bare `int`/`str` as domain concept | Wrap in value object | Verify no raw primitives in signatures |
+| > 4 positional parameters | Group into dataclass | Verify parameter count |
+| `list[X]` as domain collection | Wrap in collection class | Verify no bare lists |
+| No classes in domain code | Reconsider — are you writing procedural code? | Verify at least one domain class exists |
+
+### Design Pattern Decision Table
+
+Not "use patterns everywhere" — use when a pattern solves a structural problem you already have:
+
+| If your code has... | Consider... | Why |
+|---|---|---|
+| Multiple `if/elif` branches on type/state | State or Strategy pattern | Eliminates conditional complexity |
+| Constructor that does complex setup | Factory or Builder | Separates construction from use |
+| Multiple components that must work together | Facade | Single entry point reduces coupling |
+| External dependency (I/O, DB, network) | Repository/Adapter pattern | Enables testing via Protocol |
+| Event-driven flow | Observer or pub/sub | Decouples producers from consumers |
+
 > **Note**: `uv run task test` runs `--doctest-modules`, which executes code examples embedded in source docstrings. Keep `Examples:` blocks in Google-style docstrings valid and executable. If an example should not be run, mark it with `# doctest: +SKIP`.
 
 ```bash
@@ -166,3 +193,9 @@ timeout 10s uv run task run     # exit non-124; exit 124 = hung process = fix it
 ```
 
 All four must pass. Do not hand off broken work.
+
+**Manual verification**: After all four commands pass, run the app and manually verify it does what the AC says, not just what the tests check. If the feature involves user interaction, interact with it yourself.
+
+**Production-grade check**: Before handing off, answer honestly: if you change an input, does the output change accordingly? If any output is static regardless of input, the implementation is not complete — fix it before handing off. The reviewer will verify this by running the app and changing an input.
+
+**Developer pre-mortem** (write this before handing off to reviewer): In 2–3 sentences, answer: "If this feature shipped but was broken for the user, what would be the most likely reason?" Include this in the handoff message or as a `## Pre-mortem` subsection in the feature doc's Architecture section.

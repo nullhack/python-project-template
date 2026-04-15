@@ -87,6 +87,9 @@ python -c "import uuid; print(uuid.uuid4())"
 - `Source:` on the next line, followed by a blank line, then Given/When/Then
 - Use plain English, not technical jargon in Given/When/Then
 - "Then" must be a single observable, measurable outcome — no "and"
+- **Observable means observable by the end user, not by a test harness.** If the AC says "when the user presses W," a test that calls `update_player("W")` does not satisfy it. Either (a) the test must send input through the actual user-facing entry point, or (b) the AC must explicitly state the boundary ("when `update_player` receives 'W'") so the gap is visible.
+
+**Interaction model declaration**: If the feature involves user interaction (CLI input, web forms, API calls), the Notes section must declare the interaction model: what input the user provides and how. This prevents a hardcoded demo from silently substituting for real interaction.
 
 **Common mistakes to avoid**:
 - "Then: It works correctly" (not measurable)
@@ -104,9 +107,12 @@ Before committing:
 - [ ] Every criterion has a `Source:` field with one of the five valid values
 - [ ] Every criterion has Given/When/Then
 - [ ] Blank line between `Source:` and `Given:`
-- [ ] "Then" is a single, observable, measurable outcome
+- [ ] "Then" is a single, observable, measurable outcome — observable by the end user
 - [ ] No criterion tests implementation details
 - [ ] Out-of-scope items are explicitly listed in Notes
+- [ ] If the feature involves user interaction, the Notes section declares the interaction model
+
+**PO pre-mortem** (do this before committing): Imagine the developer builds exactly what the AC says, all automated tests pass, but the feature doesn't work for the user. What would be missing? Add any discoveries as additional acceptance criteria.
 
 ### 5. Commit and Notify Developer
 
