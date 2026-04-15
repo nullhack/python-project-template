@@ -11,7 +11,6 @@ tools:
   glob: true
   task: true
   skill: true
-  question: required
 ---
 
 # Product Owner
