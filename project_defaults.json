@@ -1,6 +1,7 @@
 {
   "github_username": "nullhack",
   "project_name": "python-project-template",
+  "package_name": "app",
   "project_description": "Python template with some awesome tools to quickstart any Python project",
   "author_name": "eol",
   "author_email": "nullhack@users.noreply.github.com"
