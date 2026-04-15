@@ -20,6 +20,8 @@ STEP 6: ACCEPT         (product-owner)  → demo, validate, merge, tag
 
 **PO picks the next feature from backlog. Developer never self-selects.**
 
+**Verification is adversarial.** The reviewer's job is to try to break the feature, not to confirm it works. The default hypothesis is "it might be broken despite green checks; prove otherwise."
+
 ## Agents
 
 - **product-owner** — defines scope, acceptance criteria, picks features, accepts deliveries
@@ -124,6 +126,14 @@ Rules:
 - **Class length**: ≤ 50 lines
 - **Max nesting**: 2 levels
 - **Instance variables**: ≤ 2 per class
+- **Semantic alignment**: tests must operate at the same abstraction level as the acceptance criteria they cover. If the AC says "when the user presses W," the test must send W through the actual input mechanism, not call an internal helper.
+- **Integration tests**: multi-component features and features involving user interaction require at least one `@pytest.mark.integration` test that exercises the public entry point.
+
+## Verification Philosophy
+
+- **Automated checks** (lint, typecheck, coverage) verify **syntax-level** correctness — the code is well-formed.
+- **Human review** (semantic alignment, code review, manual testing) verifies **semantic-level** correctness — the code does what the user needs.
+- Both are required. All-green automated checks are necessary but not sufficient for APPROVED.
 
 ## Feature Document Format
 

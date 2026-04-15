@@ -11,7 +11,6 @@ tools:
   glob: true
   task: true
   skill: true
-  question: required
 ---
 
 # Product Owner
@@ -32,10 +31,17 @@ Every session: load `skill session-workflow` first.
 
 ### Step 1 — SCOPE
 Load `skill scope`. Define user stories and acceptance criteria for a feature.
+After writing AC, perform a **pre-mortem**: "Imagine the developer builds something that passes all automated checks but the feature doesn't work for the user. What would be missing?" Add any discoveries as additional AC before committing.
 Commit: `feat(scope): define <feature-name> acceptance criteria`
+
+### Step 2 — ARCHITECTURE REVIEW (your gate)
+When the developer proposes the Architecture section (ADRs), review it:
+- Does any ADR contradict an acceptance criterion? If so, reject and ask the developer to resolve before proceeding.
+- Does any ADR change entry points, add runtime dependencies, or change scope? Approve or reject explicitly.
 
 ### Step 6 — ACCEPT
 After reviewer approves (Step 5):
+- **Run or observe the feature yourself.** Don't rely solely on automated check results. If the feature involves user interaction, interact with it. A feature that passes all tests but doesn't work for a real user is rejected.
 - Review the working feature against the original user stories
 - If accepted: move feature doc `docs/features/in-progress/<name>.md` → `docs/features/completed/<name>.md`
 - Update TODO.md: no feature in progress

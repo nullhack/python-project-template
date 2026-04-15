@@ -2,6 +2,26 @@
 
 All notable changes to this template will be documented in this file.
 
+## [v3.2.20260415] - Vigilant Mantis - 2026-04-15
+
+### Added
+- **Adversarial verification mandate**: Reviewer's default hypothesis is now "the code is broken despite green checks" — job is to find the failure mode, not confirm it works (#54)
+- **Production-grade gate**: New step 3 in verification — app must exit cleanly AND output must change when input changes; static output regardless of input = REJECTED (#54)
+- **UUID Drift bash check**: One-liner detects duplicate UUIDs across test functions; any duplicate = REJECTED with fix instructions (#54)
+- **docs/academic_research.md**: 15 cognitive and social science mechanisms with full citations grounding every workflow design decision (pre-mortem, implementation intentions, adversarial collaboration, elaborative encoding, and 11 more) (#54)
+- **Design pattern decision table**: Added to `developer.md` and `implementation/SKILL.md`; any detected anti-pattern = REJECTED (#54)
+- **Architecture contradiction check**: Developer must cross-check ADRs against ACs before writing production code (#54)
+- **PO pre-mortem**: Added at scope step and acceptance step (#54)
+- **Semantic alignment rule**: Tests must operate at same abstraction level as AC (#54)
+- **Integration test requirement**: Multi-component features require at least one integration test through the public entry point (#54)
+- **Verification Philosophy section**: Added to AGENTS.md — automated checks verify syntax-level correctness; human review verifies semantic-level correctness; both required (#54)
+
+### Changed
+- **Verification order**: Code review before automated commands; run app first as production-grade gate (#54)
+- **All review sections converted to tables**: Correctness, KISS, SOLID, ObjCal, Design Patterns, Tests, Versions/Build all have PASS/FAIL/Fix columns (#54)
+- **UUID Uniqueness rule**: If only Given varies it is a property — use Hypothesis `@given` + `@example`, not multiple test functions; if When/Then differs use `extend-criteria` (#54)
+- **Production-grade self-check in implementation**: Developer must verify output changes with input before handoff (#54)
+
 ## [v3.1.20260414] - Tidal Capybara - 2026-04-14
 
 ### Added

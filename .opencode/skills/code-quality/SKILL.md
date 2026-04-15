@@ -134,6 +134,31 @@ Required on all public functions and classes. Not required on private helpers (`
 
 If a function exceeds the limit, extract sub-functions. If a class exceeds the limit, split responsibilities.
 
+## Structural Quality Checks
+
+`lint`, `static-check`, and `test` verify **syntax-level** quality. They do NOT verify **design-level** quality (nesting depth, function length, value objects, design patterns). Both must pass.
+
+Run through this table during refactor and before handoff:
+
+| If you see... | Then you must... |
+|---|---|
+| Function > 20 lines | Extract helper |
+| Nesting > 2 levels | Extract to function |
+| Bare `int`/`str` as domain concept | Wrap in value object |
+| > 4 positional parameters | Group into dataclass |
+| `list[X]` as domain collection | Wrap in collection class |
+| No classes in domain code | Introduce domain classes |
+
+## Design Anti-Pattern Recognition
+
+| Code smell | Indicates | Fix |
+|---|---|---|
+| 15+ functions, 0 classes | Procedural code disguised as modules | Introduce domain classes |
+| 8+ parameters on a function | Missing abstraction | Group into dataclass/value object |
+| Type alias (`X = int`) instead of value object | Primitive obsession | Wrap in frozen dataclass |
+| 3+ nesting levels | Missing extraction | Extract to helper functions |
+| `get_x()` / `set_x()` pairs | Anemic domain model | Replace with commands and queries |
+
 ## Pre-Handoff Checklist
 
 - [ ] `task lint` exits 0, no auto-fixes needed

@@ -53,7 +53,8 @@ When a new feature is ready in `docs/features/backlog/`:
      Alternatives considered: <what you rejected and why>
      ```
    - Build changes that need PO approval: new runtime deps, new packages, changed entry points
-4. If build changes need PO approval, ask before proceeding. Tooling changes (coverage, lint rules, test config) are your autonomy.
+4. **Architecture contradiction check**: After writing the Architecture section, compare each ADR against each AC. If any architectural decision contradicts or circumvents an acceptance criterion, flag it and resolve with the PO before writing any production code.
+5. If build changes need PO approval, ask before proceeding. Tooling changes (coverage, lint rules, test config) are your autonomy.
 5. Update `pyproject.toml` and project structure as needed.
 6. Run `uv run task test` — must still pass.
 7. Commit: `feat(bootstrap): configure build for <feature-name>`
@@ -67,6 +68,7 @@ Load `skill implementation`. Make tests green one at a time.
 Commit after each test goes green: `feat(<feature-name>): implement <component>`
 Self-verify after each commit: run all four commands in the Self-Verification block below.
 If you discover a missing behavior during implementation, load `skill extend-criteria`.
+Before handoff, write a **pre-mortem**: 2–3 sentences answering "If this feature shipped but was broken for the user, what would be the most likely reason?" Include it in the handoff message or as a `## Pre-mortem` subsection in the feature doc's Architecture section.
 
 ### After reviewer approves (Step 5)
 Load `skill pr-management` and `skill git-release` as needed.
@@ -87,6 +89,15 @@ Load `skill pr-management` and `skill git-release` as needed.
    7. Keep all entities small (functions ≤20 lines, classes ≤50 lines)
    8. No more than 2 instance variables per class
    9. No getters/setters (tell, don't ask)
+6. **Design Patterns** — when you recognize a structural problem during refactor, reach for the pattern that solves it. Not preemptively (YAGNI applies). The trigger is the structural problem, not the pattern.
+
+   | Structural problem | Pattern to consider |
+   |---|---|
+   | Multiple if/elif on type or state | State or Strategy |
+   | Complex construction logic in `__init__` | Factory or Builder |
+   | Multiple components, callers must know each one | Facade |
+   | External dependency (I/O, DB, network) | Repository/Adapter via Protocol |
+   | Decoupled event-driven producers/consumers | Observer or pub/sub |
 
 ## Architecture Ownership
 
@@ -112,6 +123,8 @@ uv run task static-check        # must exit 0, 0 errors
 uv run task test                # must exit 0, all tests pass
 timeout 10s uv run task run     # must exit non-124; exit 124 = timeout (infinite loop) = fix it
 ```
+
+After all four commands pass, run the app and **manually verify** it does what the AC says, not just what the tests check. If the feature involves user interaction, interact with it yourself.
 
 Do not hand off broken work to the reviewer.
 
