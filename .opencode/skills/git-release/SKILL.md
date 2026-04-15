@@ -82,10 +82,13 @@ Add at the top:
 - description (#PR-number)
 ```
 
-### 5. Commit version bump
+### 5. Regenerate lockfile and commit version bump
+
+After updating `pyproject.toml`, regenerate the lockfile — CI runs `uv sync --locked` and will fail if it is stale:
 
 ```bash
-git add pyproject.toml <package>/__init__.py CHANGELOG.md
+uv lock
+git add pyproject.toml <package>/__init__.py CHANGELOG.md uv.lock
 git commit -m "chore(release): bump version to v{version} - {Adjective Animal}"
 ```
 
@@ -120,13 +123,34 @@ gh release create "v{version}" \
 **SHA**: \`${SHA}\`"
 ```
 
+### 7. If a hotfix commit follows the release tag
+
+If CI fails after the release (e.g. a stale lockfile) and a hotfix commit is pushed, reassign the tag and GitHub release to that commit:
+
+```bash
+# Delete the old tag locally and on remote
+git tag -d "v{version}"
+git push origin ":refs/tags/v{version}"
+
+# Recreate the tag on the hotfix commit
+git tag "v{version}" {hotfix-sha}
+git push origin "v{version}"
+
+# Update the GitHub release to point to the new tag
+gh release edit "v{version}" --target {hotfix-sha}
+```
+
+The release notes and title do not need to change — only the target commit moves.
+
 ## Quality Checklist
 
 - [ ] `task test` passes
 - [ ] `task lint` passes
 - [ ] `task static-check` passes
 - [ ] `pyproject.toml` version updated
+- [ ] `uv lock` run after version bump — lockfile must be up to date
 - [ ] `<package>/__version__` matches `pyproject.toml` version
 - [ ] CHANGELOG.md updated
 - [ ] Release name not used before
 - [ ] Release notes follow the template format
+- [ ] If a hotfix was pushed after the tag: tag reassigned to hotfix commit
