@@ -29,6 +29,7 @@ Ask: "Does this behavior fall within the intent of the current user stories?"
 | New observable behavior users did not ask for | Escalate to PO; do not add criterion unilaterally |
 | Post-merge regression (the feature was accepted and broke later) | Reopen feature doc; add criterion with `Source: bug` |
 | Behavior already present but criterion was never written | Add criterion with appropriate `Source:` |
+| **Architecture decision contradicts an acceptance criterion** | **Escalate to PO immediately. Do not proceed with implementation.** |
 
 When in doubt, ask the PO before adding.
 
