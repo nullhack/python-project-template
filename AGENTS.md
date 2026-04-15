@@ -207,10 +207,6 @@ Source: docs/features/in-progress/<name>.md
 <One actionable sentence>
 ```
 
-## Research Foundations
-
-The cognitive science and social science mechanisms behind this workflow's design are documented in `docs/academic_research.md` — pre-mortem, implementation intentions, adversarial collaboration, elaborative encoding, and 11 other mechanisms with full citations.
-
 ## Setup
 
 To initialize a new project from this template:
