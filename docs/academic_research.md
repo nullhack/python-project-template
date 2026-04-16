@@ -24,7 +24,7 @@ This document explains the cognitive and social-science mechanisms that justify 
 | **Source** | Gollwitzer, P. M. (1999). Implementation intentions: Strong effects of simple planning aids. *American Journal of Preventive Medicine*, 16(4), 257–276. |
 | **Core finding** | "If X then Y" plans are 2–3x more likely to execute than general intentions. |
 | **Mechanism** | If-then plans create automatic cue-response links in memory. The brain processes "if function > 20 lines then extract helper" as an action trigger, not a suggestion to consider. |
-| **Where used** | Refactor Self-Check Gates in `implementation/SKILL.md`, Structural Quality Checks in `code-quality/SKILL.md`. |
+| **Where used** | Refactor Self-Check Gates in `implementation/SKILL.md`, Code Quality checks in `verify/SKILL.md`. |
 
 ---
 
@@ -173,6 +173,63 @@ This document explains the cognitive and social-science mechanisms that justify 
 
 ---
 
+### 16. Cost of Change Curve (Shift Left)
+
+| | |
+|---|---|
+| **Source** | Boehm, B. W. (1981). *Software Engineering Economics*. Prentice-Hall. |
+| **Alternative** | Boehm, B., & Papaccio, P. N. (1988). Understanding and controlling software costs. *IEEE Transactions on Software Engineering*, 14(10), 1462–1477. |
+| **Core finding** | The cost to fix a defect multiplies by roughly 10x per SDLC phase: requirements (1x) → design (5x) → coding (10x) → testing (20x) → production (200x). A defect caught during requirements costs 200x less than the same defect found after release. |
+| **Mechanism** | Defects compound downstream: a wrong requirement becomes a wrong design, which becomes wrong code, which becomes wrong tests, all of which must be unwound. Catching errors at the source eliminates the entire cascade. This is the empirical foundation for "shift left" — investing earlier in quality always dominates fixing later. |
+| **Where used** | Justifies the multi-session PO elicitation model: every acceptance criterion clarified at scope prevents 10–200x rework downstream. Also justifies the adversarial pre-mortem at the end of each elicitation cycle, and the adversarial mandate in `verify/SKILL.md`. The entire 6-step pipeline is ordered to surface defects at the earliest (cheapest) phase. |
+
+---
+
+### 17. INVEST Criteria for User Stories
+
+| | |
+|---|---|
+| **Source** | Wake, B. (2003). *INVEST in Good Stories, and SMART Tasks*. XP123.com. |
+| **Alternative** | Cohn, M. (2004). *User Stories Applied: For Agile Software Development*. Addison-Wesley. |
+| **Core finding** | Stories that are Independent, Negotiable, Valuable, Estimable, Small, and Testable produce fewer downstream defects and smoother development cycles. Stories that fail INVEST — especially "Testable" and "Small" — are the leading cause of scope creep and unbounded iteration. |
+| **Mechanism** | INVEST serves as a quality gate before stories enter development. "Testable" forces the PO to express observable outcomes (directly enabling Given/When/Then). "Small" forces decomposition, which reduces cognitive load and makes estimation feasible. "Independent" prevents hidden ordering dependencies between stories. |
+| **Where used** | INVEST gate in Phase 3 of `scope/SKILL.md`. PO verifies every story against all 6 letters before committing. |
+
+---
+
+### 18. Example Mapping (Rules Layer)
+
+| | |
+|---|---|
+| **Source** | Wynne, M. (2015). *Introducing Example Mapping*. Cucumber Blog. https://cucumber.io/blog/bdd/example-mapping-introduction/ |
+| **Core finding** | Inserting a "rules" layer between stories and examples prevents redundant or contradictory acceptance criteria. A story with many rules needs splitting; a story with many open questions is not ready for development. |
+| **Mechanism** | Example Mapping uses four card types: Story (yellow), Rules (blue), Examples (green), Questions (red). The rules layer groups related examples under the business rule they illustrate. Without this layer, POs jump from story directly to examples and lose the reasoning that connects them. Red cards (unanswered questions) are a first-class signal to stop and investigate rather than assume. |
+| **Where used** | `## Rules` section in per-feature `discovery.md` (Phase 2). PO identifies business rules before writing Examples in Phase 4, making the reasoning behind Example clusters visible and reviewable. |
+
+---
+
+### 19. Declarative Gherkin
+
+| | |
+|---|---|
+| **Source** | Cucumber Team. (2024). *Better Gherkin*. Cucumber Documentation. https://cucumber.io/docs/bdd/better-gherkin/ |
+| **Core finding** | Declarative Gherkin ("When Bob logs in") produces specifications that survive UI changes. Imperative Gherkin ("When I click the Login button") couples specs to implementation details and breaks on every UI redesign. |
+| **Mechanism** | Declarative steps describe *what happens* at the business level. Imperative steps describe *how the user interacts with a specific UI*. The distinction maps to the abstraction level: declarative = behavior contract, imperative = interaction script. AI agents are especially prone to writing imperative Gherkin because they mirror literal steps. |
+| **Where used** | Declarative vs. imperative table in Phase 4 of `scope/SKILL.md`. PO is explicitly instructed to write behavior descriptions, not UI interaction scripts. |
+
+---
+
+### 20. MoSCoW Prioritization (Within-Story Triage)
+
+| | |
+|---|---|
+| **Source** | Clegg, D., & Barker, R. (1994). *Case Method Fast-Track: A RAD Approach*. Addison-Wesley (DSDM origin). |
+| **Core finding** | Classifying requirements as Must/Should/Could/Won't forces explicit negotiation about what is essential vs. desired. When applied *within* a single story (not just across a backlog), it reveals bloated stories that should be split. |
+| **Mechanism** | DSDM mandates that Musts cannot exceed 60% of total effort. At the story level: if a story has 12 Examples and only 3 are Musts, the remaining 9 can be deferred or split into a follow-up story. This prevents gold-plating and keeps stories small. |
+| **Where used** | MoSCoW triage in Phase 4 of `scope/SKILL.md`. PO applies Must/Should/Could when a story exceeds 5 Examples. |
+
+---
+
 ## Bibliography
 
 1. Cialdini, R. B. (2001). *Influence: The Psychology of Persuasion* (rev. ed.). HarperBusiness.
@@ -190,3 +247,10 @@ This document explains the cognitive and social-science mechanisms that justify 
 13. Google Testing Blog. (2013). Testing on the Toilet: Test Behavior, Not Implementation.
 14. Martin, R. C. (2017). First-Class Tests. *Clean Coder Blog*.
 15. MacIver, D. R. (2016). What is Property Based Testing? *Hypothesis*. https://hypothesis.works/articles/what-is-property-based-testing/
+16. Boehm, B. W. (1981). *Software Engineering Economics*. Prentice-Hall.
+17. Boehm, B., & Papaccio, P. N. (1988). Understanding and controlling software costs. *IEEE Transactions on Software Engineering*, 14(10), 1462–1477.
+18. Wake, B. (2003). INVEST in Good Stories, and SMART Tasks. *XP123.com*.
+19. Cohn, M. (2004). *User Stories Applied: For Agile Software Development*. Addison-Wesley.
+20. Wynne, M. (2015). Introducing Example Mapping. *Cucumber Blog*. https://cucumber.io/blog/bdd/example-mapping-introduction/
+21. Cucumber Team. (2024). Better Gherkin. *Cucumber Documentation*. https://cucumber.io/docs/bdd/better-gherkin/
+22. Clegg, D., & Barker, R. (1994). *Case Method Fast-Track: A RAD Approach*. Addison-Wesley.

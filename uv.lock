@@ -296,6 +296,18 @@ wheels = [
 ]
 
 [[package]]
+name = "gherkin-official"
+version = "39.0.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "typing-extensions" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/2f/cf/8c0f7ec0e041c12ab59fae0c01b95ac69113a2fecb45618780525f8ca5ee/gherkin_official-39.0.0.tar.gz", hash = "sha256:675b9c6c0c342b0ec44bddf927de923adbd79879277816ce96bf248533677060", size = 33683, upload-time = "2026-03-01T16:46:42.382Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/61/b3/743f97b16ef781283cde3c7b06a95b309a75ae2f4003a6611d35abc3c613/gherkin_official-39.0.0-py3-none-any.whl", hash = "sha256:1fd9b8709c00d946c0fd617a9834d4cb2af026213a2e8e7822fe24dd5064fe22", size = 38471, upload-time = "2026-03-01T16:46:43.308Z" },
+]
+
+[[package]]
 name = "ghp-import"
 version = "2.1.0"
 source = { registry = "https://pypi.org/simple" }
@@ -745,6 +757,7 @@ dev = [
 
 [package.dev-dependencies]
 dev = [
+    { name = "gherkin-official" },
     { name = "safety" },
 ]
 
@@ -765,7 +778,10 @@ requires-dist = [
 provides-extras = ["dev"]
 
 [package.metadata.requires-dev]
-dev = [{ name = "safety", specifier = ">=3.7.0" }]
+dev = [
+    { name = "gherkin-official", specifier = ">=39.0.0" },
+    { name = "safety", specifier = ">=3.7.0" },
+]
 
 [[package]]
 name = "regex"

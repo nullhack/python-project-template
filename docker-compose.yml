@@ -12,7 +12,7 @@ services:
     container_name: python-template-app
     volumes:
       # Hot reload: mount source code
-      - ./python_package_template:/app/python_package_template
+      - ./app:/app/app
       - ./tests:/app/tests
       - ./pyproject.toml:/app/pyproject.toml:ro
     ports:
@@ -23,7 +23,7 @@ services:
       - PYTHONPATH=/app
       - PYTHONUNBUFFERED=1
       - DEVELOPMENT=true
-    command: python -m python_package_template.python_module_template
+    command: python -m app
     restart: unless-stopped
 
   # =============================================================================
@@ -52,7 +52,7 @@ services:
       dockerfile: Dockerfile
     container_name: python-template-docs
     volumes:
-      - ./python_package_template:/app/python_package_template:ro
+      - ./app:/app/app:ro
       - ./pyproject.toml:/app/pyproject.toml:ro
     ports:
       - "8080:8080"
