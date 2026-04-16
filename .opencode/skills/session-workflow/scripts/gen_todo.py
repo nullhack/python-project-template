@@ -21,7 +21,7 @@ import sys
 from dataclasses import dataclass
 from pathlib import Path
 
-PROJECT_ROOT = Path(__file__).resolve().parents[5]
+PROJECT_ROOT = Path(__file__).resolve().parents[4]
 FEATURES_DIR = PROJECT_ROOT / "docs" / "features"
 TODO_PATH = PROJECT_ROOT / "TODO.md"
 

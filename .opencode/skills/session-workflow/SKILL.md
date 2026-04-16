@@ -99,7 +99,7 @@ Source: docs/features/in-progress/<name>/discovery.md
 
 ## Cycle State
 Test: `@id:<hex>` — <description>
-Phase: RED | GREEN | REFACTOR | REVIEWER(code-design) | COMMITTED
+Phase: RED | GREEN | REFACTOR | SELF-DECLARE | REVIEWER(code-design) | COMMITTED
 
 ## Progress
 - [x] `@id:<hex>`: <description> — reviewer(code-design) APPROVED
@@ -140,5 +140,5 @@ Run `gen-todo` at session start (after reading TODO.md) and at session end (befo
 3. Never leave uncommitted changes — commit as WIP if needed
 4. One step per session where possible; do not start Step N+1 in the same session as Step N
 5. The "Next" line must be actionable enough that a fresh AI can execute it without asking questions
-6. During Step 4, always update `## Cycle State` when transitioning between RED/GREEN/REFACTOR/REVIEWER phases
+6. During Step 4, always update `## Cycle State` when transitioning between RED/GREEN/REFACTOR/SELF-DECLARE/REVIEWER phases
 7. When a step completes, update TODO.md and commit **before** any further work

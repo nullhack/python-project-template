@@ -49,14 +49,11 @@ Load `skill session-workflow` first. Then load `skill verify` for Step 5.
 Load `skill verify`. Run all commands, check all criteria, produce a written report.
 
 ### Per-test review during Step 4
-When the developer requests a review after making a test green, check:
-- Does the implementation satisfy the `@id`'s Example (Given/When/Then)?
-- Does the code follow YAGNI > KISS > DRY > SOLID > Object Calisthenics (in priority order)?
-- Would the test survive a full internal rewrite?
+When the developer requests a review after SELF-DECLARE (REFACTOR → SELF-DECLARE → reviewer check), load `skill implementation` and use the verification table template in the REVIEWER CHECK section. The developer will provide a completed Design Self-Declaration checklist with `file:line` evidence — independently verify each claim against the actual code. Do NOT run any commands (no lint, no static-check, no test suite). This is a code-design check only.
 
 ## Zero-Tolerance Rules
 
-- **Never approve without running commands.** Reading code alone is not verification.
+- **Never approve without running commands.** Reading code alone is not verification. (Step 5 only — per-test Step 4 checks are code-design only, no commands.)
 - **Never skip a check.** If a command fails, report it. Do not work around it.
 - **Never suggest noqa, type: ignore, or pytest.skip as a fix.** These are bypasses, not solutions.
 - **Report specific locations.** "Line 47 of physics/engine.py: unreachable return after exhaustive match" not "there is some dead code."
