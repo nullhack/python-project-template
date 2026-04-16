@@ -1,7 +1,7 @@
 ---
 name: implementation
 description: Step 4 — Red-Green-Refactor cycle, one test at a time, with commit per green test
-version: "2.0"
+version: "2.1"
 author: developer
 audience: developer
 workflow: feature-lifecycle
@@ -15,7 +15,7 @@ Make the failing tests pass one at a time. Each green test gets its own commit a
 
 During Step 4, correctness priorities are (in order):
 
-1. **Design correctness** — YAGNI, KISS, DRY, SOLID, Object Calisthenics, appropriate design patterns
+1. **Design correctness** — YAGNI > KISS > DRY > SOLID > Object Calisthenics > appropriate design patterns
 2. **One test green** — the specific test under work passes, plus `test-fast` still passes
 3. **Reviewer code-design check** — reviewer verifies design + semantic alignment (no lint/pyright/coverage)
 4. **Commit** — only after reviewer APPROVED
@@ -34,6 +34,7 @@ Pick one failing test
   → REVIEWER CHECK: reviewer verifies code design + semantic alignment
   ─── WAIT for APPROVED ───
   → COMMIT (only after reviewer APPROVED)
+  → Update TODO.md: mark @id [x], update Cycle State to next test
   → pick next failing test
 ```
 
@@ -41,17 +42,25 @@ Pick one failing test
 
 Never write production code before picking a specific failing test. Never refactor while tests are red.
 
+**TODO.md Cycle State is mandatory.** Update `## Cycle State` at every phase transition (RED → GREEN → REFACTOR → REVIEWER → COMMITTED). If the Cycle State block is missing, add it before proceeding.
+
 ## Step 2 — Architecture (do this first)
 
-Before writing any production code, add `## Architecture` to `docs/features/in-progress/<name>/discovery.md`:
+**Prerequisites — verify before starting:**
+1. `docs/features/in-progress/` contains only `.gitkeep` (no feature folders). If another feature folder exists, **STOP** — another feature is already in progress.
+2. The feature's `discovery.md` has `Status: BASELINED`. If not, escalate to the PO — Step 1 is incomplete.
+3. At least one `.feature` file in the feature folder contains `Example:` blocks with `@id` tags. If not, escalate to PO — criteria have not been written.
+
+**Steps:**
 
 1. Move the feature folder from `backlog/` to `in-progress/`:
    ```bash
    mv docs/features/backlog/<name>/ docs/features/in-progress/<name>/
    ```
-2. Read both `docs/features/discovery.md` (project-level) and the feature's `discovery.md`
-3. Run a silent pre-mortem: design patterns, SOLID, DRY, KISS, Object Calisthenics
-4. Add the Architecture section:
+2. Update `TODO.md` Source path from `backlog/` to `in-progress/`.
+3. Read both `docs/features/discovery.md` (project-level) and the feature's `discovery.md`
+4. Run a silent pre-mortem: YAGNI, KISS, DRY, SOLID, Object Calisthenics, design patterns
+5. Add the Architecture section to `docs/features/in-progress/<name>/discovery.md`:
 
 ```markdown
 ## Architecture
@@ -70,11 +79,14 @@ Alternatives considered: <what was rejected and why>
 - New runtime dependency: <name> — reason: <why>
 ```
 
-5. **Architecture contradiction check**: Compare each ADR against each AC. If any architectural decision contradicts or circumvents an acceptance criterion, flag it and resolve with the PO before writing any production code.
-6. If a user story is not technically feasible, escalate to the PO.
-7. If any build changes need PO approval, stop and ask before proceeding.
+6. **Architecture contradiction check**: Compare each ADR against each AC. If any architectural decision contradicts or circumvents an acceptance criterion, flag it and resolve with the PO before writing any production code.
+7. **PO domain acknowledgement**: Share the Architecture section with the PO for domain model acknowledgement before Step 3 begins. A one-line response ("no contradictions") is sufficient.
+8. If a user story is not technically feasible, escalate to the PO.
+9. If any build changes need PO approval, stop and ask before proceeding.
 
 Commit: `feat(<feature-name>): add architecture`
+
+**After committing:** Run `uv run task gen-tests -- --check` to verify stub sync. If changes are shown, run `uv run task gen-tests` to apply them.
 
 ## Implementation Order
 
@@ -90,6 +102,12 @@ uv run pytest tests/features/<name>/<story>_test.py::test_<func> -v
 
 Expected: `FAILED` or `ERROR`. If it passes before you've written code, the test is wrong — fix it.
 
+Update `## Cycle State` in TODO.md:
+```
+Test: `@id:<hex>` — <description>
+Phase: RED
+```
+
 ## GREEN — Minimum Implementation
 
 Write the least code that makes **this one test** pass. "Green" means the specific test under work passes — not the full suite.
@@ -104,6 +122,8 @@ Do NOT apply during GREEN: DRY, SOLID, Object Calisthenics — those come in ref
 uv run pytest tests/features/<name>/<story>_test.py::test_<func> -v   # this test must PASS
 uv run task test-fast                                                   # no regressions
 ```
+
+Update `## Cycle State` Phase: `GREEN`
 
 ## REFACTOR — Apply Principles (in priority order)
 
@@ -146,6 +166,14 @@ Use when a pattern solves a structural problem you already have:
 | External dependency (I/O, DB, network) | Repository/Adapter pattern | Enables testing via Protocol |
 | Event-driven flow | Observer or pub/sub | Decouples producers from consumers |
 
+### Doctest Check
+
+If you added or modified a `Examples:` block in a Google-style docstring, verify it passes:
+
+```bash
+uv run pytest --doctest-modules <module_path>
+```
+
 > **Note**: `uv run task test` runs `--doctest-modules`. Keep `Examples:` blocks in Google-style docstrings valid and executable.
 
 ```bash
@@ -154,12 +182,19 @@ uv run task test-fast     # must still pass — the ONLY check during refactor
 
 Do NOT run `uv run task lint` or `uv run task static-check` during the cycle. Those are handoff-only checks (before Step 5).
 
+Update `## Cycle State` Phase: `REFACTOR`
+
 ## REVIEWER CHECK — Code Design Only
 
-After each test goes green + refactor, **STOP** and request a reviewer check. The reviewer loads the `verify` skill but is scoped to **code design only**:
+After each test goes green + refactor, **STOP** and request a reviewer check.
+
+**STOP — request a reviewer check of code design and semantic alignment.**
+**WAIT for APPROVED before committing.**
+
+The reviewer is scoped to **code design only** (not full Step 5):
 
 **What the reviewer checks (code-design scope)**:
-- **YAGNI, KISS, DRY, SOLID, Object Calisthenics** — are design principles followed in priority order?
+- **YAGNI > KISS > DRY > SOLID > Object Calisthenics** — are design principles followed in priority order?
 - **Appropriate design patterns** — is the code structure right for the problem?
 - **Semantic alignment** — does the test operate at the same abstraction level as the AC?
 - **No internal-state testing** — assertions on observable behavior, not private attributes
@@ -170,7 +205,26 @@ After each test goes green + refactor, **STOP** and request a reviewer check. Th
 - Coverage metrics
 - Full test suite
 
-The reviewer responds with **APPROVED** or **REJECTED** with specific issues. If REJECTED, fix the issues and request review again. This is a **hard gate** — do not commit until APPROVED.
+The reviewer responds using this template:
+
+```markdown
+## Code-Design Check — @id:<hex>
+
+Design principles: PASS/FAIL — <note>
+Semantic alignment: PASS/FAIL — <note>
+Decision: APPROVED / REJECTED
+```
+
+If REJECTED:
+- Mark the `@id` row as `[~]` in TODO.md (do not downgrade to `[ ]`)
+- Update `## Cycle State` Phase to `REVIEWER(code-design)`
+- Fix the specific issues raised
+- Do not commit
+- Request re-review after fix
+
+This is a **hard gate** — do not commit until APPROVED.
+
+Update `## Cycle State` Phase: `REVIEWER(code-design)`
 
 ## COMMIT (after reviewer approval)
 
@@ -178,6 +232,11 @@ The reviewer responds with **APPROVED** or **REJECTED** with specific issues. If
 git add -A
 git commit -m "feat(<feature-name>): implement <what this test covers>"
 ```
+
+Update TODO.md:
+- Mark the `@id` row `[x]` with ` — reviewer(code-design) APPROVED`
+- Update `## Cycle State` Phase to `COMMITTED`
+- Update `## Next` to the next failing test
 
 Then move to the next failing test.
 
@@ -218,16 +277,7 @@ class UserRepository(Protocol):
 
 ## Self-Verification Before Handoff
 
-After all tests are green, before telling the reviewer you are ready for full Step 5 review:
-
-```bash
-uv run task lint                # exit 0
-uv run task static-check        # exit 0, 0 errors
-uv run task test                # exit 0, all pass, coverage 100%
-timeout 10s uv run task run     # exit non-124; exit 124 = hung process = fix it
-```
-
-All four must pass. Do not hand off broken work.
+After all tests are green, load `skill code-quality` for the full pre-handoff verification procedure.
 
 **Manual verification**: Run the app and verify it does what the AC says, not just what the tests check.
 

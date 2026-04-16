@@ -1,7 +1,7 @@
 ---
 name: verify
 description: Step 5 — run all verification commands, review code quality, and produce a written report
-version: "2.0"
+version: "2.1"
 author: reviewer
 audience: reviewer
 workflow: feature-lifecycle
@@ -15,9 +15,18 @@ This skill guides the reviewer through Step 5: independent verification that the
 
 **Every PASS/FAIL cell must have evidence.** Empty evidence = UNCHECKED = REJECTED.
 
-## When to Use
+## Scope Guard — Step 4 vs. Step 5
 
-After the developer signals Step 4 is complete. Do not start verification until the developer has committed all work.
+If you are invoked for a **per-test code-design check during Step 4** (not a full Step 5 review):
+- Run **only sections 4a–4e** (YAGNI, KISS, DRY, SOLID, Object Calisthenics, Design Patterns) and the semantic alignment check.
+- Do **NOT** run any commands (no lint, no static-check, no test suite).
+- Respond using the compact template in `implementation/SKILL.md`.
+
+This full skill applies only when the developer signals Step 4 is complete and hands off for Step 5.
+
+## When to Use (Step 5)
+
+After the developer signals Step 4 is complete and all self-verification checks pass. Do not start verification until the developer has committed all work.
 
 ## Step-by-Step
 
@@ -55,7 +64,7 @@ Run before code review. If any row is FAIL, stop immediately with REJECTED.
 
 Read the source files changed in this feature. **Do this before running lint/static-check/test** — if code review finds a design problem, commands will need to re-run after the fix anyway.
 
-**If any check FAILs at any stage, STOP and send back to developer.** Do not accumulate issues — stop on first failure category.
+**Stop on first failure category — do not accumulate issues.** When a category FAILs, stop code review, write the report, and send REJECTED. In the report, mark all skipped sections as `NOT CHECKED (stopped at <category>)` — this is valid evidence of a deliberate stop, not an unchecked cell.
 
 #### 4a. Correctness — any FAIL → REJECTED
 
@@ -133,16 +142,21 @@ Read the source files changed in this feature. **Do this before running lint/sta
 ### 5. Run Verification Commands (in order, stop on first failure)
 
 ```bash
+uv run task gen-tests -- --orphans   # any output = FAIL
 uv run task lint
 uv run task static-check
 uv run task test
 ```
 
-Expected for each: exit 0, no errors. Record exact output on failure.
+Expected for each: exit 0, no output/errors. Record exact output on failure.
+
+If a command fails, stop and REJECT immediately. Do not run subsequent commands.
 
 ### 6. Interactive Verification
 
 If the feature involves user interaction: run the app, provide real input, verify the output changes in response. An app that produces the same output regardless of input is NOT verified.
+
+Record what input was given and what output was observed.
 
 ### 7. Write the Report
 
@@ -159,9 +173,11 @@ If the feature involves user interaction: run the app, provide real input, verif
 ### Commands
 | Command | Result | Notes |
 |---------|--------|-------|
+| uv run task gen-tests -- --orphans | PASS / FAIL | <orphans listed if fail> |
 | uv run task lint | PASS / FAIL | <details if fail> |
 | uv run task static-check | PASS / FAIL | <errors if fail> |
 | uv run task test | PASS / FAIL | <failures or coverage% if fail> |
+| Interactive run (if user interaction involved) | PASS / SKIP (no UI) / FAIL | <what was tested> |
 
 ### @id Traceability
 | @id | Example Title | Test | Status |
@@ -171,6 +187,7 @@ If the feature involves user interaction: run the app, provide real input, verif
 ### Code Review Findings
 - PASS: <aspect>
 - FAIL: `<file>:<line>` — <specific issue>
+- NOT CHECKED (stopped at <category>): <sections skipped>
 
 ### Gap Report (if any)
 - `<suggested Example text>` — reported to PO for decision
@@ -202,3 +219,4 @@ OR
 | Design pattern FAIL rows | 0 |
 | Duplicate `@id` in tests | 0 |
 | Empty evidence cells | 0 |
+| Orphaned tests | 0 |

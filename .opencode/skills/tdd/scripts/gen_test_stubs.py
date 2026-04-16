@@ -514,6 +514,32 @@ def _update_docstring(
     return text, actions
 
 
+def find_duplicate_ids() -> list[str]:
+    """Find @id hex values that appear in more than one .feature file.
+
+    Args:
+        None.
+
+    Returns:
+        List of warning strings describing each duplicate @id.
+    """
+    id_sources: dict[str, list[str]] = {}
+    for name, files in find_feature_folders().items():
+        for fpath, _stage in files:
+            parsed = parse_feature_file(fpath)
+            if not parsed:
+                continue
+            for ex in parsed.examples:
+                id_sources.setdefault(ex.id_hex, []).append(f"{name}/{fpath.name}")
+
+    warnings: list[str] = []
+    for id_hex, sources in sorted(id_sources.items()):
+        if len(sources) > 1:
+            locations = ", ".join(sources)
+            warnings.append(f"@id:{id_hex} appears in multiple features: {locations}")
+    return warnings
+
+
 def find_orphaned_tests() -> list[str]:
     """Find all test files with IDs that don't match any .feature file.
 
@@ -562,6 +588,10 @@ def main() -> int:
     if not features:
         print("No feature folders with .feature files found.")
         return 0
+
+    duplicates = find_duplicate_ids()
+    for warning in duplicates:
+        print(f"WARNING: {warning}")
 
     all_actions: list[str] = []
     for name, files in sorted(features.items()):

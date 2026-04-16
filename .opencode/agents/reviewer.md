@@ -51,7 +51,7 @@ Load `skill verify`. Run all commands, check all criteria, produce a written rep
 ### Per-test review during Step 4
 When the developer requests a review after making a test green, check:
 - Does the implementation satisfy the `@id`'s Example (Given/When/Then)?
-- Does the code follow SOLID, DRY, KISS, Object Calisthenics?
+- Does the code follow YAGNI > KISS > DRY > SOLID > Object Calisthenics (in priority order)?
 - Would the test survive a full internal rewrite?
 
 ## Zero-Tolerance Rules

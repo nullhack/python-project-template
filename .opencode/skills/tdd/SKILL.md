@@ -1,7 +1,7 @@
 ---
 name: tdd
 description: Step 3 — write failing tests mapped 1:1 to @id acceptance criteria with proper markers and docstrings
-version: "2.0"
+version: "2.1"
 author: developer
 audience: developer
 workflow: feature-lifecycle
@@ -13,20 +13,23 @@ Write tests before writing any production code. Every test must fail when first 
 
 ## Step 3 Workflow
 
-1. Run `uv run task gen-tests` to generate/sync test stubs from `.feature` files
-2. Run a silent pre-mortem: does the architecture fit? Is this the minimal solution?
-3. Write failing test bodies (real assertions, not `raise NotImplementedError`)
-4. Run `pytest` — confirm every new test fails with `ImportError` or `AttributeError`
-5. **Check with reviewer if approach is appropriate BEFORE implementing**
-6. Commit: `test(<feature-name>): write failing tests`
+1. Run `uv run task gen-tests -- --check` to preview what will be created/updated.
+2. Run `uv run task gen-tests` to generate/sync test stubs from `.feature` files.
+3. Run a silent pre-mortem: does the architecture fit? Is this the minimal solution?
+4. Write failing test bodies (real assertions, not `raise NotImplementedError`)
+5. Run `pytest` — confirm every new test fails with `ImportError` or `AttributeError`
+6. **STOP — request a reviewer check of test design and semantic alignment. WAIT for APPROVED before committing or implementing.**
+7. Commit: `test(<feature-name>): write failing tests`
 
 ## Test Stub Generation
 
 ```bash
-uv run task gen-tests              # sync all features
-uv run task gen-tests -- --check   # dry run — report what would change
+uv run task gen-tests -- --check   # dry run — review what would change
+uv run task gen-tests              # apply: sync all features
 uv run task gen-tests -- --orphans # list orphaned tests
 ```
+
+Always run `--check` first to review planned changes before applying them.
 
 The script reads `.feature` files from `docs/features/{backlog,in-progress,completed}/` and creates/updates test files in `tests/features/<feature-name>/`.
 

@@ -219,7 +219,7 @@ uv run task doc-serve
 
 During Step 4 (Implementation), correctness priorities are:
 
-1. **Design correctness** — YAGNI, KISS, DRY, SOLID, Object Calisthenics, appropriate design patterns
+1. **Design correctness** — YAGNI > KISS > DRY > SOLID > Object Calisthenics > appropriate design patterns
 2. **One test green** — the specific test under work passes, plus `test-fast` still passes
 3. **Reviewer code-design check** — reviewer verifies design + semantic alignment (no lint/pyright/coverage)
 4. **Commit** — only after reviewer APPROVED

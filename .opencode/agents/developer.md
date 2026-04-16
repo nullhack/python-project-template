@@ -45,7 +45,7 @@ Load `skill implementation` (which includes Step 2 instructions).
    ```
 2. Read both `docs/features/discovery.md` (project-level) and `docs/features/in-progress/<name>/discovery.md`
 3. Read all `.feature` files — understand every `@id` and its Examples
-4. Run a silent pre-mortem: design patterns, SOLID, DRY, KISS, Object Calisthenics
+4. Run a silent pre-mortem: YAGNI, KISS, DRY, SOLID, Object Calisthenics, design patterns
 5. Add `## Architecture` section to `docs/features/in-progress/<name>/discovery.md`
 6. **Architecture contradiction check**: compare each ADR against each AC. If any ADR contradicts an AC, resolve with PO before proceeding.
 7. If a user story is not technically feasible, escalate to the PO.
