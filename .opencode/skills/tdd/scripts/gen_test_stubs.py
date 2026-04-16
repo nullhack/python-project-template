@@ -548,7 +548,7 @@ def find_orphaned_tests() -> list[str]:
     """
     all_feature_ids: set[str] = set()
     features = find_feature_folders()
-    for name, files in features.items():
+    for _name, files in features.items():
         for fpath, _stage in files:
             parsed = parse_feature_file(fpath)
             if parsed:
@@ -563,6 +563,53 @@ def find_orphaned_tests() -> list[str]:
             if tid not in all_feature_ids:
                 orphans.append(f"{test_file}: @id:{tid}")
     return orphans
+
+
+def _sync_all_features(
+    features: dict[str, list[tuple[Path, str]]], *, check_only: bool
+) -> int:
+    """Sync test stubs for all feature folders.
+
+    Args:
+        features: Mapping of feature name to list of (fpath, stage) tuples.
+        check_only: If True, report actions without writing files.
+
+    Returns:
+        Exit code: 0 = success, 1 = changes needed in check mode.
+    """
+    duplicates = find_duplicate_ids()
+    for warning in duplicates:
+        print(f"WARNING: {warning}")
+
+    all_actions: list[str] = []
+    for name, files in sorted(features.items()):
+        feature_slug = slugify(name)
+        for fpath, stage in files:
+            parsed = parse_feature_file(fpath)
+            if not parsed:
+                print(f"SKIP {fpath} — no Feature: line found")
+                continue
+            story_slug = slugify(parsed.story_slug)
+            test_file = TESTS_DIR / name / f"{story_slug}_test.py"
+            actions = sync_test_file(
+                feature_slug,
+                story_slug,
+                parsed.examples,
+                test_file,
+                stage,
+                check_only=check_only,
+            )
+            all_actions.extend(actions)
+
+    if all_actions:
+        mode = "Would" if check_only else "Did"
+        print(f"{mode} perform {len(all_actions)} action(s):")
+        for a in all_actions:
+            print(f"  {a}")
+        return 1 if check_only else 0
+
+    print("All test stubs are in sync.")
+    return 0
 
 
 def main() -> int:
@@ -589,40 +636,7 @@ def main() -> int:
         print("No feature folders with .feature files found.")
         return 0
 
-    duplicates = find_duplicate_ids()
-    for warning in duplicates:
-        print(f"WARNING: {warning}")
-
-    all_actions: list[str] = []
-    for name, files in sorted(features.items()):
-        feature_slug = slugify(name)
-        for fpath, stage in files:
-            parsed = parse_feature_file(fpath)
-            if not parsed:
-                print(f"SKIP {fpath} — no Feature: line found")
-                continue
-            story_slug = slugify(parsed.story_slug)
-            test_dir = TESTS_DIR / name
-            test_file = test_dir / f"{story_slug}_test.py"
-            actions = sync_test_file(
-                feature_slug,
-                story_slug,
-                parsed.examples,
-                test_file,
-                stage,
-                check_only=check_only,
-            )
-            all_actions.extend(actions)
-
-    if all_actions:
-        mode = "Would" if check_only else "Did"
-        print(f"{mode} perform {len(all_actions)} action(s):")
-        for a in all_actions:
-            print(f"  {a}")
-        return 1 if check_only else 0
-
-    print("All test stubs are in sync.")
-    return 0
+    return _sync_all_features(features, check_only=check_only)
 
 
 if __name__ == "__main__":

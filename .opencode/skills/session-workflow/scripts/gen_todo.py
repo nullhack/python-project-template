@@ -166,7 +166,7 @@ def build_progress_lines(
     lines = []
     for c in criteria:
         status = existing.get(c.id_hex, " ")
-        label = c.title if c.title else "(no title)"
+        label = c.title or "(no title)"
         suffix = " — DEPRECATED" if c.deprecated else ""
         lines.append(f"- [{status}] `@id:{c.id_hex}`: {label}{suffix}")
     return lines
@@ -219,7 +219,8 @@ def build_empty_todo() -> str:
             "# Current Work",
             "",
             "No feature in progress.",
-            "Next: PO picks feature from docs/features/backlog/ and moves it to docs/features/in-progress/.",
+            "Next: PO picks feature from docs/features/backlog/ and moves it to"
+            " docs/features/in-progress/.",
             "",
         ]
     )
@@ -251,10 +252,69 @@ def _extract_next_action(todo_text: str) -> str:
     """
     lines = todo_text.splitlines()
     for i, line in enumerate(lines):
-        if line.strip() == "## Next":
-            if i + 1 < len(lines) and lines[i + 1].strip():
-                return lines[i + 1].strip()
+        if line.strip() == "## Next" and i + 1 < len(lines) and lines[i + 1].strip():
+            return lines[i + 1].strip()
     return "<fill in next action>"
+
+
+def _sync_no_feature(*, check_only: bool) -> int:
+    """Handle sync when no feature is in progress.
+
+    Args:
+        check_only: If True, report changes without writing.
+
+    Returns:
+        Exit code: 0 = in sync or wrote successfully, 1 = changes needed (check mode).
+    """
+    new_content = build_empty_todo()
+    existing = TODO_PATH.read_text(encoding="utf-8") if TODO_PATH.exists() else ""
+    if existing.strip() == new_content.strip():
+        print("TODO.md is in sync.")
+        return 0
+    if check_only:
+        print("TODO.md would be updated: no feature in progress format.")
+        return 1
+    TODO_PATH.write_text(new_content, encoding="utf-8")
+    print("TODO.md updated: no feature in progress.")
+    return 0
+
+
+def _write_or_report(
+    new_content: str,
+    new_ids: set[str],
+    criteria: list[Criterion],
+    *,
+    check_only: bool,
+) -> int:
+    """Write updated TODO.md or report what would change.
+
+    Args:
+        new_content: The new TODO.md content to write.
+        new_ids: Set of @id hex values that are new (not in existing TODO.md).
+        criteria: All criteria from .feature files.
+        check_only: If True, report changes without writing.
+
+    Returns:
+        Exit code: 0 = wrote successfully, 1 = changes needed (check mode).
+    """
+    if check_only:
+        if new_ids:
+            print(f"TODO.md would add {len(new_ids)} new @id row(s):")
+            for c in criteria:
+                if c.id_hex in new_ids:
+                    print(f"  [ ] @id:{c.id_hex}: {c.title}")
+        else:
+            print("TODO.md header or structure would be updated.")
+        return 1
+    TODO_PATH.write_text(new_content, encoding="utf-8")
+    if new_ids:
+        print(f"TODO.md updated: added {len(new_ids)} new @id row(s).")
+        for c in criteria:
+            if c.id_hex in new_ids:
+                print(f"  [ ] @id:{c.id_hex}: {c.title}")
+    else:
+        print("TODO.md updated.")
+    return 0
 
 
 def sync_todo(*, check_only: bool = False) -> int:
@@ -269,17 +329,7 @@ def sync_todo(*, check_only: bool = False) -> int:
     result = find_in_progress_feature()
 
     if result is None:
-        new_content = build_empty_todo()
-        existing = TODO_PATH.read_text(encoding="utf-8") if TODO_PATH.exists() else ""
-        if existing.strip() == new_content.strip():
-            print("TODO.md is in sync.")
-            return 0
-        if check_only:
-            print("TODO.md would be updated: no feature in progress format.")
-            return 1
-        TODO_PATH.write_text(new_content, encoding="utf-8")
-        print("TODO.md updated: no feature in progress.")
-        return 0
+        return _sync_no_feature(check_only=check_only)
 
     feature_name, feature_path = result
     criteria = extract_criteria(feature_path)
@@ -287,7 +337,6 @@ def sync_todo(*, check_only: bool = False) -> int:
     existing_text = TODO_PATH.read_text(encoding="utf-8") if TODO_PATH.exists() else ""
     existing_progress = read_existing_progress(existing_text)
 
-    # Preserve existing header fields if present; otherwise use defaults
     step = (
         _extract_header_field(existing_text, "Step") or "? (unknown — update manually)"
     )
@@ -304,32 +353,13 @@ def sync_todo(*, check_only: bool = False) -> int:
     )
 
     existing_ids = set(existing_progress.keys())
-    feature_ids = {c.id_hex for c in criteria}
-    new_ids = feature_ids - existing_ids
+    new_ids = {c.id_hex for c in criteria} - existing_ids
 
     if existing_text.strip() == new_content.strip():
         print("TODO.md is in sync.")
         return 0
 
-    if check_only:
-        if new_ids:
-            print(f"TODO.md would add {len(new_ids)} new @id row(s):")
-            for c in criteria:
-                if c.id_hex in new_ids:
-                    print(f"  [ ] @id:{c.id_hex}: {c.title}")
-        else:
-            print("TODO.md header or structure would be updated.")
-        return 1
-
-    TODO_PATH.write_text(new_content, encoding="utf-8")
-    if new_ids:
-        print(f"TODO.md updated: added {len(new_ids)} new @id row(s).")
-        for c in criteria:
-            if c.id_hex in new_ids:
-                print(f"  [ ] @id:{c.id_hex}: {c.title}")
-    else:
-        print("TODO.md updated.")
-    return 0
+    return _write_or_report(new_content, new_ids, criteria, check_only=check_only)
 
 
 def main() -> int:

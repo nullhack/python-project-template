@@ -84,43 +84,27 @@ Replace all occurrences of:
 - `python-project-template` → `<project_name>`
 - `eol` → `<author_name>` (only on the author credit line)
 
-### 3d. Create `<package_name>/__main__.py` and remove `main.py`
+### 3d. Rename the package in `<package_name>/__main__.py`
 
-Read `main.py`, then write `<package_name>/__main__.py` with identical content except replace:
+In `<package_name>/__main__.py`, replace:
 
-- `from app.version import version` → `from <package_name>.version import version`
+- `logging.getLogger(__name__)` remains unchanged (uses `__name__`, no substitution needed)
 
-Then delete `main.py`:
+No other substitutions are needed in `__main__.py` — it has no hard-coded package references.
 
-```bash
-rm main.py
-```
+### 3e. Update test files referencing the package
 
-### 3e. Update `<package_name>/version.py`
+Find all test files (`tests/**/*_test.py`) containing `from app` and replace:
 
-- `logging.getLogger("app")` → `logging.getLogger("<package_name>")`
+- `from app.__main__ import` → `from <package_name>.__main__ import`
 
-### 3f. Update test files referencing the package
-
-Find all test files (`tests/**/*_test.py`) containing `from app`, `from main`, `patch("main.`, or `logging.getLogger("app")` and replace:
-
-- `from app import version as m` → `from <package_name> import version as m`
-- `from main import` → `from <package_name>.__main__ import`
-- `patch("main.` → `patch("<package_name>.__main__.`
-- `logging.getLogger("app")` → `logging.getLogger("<package_name>")`
-
-Currently this is `tests/version_test.py` (legacy flat layout).
-
-After applying all substitutions, verify no stale references remain:
+After applying substitutions, verify no stale references remain:
 
 ```bash
-grep -rn "getLogger(\"app\")" tests/
 grep -rn "from app" tests/
-grep -rn "from main" tests/
-grep -rn "patch(\"main\." tests/
 ```
 
-All four commands must return no output before proceeding to Step 3g.
+The command must return no output before proceeding to Step 3f.
 
 ### 3g. Update `.github/workflows/ci.yml`
 
@@ -151,15 +135,11 @@ All four commands must return no output before proceeding to Step 3g.
 
 - `Copyright (c) 2026, eol` → `Copyright (c) 2026, <author_name>`
 
-### 3m. Update `docs/features/completed/display-version.md`
-
-- `` `app/version.py` `` → `` `<package_name>/version.py` ``
-
-### 3n. Update `project_defaults.json`
+### 3m. Update `project_defaults.json`
 
 Replace all 6 values with what the user provided. This is always the last file changed.
 
-### 3o. Set git remote
+### 3n. Set git remote
 
 ```bash
 git remote set-url origin git@github.com:<github_username>/<project_name>.git

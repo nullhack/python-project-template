@@ -1,40 +1,23 @@
 """Entry point for running the application as a module."""
 
 import logging
-from typing import Literal
 
 import fire
 
-from app.version import version
-
 logger = logging.getLogger(__name__)
 
-LOGGER_LEVELS = {
-    "DEBUG": logging.DEBUG,
-    "INFO": logging.INFO,
-    "WARNING": logging.WARNING,
-    "ERROR": logging.ERROR,
-    "CRITICAL": logging.CRITICAL,
-}
 
-ValidVerbosity = Literal["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]
+def main(verbosity: str = "INFO") -> None:
+    """Run the application.
 
-
-def main(verbosity: ValidVerbosity = "INFO") -> None:
-    """Run with --verbosity=LEVEL (DEBUG, INFO, WARNING, ERROR, CRITICAL)."""
-    # Validate verbosity at runtime
-    verbosity_upper = verbosity.upper()
-    if verbosity_upper not in LOGGER_LEVELS:
-        valid_levels = ", ".join(LOGGER_LEVELS.keys())
-        raise ValueError(
-            f"Invalid verbosity level '{verbosity}'. Valid options: {valid_levels}"
-        )
-
+    Args:
+        verbosity: Log level (DEBUG, INFO, WARNING, ERROR, CRITICAL).
+    """
     logging.basicConfig(
-        level=LOGGER_LEVELS[verbosity_upper],
+        level=getattr(logging, verbosity.upper(), logging.INFO),
         format="%(levelname)s - %(name)s: %(message)s",
     )
-    version()
+    logger.info("Ready.")
 
 
 if __name__ == "__main__":
