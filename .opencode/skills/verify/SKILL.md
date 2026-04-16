@@ -129,7 +129,6 @@ Read the source files changed in this feature. **Do this before running lint/sta
 | Every `@id` has a mapped test | Match `@id` tags in `.feature` files to test functions | All mapped | Missing test | Write the missing test |
 | No `@id` used by two functions | Check for duplicate `@id` hex in test function names | None | Duplicate found | Consolidate into Hypothesis `@given` + `@example` or escalate to PO |
 | Function naming | Test names match `test_<rule_slug>_<8char_hex>` | All match | Mismatch | Rename function |
-| All `tests/unit/` tests use `@given` | Read every test in `tests/unit/`; check for `@given` decorator | All have `@given` | Any test lacks `@given` | Rewrite as a Hypothesis property test |
 | All Hypothesis tests have `@pytest.mark.slow` | Read every `@given`-decorated test for the `@slow` marker | All present | Any missing | Add `@pytest.mark.slow` |
 
 #### 4g. Code Quality — any FAIL → REJECTED
@@ -225,5 +224,4 @@ OR
 | Duplicate `@id` in tests | 0 |
 | Empty evidence cells | 0 |
 | Orphaned tests | 0 |
-| Plain tests without `@given` in `tests/unit/` | 0 |
 | Hypothesis tests missing `@pytest.mark.slow` | 0 |

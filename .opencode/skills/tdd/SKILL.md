@@ -105,21 +105,21 @@ The correct test asserts on the return value. The wrong test breaks if you renam
 
 Tests in `tests/features/` are generated from `@id` criteria — use plain pytest there.
 
-Tests in `tests/unit/` cover gaps not represented by any acceptance criterion. **Every test in `tests/unit/` must be a Hypothesis property test.** No plain `assert` tests without `@given` are permitted in `tests/unit/`.
+Tests in `tests/unit/` cover gaps not represented by any acceptance criterion. Any test style is valid — plain `assert` or Hypothesis `@given`. Use Hypothesis when the test covers a **property** that holds across many inputs (mathematical invariants, parsing contracts, value object constraints). Use plain pytest for specific behaviors or single edge cases discovered during refactoring.
 
 | Situation | Location | Tool |
 |---|---|---|
 | Deterministic scenario from a `.feature` `@id` | `tests/features/` | Plain pytest (generated) |
-| Pure function needing many input combinations | `tests/unit/` | Hypothesis `@given` |
+| Property holding across many input values | `tests/unit/` | Hypothesis `@given` |
+| Specific behavior or single edge case | `tests/unit/` | Plain pytest |
 | Stateful system with sequences of operations | `tests/unit/` | Hypothesis stateful testing |
 
 **Never use Hypothesis for**: I/O, side effects, network calls, database writes.
 
 ### `tests/unit/` Rules
 
-- `@given(...)` is **required** on every test — no exceptions
-- `@pytest.mark.slow` is **mandatory** on every Hypothesis test
-- `@example(...)` is optional but encouraged for known corner cases
+- `@pytest.mark.slow` is **mandatory** on every `@given`-decorated test (Hypothesis is genuinely slow)
+- `@example(...)` is optional but encouraged when using `@given` to document known corner cases
 - `@pytest.mark.unit` or `@pytest.mark.integration` still required (one each)
 
 ## Markers (4 total)
@@ -147,11 +147,11 @@ When in doubt, start with `unit`. Upgrade to `integration` if the implementation
 
 ## Hypothesis Tests
 
-Required decorator order for every `tests/unit/` test:
+When using `@given` in `tests/unit/`, the required decorator order is:
 
 ```python
 @pytest.mark.unit        # required: exactly one of unit or integration
-@pytest.mark.slow        # required: mandatory on all Hypothesis tests
+@pytest.mark.slow        # required: mandatory on all @given tests
 @given(x=st.floats(min_value=-100, max_value=100, allow_nan=False))
 @example(x=0.0)          # optional: document known corner cases
 @settings(max_examples=200)
@@ -166,7 +166,7 @@ def test_wall_bounce_c4d5e6f7(x: float) -> None:
     assert result >= 0
 ```
 
-A test missing `@given` or `@pytest.mark.slow` in `tests/unit/` is a FAIL at Step 5 review.
+A `@given`-decorated test missing `@pytest.mark.slow` is a FAIL at Step 5 review.
 
 ### Meaningful vs. Tautological Property Tests
 

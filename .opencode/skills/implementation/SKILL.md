@@ -309,7 +309,7 @@ If during implementation you discover a behavior not covered by existing accepta
 - Note the gap in TODO.md under `## Next`
 - The PO will decide whether to add a new Example to the `.feature` file
 
-Extra tests in `tests/unit/` are allowed freely (coverage, edge cases, etc.) — these do not need `@id` traceability. **Every test in `tests/unit/` must be a Hypothesis property test: `@given` is required, `@pytest.mark.slow` is mandatory, plain `assert` tests without `@given` are forbidden.**
+Extra tests in `tests/unit/` are allowed freely (coverage, edge cases, etc.) — these do not need `@id` traceability. Use Hypothesis (`@given`) for properties that hold across many inputs; use plain pytest for specific behaviors or single edge cases. `@pytest.mark.slow` is mandatory on every `@given`-decorated test.
 
 ## Signature Design
 
