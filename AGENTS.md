@@ -5,9 +5,9 @@ A Python template to quickstart any project with a production-ready workflow, qu
 ## Workflow Overview
 
 Features flow through 6 steps with a WIP limit of 1 feature at a time. The filesystem enforces WIP:
-- `docs/features/backlog/<feature-name>/` — features waiting to be worked on
-- `docs/features/in-progress/<feature-name>/` — exactly one feature being built right now
-- `docs/features/completed/<feature-name>/` — accepted and shipped features
+- `docs/features/backlog/<feature-name>.feature` — features waiting to be worked on
+- `docs/features/in-progress/<feature-name>.feature` — exactly one feature being built right now
+- `docs/features/completed/<feature-name>.feature` — accepted and shipped features
 
 ```
 STEP 1: SCOPE          (product-owner)  → discovery + Gherkin stories + criteria
@@ -55,19 +55,19 @@ STEP 6: ACCEPT         (product-owner)  → demo, validate, move folder to compl
 ## Step 1 — SCOPE (4 Phases)
 
 ### Phase 1 — Project Discovery (once per project)
-PO creates `docs/features/discovery.md`. Asks stakeholder 7 standard questions (Who/What/Why/When/Success/Failure/Out-of-scope). Silent pre-mortem generates follow-up questions. All questions presented at once. Autonomous baseline when all questions are answered. PO identifies feature list and creates `backlog/<name>/discovery.md` per feature.
+PO creates `docs/features/discovery.md`. Asks stakeholder 7 standard questions (Who/What/Why/When/Success/Failure/Out-of-scope). Silent pre-mortem generates follow-up questions. All questions presented at once. Autonomous baseline when all questions are answered. PO identifies feature list and creates one `backlog/<feature-name>.feature` file per feature (discovery section only).
 
 ### Phase 2 — Feature Discovery (per feature)
-PO derives targeted questions from feature entities: extract nouns/verbs from project discovery, populate the Entities table, then generate questions from gaps, ambiguities, and boundary conditions. Silent pre-mortem before the first interview round. Present all questions to the stakeholder at once; iterate with follow-up rounds (pre-mortem after each) until stakeholder says "baseline" to freeze discovery.
+PO derives targeted questions from feature entities: extract nouns/verbs from project discovery, populate the Entities table in the feature file description, then generate questions from gaps, ambiguities, and boundary conditions. Silent pre-mortem before the first interview round. Present all questions to the stakeholder at once; iterate with follow-up rounds (pre-mortem after each) until stakeholder says "baseline" to freeze discovery.
 
 ### Phase 3 — Stories (PO alone)
-One `.feature` file per user story. `Feature:` block with user story header only — no `Example:` blocks yet. Commit: `feat(stories): write user stories for <name>`
+One `Rule:` block per user story within the feature's `.feature` file. Each `Rule:` has the user story header (`As a / I want / So that`) as its description — no `Example:` blocks yet. Commit: `feat(stories): write user stories for <name>`
 
 ### Phase 4 — Criteria (PO alone)
-Silent pre-mortem per story. Write `Example:` blocks with `@id:<8-char-hex>` tags. Each Example must be observably distinct; if a single `.feature` file spans multiple concerns, split into separate `.feature` files (a feature folder can contain multiple `.feature` files). Commit: `feat(criteria): write acceptance criteria for <name>`
+Silent pre-mortem per Rule. Write `Example:` blocks with `@id:<8-char-hex>` tags under each `Rule:`. Each Example must be observably distinct. If a single feature spans **>2 distinct concerns** OR has **>8 candidate Examples**, split into separate `.feature` files in `backlog/` before writing Rules. Commit: `feat(criteria): write acceptance criteria for <name>`
 
 ### Feature Decomposition Threshold
-Before moving to Phase 3, check: does this feature span **>2 distinct concerns** OR have **>8 candidate Examples**? If yes, split into separate features in `backlog/` before writing stories. Each feature should address a single cohesive concern.
+Before moving to Phase 3, check: does this feature span **>2 distinct concerns** OR have **>8 candidate Examples**? If yes, split into separate `.feature` files in `backlog/` before writing Rules. Each feature file should address a single cohesive concern.
 
 **Baseline is frozen**: no `.feature` changes after criteria are written. Change = `@deprecated` tag + new Example.
 
@@ -76,40 +76,70 @@ Before moving to Phase 3, check: does this feature span **>2 distinct concerns**
 ```
 docs/features/
   discovery.md                        ← project-level (Status + Questions only)
-  backlog/<feature-name>/
-    discovery.md                      ← Status + Entities + Rules + Constraints + Questions
-    <story-slug>.feature              ← one per user story (Gherkin)
-  in-progress/<feature-name>/         ← whole folder moves here at Step 2
-  completed/<feature-name>/           ← whole folder moves here at Step 6
+  backlog/<feature-name>.feature      ← one per feature; discovery + Rules + Examples
+  in-progress/<feature-name>.feature  ← file moves here at Step 2
+  completed/<feature-name>.feature    ← file moves here at Step 6
 
 tests/
   features/<feature-name>/
-    <story-slug>_test.py              ← one per .feature, stubs from gen-tests
+    <rule-slug>_test.py               ← one per Rule: block, stubs from gen-tests
   unit/
-    <anything>_test.py                ← developer-authored extras
+    <anything>_test.py                ← developer-authored extras (Hypothesis only)
 ```
+
+Every test in `tests/unit/` **must** be a Hypothesis property test:
+- `@given(...)` is required — no plain `assert` tests without `@given`
+- `@pytest.mark.slow` is mandatory on every Hypothesis test
+- `@example(...)` is optional but encouraged for known corner cases
 
 ## Gherkin Format
 
 ```gherkin
 Feature: Bounce physics
-  As a game engine
-  I want balls to bounce off walls
-  So that gameplay feels physical
 
-  @id:a3f2b1c4
-  Example: Ball bounces off top wall
-    Given a ball moving upward reaches y=0
-    When the physics engine processes the next frame
-    Then the ball velocity y-component becomes positive
+  Discovery:
 
-  @deprecated @id:b5c6d7e8
-  Example: Old behavior no longer needed
-    Given ...
-    When ...
-    Then ...
+  Status: BASELINED (2026-01-10)
+
+  Entities:
+  | Type | Name | Candidate Class/Method | In Scope |
+  |------|------|----------------------|----------|
+  | Noun | Ball | Ball | Yes |
+  | Verb | Bounce | Ball.bounce() | Yes |
+
+  Rules (Business):
+  - Ball velocity reverses on wall contact
+
+  Constraints:
+  - Physics runs at 60fps
+
+  Questions:
+  | ID | Question | Answer | Status |
+  |----|----------|--------|--------|
+  | Q1 | Does gravity apply? | No, constant velocity | ANSWERED |
+
+  All questions answered. Discovery frozen.
+
+  Rule: Wall bounce
+    As a game engine
+    I want balls to bounce off walls
+    So that gameplay feels physical
+
+    @id:a3f2b1c4
+    Example: Ball bounces off top wall
+      Given a ball moving upward reaches y=0
+      When the physics engine processes the next frame
+      Then the ball velocity y-component becomes positive
+
+    @deprecated @id:b5c6d7e8
+    Example: Old behavior no longer needed
+      Given ...
+      When ...
+      Then ...
 ```
 
+- Each feature is a **single `.feature` file**; user stories are `Rule:` blocks within it
+- The feature description (free text before the first `Rule:`) contains all discovery content: Status, Entities, Rules (business), Constraints, Questions, and later Architecture
 - `@id:<8-char-hex>` — generated with `uv run task gen-id`
 - `@deprecated` — marks superseded criteria; `gen-tests` adds `@pytest.mark.deprecated` to the mapped test
 - `Example:` keyword (not `Scenario:`)
@@ -132,20 +162,20 @@ uv run task gen-tests -- --orphans # list orphaned tests
 ### Test File Layout
 
 ```
-tests/features/<feature-name>/<story-slug>_test.py
+tests/features/<feature-name>/<rule-slug>_test.py
 ```
 
 ### Function Naming
 
 ```python
-def test_<feature_slug>_<8char_hex>() -> None:
+def test_<rule_slug>_<8char_hex>() -> None:
 ```
 
 ### Docstring Format (mandatory)
 
 ```python
 @pytest.mark.unit
-def test_bounce_physics_a3f2b1c4() -> None:
+def test_wall_bounce_a3f2b1c4() -> None:
     """
     Given: A ball moving upward reaches y=0
     When: The physics engine processes the next frame
@@ -262,7 +292,7 @@ Every session: load `skill session-workflow`. Read `TODO.md` first, update it at
 
 Feature: <name>
 Step: <1-6> (<step name>)
-Source: docs/features/in-progress/<name>/discovery.md
+Source: docs/features/in-progress/<name>.feature
 
 ## Progress
 - [x] `<@id:hex>`: <description>          ← done

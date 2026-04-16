@@ -16,7 +16,7 @@ Every session starts by reading state. Every session ends by writing state. This
 1. Read `TODO.md` — find current feature, current step, and the "Next" line.
    - If `TODO.md` does not exist, run `uv run task gen-todo` to create it, then read the result.
 2. If a feature is active, read:
-   - `docs/features/in-progress/<name>/discovery.md` — feature discovery
+   - `docs/features/in-progress/<name>.feature` — feature file (discovery + architecture + Rules + Examples)
    - `docs/features/discovery.md` — project-level discovery (for context)
 3. Run `git status` — understand what is committed vs. what is not
 4. Confirm scope: you are working on exactly one step of one feature
@@ -56,7 +56,7 @@ When a step completes within a session:
 
 Feature: <name>
 Step: <1-6> (<step name>)
-Source: docs/features/in-progress/<name>/discovery.md
+Source: docs/features/in-progress/<name>.feature
 
 ## Progress
 - [x] `@id:<hex>`: <description>
@@ -68,9 +68,9 @@ Source: docs/features/in-progress/<name>/discovery.md
 ```
 
 **Source path by step:**
-- Step 1: `Source: docs/features/backlog/<name>/discovery.md`
-- Steps 2–5: `Source: docs/features/in-progress/<name>/discovery.md`
-- Step 6: `Source: docs/features/completed/<name>/discovery.md`
+- Step 1: `Source: docs/features/backlog/<name>.feature`
+- Steps 2–5: `Source: docs/features/in-progress/<name>.feature`
+- Step 6: `Source: docs/features/completed/<name>.feature`
 
 Status markers:
 - `[ ]` — not started
@@ -90,16 +90,41 @@ Next: PO picks feature from docs/features/backlog/ and moves it to docs/features
 
 During Step 4 (Implementation), TODO.md **must** include a `## Cycle State` block to track Red-Green-Refactor-Review progress. This block is **mandatory** — missing it means the cycle is unverifiable.
 
+When `Phase: SELF-DECLARE` or later, a `## Self-Declaration` block is also **mandatory**. The reviewer reads it directly from TODO.md. A missing or incomplete self-declaration (unchecked boxes, missing `file:line`) = automatic REJECTED.
+
 ```markdown
 # Current Work
 
 Feature: <name>
 Step: 4 (implement)
-Source: docs/features/in-progress/<name>/discovery.md
+Source: docs/features/in-progress/<name>.feature
 
 ## Cycle State
 Test: `@id:<hex>` — <description>
 Phase: RED | GREEN | REFACTOR | SELF-DECLARE | REVIEWER(code-design) | COMMITTED
+
+## Self-Declaration (@id:<hex>)
+- [x] YAGNI-1: No abstractions beyond current AC — `file:line`
+- [x] YAGNI-2: No speculative parameters or flags for hypothetical future use — `file:line`
+- [x] KISS-1: Every function has one job, describable in one sentence without "and" — `file:line`
+- [x] KISS-2: No unnecessary indirection, wrapper layers, or complexity — `file:line`
+- [x] DRY-1: No logic block duplicated across two or more locations — `file:line`
+- [x] DRY-2: Every shared concept extracted to exactly one place — `file:line`
+- [x] SOLID-S: Each class/function has one reason to change — `file:line`
+- [x] SOLID-O: New behavior added by extension, no existing class body edited — N/A
+- [x] SOLID-L: Every subtype fully substitutable — N/A
+- [x] SOLID-I: No Protocol/ABC forces unused method implementations — N/A
+- [x] SOLID-D: Domain classes depend on Protocols, not I/O imports — `file:line`
+- [x] OC-1: Max one indent level per method; inner blocks extracted to named helpers — deepest: `file:line`
+- [x] OC-2: No `else` after `return`; happy path is flat — `file:line` or N/A
+- [x] OC-3: No bare primitives in public signatures; each wrapped in a named type — `file:line` or N/A
+- [x] OC-4: No bare collections as domain values; each wrapped in a named collection class — `file:line` or N/A
+- [x] OC-5: No `a.b.c()` chains; each dot step assigned to a named local — `file:line` or N/A
+- [x] OC-6: No abbreviations; every name is a full word readable without context — `file:line` or N/A
+- [x] OC-7: Every function ≤ 20 lines, every class ≤ 50 lines — longest: `file:line`
+- [x] OC-8: Every class has ≤ 2 `self.x` in `__init__`; value object extracted if needed — `file:line` per class
+- [x] OC-9: No `get_x()`/`set_x()` pairs; commands and queries only — `file:line` or N/A
+- [x] Semantic: test abstraction matches AC abstraction — `file:line`
 
 ## Progress
 - [x] `@id:<hex>`: <description> — reviewer(code-design) APPROVED
@@ -142,3 +167,4 @@ Run `gen-todo` at session start (after reading TODO.md) and at session end (befo
 5. The "Next" line must be actionable enough that a fresh AI can execute it without asking questions
 6. During Step 4, always update `## Cycle State` when transitioning between RED/GREEN/REFACTOR/SELF-DECLARE/REVIEWER phases
 7. When a step completes, update TODO.md and commit **before** any further work
+8. During Step 4, write the `## Self-Declaration (@id:<hex>)` block into TODO.md at SELF-DECLARE phase — every checkbox must be checked with a `file:line` or `N/A` before requesting reviewer(code-design)

@@ -57,36 +57,36 @@ Never write production code before picking a specific failing test. Never refact
 If `packages` is missing or the directory does not exist, stop and resolve with the stakeholder before writing any code.
 
 **Prerequisites — verify before starting:**
-1. `docs/features/in-progress/` contains only `.gitkeep` (no feature folders). If another feature folder exists, **STOP** — another feature is already in progress.
-2. The feature's `discovery.md` has `Status: BASELINED`. If not, escalate to the PO — Step 1 is incomplete.
-3. At least one `.feature` file in the feature folder contains `Example:` blocks with `@id` tags. If not, escalate to PO — criteria have not been written.
+1. `docs/features/in-progress/` contains only `.gitkeep` (no `.feature` files). If another `.feature` file exists, **STOP** — another feature is already in progress.
+2. The feature file's discovery section has `Status: BASELINED`. If not, escalate to the PO — Step 1 is incomplete.
+3. The feature file contains `Rule:` blocks with `Example:` blocks and `@id` tags. If not, escalate to PO — criteria have not been written.
 
 **Steps:**
 
-1. Move the feature folder from `backlog/` to `in-progress/`:
+1. Move the feature file from `backlog/` to `in-progress/`:
    ```bash
-   mv docs/features/backlog/<name>/ docs/features/in-progress/<name>/
+   mv docs/features/backlog/<name>.feature docs/features/in-progress/<name>.feature
    ```
 2. Update `TODO.md` Source path from `backlog/` to `in-progress/`.
-3. Read both `docs/features/discovery.md` (project-level) and the feature's `discovery.md`
+3. Read both `docs/features/discovery.md` (project-level) and the feature file's discovery section
 4. Run a silent pre-mortem: YAGNI, KISS, DRY, SOLID, Object Calisthenics, design patterns
-5. Add the Architecture section to `docs/features/in-progress/<name>/discovery.md`:
+5. Add the Architecture section to `docs/features/in-progress/<name>.feature` (append to the feature description, before the first `Rule:`):
 
-```markdown
-## Architecture
+```gherkin
+  Architecture:
 
-### Module Structure
-- `<package>/domain/entity.py` — data classes and value objects
-- `<package>/domain/service.py` — business logic
+  ### Module Structure
+  - `<package>/domain/entity.py` — data classes and value objects
+  - `<package>/domain/service.py` — business logic
 
-### Key Decisions
-ADR-001: <title>
-Decision: <what>
-Reason: <why in one sentence>
-Alternatives considered: <what was rejected and why>
+  ### Key Decisions
+  ADR-001: <title>
+  Decision: <what>
+  Reason: <why in one sentence>
+  Alternatives considered: <what was rejected and why>
 
-### Build Changes (needs PO approval: yes/no)
-- New runtime dependency: <name> — reason: <why>
+  ### Build Changes (needs PO approval: yes/no)
+  - New runtime dependency: <name> — reason: <why>
 ```
 
 6. **Architecture contradiction check**: Compare each ADR against each AC. If any architectural decision contradicts or circumvents an acceptance criterion, flag it and resolve with the PO before writing any production code.
@@ -140,14 +140,18 @@ Update `## Cycle State` Phase: `GREEN`
 1. **DRY**: extract duplication
 2. **SOLID**: split classes that have grown beyond one responsibility
 3. **Object Calisthenics** (enforce all 9 rules):
-   1. One level of indentation per method — extract inner blocks to helpers
+   1. One level of indentation per method — extract inner blocks to named helpers
    2. No `else` after `return` — return early, flatten the happy path
    3. Wrap all primitives — `EmailAddress(str)` not raw `str` for domain concepts
    4. First-class collections — wrap `list[User]` in a `UserList` class
    5. One dot per line — `user.address` then `address.city`, never `user.address.city`
    6. No abbreviations — `calculate` not `calc`, `manager` not `mgr`
    7. Small entities — functions ≤ 20 lines, classes ≤ 50 lines
-   8. ≤ 2 instance variables — extract to value objects or split the class
+   8. ≤ 2 instance variables — if a class has 3+ `self.x` in `__init__`, group related
+      fields into a new named value object (Rule 3) or collection class (Rule 4). The fix
+      must produce a **new named class** — hardcoding constants, inlining literals,
+      using class-level variables, or moving fields to a parent class are all invalid
+      workarounds and remain FAIL.
    9. No getters/setters — use commands (`activate()`) and queries (`is_active()`)
 4. **Type hints**: add/fix type annotations on all public functions and classes
 5. **Docstrings**: Google-style on all public functions and classes
@@ -185,6 +189,7 @@ After refactor, before moving to self-declaration:
 | Bare `int`/`str` as domain concept | Wrap in value object | Verify no raw primitives in signatures |
 | > 4 positional parameters | Group into dataclass | Verify parameter count |
 | `list[X]` as domain collection | Wrap in collection class | Verify no bare lists |
+| Class with 3+ `self.x` in `__init__` | Group related fields into a new named value object (OC-3) or collection class (OC-4) — **not** a dict, tuple, class variable, constant, or parent class | Count `self.` assignments again; each fix must produce a new named class |
 
 ```bash
 uv run task test-fast     # must still pass — the ONLY check during refactor
@@ -196,52 +201,49 @@ Update `## Cycle State` Phase: `REFACTOR`
 
 ### Design Self-Declaration
 
-After refactor is complete and `test-fast` passes, complete this checklist before requesting the reviewer check. Include the filled-in checklist in your reviewer check request — this is the structured audit target the reviewer will verify against the actual code.
+After refactor is complete and `test-fast` passes, write the self-declaration **into `TODO.md`** under a `## Self-Declaration` block (replacing any prior one), then request the reviewer check. The reviewer will read `TODO.md` directly — do not paste the checklist into a separate message.
 
-*For each item: check the box and cite `file:line` evidence, or explain why the rule does not apply to the code changed in this cycle.*
+**Write this block into `TODO.md` now, filling in every item before requesting review:**
 
-#### YAGNI
-- [ ] No abstractions added beyond what the current acceptance criteria require
-- [ ] No speculative parameters, flags, or extension points for hypothetical future use
+```markdown
+## Self-Declaration (@id:<hex>)
+- [ ] YAGNI-1: No abstractions beyond current AC — `file:line`
+- [ ] YAGNI-2: No speculative parameters or flags for hypothetical future use — `file:line`
+- [ ] KISS-1: Every function has one job, describable in one sentence without "and" — `file:line`
+- [ ] KISS-2: No unnecessary indirection, wrapper layers, or complexity — `file:line`
+- [ ] DRY-1: No logic block duplicated across two or more locations — `file:line`
+- [ ] DRY-2: Every shared concept extracted to exactly one place — `file:line`
+- [ ] SOLID-S: Each class/function has one reason to change — `file:line`
+- [ ] SOLID-O: New behavior added by extension, no existing class body edited — `file:line` or N/A
+- [ ] SOLID-L: Every subtype fully substitutable; no narrowed contract or surprise raise — `file:line` or N/A
+- [ ] SOLID-I: No Protocol/ABC forces an implementor to leave a method as `...` or raise — `file:line` or N/A
+- [ ] SOLID-D: Domain classes depend on Protocols, not on I/O or framework imports directly — `file:line`
+- [ ] OC-1: Max one indent level per method; inner blocks extracted to named helpers — deepest: `file:line`
+- [ ] OC-2: No `else` after `return`; all branches return early and the happy path is flat — `file:line` or N/A
+- [ ] OC-3: No bare `int`/`str`/`float` as domain concepts in public signatures; each wrapped in a named type — `file:line` or N/A
+- [ ] OC-4: No bare `list[X]`/`set[X]` as domain values; each wrapped in a named collection class — `file:line` or N/A
+- [ ] OC-5: No `a.b.c()` chains; each dot navigation step assigned to a named local — `file:line` or N/A
+- [ ] OC-6: No abbreviations anywhere; every name is a full word readable without context — `file:line` or N/A
+- [ ] OC-7: Every function ≤ 20 lines, every class ≤ 50 lines — longest: `file:line`
+- [ ] OC-8: Every class has ≤ 2 `self.x` in `__init__`; if > 2 before this cycle, name the new value object extracted and cite `file:line` per class
+- [ ] OC-9: No `get_x()`/`set_x()` pairs; state changes via commands, queries return values — `file:line` or N/A
+- [ ] Semantic: test Given/When/Then operates at the same abstraction level as the AC — `file:line`
+```
 
-#### KISS
-- [ ] Every function can be described in one sentence without "and"
-- [ ] No unnecessary indirection, wrapper layers, or complexity
-
-#### DRY
-- [ ] No logic duplicated across functions or classes
-- [ ] Shared concepts extracted into a single reusable location
-
-#### SOLID
-- [ ] **S** — each class/function has exactly one reason to change (`file:line`)
-- [ ] **O** — new behavior added via extension, not by editing existing class bodies
-- [ ] **L** — subtypes fully substitutable; no subtype narrows a contract or raises where base does not
-- [ ] **I** — no Protocol/ABC forces unused method implementations
-- [ ] **D** — domain classes import from abstractions (Protocols), not from I/O or framework layers directly
-
-#### Object Calisthenics
-- [ ] Rule 1 — one indent level per method (`file:line` of deepest nesting)
-- [ ] Rule 2 — no `else` after `return`; early returns only
-- [ ] Rule 3 — primitives wrapped: no bare `int`/`str` as domain concepts in public signatures
-- [ ] Rule 4 — collections wrapped: no bare `list[X]` as domain values
-- [ ] Rule 5 — one dot per line: no `a.b.c()` chains
-- [ ] Rule 6 — no abbreviations in names
-- [ ] Rule 7 — functions ≤ 20 lines, classes ≤ 50 lines (cite longest: `file:line`)
-- [ ] Rule 8 — ≤ 2 instance variables per class (cite any with 2: `file:line`)
-- [ ] Rule 9 — no getters/setters; tell-don't-ask (`get_x()`/`set_x()` = FAIL)
+*For every item: check the box AND cite `file:line` evidence, or write `N/A` with a one-line reason. An unchecked box or missing evidence is an automatic REJECTED.*
 
 Update `## Cycle State` Phase: `SELF-DECLARE`
 
 ## REVIEWER CHECK — Code Design Only
 
-After each test goes green + refactor + self-declaration, **STOP** and request a reviewer check. Include the filled-in Design Self-Declaration checklist in your request.
+After each test goes green + refactor + self-declaration, **STOP** and request a reviewer check. The reviewer will read the `## Self-Declaration` block from `TODO.md` directly — point them to it.
 
 **STOP — request a reviewer check of code design and semantic alignment.**
 **WAIT for APPROVED before committing.**
 
 The reviewer is scoped to **code design only** (not full Step 5):
 
-**What the reviewer receives**: The developer's completed Design Self-Declaration with `file:line` evidence for each rule.
+**What the reviewer receives**: The developer's completed `## Self-Declaration` block in `TODO.md`, with `file:line` evidence for each rule.
 
 **What the reviewer does**: Independently inspects the actual code for each rule the developer claimed compliant. The self-declaration is an audit target — the reviewer verifies claims, not just reads them.
 
@@ -307,7 +309,7 @@ If during implementation you discover a behavior not covered by existing accepta
 - Note the gap in TODO.md under `## Next`
 - The PO will decide whether to add a new Example to the `.feature` file
 
-Extra tests in `tests/unit/` are allowed freely (coverage, edge cases, etc.) — these do not need `@id` traceability.
+Extra tests in `tests/unit/` are allowed freely (coverage, edge cases, etc.) — these do not need `@id` traceability. **Every test in `tests/unit/` must be a Hypothesis property test: `@given` is required, `@pytest.mark.slow` is mandatory, plain `assert` tests without `@given` are forbidden.**
 
 ## Signature Design
 

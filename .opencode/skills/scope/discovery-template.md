@@ -1,16 +1,17 @@
-# Discovery: <feature-name>
+Feature: <feature-name>
 
-## State
-Status: ELICITING
+  Discovery:
 
-## Entities
-| Type | Name | Candidate Class/Method | In Scope |
-|------|------|----------------------|----------|
+  Status: ELICITING
 
-## Rules
+  Entities:
+  | Type | Name | Candidate Class/Method | In Scope |
+  |------|------|----------------------|----------|
 
-## Constraints
+  Rules (Business):
 
-## Questions
-| ID | Question | Answer | Status |
-|----|----------|--------|--------|
+  Constraints:
+
+  Questions:
+  | ID | Question | Answer | Status |
+  |----|----------|--------|--------|
