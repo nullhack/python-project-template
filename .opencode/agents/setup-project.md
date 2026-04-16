@@ -84,9 +84,17 @@ Replace all occurrences of:
 - `python-project-template` → `<project_name>`
 - `eol` → `<author_name>` (only on the author credit line)
 
-### 3d. Update `main.py`
+### 3d. Create `<package_name>/__main__.py` and remove `main.py`
+
+Read `main.py`, then write `<package_name>/__main__.py` with identical content except replace:
 
 - `from app.version import version` → `from <package_name>.version import version`
+
+Then delete `main.py`:
+
+```bash
+rm main.py
+```
 
 ### 3e. Update `<package_name>/version.py`
 
@@ -94,12 +102,25 @@ Replace all occurrences of:
 
 ### 3f. Update test files referencing the package
 
-Find all test files (`tests/**/*_test.py`) containing `from app` or `logging.getLogger("app")` and replace:
+Find all test files (`tests/**/*_test.py`) containing `from app`, `from main`, `patch("main.`, or `logging.getLogger("app")` and replace:
 
 - `from app import version as m` → `from <package_name> import version as m`
+- `from main import` → `from <package_name>.__main__ import`
+- `patch("main.` → `patch("<package_name>.__main__.`
 - `logging.getLogger("app")` → `logging.getLogger("<package_name>")`
 
 Currently this is `tests/version_test.py` (legacy flat layout).
+
+After applying all substitutions, verify no stale references remain:
+
+```bash
+grep -rn "getLogger(\"app\")" tests/
+grep -rn "from app" tests/
+grep -rn "from main" tests/
+grep -rn "patch(\"main\." tests/
+```
+
+All four commands must return no output before proceeding to Step 3g.
 
 ### 3g. Update `.github/workflows/ci.yml`
 
@@ -147,11 +168,10 @@ git remote set-url origin git@github.com:<github_username>/<project_name>.git
 ## Step 4 — Smoke Test
 
 ```bash
-uv sync --all-extras
-timeout 10s uv run task run
+uv sync --all-extras && uv run task test-fast
 ```
 
-Both must succeed. If `uv run task run` fails and the failure is caused by a variable substitution that was missed (e.g. an import still referencing `app` instead of `<package_name>`), apply the same substitution pattern to fix it. If the failure has any other cause, report the error and stop — do not attempt to fix it.
+Both must succeed. If `uv run task test-fast` fails and the failure is caused by a variable substitution that was missed (e.g. an import still referencing `app` instead of `<package_name>`), apply the same substitution pattern to fix it. If the failure has any other cause, report the error and stop — do not attempt to fix it.
 
 ## Step 5 — Done
 

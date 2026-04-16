@@ -1,4 +1,4 @@
-"""Test main file."""
+"""Entry point for running the application as a module."""
 
 import logging
 from typing import Literal

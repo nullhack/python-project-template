@@ -12,7 +12,7 @@ from hypothesis import example, given
 from hypothesis import strategies as st
 
 from app import version as m
-from main import ValidVerbosity, main
+from app.__main__ import ValidVerbosity, main
 
 
 @pytest.mark.unit
@@ -82,7 +82,7 @@ def test_version_appears_in_logs_at_debug_and_info(
         logger.setLevel(kwargs.get("level", logging.INFO))
 
     # When
-    with patch("main.logging.basicConfig", side_effect=mock_basic_config):
+    with patch("app.__main__.logging.basicConfig", side_effect=mock_basic_config):
         main(cast(ValidVerbosity, verbosity))
     # Then
     log_output = log_stream.getvalue()
@@ -121,7 +121,7 @@ def test_version_absent_from_logs_at_warning_and_above(
         logger.setLevel(kwargs.get("level", logging.INFO))
 
     # When
-    with patch("main.logging.basicConfig", side_effect=mock_basic_config):
+    with patch("app.__main__.logging.basicConfig", side_effect=mock_basic_config):
         main(cast(ValidVerbosity, verbosity))
     # Then
     log_output = log_stream.getvalue()
