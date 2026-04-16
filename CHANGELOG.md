@@ -2,6 +2,27 @@
 
 All notable changes to this template will be documented in this file.
 
+## [v4.1.20260416] - Recursive Acinonyx - 2026-04-16
+
+### Added
+- **Single `.feature` file per feature**: Each feature is now one `.feature` file with `Rule:` blocks for user stories and `Example:` blocks for ACs — discovery content embedded in the feature description free text; replaces the folder-per-feature structure
+- **Rule-scoped test files**: `gen_test_stubs.py` rewritten to parse `Rule:` blocks; each Rule maps to one test file (`<rule-slug>_test.py`); function naming is now `test_<rule_slug>_<id_hex>()`
+- **Hypothesis-only `tests/unit/`**: Every test in `tests/unit/` must use `@given`; `@pytest.mark.slow` is mandatory on all Hypothesis tests; plain `assert` tests without `@given` are forbidden
+- **Mandatory `## Self-Declaration` in TODO.md**: Developer writes the 21-item checklist into a `## Self-Declaration (@id:<hex>)` block in `TODO.md` at `SELF-DECLARE` phase before requesting reviewer check (Rule 8 in session-workflow)
+
+### Changed
+- **`gen_test_stubs.py`**: Scans `docs/features/{backlog,in-progress,completed}/*.feature` directly (not subfolders); generates one test file per `Rule:` block
+- **`gen_todo.py`**: `find_in_progress_feature()` now finds `.feature` files directly in `in-progress/`; source path is `docs/features/in-progress/<name>.feature`
+- **`skills/tdd/SKILL.md`**: Test Tool Decision table updated to separate `tests/features/` (plain pytest, generated) from `tests/unit/` (Hypothesis only); `tests/unit/` rules section added
+- **`skills/implementation/SKILL.md`**: Unit test rule tightened — `@given` required, `@pytest.mark.slow` mandatory, plain tests forbidden
+- **`skills/verify/SKILL.md`**: Two new rows in section 4f: `@given` check and `@slow` check; two new rows in Standards Summary
+- **`skills/scope/SKILL.md`**: All four phases rewritten for file-based workflow; `discovery-template.md` converted to `.feature` file template
+- **`skills/session-workflow/SKILL.md`**: Step 4 TODO format updated with mandatory `## Self-Declaration` block template; Rule 8 added
+- **Completed feature migrated**: `docs/features/completed/display-version/` (three files) merged into `docs/features/completed/display-version.feature` (single file with two `Rule:` blocks)
+
+### Fixed
+- **OC-8 clarification**: The only valid fix for > 2 `self.x` is a new named class (Rule 3 or Rule 4); hardcoded constants, class-level variables, inlined literals, and parent-class moves are all invalid workarounds and remain FAIL
+
 ## [v4.0.20260416] - Precise Tarsius - 2026-04-16
 
 ### Added
