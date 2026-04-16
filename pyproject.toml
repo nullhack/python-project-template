@@ -81,6 +81,7 @@ markers = [
     "slow: marks tests as slow (deselect with '-m \"not slow\"')",
     "unit: isolated tests for a single function or class",
     "integration: tests covering multiple components together",
+    "deprecated: marks tests for deprecated AC; automatically skipped (deselect with '-m \"not deprecated\"')",
 ]
 addopts = """
 --maxfail=10 \
@@ -141,6 +142,8 @@ pytest \
 """
 doc-publish = "task doc-build && ghp-import -n -p -f docs"
 static-check = "pyright"
+gen-id = "python -c \"import uuid; print(uuid.uuid4().hex[:8])\""
+gen-tests = "python .opencode/skills/tdd/scripts/gen_test_stubs.py"
 
 [dependency-groups]
 dev = [

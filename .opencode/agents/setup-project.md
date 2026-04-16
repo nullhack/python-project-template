@@ -92,10 +92,14 @@ Replace all occurrences of:
 
 - `logging.getLogger("app")` → `logging.getLogger("<package_name>")`
 
-### 3f. Update `tests/version_test.py`
+### 3f. Update test files referencing the package
+
+Find all test files (`tests/**/*_test.py`) containing `from app` or `logging.getLogger("app")` and replace:
 
 - `from app import version as m` → `from <package_name> import version as m`
-- `logging.getLogger("app")` → `logging.getLogger("<package_name>")` (appears twice)
+- `logging.getLogger("app")` → `logging.getLogger("<package_name>")`
+
+Currently this is `tests/version_test.py` (legacy flat layout).
 
 ### 3g. Update `.github/workflows/ci.yml`
 

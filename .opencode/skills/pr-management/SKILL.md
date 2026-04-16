@@ -52,8 +52,8 @@ gh pr create \
 - <What this PR does in 1-3 bullet points>
 
 ## Acceptance Criteria
-- [x] `<uuid>`: <description>
-- [x] `<uuid>`: <description>
+- [x] `@id:<hex>`: <description>
+- [x] `@id:<hex>`: <description>
 
 ## Testing
 - All tests pass: `task test`
@@ -75,7 +75,7 @@ EOF
 - [ ] `task static-check` exits 0
 - [ ] `task test` exits 0, coverage 100%
 - [ ] `timeout 10s task run` exits with code ≠ 124
-- [ ] PR description includes all UUID acceptance criteria
+- [ ] PR description includes all `@id` acceptance criteria
 
 ## Merging
 

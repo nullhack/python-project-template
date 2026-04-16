@@ -1,7 +1,7 @@
 ---
 name: session-workflow
 description: Session start and end protocol — read TODO.md, continue from checkpoint, update and commit
-version: "1.0"
+version: "2.0"
 author: developer
 audience: all-agents
 workflow: session-management
@@ -14,11 +14,13 @@ Every session starts by reading state. Every session ends by writing state. This
 ## Session Start
 
 1. Read `TODO.md` — find current feature, current step, and the "Next" line
-2. Read `docs/features/in-progress/<feature-name>.md` if a feature is active
+2. If a feature is active, read:
+   - `docs/features/in-progress/<name>/discovery.md` — feature discovery
+   - `docs/features/discovery.md` — project-level discovery (for context)
 3. Run `git status` — understand what is committed vs. what is not
 4. Confirm scope: you are working on exactly one step of one feature
 
-If TODO.md says "No feature in progress", check `docs/features/backlog/`. If the backlog is empty, the PO needs to define the next feature.
+If TODO.md says "No feature in progress", check `docs/features/backlog/` for feature folders. If the backlog is empty, the PO needs to define the next feature.
 
 ## Session End
 
@@ -40,12 +42,12 @@ If TODO.md says "No feature in progress", check `docs/features/backlog/`. If the
 
 Feature: <name>
 Step: <1-6> (<step name>)
-Source: docs/features/in-progress/<name>.md
+Source: docs/features/in-progress/<name>/discovery.md
 
 ## Progress
-- [x] `<uuid>`: <description>
-- [~] `<uuid>`: <description>  ← IN PROGRESS
-- [ ] `<uuid>`: <description>
+- [x] `<@id:hex>`: <description>
+- [~] `<@id:hex>`: <description>  ← IN PROGRESS
+- [ ] `<@id:hex>`: <description>
 
 ## Next
 <One sentence: exactly what to do in the next session>

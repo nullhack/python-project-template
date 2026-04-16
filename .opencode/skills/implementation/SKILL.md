@@ -1,7 +1,7 @@
 ---
 name: implementation
 description: Step 4 — Red-Green-Refactor cycle, one test at a time, with commit per green test
-version: "1.0"
+version: "2.0"
 author: developer
 audience: developer
 workflow: feature-lifecycle
@@ -9,7 +9,7 @@ workflow: feature-lifecycle
 
 # Implementation
 
-Make the failing tests pass one at a time. Each green test gets its own commit. Refactor only after tests are green.
+Make the failing tests pass one at a time. Each green test gets its own commit after reviewer approval. Refactor only after tests are green.
 
 ## The Cycle
 
@@ -18,21 +18,24 @@ Pick one failing test
   → RED: confirm it fails
   → GREEN: write the minimum code to make it pass
   → REFACTOR: clean up, apply principles
-  → COMMIT
+  → REVIEWER CHECK: reviewer verifies the work
+  → COMMIT (after reviewer approval)
   → pick next failing test
 ```
 
 Never write production code before picking a specific failing test. Never refactor while tests are red.
 
-## Implementation Order
+## Step 2 — Architecture (do this first)
 
-1. Start with the simplest test: data classes, value objects, pure functions
-2. Work outward: state machines, I/O, orchestration
-3. Follow the order of acceptance criteria in the feature doc
+Before writing any production code, add `## Architecture` to `docs/features/in-progress/<name>/discovery.md`:
 
-## Architecture Section (do this first, then verify against AC)
-
-Before writing any production code, add `## Architecture` to `docs/features/in-progress/<name>.md`:
+1. Move the feature folder from `backlog/` to `in-progress/`:
+   ```bash
+   mv docs/features/backlog/<name>/ docs/features/in-progress/<name>/
+   ```
+2. Read both `docs/features/discovery.md` (project-level) and the feature's `discovery.md`
+3. Run a silent pre-mortem: design patterns, SOLID, DRY, KISS, Object Calisthenics
+4. Add the Architecture section:
 
 ```markdown
 ## Architecture
@@ -40,7 +43,6 @@ Before writing any production code, add `## Architecture` to `docs/features/in-p
 ### Module Structure
 - `<package>/domain/entity.py` — data classes and value objects
 - `<package>/domain/service.py` — business logic
-- `<package>/storage/repository.py` — persistence interface
 
 ### Key Decisions
 ADR-001: <title>
@@ -50,61 +52,24 @@ Alternatives considered: <what was rejected and why>
 
 ### Build Changes (needs PO approval: yes/no)
 - New runtime dependency: <name> — reason: <why>
-- New package in pyproject.toml packages list: <name>
-- Changed entry point: <old> → <new>
 ```
 
-If any build changes need PO approval, stop and ask before proceeding.
+5. **Architecture contradiction check**: Compare each ADR against each AC. If any architectural decision contradicts or circumvents an acceptance criterion, flag it and resolve with the PO before writing any production code.
+6. If a user story is not technically feasible, escalate to the PO.
+7. If any build changes need PO approval, stop and ask before proceeding.
 
-**Architecture contradiction check**: After writing the Architecture section, compare each ADR against each AC. If any architectural decision contradicts or circumvents an acceptance criterion (e.g., "demo-first" vs. "when the user presses W"), flag it and resolve with the PO before writing any production code. This is not optional.
+Commit: `feat(<feature-name>): add architecture`
 
-## Signature Design
+## Implementation Order
 
-Design signatures before writing bodies. Use Python protocols for abstractions:
-
-```python
-from typing import Protocol
-from dataclasses import dataclass
-
-# Value objects: frozen + slots
-@dataclass(frozen=True, slots=True)
-class EmailAddress:
-    """A validated email address."""
-
-    value: str
-
-    def __post_init__(self) -> None:
-        """Validate the email format on creation."""
-        if "@" not in self.value:
-            raise ValueError(f"Invalid email: {self.value!r}")
-
-# Protocol for dependency inversion
-class UserRepository(Protocol):
-    """Persistence interface for users."""
-
-    def save(self, user: "User") -> None: ...
-    def find_by_email(self, email: EmailAddress) -> "User | None": ...
-
-# Google docstrings on all public functions
-def register_user(email: EmailAddress, repo: UserRepository) -> "User":
-    """Register a new user with the given email address.
-
-    Args:
-        email: The validated email address for the new user.
-        repo: Repository for persisting the user.
-
-    Returns:
-        The newly created and persisted user.
-
-    Raises:
-        DuplicateEmailError: If the email is already registered.
-    """
-```
+1. Start with the simplest test: data classes, value objects, pure functions
+2. Work outward: state machines, I/O, orchestration
+3. Follow the order of acceptance criteria in the `.feature` files
 
 ## RED — Confirm the Test Fails
 
 ```bash
-uv run pytest tests/<file>_test.py::test_<name> -v
+uv run pytest tests/features/<name>/<story>_test.py::test_<func> -v
 ```
 
 Expected: `FAILED` or `ERROR`. If it passes before you've written code, the test is wrong — fix it.
@@ -118,8 +83,8 @@ Write the least code that makes the test pass. Apply during GREEN:
 Do NOT apply during GREEN: DRY, SOLID, Object Calisthenics — those come in refactor.
 
 ```bash
-uv run pytest tests/<file>_test.py::test_<name> -v   # must be PASSED
-uv run task test                                      # must all still pass
+uv run pytest tests/features/<name>/<story>_test.py::test_<func> -v   # must PASS
+uv run task test-fast                                                   # must all still pass
 ```
 
 ## REFACTOR — Apply Principles (in priority order)
@@ -141,7 +106,7 @@ uv run task test                                      # must all still pass
 
 ### Refactor Self-Check Gates
 
-After refactor, before committing, run through this table. Each row is a mandatory check:
+After refactor, before requesting reviewer check:
 
 | If you see... | Then you must... | Before committing |
 |---|---|---|
@@ -150,11 +115,10 @@ After refactor, before committing, run through this table. Each row is a mandato
 | Bare `int`/`str` as domain concept | Wrap in value object | Verify no raw primitives in signatures |
 | > 4 positional parameters | Group into dataclass | Verify parameter count |
 | `list[X]` as domain collection | Wrap in collection class | Verify no bare lists |
-| No classes in domain code | Reconsider — are you writing procedural code? | Verify at least one domain class exists |
 
 ### Design Pattern Decision Table
 
-Not "use patterns everywhere" — use when a pattern solves a structural problem you already have:
+Use when a pattern solves a structural problem you already have:
 
 | If your code has... | Consider... | Why |
 |---|---|---|
@@ -164,15 +128,19 @@ Not "use patterns everywhere" — use when a pattern solves a structural problem
 | External dependency (I/O, DB, network) | Repository/Adapter pattern | Enables testing via Protocol |
 | Event-driven flow | Observer or pub/sub | Decouples producers from consumers |
 
-> **Note**: `uv run task test` runs `--doctest-modules`, which executes code examples embedded in source docstrings. Keep `Examples:` blocks in Google-style docstrings valid and executable. If an example should not be run, mark it with `# doctest: +SKIP`.
+> **Note**: `uv run task test` runs `--doctest-modules`. Keep `Examples:` blocks in Google-style docstrings valid and executable.
 
 ```bash
-uv run task test          # must still pass
+uv run task test-fast     # must still pass
 uv run task lint          # must exit 0
 uv run task static-check  # must exit 0
 ```
 
-## COMMIT
+## REVIEWER CHECK
+
+After each test goes green + refactor, the reviewer checks the work before you commit. This catches issues early instead of accumulating them.
+
+## COMMIT (after reviewer approval)
 
 ```bash
 git add -A
@@ -181,9 +149,44 @@ git commit -m "feat(<feature-name>): implement <what this test covers>"
 
 Then move to the next failing test.
 
+## Handling Spec Gaps
+
+If during implementation you discover a behavior not covered by existing acceptance criteria:
+- **Do not extend criteria yourself** — escalate to the PO
+- Note the gap in TODO.md under `## Next`
+- The PO will decide whether to add a new Example to the `.feature` file
+
+Extra tests in `tests/unit/` are allowed freely (coverage, edge cases, etc.) — these do not need `@id` traceability.
+
+## Signature Design
+
+Design signatures before writing bodies. Use Python protocols for abstractions:
+
+```python
+from typing import Protocol
+from dataclasses import dataclass
+
+@dataclass(frozen=True, slots=True)
+class EmailAddress:
+    """A validated email address."""
+
+    value: str
+
+    def __post_init__(self) -> None:
+        """Validate the email format on creation."""
+        if "@" not in self.value:
+            raise ValueError(f"Invalid email: {self.value!r}")
+
+class UserRepository(Protocol):
+    """Persistence interface for users."""
+
+    def save(self, user: "User") -> None: ...
+    def find_by_email(self, email: EmailAddress) -> "User | None": ...
+```
+
 ## Self-Verification Before Handoff
 
-After all tests are green, before telling the reviewer you are ready:
+After all tests are green, before telling the reviewer you are ready for full Step 5 review:
 
 ```bash
 uv run task lint                # exit 0
@@ -194,8 +197,8 @@ timeout 10s uv run task run     # exit non-124; exit 124 = hung process = fix it
 
 All four must pass. Do not hand off broken work.
 
-**Manual verification**: After all four commands pass, run the app and manually verify it does what the AC says, not just what the tests check. If the feature involves user interaction, interact with it yourself.
+**Manual verification**: Run the app and verify it does what the AC says, not just what the tests check.
 
-**Production-grade check**: Before handing off, answer honestly: if you change an input, does the output change accordingly? If any output is static regardless of input, the implementation is not complete — fix it before handing off. The reviewer will verify this by running the app and changing an input.
+**Production-grade check**: If you change an input, does the output change accordingly? If any output is static regardless of input, the implementation is not complete.
 
-**Developer pre-mortem** (write this before handing off to reviewer): In 2–3 sentences, answer: "If this feature shipped but was broken for the user, what would be the most likely reason?" Include this in the handoff message or as a `## Pre-mortem` subsection in the feature doc's Architecture section.
+**Developer pre-mortem**: In 2-3 sentences, answer: "If this feature shipped but was broken for the user, what would be the most likely reason?" Include this in the handoff message.

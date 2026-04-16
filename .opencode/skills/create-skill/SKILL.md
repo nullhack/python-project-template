@@ -86,7 +86,7 @@ Add the skill name to the agent's "Available Skills" section so the agent knows 
 | `tdd` | developer | Step 3: write failing tests |
 | `implementation` | developer | Step 4: Red-Green-Refactor |
 | `verify` | reviewer | Step 5: run commands and review code |
-| `code-quality` | developer | Ruff, pyright, coverage standards |
+| `code-quality` | developer | Redirects to `verify` (quick reference) |
 | `pr-management` | developer | Create PRs with proper format |
 | `git-release` | developer | Calver versioning and release naming |
 | `create-skill` | developer | Create new skills |
