@@ -1,6 +1,6 @@
 [project]
 name = "python-project-template"
-version = "3.2.20260415"
+version = "4.0.20260416"
 description = "Python template with some awesome tools to quickstart any Python project"
 readme = "README.md"
 requires-python = ">=3.13"
@@ -74,6 +74,7 @@ pydocstyle.convention = "google"
 
 [tool.ruff.lint.per-file-ignores]
 "tests/**" = ["S101", "ANN", "D205", "D212", "D415", "D100", "D103"]
+".opencode/skills/**/scripts/*.py" = ["T20"]
 
 [tool.pytest.ini_options]
 minversion = "6.0"
@@ -81,6 +82,7 @@ markers = [
     "slow: marks tests as slow (deselect with '-m \"not slow\"')",
     "unit: isolated tests for a single function or class",
     "integration: tests covering multiple components together",
+    "deprecated: marks tests for deprecated AC; automatically skipped (deselect with '-m \"not deprecated\"')",
 ]
 addopts = """
 --maxfail=10 \
@@ -141,8 +143,12 @@ pytest \
 """
 doc-publish = "task doc-build && ghp-import -n -p -f docs"
 static-check = "pyright"
+gen-id = "python -c \"import uuid; [print(uuid.uuid4().hex[:8]) for _ in range(20)]\""
+gen-tests = "python .opencode/skills/tdd/scripts/gen_test_stubs.py"
+gen-todo = "python .opencode/skills/session-workflow/scripts/gen_todo.py"
 
 [dependency-groups]
 dev = [
+    "gherkin-official>=39.0.0",
     "safety>=3.7.0",
 ]

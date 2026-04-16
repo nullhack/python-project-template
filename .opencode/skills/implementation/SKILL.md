@@ -1,7 +1,7 @@
 ---
 name: implementation
 description: Step 4 — Red-Green-Refactor cycle, one test at a time, with commit per green test
-version: "1.0"
+version: "2.2"
 author: developer
 audience: developer
 workflow: feature-lifecycle
@@ -9,7 +9,19 @@ workflow: feature-lifecycle
 
 # Implementation
 
-Make the failing tests pass one at a time. Each green test gets its own commit. Refactor only after tests are green.
+Make the failing tests pass one at a time. Each green test gets its own commit after reviewer approval. Refactor only after tests are green.
+
+## Developer Quality Gate Priority Order
+
+During Step 4, correctness priorities are (in order):
+
+1. **Design correctness** — YAGNI > KISS > DRY > SOLID > Object Calisthenics > appropriate design patterns
+2. **One test green** — the specific test under work passes, plus `test-fast` still passes
+3. **Reviewer code-design check** — reviewer verifies design + semantic alignment (no lint/pyright/coverage)
+4. **Commit** — only after reviewer APPROVED
+5. **Quality tooling** — `lint`, `static-check`, full `test` with coverage run only at developer handoff (before Step 5)
+
+Design correctness is far more important than lint/pyright/coverage compliance. Never run lint, static-check, or coverage during the Red-Green-Refactor cycle — those are handoff-only checks.
 
 ## The Cycle
 
@@ -17,22 +29,48 @@ Make the failing tests pass one at a time. Each green test gets its own commit. 
 Pick one failing test
   → RED: confirm it fails
   → GREEN: write the minimum code to make it pass
-  → REFACTOR: clean up, apply principles
-  → COMMIT
+  → REFACTOR: clean up, apply design principles
+  → SELF-DECLARE: complete the Design Self-Declaration checklist
+  ─── STOP ─── do not proceed until reviewer checks ───
+  → REVIEWER CHECK: reviewer audits self-declaration against actual code
+  ─── WAIT for APPROVED ───
+  → COMMIT (only after reviewer APPROVED)
+  → Update TODO.md: mark @id [x], update Cycle State to next test
   → pick next failing test
 ```
 
+**Hard gates**: The cycle has two hard gates — you must STOP before the reviewer check, and WAIT for APPROVED before committing. Never batch multiple tests before a reviewer interaction. Never commit without reviewer approval.
+
 Never write production code before picking a specific failing test. Never refactor while tests are red.
 
-## Implementation Order
+**TODO.md Cycle State is mandatory.** Update `## Cycle State` at every phase transition (RED → GREEN → REFACTOR → SELF-DECLARE → REVIEWER → COMMITTED). If the Cycle State block is missing, add it before proceeding.
 
-1. Start with the simplest test: data classes, value objects, pure functions
-2. Work outward: state machines, I/O, orchestration
-3. Follow the order of acceptance criteria in the feature doc
+## Step 2 — Architecture (do this first)
 
-## Architecture Section (do this first, then verify against AC)
+### Package Verification (mandatory — before writing any code)
 
-Before writing any production code, add `## Architecture` to `docs/features/in-progress/<name>.md`:
+1. Read `pyproject.toml` → locate `[tool.setuptools]` → record the value of `packages = ["<name>"]`
+2. Confirm that directory exists on disk: `ls <name>/`
+3. Write the correct package name at the top of your working notes for this session
+4. All new source files go under `<name>/` — never under a template placeholder or any other directory
+
+If `packages` is missing or the directory does not exist, stop and resolve with the stakeholder before writing any code.
+
+**Prerequisites — verify before starting:**
+1. `docs/features/in-progress/` contains only `.gitkeep` (no feature folders). If another feature folder exists, **STOP** — another feature is already in progress.
+2. The feature's `discovery.md` has `Status: BASELINED`. If not, escalate to the PO — Step 1 is incomplete.
+3. At least one `.feature` file in the feature folder contains `Example:` blocks with `@id` tags. If not, escalate to PO — criteria have not been written.
+
+**Steps:**
+
+1. Move the feature folder from `backlog/` to `in-progress/`:
+   ```bash
+   mv docs/features/backlog/<name>/ docs/features/in-progress/<name>/
+   ```
+2. Update `TODO.md` Source path from `backlog/` to `in-progress/`.
+3. Read both `docs/features/discovery.md` (project-level) and the feature's `discovery.md`
+4. Run a silent pre-mortem: YAGNI, KISS, DRY, SOLID, Object Calisthenics, design patterns
+5. Add the Architecture section to `docs/features/in-progress/<name>/discovery.md`:
 
 ```markdown
 ## Architecture
@@ -40,7 +78,6 @@ Before writing any production code, add `## Architecture` to `docs/features/in-p
 ### Module Structure
 - `<package>/domain/entity.py` — data classes and value objects
 - `<package>/domain/service.py` — business logic
-- `<package>/storage/repository.py` — persistence interface
 
 ### Key Decisions
 ADR-001: <title>
@@ -50,77 +87,53 @@ Alternatives considered: <what was rejected and why>
 
 ### Build Changes (needs PO approval: yes/no)
 - New runtime dependency: <name> — reason: <why>
-- New package in pyproject.toml packages list: <name>
-- Changed entry point: <old> → <new>
 ```
 
-If any build changes need PO approval, stop and ask before proceeding.
+6. **Architecture contradiction check**: Compare each ADR against each AC. If any architectural decision contradicts or circumvents an acceptance criterion, flag it and resolve with the PO before writing any production code.
+7. **PO domain acknowledgement**: Share the Architecture section with the PO for domain model acknowledgement before Step 3 begins. A one-line response ("no contradictions") is sufficient.
+8. If a user story is not technically feasible, escalate to the PO.
+9. If any build changes need PO approval, stop and ask before proceeding.
 
-**Architecture contradiction check**: After writing the Architecture section, compare each ADR against each AC. If any architectural decision contradicts or circumvents an acceptance criterion (e.g., "demo-first" vs. "when the user presses W"), flag it and resolve with the PO before writing any production code. This is not optional.
+Commit: `feat(<feature-name>): add architecture`
 
-## Signature Design
+**After committing:** Run `uv run task gen-tests -- --check` to verify stub sync. If changes are shown, run `uv run task gen-tests` to apply them.
 
-Design signatures before writing bodies. Use Python protocols for abstractions:
+## Implementation Order
 
-```python
-from typing import Protocol
-from dataclasses import dataclass
-
-# Value objects: frozen + slots
-@dataclass(frozen=True, slots=True)
-class EmailAddress:
-    """A validated email address."""
-
-    value: str
-
-    def __post_init__(self) -> None:
-        """Validate the email format on creation."""
-        if "@" not in self.value:
-            raise ValueError(f"Invalid email: {self.value!r}")
-
-# Protocol for dependency inversion
-class UserRepository(Protocol):
-    """Persistence interface for users."""
-
-    def save(self, user: "User") -> None: ...
-    def find_by_email(self, email: EmailAddress) -> "User | None": ...
-
-# Google docstrings on all public functions
-def register_user(email: EmailAddress, repo: UserRepository) -> "User":
-    """Register a new user with the given email address.
-
-    Args:
-        email: The validated email address for the new user.
-        repo: Repository for persisting the user.
-
-    Returns:
-        The newly created and persisted user.
-
-    Raises:
-        DuplicateEmailError: If the email is already registered.
-    """
-```
+1. Start with the simplest test: data classes, value objects, pure functions
+2. Work outward: state machines, I/O, orchestration
+3. Follow the order of acceptance criteria in the `.feature` files
 
 ## RED — Confirm the Test Fails
 
 ```bash
-uv run pytest tests/<file>_test.py::test_<name> -v
+uv run pytest tests/features/<name>/<story>_test.py::test_<func> -v
 ```
 
 Expected: `FAILED` or `ERROR`. If it passes before you've written code, the test is wrong — fix it.
 
+Update `## Cycle State` in TODO.md:
+```
+Test: `@id:<hex>` — <description>
+Phase: RED
+```
+
 ## GREEN — Minimum Implementation
 
-Write the least code that makes the test pass. Apply during GREEN:
+Write the least code that makes **this one test** pass. "Green" means the specific test under work passes — not the full suite.
+
+Apply during GREEN:
 - **YAGNI**: if the test doesn't require it, don't write it
 - **KISS**: the simplest code that passes
 
 Do NOT apply during GREEN: DRY, SOLID, Object Calisthenics — those come in refactor.
 
 ```bash
-uv run pytest tests/<file>_test.py::test_<name> -v   # must be PASSED
-uv run task test                                      # must all still pass
+uv run pytest tests/features/<name>/<story>_test.py::test_<func> -v   # this test must PASS
+uv run task test-fast                                                   # no regressions
 ```
+
+Update `## Cycle State` Phase: `GREEN`
 
 ## REFACTOR — Apply Principles (in priority order)
 
@@ -139,22 +152,9 @@ uv run task test                                      # must all still pass
 4. **Type hints**: add/fix type annotations on all public functions and classes
 5. **Docstrings**: Google-style on all public functions and classes
 
-### Refactor Self-Check Gates
-
-After refactor, before committing, run through this table. Each row is a mandatory check:
-
-| If you see... | Then you must... | Before committing |
-|---|---|---|
-| Function > 20 lines | Extract helper | Verify line count |
-| Nesting > 2 levels | Extract to function | Verify max depth |
-| Bare `int`/`str` as domain concept | Wrap in value object | Verify no raw primitives in signatures |
-| > 4 positional parameters | Group into dataclass | Verify parameter count |
-| `list[X]` as domain collection | Wrap in collection class | Verify no bare lists |
-| No classes in domain code | Reconsider — are you writing procedural code? | Verify at least one domain class exists |
-
 ### Design Pattern Decision Table
 
-Not "use patterns everywhere" — use when a pattern solves a structural problem you already have:
+Use when a pattern solves a structural problem you already have:
 
 | If your code has... | Consider... | Why |
 |---|---|---|
@@ -164,38 +164,194 @@ Not "use patterns everywhere" — use when a pattern solves a structural problem
 | External dependency (I/O, DB, network) | Repository/Adapter pattern | Enables testing via Protocol |
 | Event-driven flow | Observer or pub/sub | Decouples producers from consumers |
 
-> **Note**: `uv run task test` runs `--doctest-modules`, which executes code examples embedded in source docstrings. Keep `Examples:` blocks in Google-style docstrings valid and executable. If an example should not be run, mark it with `# doctest: +SKIP`.
+### Doctest Check
+
+If you added or modified a `Examples:` block in a Google-style docstring, verify it passes:
 
 ```bash
-uv run task test          # must still pass
-uv run task lint          # must exit 0
-uv run task static-check  # must exit 0
+uv run pytest --doctest-modules <module_path>
 ```
 
-## COMMIT
+> **Note**: `uv run task test` runs `--doctest-modules`. Keep `Examples:` blocks in Google-style docstrings valid and executable.
+
+### Refactor Self-Check Gates
+
+After refactor, before moving to self-declaration:
+
+| If you see... | Then you must... | Before proceeding |
+|---|---|---|
+| Function > 20 lines | Extract helper | Verify line count |
+| Nesting > 2 levels | Extract to function | Verify max depth |
+| Bare `int`/`str` as domain concept | Wrap in value object | Verify no raw primitives in signatures |
+| > 4 positional parameters | Group into dataclass | Verify parameter count |
+| `list[X]` as domain collection | Wrap in collection class | Verify no bare lists |
+
+```bash
+uv run task test-fast     # must still pass — the ONLY check during refactor
+```
+
+Do NOT run `uv run task lint` or `uv run task static-check` during the cycle. Those are handoff-only checks (before Step 5).
+
+Update `## Cycle State` Phase: `REFACTOR`
+
+### Design Self-Declaration
+
+After refactor is complete and `test-fast` passes, complete this checklist before requesting the reviewer check. Include the filled-in checklist in your reviewer check request — this is the structured audit target the reviewer will verify against the actual code.
+
+*For each item: check the box and cite `file:line` evidence, or explain why the rule does not apply to the code changed in this cycle.*
+
+#### YAGNI
+- [ ] No abstractions added beyond what the current acceptance criteria require
+- [ ] No speculative parameters, flags, or extension points for hypothetical future use
+
+#### KISS
+- [ ] Every function can be described in one sentence without "and"
+- [ ] No unnecessary indirection, wrapper layers, or complexity
+
+#### DRY
+- [ ] No logic duplicated across functions or classes
+- [ ] Shared concepts extracted into a single reusable location
+
+#### SOLID
+- [ ] **S** — each class/function has exactly one reason to change (`file:line`)
+- [ ] **O** — new behavior added via extension, not by editing existing class bodies
+- [ ] **L** — subtypes fully substitutable; no subtype narrows a contract or raises where base does not
+- [ ] **I** — no Protocol/ABC forces unused method implementations
+- [ ] **D** — domain classes import from abstractions (Protocols), not from I/O or framework layers directly
+
+#### Object Calisthenics
+- [ ] Rule 1 — one indent level per method (`file:line` of deepest nesting)
+- [ ] Rule 2 — no `else` after `return`; early returns only
+- [ ] Rule 3 — primitives wrapped: no bare `int`/`str` as domain concepts in public signatures
+- [ ] Rule 4 — collections wrapped: no bare `list[X]` as domain values
+- [ ] Rule 5 — one dot per line: no `a.b.c()` chains
+- [ ] Rule 6 — no abbreviations in names
+- [ ] Rule 7 — functions ≤ 20 lines, classes ≤ 50 lines (cite longest: `file:line`)
+- [ ] Rule 8 — ≤ 2 instance variables per class (cite any with 2: `file:line`)
+- [ ] Rule 9 — no getters/setters; tell-don't-ask (`get_x()`/`set_x()` = FAIL)
+
+Update `## Cycle State` Phase: `SELF-DECLARE`
+
+## REVIEWER CHECK — Code Design Only
+
+After each test goes green + refactor + self-declaration, **STOP** and request a reviewer check. Include the filled-in Design Self-Declaration checklist in your request.
+
+**STOP — request a reviewer check of code design and semantic alignment.**
+**WAIT for APPROVED before committing.**
+
+The reviewer is scoped to **code design only** (not full Step 5):
+
+**What the reviewer receives**: The developer's completed Design Self-Declaration with `file:line` evidence for each rule.
+
+**What the reviewer does**: Independently inspects the actual code for each rule the developer claimed compliant. The self-declaration is an audit target — the reviewer verifies claims, not just reads them.
+
+**What the reviewer does NOT check** (deferred to Step 5):
+- Lint compliance
+- Pyright/type checking
+- Coverage metrics
+- Full test suite
+
+The reviewer responds using this template:
+
+```markdown
+## Code-Design Check — @id:<hex>
+
+| Rule | Developer Claims | Reviewer Verdict | Evidence |
+|------|-----------------|------------------|----------|
+| YAGNI | <summary> | PASS / FAIL | `file:line` or N/A |
+| KISS | <summary> | PASS / FAIL | `file:line` or N/A |
+| DRY | <summary> | PASS / FAIL | `file:line` or N/A |
+| SOLID-S | <summary> | PASS / FAIL | `file:line` or N/A |
+| SOLID-O | <summary> | PASS / FAIL | `file:line` or N/A |
+| SOLID-L | <summary> | PASS / FAIL | `file:line` or N/A |
+| SOLID-I | <summary> | PASS / FAIL | `file:line` or N/A |
+| SOLID-D | <summary> | PASS / FAIL | `file:line` or N/A |
+| OC-1 thru OC-9 | <summary> | PASS / FAIL | `file:line` or N/A |
+| Design patterns | <summary> | PASS / FAIL | `file:line` or N/A |
+| Semantic alignment | <summary> | PASS / FAIL | `file:line` or N/A |
+
+Decision: APPROVED / REJECTED
+```
+
+Any row where Reviewer Verdict = FAIL is a rejection. The reviewer must cite `file:line` evidence for every FAIL.
+
+If REJECTED:
+- Mark the `@id` row as `[~]` in TODO.md (do not downgrade to `[ ]`)
+- Update `## Cycle State` Phase to `REVIEWER(code-design)`
+- Fix the specific issues raised
+- Do not commit
+- Request re-review after fix
+
+This is a **hard gate** — do not commit until APPROVED.
+
+Update `## Cycle State` Phase: `REVIEWER(code-design)`
+
+## COMMIT (after reviewer approval)
 
 ```bash
 git add -A
 git commit -m "feat(<feature-name>): implement <what this test covers>"
 ```
 
+Update TODO.md:
+- Mark the `@id` row `[x]` with ` — reviewer(code-design) APPROVED`
+- Update `## Cycle State` Phase to `COMMITTED`
+- Update `## Next` to the next failing test
+
 Then move to the next failing test.
+
+## Handling Spec Gaps
+
+If during implementation you discover a behavior not covered by existing acceptance criteria:
+- **Do not extend criteria yourself** — escalate to the PO
+- Note the gap in TODO.md under `## Next`
+- The PO will decide whether to add a new Example to the `.feature` file
+
+Extra tests in `tests/unit/` are allowed freely (coverage, edge cases, etc.) — these do not need `@id` traceability.
+
+## Signature Design
+
+Design signatures before writing bodies. Use Python protocols for abstractions:
+
+```python
+from typing import Protocol
+from dataclasses import dataclass
+
+@dataclass(frozen=True, slots=True)
+class EmailAddress:
+    """A validated email address."""
+
+    value: str
+
+    def __post_init__(self) -> None:
+        """Validate the email format on creation."""
+        if "@" not in self.value:
+            raise ValueError(f"Invalid email: {self.value!r}")
+
+class UserRepository(Protocol):
+    """Persistence interface for users."""
+
+    def save(self, user: "User") -> None: ...
+    def find_by_email(self, email: EmailAddress) -> "User | None": ...
+```
 
 ## Self-Verification Before Handoff
 
-After all tests are green, before telling the reviewer you are ready:
+After all tests are green and every per-test cycle has been committed with reviewer approval, complete these final checks before handing off to the reviewer for full Step 5 verification.
+
+**Manual verification**: Run the app and verify it does what the AC says, not just what the tests check.
+
+**Production-grade check**: If you change an input, does the output change accordingly? If any output is static regardless of input, the implementation is not complete.
+
+**Developer pre-mortem**: In 2-3 sentences, answer: "If this feature shipped but was broken for the user, what would be the most likely reason?" Include this in the handoff message.
+
+**Quality tooling** — run all four, all must pass:
 
 ```bash
-uv run task lint                # exit 0
-uv run task static-check        # exit 0, 0 errors
-uv run task test                # exit 0, all pass, coverage 100%
-timeout 10s uv run task run     # exit non-124; exit 124 = hung process = fix it
+uv run task lint
+uv run task static-check
+uv run task test
+timeout 10s uv run task run
 ```
 
-All four must pass. Do not hand off broken work.
-
-**Manual verification**: After all four commands pass, run the app and manually verify it does what the AC says, not just what the tests check. If the feature involves user interaction, interact with it yourself.
-
-**Production-grade check**: Before handing off, answer honestly: if you change an input, does the output change accordingly? If any output is static regardless of input, the implementation is not complete — fix it before handing off. The reviewer will verify this by running the app and changing an input.
-
-**Developer pre-mortem** (write this before handing off to reviewer): In 2–3 sentences, answer: "If this feature shipped but was broken for the user, what would be the most likely reason?" Include this in the handoff message or as a `## Pre-mortem` subsection in the feature doc's Architecture section.
+Do not hand off broken work. These are the only commands that run at handoff — the Design Self-Declaration was already completed and verified per-test during each REFACTOR cycle.

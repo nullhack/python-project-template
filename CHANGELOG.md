@@ -2,6 +2,34 @@
 
 All notable changes to this template will be documented in this file.
 
+## [v4.0.20260416] - Precise Tarsius - 2026-04-16
+
+### Added
+- **Per-test Design Self-Declaration**: After REFACTOR, developer fills a 20-item checklist (YAGNI → KISS → DRY → SOLID-S/O/L/I/D → OC rules 1–9) with `file:line` evidence before requesting reviewer check; reviewer independently audits claims using an 11-row comparison table (#58)
+- **Package Verification step**: Mandatory before writing any code — read `pyproject.toml → [tool.setuptools] packages`, confirm directory exists on disk; hard stop if missing (#58)
+- **SELF-DECLARE phase**: New phase added to the Red-Green-Refactor cycle between REFACTOR and REVIEWER; Cycle State now `RED | GREEN | REFACTOR | SELF-DECLARE | REVIEWER(code-design) | COMMITTED` (#58)
+- **template-config.yaml**: Declarative single source of truth for all setup-project substitutions — `defaults:` block with 6 parameters, `substitutions:` map with literal `old:` strings, `{variable}` `new:` patterns, and expected `count:` per file (#58)
+- **Post-mortem docs**: Two ping-pong-cli post-mortems documenting the systemic failures that drove this release (#58)
+
+### Changed
+- **verify/SKILL.md Scope Guard**: Reviewer receives completed Design Self-Declaration and independently verifies each claim; responds using structured 11-row comparison table (#58)
+- **verify/SKILL.md section 4g**: New row — `Imports use correct package name` (check imports match `[tool.setuptools] packages`); existing rows made more precise with `pyproject.toml` references (#58)
+- **reviewer.md per-test Step 4 section**: Rewritten to reference `skill implementation` verification table; clarifies no commands run during Step 4 reviews (#58)
+- **reviewer.md Zero-Tolerance Rule 1**: Scoped to `(Step 5 only — per-test Step 4 checks are code-design only, no commands)` (#58)
+- **setup-project.md**: Reads `template-config.yaml`; each apply step delegates to the config map rather than carrying implicit pattern knowledge (#58)
+- **Template app simplified**: `app/version.py` deleted; `app/__main__.py` reduced from 41 to 23 lines (#58)
+
+### Fixed
+- **gen_todo.py path**: `parents[5]` → `parents[4]` — was resolving one directory above the project root (#58)
+- **session-workflow Cycle State**: `SELF-DECLARE` phase added to documented phase list and Rule 6 (#58)
+- **code-quality/SKILL.md**: Removed "has been absorbed" migration language (#58)
+- **Dockerfile stale references**: `python_package_template.python_module_template` → `app` in HEALTHCHECK and CMD (#58)
+- **docker-compose.yml stale references**: `python_package_template` → `app` in volume mounts and command (#58)
+
+### Breaking Changes
+- `project_defaults.json` deleted — replaced by `template-config.yaml` (#58)
+- `app/version.py` and `tests/version_test.py` deleted — template app simplified to minimal `__main__.py` + one Hypothesis unit test (#58)
+
 ## [v3.2.20260415] - Vigilant Mantis - 2026-04-15
 
 ### Added

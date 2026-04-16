@@ -39,10 +39,10 @@ EXPOSE 8000 8080 5678
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
-    CMD python -m python_package_template.python_module_template || exit 1
+    CMD python -m app || exit 1
 
 # Default command
-CMD ["python", "-m", "python_package_template.python_module_template"]
+CMD ["python", "-m", "app"]
 
 # Labels
 LABEL maintainer="eol"

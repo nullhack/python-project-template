@@ -48,12 +48,12 @@ docs/features/completed/     ← accepted and shipped features
 
 | Step | Role | What happens |
 |------|------|-------------|
-| 1. SCOPE | Product Owner | User stories + UUID acceptance criteria |
-| 2. BOOTSTRAP + ARCH | Developer | Build system, module structure, ADRs |
-| 3. TEST FIRST | Developer | Failing tests mapped 1:1 to UUID criteria |
+| 1. SCOPE | Product Owner | Discovery + Gherkin stories + `@id` criteria |
+| 2. ARCH | Developer | Design module structure, get PO approval |
+| 3. TEST FIRST | Developer | Sync stubs, write failing tests mapped to `@id` |
 | 4. IMPLEMENT | Developer | Red→Green→Refactor, commit per green test |
-| 5. VERIFY | Reviewer | Run all commands, code review, UUID traceability |
-| 6. ACCEPT | Product Owner | Demo, validate, merge, tag |
+| 5. VERIFY | Reviewer | Run all commands, code review, `@id` traceability |
+| 6. ACCEPT | Product Owner | Demo, validate, move folder to completed/ |
 
 ### AI Agents
 
@@ -71,7 +71,7 @@ docs/features/completed/     ← accepted and shipped features
 /skill scope               # Write user stories + acceptance criteria
 /skill tdd                 # TDD: file naming, docstring format, markers
 /skill implementation      # Red-Green-Refactor, architecture, ADRs
-/skill code-quality        # ruff, pyright, coverage, complexity limits
+/skill code-quality        # redirects to verify (quick reference)
 /skill verify              # Step 5 verification checklist
 /skill pr-management       # Branch naming, PR template, squash merge
 /skill git-release         # Hybrid calver versioning, themed naming
@@ -88,6 +88,8 @@ uv run task test-fast        # Tests without coverage (faster iteration)
 uv run task test-slow        # Only slow tests
 uv run task lint             # ruff check + format
 uv run task static-check     # pyright type checking
+uv run task gen-id           # Generate an 8-char hex ID for @id tags
+uv run task gen-tests        # Sync test stubs from .feature files
 uv run task doc-build        # Generate API docs + coverage + test reports
 uv run task doc-publish      # Publish unified docs site to GitHub Pages
 uv run task doc-serve        # Live API doc server at localhost:8080
@@ -108,12 +110,12 @@ uv run task doc-serve        # Live API doc server at localhost:8080
 ## Test Conventions
 
 ```python
-def test_<short_title>():
-    """a1b2c3d4-e5f6-7890-abcd-ef1234567890
-
-    Given: precondition
-    When: action
-    Then: single observable outcome
+@pytest.mark.unit
+def test_bounce_physics_a3f2b1c4() -> None:
+    """
+    Given: A ball moving upward reaches y=0
+    When: The physics engine processes the next frame
+    Then: The ball velocity y-component becomes positive
     """
     # Given
     ...
@@ -123,7 +125,7 @@ def test_<short_title>():
     ...
 ```
 
-**Markers**: `@pytest.mark.unit` · `@pytest.mark.integration` · `@pytest.mark.slow`
+**Markers**: `@pytest.mark.unit` · `@pytest.mark.integration` · `@pytest.mark.slow` · `@pytest.mark.deprecated`
 
 ## Technology Stack
 
