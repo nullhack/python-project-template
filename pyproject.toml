@@ -147,5 +147,6 @@ gen-tests = "python .opencode/skills/tdd/scripts/gen_test_stubs.py"
 
 [dependency-groups]
 dev = [
+    "gherkin-official>=39.0.0",
     "safety>=3.7.0",
 ]

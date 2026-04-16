@@ -18,9 +18,11 @@ from __future__ import annotations
 
 import re
 import sys
-import textwrap
 from dataclasses import dataclass
 from pathlib import Path
+from typing import Any
+
+from gherkin import Parser as GherkinParser
 
 PROJECT_ROOT = Path(__file__).resolve().parents[4]
 FEATURES_DIR = PROJECT_ROOT / "docs" / "features"
@@ -29,12 +31,6 @@ TESTS_DIR = PROJECT_ROOT / "tests" / "features"
 FEATURE_STAGES = ("backlog", "in-progress", "completed")
 
 ID_TAG_RE = re.compile(r"@id:([a-f0-9]{8})")
-DEPRECATED_TAG_RE = re.compile(r"@deprecated")
-EXAMPLE_RE = re.compile(r"^\s*Example:\s*(.+)$")
-GIVEN_RE = re.compile(r"^\s*Given\s+(.+)$")
-WHEN_RE = re.compile(r"^\s*When\s+(.+)$")
-THEN_RE = re.compile(r"^\s*Then\s+(.+)$")
-FEATURE_RE = re.compile(r"^\s*Feature:\s*(.+)$")
 
 TEST_FUNC_RE = re.compile(r"^def (test_\w+)\(.*\)")
 TEST_ID_RE = re.compile(r"test_\w+_([a-f0-9]{8})\b")
@@ -90,97 +86,112 @@ def parse_feature_file(path: Path) -> FeatureFile | None:
         FeatureFile if valid, None if no Feature: line found.
     """
     text = path.read_text(encoding="utf-8")
-    lines = text.splitlines()
-
-    feature_name = ""
-    for line in lines:
-        m = FEATURE_RE.match(line)
-        if m:
-            feature_name = m.group(1).strip()
-            break
-
-    if not feature_name:
+    doc = GherkinParser().parse(text)
+    feature: dict[str, Any] | None = doc.get("feature")
+    if not feature or not feature.get("name"):
         return None
 
     story_slug = path.stem
-    examples = _parse_examples(lines, str(path))
+    examples = _extract_examples(feature, str(path))
     return FeatureFile(
         path=path,
-        feature_name=feature_name,
+        feature_name=feature["name"],
         story_slug=story_slug,
         examples=examples,
     )
 
 
-def _parse_examples(lines: list[str], source_file: str) -> list[GherkinExample]:
-    """Extract all Example blocks from feature file lines.
+def _extract_examples(
+    feature: dict[str, Any], source_file: str
+) -> list[GherkinExample]:
+    """Extract all Example blocks from a parsed Gherkin feature AST.
 
     Args:
-        lines: Lines of the .feature file.
-        source_file: Path string for error reporting.
+        feature: The 'feature' dict from gherkin-official Parser output.
+        source_file: Path string for provenance tracking.
 
     Returns:
         List of parsed GherkinExample objects.
     """
     examples: list[GherkinExample] = []
-    i = 0
-    while i < len(lines):
-        line = lines[i]
-        id_match = ID_TAG_RE.search(line)
-        if id_match:
-            id_hex = id_match.group(1)
-            deprecated = bool(DEPRECATED_TAG_RE.search(line))
-            title, given, when, then, i = _parse_example_block(lines, i + 1)
-            examples.append(
-                GherkinExample(
-                    id_hex=id_hex,
-                    title=title,
-                    given=given,
-                    when=when,
-                    then=then,
-                    deprecated=deprecated,
-                    source_file=source_file,
-                )
-            )
-        else:
-            i += 1
+    for child in feature.get("children", []):
+        scenario: dict[str, Any] | None = child.get("scenario")
+        if scenario is None:
+            continue
+        example = _scenario_to_example(scenario, source_file)
+        if example is not None:
+            examples.append(example)
     return examples
 
 
-def _parse_example_block(
-    lines: list[str], start: int
-) -> tuple[str, str, str, str, int]:
-    """Parse the Example/Given/When/Then lines after an @id tag.
+def _scenario_to_example(
+    scenario: dict[str, Any], source_file: str
+) -> GherkinExample | None:
+    """Convert a single parsed scenario dict to a GherkinExample.
+
+    Skips scenarios without an @id tag.
 
     Args:
-        lines: All lines of the file.
-        start: Line index to start parsing from.
+        scenario: A scenario dict from the Gherkin AST.
+        source_file: Path string for provenance tracking.
 
     Returns:
-        Tuple of (title, given, when, then, next_line_index).
+        GherkinExample if the scenario has an @id tag, None otherwise.
     """
-    title = given = when = then = ""
-    i = start
-    while i < len(lines):
-        line = lines[i]
-        if ID_TAG_RE.search(line):
-            break
-        m_example = EXAMPLE_RE.match(line)
-        m_given = GIVEN_RE.match(line)
-        m_when = WHEN_RE.match(line)
-        m_then = THEN_RE.match(line)
-        if m_example:
-            title = m_example.group(1).strip()
-        elif m_given:
-            given = m_given.group(1).strip()
-        elif m_when:
-            when = m_when.group(1).strip()
-        elif m_then:
-            then = m_then.group(1).strip()
-            i += 1
-            break
-        i += 1
-    return title, given, when, then, i
+    tags = scenario.get("tags", [])
+    id_hex = _extract_id_tag(tags)
+    if id_hex is None:
+        return None
+
+    deprecated = any(t["name"] == "@deprecated" for t in tags)
+    given, when, then = _extract_steps(scenario.get("steps", []))
+    return GherkinExample(
+        id_hex=id_hex,
+        title=scenario.get("name", ""),
+        given=given,
+        when=when,
+        then=then,
+        deprecated=deprecated,
+        source_file=source_file,
+    )
+
+
+def _extract_id_tag(tags: list[dict[str, Any]]) -> str | None:
+    """Find the @id:<hex> tag value from a list of AST tags.
+
+    Args:
+        tags: List of tag dicts from the Gherkin AST.
+
+    Returns:
+        The 8-char hex ID, or None if no @id tag is present.
+    """
+    for tag in tags:
+        m = ID_TAG_RE.search(tag.get("name", ""))
+        if m:
+            return m.group(1)
+    return None
+
+
+def _extract_steps(steps: list[dict[str, Any]]) -> tuple[str, str, str]:
+    """Extract Given/When/Then text from parsed Gherkin steps.
+
+    Args:
+        steps: List of step dicts from the Gherkin AST.
+
+    Returns:
+        Tuple of (given, when, then) step text strings.
+    """
+    given = when = then = ""
+    for step in steps:
+        keyword_type = step.get("keywordType", "")
+        text = step.get("text", "")
+        if keyword_type == "Context":
+            given = text
+        elif keyword_type == "Action":
+            when = text
+        elif keyword_type == "Outcome":
+            then = text
+    return given, when, then
 
 
 def generate_stub(feature_slug: str, example: GherkinExample) -> str:
@@ -198,39 +209,39 @@ def generate_stub(feature_slug: str, example: GherkinExample) -> str:
     if example.deprecated:
         markers.append("@pytest.mark.deprecated")
 
-    docstring = _build_docstring(example)
     marker_lines = "\n".join(markers)
+    docstring = _build_docstring(example)
 
-    return textwrap.dedent(f"""\
-        {marker_lines}
-        def {func_name}() -> None:
-        {docstring}
-            # Given
+    lines = [
+        marker_lines,
+        f"def {func_name}() -> None:",
+        *docstring,
+        "    # Given",
+        "",
+        "    # When",
+        "",
+        "    # Then",
+        "    raise NotImplementedError",
+    ]
+    return "\n".join(lines) + "\n"
 
-            # When
 
-            # Then
-            raise NotImplementedError
-    """)
-
-
-def _build_docstring(example: GherkinExample) -> str:
-    """Build a properly indented docstring for a test stub.
+def _build_docstring(example: GherkinExample) -> list[str]:
+    """Build properly indented docstring lines for a test stub.
 
     Args:
         example: The parsed Gherkin example.
 
     Returns:
-        Indented docstring block including triple quotes.
+        List of indented lines (each with 4-space prefix) including triple quotes.
     """
-    lines = [
+    return [
         '    """',
         f"    Given: {example.given}",
         f"    When: {example.when}",
         f"    Then: {example.then}",
         '    """',
     ]
-    return "\n".join(lines)
 
 
 def generate_test_file(
