@@ -1,7 +1,7 @@
 ---
 name: verify
 description: Step 5 — run all verification commands, review code quality, and produce a written report
-version: "2.1"
+version: "2.2"
 author: reviewer
 audience: reviewer
 workflow: feature-lifecycle
@@ -18,9 +18,10 @@ This skill guides the reviewer through Step 5: independent verification that the
 ## Scope Guard — Step 4 vs. Step 5
 
 If you are invoked for a **per-test code-design check during Step 4** (not a full Step 5 review):
-- Run **only sections 4a–4e** (YAGNI, KISS, DRY, SOLID, Object Calisthenics, Design Patterns) and the semantic alignment check.
+- The developer will provide a completed **Design Self-Declaration** checklist with `file:line` evidence for each rule.
+- **Independently verify each claim** against the actual code using sections 4a–4e (YAGNI, KISS, DRY, SOLID, Object Calisthenics, Design Patterns) and the semantic alignment check.
 - Do **NOT** run any commands (no lint, no static-check, no test suite).
-- Respond using the compact template in `implementation/SKILL.md`.
+- Respond using the verification table template in `implementation/SKILL.md` — compare developer claims vs. your independent findings for each rule.
 
 This full skill applies only when the developer signals Step 4 is complete and hands off for Step 5.
 
@@ -136,8 +137,9 @@ Read the source files changed in this feature. **Do this before running lint/sta
 | No `type: ignore` comments | `grep -r "type: ignore" <package>/` | None found | Any found | Fix the underlying type error |
 | All public functions have type hints | Read signatures | All annotated | Missing hints | Add type annotations |
 | All public functions have docstrings | Read source | Google-style present | Missing docstring | Add docstring |
-| Coverage target matches package | Check `--cov=<package>` in test config | Matches actual package | Wrong package name | Fix the `--cov` argument |
-| All declared packages exist | Check `[tool.setuptools] packages` against filesystem | All present | Missing package | Add directory or remove declaration |
+| Coverage target matches package | Check `--cov=<package>` in test config matches `[tool.setuptools] packages` in `pyproject.toml` | Matches | Wrong package name | Fix the `--cov` argument |
+| All declared packages exist on disk | Check `[tool.setuptools] packages` in `pyproject.toml` against filesystem | All directories present | Missing directory | Add directory or remove declaration |
+| Imports use correct package name | Search production code and tests for import statements; confirm they match `[tool.setuptools] packages`, not a template placeholder | All match | Any import from wrong package | Fix imports and move misplaced source files |
 
 ### 5. Run Verification Commands (in order, stop on first failure)
 
