@@ -570,26 +570,31 @@ def _update_docstring(
 
 
 def find_duplicate_ids() -> list[str]:
-    """Find @id hex values that appear in more than one .feature file.
+    """Find @id hex values that appear in more than one distinct feature file.
+
+    A feature that appears in multiple stage directories (backlog, in-progress,
+    completed) with the same stem is counted only once — that is expected during
+    migrations. Duplicates are only flagged when the same @id appears in two
+    different feature files (different stems).
 
     Returns:
         List of warning strings describing each duplicate @id.
     """
-    id_sources: dict[str, list[str]] = {}
+    id_sources: dict[str, set[str]] = {}
     for fpath, feature_name, _stage in find_feature_files():
         parsed = parse_feature_file(fpath)
         if not parsed:
             continue
         for rule in parsed.rules:
             for ex in rule.examples:
-                id_sources.setdefault(ex.id_hex, []).append(
+                id_sources.setdefault(ex.id_hex, set()).add(
                     f"{feature_name}/{rule.rule_slug}"
                 )
 
     warnings: list[str] = []
     for id_hex, sources in sorted(id_sources.items()):
         if len(sources) > 1:
-            locations = ", ".join(sources)
+            locations = ", ".join(sorted(sources))
             warnings.append(f"@id:{id_hex} appears in multiple locations: {locations}")
     return warnings
 

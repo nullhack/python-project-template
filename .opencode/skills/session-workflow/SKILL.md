@@ -92,6 +92,8 @@ During Step 4 (Implementation), TODO.md **must** include a `## Cycle State` bloc
 
 When `Phase: SELF-DECLARE` or later, a `## Self-Declaration` block is also **mandatory**. The reviewer reads it directly from TODO.md. A missing or incomplete self-declaration (unchecked boxes, missing `file:line`) = automatic REJECTED.
 
+For the full Self-Declaration checklist template (21 items), see `implementation/SKILL.md` — the "Design Self-Declaration" section under REFACTOR.
+
 ```markdown
 # Current Work
 
@@ -104,26 +106,10 @@ Test: `@id:<hex>` — <description>
 Phase: RED | GREEN | REFACTOR | SELF-DECLARE | REVIEWER(code-design) | COMMITTED
 
 ## Self-Declaration (@id:<hex>)
-- [x] YAGNI-1: No abstractions beyond current AC — `file:line`
-- [x] YAGNI-2: No speculative parameters or flags for hypothetical future use — `file:line`
-- [x] KISS-1: Every function has one job, describable in one sentence without "and" — `file:line`
-- [x] KISS-2: No unnecessary indirection, wrapper layers, or complexity — `file:line`
-- [x] DRY-1: No logic block duplicated across two or more locations — `file:line`
-- [x] DRY-2: Every shared concept extracted to exactly one place — `file:line`
-- [x] SOLID-S: Each class/function has one reason to change — `file:line`
-- [x] SOLID-O: New behavior added by extension, no existing class body edited — N/A
-- [x] SOLID-L: Every subtype fully substitutable — N/A
-- [x] SOLID-I: No Protocol/ABC forces unused method implementations — N/A
-- [x] SOLID-D: Domain classes depend on Protocols, not I/O imports — `file:line`
-- [x] OC-1: Max one indent level per method; inner blocks extracted to named helpers — deepest: `file:line`
-- [x] OC-2: No `else` after `return`; happy path is flat — `file:line` or N/A
-- [x] OC-3: No bare primitives in public signatures; each wrapped in a named type — `file:line` or N/A
-- [x] OC-4: No bare collections as domain values; each wrapped in a named collection class — `file:line` or N/A
-- [x] OC-5: No `a.b.c()` chains; each dot step assigned to a named local — `file:line` or N/A
-- [x] OC-6: No abbreviations; every name is a full word readable without context — `file:line` or N/A
-- [x] OC-7: Every function ≤ 20 lines, every class ≤ 50 lines — longest: `file:line`
-- [x] OC-8: Every class has ≤ 2 `self.x` in `__init__`; value object extracted if needed — `file:line` per class
-- [x] OC-9: No `get_x()`/`set_x()` pairs; commands and queries only — `file:line` or N/A
+- [x] YAGNI-1: … — `file:line`
+- [x] YAGNI-2: … — `file:line`
+- [x] KISS-1: … — `file:line`
+  … (full checklist from implementation/SKILL.md)
 - [x] Semantic: test abstraction matches AC abstraction — `file:line`
 
 ## Progress
