@@ -9,13 +9,11 @@ workflow: feature-lifecycle
 
 # Code Quality
 
-This skill has been absorbed into `verify/SKILL.md`. Load `skill verify` instead.
+Run these four commands before handing off to the reviewer (Step 5). All must pass.
 
-The code quality checks (ruff, pyright, coverage, complexity limits, structural checks) are now part of the unified verification skill used by both the developer (self-check before handoff) and the reviewer (Step 5).
+## Developer Self-Check
 
-## Quick Reference
-
-Developer self-check before handing off to reviewer:
+Before handing off to reviewer:
 
 ```bash
 uv run task lint                # ruff check + ruff format — must exit 0
