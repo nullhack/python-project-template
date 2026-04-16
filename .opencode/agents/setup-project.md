@@ -19,13 +19,7 @@ You initialize a new project from this Python template by gathering parameters f
 
 ## Step 1 — Gather Parameters
 
-Read `project_defaults.json`:
-
-```bash
-cat project_defaults.json
-```
-
-This file contains 6 keys. For **each key in order**, display the current default value and ask the user: "Use this value or enter a new one?" Accept the default if the user confirms it. Collect all 6 values before proceeding:
+Read `template-config.yaml` and show the user the 6 values under `defaults:`. For **each key in order**, display the current default value and ask the user: "Use this value or enter a new one?" Accept the default if the user confirms it. Collect all 6 values before proceeding:
 
 1. `github_username` — their GitHub handle (e.g. `myusername`)
 2. `project_name` — kebab-case repo name (e.g. `my-awesome-project`)
@@ -57,6 +51,8 @@ Ask the user to confirm before making any changes.
 
 Execute each sub-step in order. Do not skip any. Do not make any changes beyond what is listed here.
 
+The substitution patterns are the source of truth in `template-config.yaml` under `substitutions:`. The steps below describe each file in plain terms; verify counts against the config if in doubt.
+
 ### 3a. Rename the package directory
 
 ```bash
@@ -65,38 +61,15 @@ mv app <package_name>
 
 ### 3b. Update `pyproject.toml`
 
-Make the following replacements:
-
-- `name = "python-project-template"` → `name = "<project_name>"`
-- The description value → `"<project_description>"`
-- `{ name = "eol", email = "nullhack@users.noreply.github.com" }` → `{ name = "<author_name>", email = "<author_email>" }` (appears in both `authors` and `maintainers`)
-- `https://github.com/nullhack/python-project-template` → `https://github.com/<github_username>/<project_name>` (appears in both `Repository` and `Documentation` URLs)
-- `packages = ["app"]` → `packages = ["<package_name>"]`
-- `python -m app` → `python -m <package_name>`
-- `--cov=app` → `--cov=<package_name>` (appears twice)
-- `pdoc ./app` → `pdoc ./<package_name>` (appears twice)
-- Version field: set to `0.1.YYYYMMDD` using today's date
+Apply every substitution listed under `substitutions.pyproject.toml` in `template-config.yaml`. Additionally, reset the version field to `0.1.YYYYMMDD` using today's date.
 
 ### 3c. Update `README.md`
 
-Replace all occurrences of:
-- `nullhack` → `<github_username>`
-- `python-project-template` → `<project_name>`
-- `eol` → `<author_name>` (only on the author credit line)
+Apply every substitution listed under `substitutions.README.md`. The `eol` → `<author_name>` replacement applies only to the author credit line; do not replace `eol` in other contexts.
 
-### 3d. Rename the package in `<package_name>/__main__.py`
+### 3d. Update test files referencing the package
 
-In `<package_name>/__main__.py`, replace:
-
-- `logging.getLogger(__name__)` remains unchanged (uses `__name__`, no substitution needed)
-
-No other substitutions are needed in `__main__.py` — it has no hard-coded package references.
-
-### 3e. Update test files referencing the package
-
-Find all test files (`tests/**/*_test.py`) containing `from app` and replace:
-
-- `from app.__main__ import` → `from <package_name>.__main__ import`
+Apply every substitution listed under `substitutions.tests/unit/app_test.py`.
 
 After applying substitutions, verify no stale references remain:
 
@@ -104,42 +77,37 @@ After applying substitutions, verify no stale references remain:
 grep -rn "from app" tests/
 ```
 
-The command must return no output before proceeding to Step 3f.
+The command must return no output before proceeding to Step 3e.
 
-### 3g. Update `.github/workflows/ci.yml`
+### 3e. Update `.github/workflows/ci.yml`
 
-- `import app` → `import <package_name>` (appears twice, in wheel and sdist install verify steps)
+Apply every substitution listed under `substitutions..github/workflows/ci.yml`.
 
-### 3h. Update `Dockerfile`
+### 3f. Update `Dockerfile`
 
-- Comment on line 2: `python-project-template` → `<project_name>`
-- `python_package_template.python_module_template` → `<package_name>` (appears twice, in HEALTHCHECK and CMD)
-- `maintainer="eol"` → `maintainer="<author_name>"`
-- The description label value → `"<project_description>"`
-- `nullhack/python-project-template` → `<github_username>/<project_name>` (in the OCI source label)
+Apply every substitution listed under `substitutions.Dockerfile`.
 
-### 3i. Update `docker-compose.yml`
+### 3g. Update `docker-compose.yml`
 
-- Comment on line 1: `python-project-template` → `<project_name>`
-- `python_package_template` → `<package_name>` (appears three times, in volume mounts and command)
+Apply every substitution listed under `substitutions.docker-compose.yml`.
 
-### 3j. Update `.dockerignore`
+### 3h. Update `.dockerignore`
 
-- Comment on line 1: `python-project-template` → `<project_name>`
+Apply every substitution listed under `substitutions..dockerignore`.
 
-### 3k. Update `docs/index.html`
+### 3i. Update `docs/index.html`
 
-- `href="api/app.html"` → `href="api/<package_name>.html"`
+Apply every substitution listed under `substitutions.docs/index.html`.
 
-### 3l. Update `LICENSE`
+### 3j. Update `LICENSE`
 
-- `Copyright (c) 2026, eol` → `Copyright (c) 2026, <author_name>`
+Apply every substitution listed under `substitutions.LICENSE`.
 
-### 3m. Update `project_defaults.json`
+### 3k. Update `template-config.yaml`
 
-Replace all 6 values with what the user provided. This is always the last file changed.
+Apply every substitution listed under `substitutions.template-config.yaml`. This updates the `defaults:` section to reflect the user's values. This is always the last file changed.
 
-### 3n. Set git remote
+### 3l. Set git remote
 
 ```bash
 git remote set-url origin git@github.com:<github_username>/<project_name>.git
