@@ -74,31 +74,42 @@ Commit: `feat(discovery): baseline project discovery`
 
 **When**: Per feature, after project discovery is baselined.
 
-### 2.1 Populate Feature Discovery
+### 2.1 Derive Questions from Feature Entities
 
-Open `docs/features/backlog/<name>/discovery.md`. Fill in:
+Open `docs/features/backlog/<name>/discovery.md`. This step happens **before** any stakeholder interaction.
 
-- **Entities table**: Extract nouns (candidate classes/models) and verbs (candidate methods/features) from project discovery answers relevant to this feature. Mark each as in-scope or not.
-- **Questions table**: Add questions from:
-  - Gaps not covered by project discovery
-  - Ambiguities specific to this feature
-  - Boundary conditions and error cases
-
-### 2.2 Interview
-
-Present all questions to the stakeholder at once. Follow up on unanswered ones.
-
-### 2.3 Silent Pre-mortem
-
-After each round of answers:
+1. **Populate the Entities table**: Extract nouns (candidate classes/models) and verbs (candidate methods/features) from project discovery answers relevant to this feature. Mark each as in-scope or not.
+2. **Generate questions from entities**: For each in-scope entity, ask:
+   - What are its boundaries and edge cases?
+   - What happens when it's missing, invalid, or at its limits?
+   - How does it interact with other entities?
+3. **Add questions from gaps**: Questions from areas not covered by project discovery, ambiguities specific to this feature, and boundary conditions.
+4. **Silent pre-mortem** (before the first interview round):
 
 > "Imagine the developer builds this feature exactly as described, all tests pass, but the feature doesn't work for the user. What would be missing?"
 
-Add any discoveries as new questions.
+Add any discoveries as new questions to the Questions table.
+
+### 2.2 Interview
+
+Present **all** questions to the stakeholder at once. After receiving answers:
+
+1. Mark answered questions as `ANSWERED` in the Questions table
+2. Run a silent pre-mortem on the new answers — generate follow-up questions
+3. Present follow-up questions to the stakeholder
+4. Repeat until the stakeholder says **"baseline"** to freeze discovery
+
+### 2.3 Feature Decomposition Check
+
+Before moving to Phase 3, check: does this feature span **>2 distinct concerns** OR have **>8 candidate Examples**? If yes:
+
+1. Split into separate features in `backlog/` — each addressing a single cohesive concern
+2. Create a new `discovery.md` for each split feature
+3. Re-run Phase 2 for any split feature that needs its own discovery
 
 ### 2.4 Baseline
 
-When the stakeholder says "baseline", set `Status: BASELINED` in the feature `discovery.md`.
+When the stakeholder says "baseline" (and decomposition check passes), set `Status: BASELINED` in the feature `discovery.md`.
 
 Commit: `feat(discovery): baseline <name> feature discovery`
 
@@ -193,7 +204,8 @@ uv run task gen-id
 - `Then` must be a single, observable, measurable outcome — no "and"
 - **Observable means observable by the end user**, not by a test harness
 - **Declarative, not imperative** — describe behavior, not UI steps
-- Soft limit: 3-10 Examples per Feature; each must be observably distinct
+- Each Example must be observably distinct from every other
+- A single `.feature` file must not span multiple concerns — split into separate `.feature` files if needed (a feature folder can contain multiple `.feature` files)
 - If user interaction is involved, the Feature description must declare the interaction model
 
 **Declarative vs. imperative Gherkin**:
@@ -206,7 +218,7 @@ uv run task gen-id
 
 Write Examples that describe *what happens*, not *how the user clicks through the UI*. Imperative steps couple tests to specific UI layouts and break when the UI changes.
 
-**MoSCoW triage**: When a story has more than 5 Examples, ask for each one: is this a **Must** (required for the story to be correct), a **Should** (high value but deferrable), or a **Could** (nice-to-have edge case)? If Musts alone exceed 10, the story needs splitting.
+**MoSCoW triage**: When a story spans multiple concerns or has many candidate Examples, ask for each one: is this a **Must** (required for the story to be correct), a **Should** (high value but deferrable), or a **Could** (nice-to-have edge case)? If the story spans >2 concerns or Musts alone exceed 8, the story needs splitting.
 
 **Common mistakes to avoid**:
 - "Then: It works correctly" (not measurable)
@@ -224,7 +236,8 @@ Before committing:
 - [ ] Every `Then` is a single, observable, measurable outcome
 - [ ] No Example tests implementation details
 - [ ] If user interaction is involved, the interaction model is declared in the Feature description
-- [ ] Soft limit 3-10 Examples per Feature is respected (justify exceptions)
+- [ ] Each Example is observably distinct from every other
+- [ ] No single `.feature` file spans multiple concerns (split if needed)
 
 ### 4.4 Final Pre-mortem
 

@@ -67,6 +67,37 @@ No feature in progress.
 Next: PO picks feature from docs/features/backlog/ and moves it to docs/features/in-progress/.
 ```
 
+## Step 4 Cycle-Aware TODO Format
+
+During Step 4 (Implementation), the TODO.md format includes cycle state to track Red-Green-Refactor-Review progress:
+
+```markdown
+# Current Work
+
+Feature: <name>
+Step: 4 (implement)
+Source: docs/features/in-progress/<name>/discovery.md
+
+## Cycle State
+Test: `<@id:hex>` — <description>
+Phase: RED | GREEN | REFACTOR | REVIEWER(code-design) | COMMITTED
+
+## Progress
+- [x] `<@id:hex>`: <description>          ← done
+- [x] `<@id:hex>`: <description> — reviewer(code-design) APPROVED
+- [~] `<@id:hex>`: <description>          ← in progress (see Cycle State)
+- [ ] `<@id:hex>`: <description>          ← next
+
+## Next
+<One actionable sentence>
+```
+
+### Reviewer Scope Legend
+
+When referencing reviewer interactions in TODO.md:
+- `reviewer(code-design)` — per-test design check during Step 4 (SOLID/DRY/KISS/ObjCal/patterns + semantic alignment only)
+- `reviewer(full-verify)` — Step 5 full verification (lint, pyright, coverage, semantic review, adversarial testing)
+
 ## Rules
 
 1. Never skip reading TODO.md at session start
@@ -74,3 +105,4 @@ Next: PO picks feature from docs/features/backlog/ and moves it to docs/features
 3. Never leave uncommitted changes — commit as WIP if needed
 4. One step per session where possible; do not start Step N+1 in the same session as Step N
 5. The "Next" line must be actionable enough that a fresh AI can execute it without asking questions
+6. During Step 4, always update `## Cycle State` when transitioning between RED/GREEN/REFACTOR/REVIEWER phases

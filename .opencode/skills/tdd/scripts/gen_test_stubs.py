@@ -515,8 +515,7 @@ def find_orphaned_tests() -> list[str]:
         for fpath, _stage in files:
             parsed = parse_feature_file(fpath)
             if parsed:
-                for ex in parsed.examples:
-                    all_feature_ids.add(ex.id_hex)
+                all_feature_ids.update(ex.id_hex for ex in parsed.examples)
 
     orphans: list[str] = []
     if not TESTS_DIR.exists():

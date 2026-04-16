@@ -11,17 +11,33 @@ workflow: feature-lifecycle
 
 Make the failing tests pass one at a time. Each green test gets its own commit after reviewer approval. Refactor only after tests are green.
 
+## Developer Quality Gate Priority Order
+
+During Step 4, correctness priorities are (in order):
+
+1. **Design correctness** — YAGNI, KISS, DRY, SOLID, Object Calisthenics, appropriate design patterns
+2. **One test green** — the specific test under work passes, plus `test-fast` still passes
+3. **Reviewer code-design check** — reviewer verifies design + semantic alignment (no lint/pyright/coverage)
+4. **Commit** — only after reviewer APPROVED
+5. **Quality tooling** — `lint`, `static-check`, full `test` with coverage run only at developer handoff (before Step 5)
+
+Design correctness is far more important than lint/pyright/coverage compliance. Never run lint, static-check, or coverage during the Red-Green-Refactor cycle — those are handoff-only checks.
+
 ## The Cycle
 
 ```
 Pick one failing test
   → RED: confirm it fails
   → GREEN: write the minimum code to make it pass
-  → REFACTOR: clean up, apply principles
-  → REVIEWER CHECK: reviewer verifies the work
-  → COMMIT (after reviewer approval)
+  → REFACTOR: clean up, apply design principles
+  ─── STOP ─── do not proceed until reviewer checks ───
+  → REVIEWER CHECK: reviewer verifies code design + semantic alignment
+  ─── WAIT for APPROVED ───
+  → COMMIT (only after reviewer APPROVED)
   → pick next failing test
 ```
+
+**Hard gates**: The cycle has two hard gates — you must STOP before the reviewer check, and WAIT for APPROVED before committing. Never batch multiple tests before a reviewer interaction. Never commit without reviewer approval.
 
 Never write production code before picking a specific failing test. Never refactor while tests are red.
 
@@ -76,15 +92,17 @@ Expected: `FAILED` or `ERROR`. If it passes before you've written code, the test
 
 ## GREEN — Minimum Implementation
 
-Write the least code that makes the test pass. Apply during GREEN:
+Write the least code that makes **this one test** pass. "Green" means the specific test under work passes — not the full suite.
+
+Apply during GREEN:
 - **YAGNI**: if the test doesn't require it, don't write it
 - **KISS**: the simplest code that passes
 
 Do NOT apply during GREEN: DRY, SOLID, Object Calisthenics — those come in refactor.
 
 ```bash
-uv run pytest tests/features/<name>/<story>_test.py::test_<func> -v   # must PASS
-uv run task test-fast                                                   # must all still pass
+uv run pytest tests/features/<name>/<story>_test.py::test_<func> -v   # this test must PASS
+uv run task test-fast                                                   # no regressions
 ```
 
 ## REFACTOR — Apply Principles (in priority order)
@@ -131,14 +149,28 @@ Use when a pattern solves a structural problem you already have:
 > **Note**: `uv run task test` runs `--doctest-modules`. Keep `Examples:` blocks in Google-style docstrings valid and executable.
 
 ```bash
-uv run task test-fast     # must still pass
-uv run task lint          # must exit 0
-uv run task static-check  # must exit 0
+uv run task test-fast     # must still pass — the ONLY check during refactor
 ```
 
-## REVIEWER CHECK
+Do NOT run `uv run task lint` or `uv run task static-check` during the cycle. Those are handoff-only checks (before Step 5).
 
-After each test goes green + refactor, the reviewer checks the work before you commit. This catches issues early instead of accumulating them.
+## REVIEWER CHECK — Code Design Only
+
+After each test goes green + refactor, **STOP** and request a reviewer check. The reviewer loads the `verify` skill but is scoped to **code design only**:
+
+**What the reviewer checks (code-design scope)**:
+- **YAGNI, KISS, DRY, SOLID, Object Calisthenics** — are design principles followed in priority order?
+- **Appropriate design patterns** — is the code structure right for the problem?
+- **Semantic alignment** — does the test operate at the same abstraction level as the AC?
+- **No internal-state testing** — assertions on observable behavior, not private attributes
+
+**What the reviewer does NOT check** (deferred to Step 5):
+- Lint compliance
+- Pyright/type checking
+- Coverage metrics
+- Full test suite
+
+The reviewer responds with **APPROVED** or **REJECTED** with specific issues. If REJECTED, fix the issues and request review again. This is a **hard gate** — do not commit until APPROVED.
 
 ## COMMIT (after reviewer approval)
 

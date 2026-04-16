@@ -58,13 +58,16 @@ STEP 6: ACCEPT         (product-owner)  → demo, validate, move folder to compl
 PO creates `docs/features/discovery.md`. Asks stakeholder 7 standard questions (Who/What/Why/When/Success/Failure/Out-of-scope). Silent pre-mortem generates follow-up questions. All questions presented at once. Autonomous baseline when all questions are answered. PO identifies feature list and creates `backlog/<name>/discovery.md` per feature.
 
 ### Phase 2 — Feature Discovery (per feature)
-PO populates per-feature `discovery.md` with entities (nouns/verbs) and targeted questions. All questions shown at once; follow up on unanswered ones. Silent pre-mortem after each cycle. Stakeholder says "baseline" to freeze discovery.
+PO derives targeted questions from feature entities: extract nouns/verbs from project discovery, populate the Entities table, then generate questions from gaps, ambiguities, and boundary conditions. Silent pre-mortem before the first interview round. Present all questions to the stakeholder at once; iterate with follow-up rounds (pre-mortem after each) until stakeholder says "baseline" to freeze discovery.
 
 ### Phase 3 — Stories (PO alone)
 One `.feature` file per user story. `Feature:` block with user story header only — no `Example:` blocks yet. Commit: `feat(stories): write user stories for <name>`
 
 ### Phase 4 — Criteria (PO alone)
-Silent pre-mortem per story. Write `Example:` blocks with `@id:<8-char-hex>` tags. Soft limit: 3-10 Examples per Feature. Commit: `feat(criteria): write acceptance criteria for <name>`
+Silent pre-mortem per story. Write `Example:` blocks with `@id:<8-char-hex>` tags. Each Example must be observably distinct; if a single `.feature` file spans multiple concerns, split into separate `.feature` files (a feature folder can contain multiple `.feature` files). Commit: `feat(criteria): write acceptance criteria for <name>`
+
+### Feature Decomposition Threshold
+Before moving to Phase 3, check: does this feature span **>2 distinct concerns** OR have **>8 candidate Examples**? If yes, split into separate features in `backlog/` before writing stories. Each feature should address a single cohesive concern.
 
 **Baseline is frozen**: no `.feature` changes after criteria are written. Change = `@deprecated` tag + new Example.
 
@@ -211,6 +214,18 @@ uv run task doc-serve
 - **Instance variables**: ≤ 2 per class
 - **Semantic alignment**: tests must operate at the same abstraction level as the acceptance criteria they cover
 - **Integration tests**: multi-component features require at least one `@pytest.mark.integration` test exercising the public entry point
+
+### Developer Quality Gate Priority Order
+
+During Step 4 (Implementation), correctness priorities are:
+
+1. **Design correctness** — YAGNI, KISS, DRY, SOLID, Object Calisthenics, appropriate design patterns
+2. **One test green** — the specific test under work passes, plus `test-fast` still passes
+3. **Reviewer code-design check** — reviewer verifies design + semantic alignment (no lint/pyright/coverage)
+4. **Commit** — only after reviewer APPROVED
+5. **Quality tooling** — `lint`, `static-check`, full `test` with coverage run only at developer handoff (before Step 5)
+
+Design correctness is far more important than lint/pyright/coverage compliance. A well-designed codebase with minor lint issues is better than a lint-clean codebase with poor design.
 
 ## Verification Philosophy
 

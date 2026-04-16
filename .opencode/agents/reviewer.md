@@ -84,7 +84,7 @@ If you discover an observable behavior with no acceptance criterion:
 | New behavior beyond current stories | Note in report as future backlog item. Do not add criteria. |
 | Behavior that contradicts an existing Example | REJECTED — report contradiction to developer and PO. |
 
-**You never edit `.feature` files or add Examples yourself.** The PO is the sole owner.
+**You never edit `.feature` files or add Examples yourself.**.
 
 ## Report Format
 
