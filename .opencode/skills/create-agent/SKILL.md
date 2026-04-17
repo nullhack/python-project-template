@@ -15,32 +15,27 @@ Create a new OpenCode agent following research-backed best practices from OpenAI
 
 When you need a new agent with distinct ownership, instructions, tool surface, or approval policy. Not for simple routing — only when the task requires a separate domain of responsibility.
 
-## Research Basis
-
-### Agent Design Principles (OpenAI, Anthropic, 2024-2026)
-
-**Core principle**: "Define the smallest agent that can own a clear task. Add more agents only when you need separate ownership, different instructions, different tool surfaces, or different approval policies." — OpenAI Agents SDK (Entry 318 in `docs/academic_research.md`)
-
-**Split criterion is ownership boundary, not instruction volume.**
-
-### Multi-Agent Architecture Patterns
-
-| Pattern | When to Use | Example |
-|---|---|---|
-| **Single-agent** | Most tasks; incrementally add tools | `software-engineer` handles Steps 2-3 |
-| **Hierarchical (triage + specialist)** | Multiple distinct task types requiring different expertise | `product-owner` → `software-engineer` → `reviewer` |
-| **Evaluator-optimizer** | Tasks requiring iteration with quality checks | Review workflow |
-
-### Agent Definition Components
-
-From OpenAI's practical guide:
-
-1. **Model** — LLM for reasoning/decision-making
-2. **Instructions** — System prompt defining behavior
-3. **Tools** — Actions the agent can take
-4. **Guardrails** — Safety boundaries
-
 ## How to Create an Agent
+
+### 0. Research (mandatory — do this first)
+
+Before writing any agent, research the domain to ground the agent design in industry standards and scientifically-backed evidence:
+
+1. **Identify the agent's domain**: What role, responsibility, and domain will this agent own?
+2. **Search for domain-specific best practices**:
+   - For agent architecture: OpenAI Agents SDK, Anthropic Claude Agent SDK, Google Agents SDK
+   - For domain methodology: Academic papers, vendor guides, established standards (e.g., OWASP for security, IEEE for software engineering)
+   - For known failure modes: Post-mortems, case studies, industry reports
+3. **Synthesize conclusions**: What ownership boundaries work? What tool design patterns? What escalation rules?
+4. **Embed as design decisions**: Write the agent's ownership definition, instruction patterns, tool surface, and escalation rules based on those conclusions — not as citations but as direct guidance
+
+**Example research synthesis:**
+```
+Agent domain: Security reviewer agent
+Research: OWASP Testing Guide, NIST security controls, Anthropic's adversarial verification patterns
+Conclusion: Security agents should assume breach by default, escalate on any critical finding, use defense-in-depth checklist.
+→ Agent design: "role: reviewer", "escalation: any critical = human", "tool: security-scan + vuln-check"
+```
 
 ### 1. Create the agent file
 
@@ -85,7 +80,7 @@ steps: <step numbers this agent owns, e.g., "2, 3">
 
 ### 2. Follow the structural rules
 
-From `academic_research.md` Entry 410:
+Apply the research conclusions about file organization:
 
 | File | When Loaded | Content | Avoid |
 |---|---|---|---|
@@ -93,9 +88,11 @@ From `academic_research.md` Entry 410:
 | `.opencode/agents/*.md` | When role invoked | Role identity, step ownership, skill loads, tool permissions | Duplication |
 | `.opencode/skills/*.md` | On demand | Full procedural instructions | Duplication |
 
+**Why**: Keeping always-loaded files lean preserves attention budget for the task at hand.
+
 ### 3. Define clear ownership boundaries
 
-**Split criteria** (Anthropic/OpenAI):
+**Split criteria**:
 - Separate ownership (different domain responsibility)
 - Different instructions (not just more detail)
 - Different tool surface (distinct actions)
@@ -105,7 +102,7 @@ From `academic_research.md` Entry 410:
 
 ### 4. Write effective instructions
 
-From Anthropic's agent design patterns:
+Write instructions that work in practice:
 
 - **Specific triggers**: "Load this skill when X" not "use judgment"
 - **Clear actions**: Every step corresponds to a specific output
@@ -114,7 +111,7 @@ From Anthropic's agent design patterns:
 
 ### 5. Define tool permissions
 
-From Anthropic's tool design principles:
+Design the tool surface based on what the agent needs to accomplish:
 
 - **Start with bash** for breadth
 - **Promote to dedicated tools** when you need to:

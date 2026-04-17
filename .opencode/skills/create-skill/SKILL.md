@@ -15,13 +15,29 @@ Create a new reusable skill for OpenCode agents, following research-backed best 
 
 When you need to codify a repeatable workflow that multiple agents or sessions will follow. Skills are loaded on demand; they don't run automatically.
 
-## Research Basis
-
-- **Lazy loading principle** (Anthropic, 2024): Skills should be loaded on demand, not in every session. This preserves the primary context budget and prevents important instructions from being pushed beyond effective attention range (Entry 347 in `docs/academic_research.md`).
-- **Concise is key** (Anthropic skill authoring best practices): Every token in a skill competes with conversation context. Keep SKILL.md under 500 lines for optimal performance.
-- **Tool abstraction** (OpenAI Agents SDK): Skills should define clear actions that correspond to specific outputs, not abstract guidance.
-
 ## How to Create a Skill
+
+### 0. Research (mandatory — do this first)
+
+Before writing any skill, research the domain to ground the skill in industry standards and scientifically-backed evidence:
+
+1. **Identify the domain**: What workflow or methodology will this skill codify?
+2. **Search for best practices**:
+   - Academic sources (Google Scholar, IEEE, ACM)
+   - Vendor documentation (OpenAI, Anthropic, Google, Microsoft)
+   - Industry standards (ISO, NIST, OMG)
+   - Established methodologies (e.g., FDD, Scrum, Kanban for process skills)
+3. **Read existing research**: Check `docs/academic_research.md` for related entries
+4. **Synthesize conclusions**: Extract actionable conclusions — what works, why, and when to apply it
+5. **Embed as guidance**: Write the skill's steps, checklists, and decision rules based on those conclusions — not as academic citations but as direct guidance ("Use X because it produces Y outcome")
+
+**Example research synthesis:**
+```
+Research question: How to structure a security review skill?
+Sources found: OWASP Testing Guide, NIST SP 800-53, Anthropic's agent design patterns
+Conclusion: Security reviews should be adversarial (assume breakage), use defense-in-depth checklist, escalate on first critical finding.
+→ Skill step: "3. Run adversarial checks — assume breach, verify every control"
+```
 
 ### 1. Create the directory
 
