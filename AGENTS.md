@@ -44,6 +44,7 @@ STEP 6: ACCEPT         (product-owner)  → demo, validate, move folder to compl
 | `scope` | product-owner | 1 |
 | `tdd` | developer | 3 |
 | `implementation` | developer | 4 |
+| `design-patterns` | developer | 2 (on-demand, if smell detected), 4 (refactor) |
 | `verify` | reviewer | 5 |
 | `code-quality` | developer | pre-handoff (redirects to `verify`) |
 | `pr-management` | developer | 6 |

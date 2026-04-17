@@ -432,6 +432,352 @@ This document explains the cognitive and social-science mechanisms that justify 
 
 ---
 
+### 28a. Active Listening — Three-Level Structure and Level 3 Uses (Synthesis)
+
+| | |
+|---|---|
+| **Source** | Synthesis of: Nielsen, J. (2010). *Interviewing Users*. Nielsen Norman Group. + Farrell, S. (2017). UX Research Cheat Sheet. NN/G. + Ambler, S. W. (2002). *Agile Modeling*. Wiley (agilemodeling.com). + Wynne, M. (2015). Introducing Example Mapping. Cucumber Blog. |
+| **Date** | 2010–2015 (synthesis) |
+| **URL** | https://www.nngroup.com/articles/interviewing-users/ ; https://www.agilemodeling.com/essays/fdd.htm ; https://cucumber.io/blog/bdd/example-mapping-introduction/ |
+| **Alternative** | — |
+| **Status** | Synthesized rule of thumb — each component individually confirmed; the three-level structure is a practitioner synthesis |
+| **Core finding** | Active listening in requirements interviews operates at three granularities simultaneously, not as a single end-of-interview act: **Level 1** (per answer) — immediate paraphrase to catch misunderstanding on the spot; **Level 2** (per topic cluster) — transition summary before moving to the next area, acting as a recovery point; **Level 3** (end of interview) — full synthesis, which serves four distinct downstream purposes. |
+| **Mechanism** | Each level addresses a different failure mode. Level 1 prevents individual answer misreads from propagating. Level 2 prevents topic-cluster drift and allows mid-interview correction. Level 3 crystallizes scope and triggers the formal baseline. Without the level structure, practitioners collapse all three into a single end-of-interview summary, which is too late for Level 1 and 2 misunderstandings to be caught cheaply. |
+| **Level 3 — four uses** | 1. **Accuracy gate** (NN/G): stakeholder confirms or corrects the summary before it is used downstream — prevents misread requirements from being frozen. 2. **Scope crystallization** (Ambler/FDD): the summary answers "what problems must this system solve?" and becomes the initial requirements stack. 3. **Input to domain modeling** (Ambler/FDD): nouns and verbs extracted from the Level 3 summary are the raw material for the Entities table — domain analysis cannot begin before this summary exists. 4. **Baseline trigger** (Wynne/Cucumber Example Mapping): when the stakeholder says "yes, that's right" to the summary, discovery is considered complete and frozen. |
+| **Where used** | Phase 1 and Phase 2 of `scope/SKILL.md`: PO applies Level 1 during each exchange, Level 2 when transitioning between topic areas, and Level 3 at the end of each interview phase before proceeding to feature stubs (Phase 1) or user stories (Phase 2). |
+
+---
+
+### 29. The Kipling Method — Five Ws and One H
+
+| | |
+|---|---|
+| **Source** | Kipling, R. (1902). *Just So Stories*. Macmillan. |
+| **Date** | 1902 |
+| **URL** | — |
+| **Alternative** | Hermagoras of Temnos (2nd century BCE) — seven circumstances of rhetoric; Thomas Wilson (1560) — "The Arte of Rhetoric"; Aristotle's Nicomachean Ethics |
+| **Status** | Practitioner synthesis — journalism, business analysis, and investigative methodology |
+| **Core finding** | The six interrogative questions (Who, What, When, Where, Why, How) form a complete framework for gathering all essential facts about any event or situation. No single question can be answered with a simple yes/no. Together they ensure completeness and prevent gaps in understanding. |
+| **Mechanism** | The framework originated in ancient Greek rhetoric (Aristotle's "elements of circumstance"), was formalized in 16th-century English rhetoric (Wilson), popularized by Kipling's 1902 poem calling them "six honest serving-men," and became standard in journalism by 1917. The BA community adapted it to requirements gathering by adding "How" as the sixth question, creating the 5W1H framework used in business analysis today. |
+| **Where used** | Phase 1 project discovery: the initial seven questions (Who, What, Why, When, Where, Success, Failure, Out-of-scope) are an adaptation of the 5W1H framework. "Success" maps to "Why" (purpose), "Failure" maps to constraints, "Out-of-scope" defines project boundaries. |
+
+---
+
+### 30. BA Requirements Question Framework
+
+| | |
+|---|---|
+| **Source** | Brandenburg, L. (2025). *Requirements Discovery Checklist Pack*. TechCanvass. |
+| **Date** | 2025 |
+| **URL** | https://businessanalyst.techcanvass.com/requirements-gathering-questions-for-ba/ |
+| **Alternative** | Sherwen (2025). "10 Questions to Consider During Requirements Gathering."; Practical Analyst (2024). "Requirements Elicitation: Most Valuable Questions." |
+| **Status** | Practitioner synthesis — consolidated BA methodology, not peer-reviewed |
+| **Core finding** | Ten questions consistently make the most difference in requirements elicitation: (1) What problem are we solving? (2) What happens if we do nothing? (3) Who uses this? (4) What does success look like? (5) Walk me through how this works today (6) Where does this usually break? (7) What decisions will this help? (8) What should definitely not happen? (9) What happens if input is wrong? (10) What assumptions are we making? |
+| **Mechanism** | The first four questions define scope and purpose. Questions 5-6 probe current state and pain points. Questions 7-8 identify business value and constraints. Questions 9-10 surface edge cases and hidden assumptions. This sequence ensures negative requirements (what should NOT happen) are captured, which often contain the most important business rules. |
+| **Where used** | Phase 1 project discovery: the "Success" question maps to "What does success look like?" (question 4), "Failure" maps to "What should definitely not happen?" (question 8), "Out-of-scope" maps to boundary-setting from the 10-question framework. |
+
+---
+
+### 31. Domain-Driven Design — Bounded Contexts and Feature Identification
+
+| | |
+|---|---|
+| **Source** | Evans, E. (2003). *Domain-Driven Design: Tackling Complexity in the Heart of Software*. Addison-Wesley. |
+| **Date** | 2003 |
+| **URL** | — |
+| **Alternative** | Context Mapper (2025). Rapid Object-Oriented Analysis and Design. https://contextmapper.org/docs/rapid-ooad |
+| **Status** | Confirmed — foundational DDD literature |
+| **Core finding** | A Bounded Context is a boundary within which a particular ubiquitous language is consistent. Features are identified by grouping related user stories that share the same language. Features can be decomposed into subdomains, and subdomains can be grouped into Bounded Contexts. The decomposition criterion is "single responsibility per context" + "consistency of language." |
+| **Mechanism** | In DDD: (1) Extract ubiquitous language from requirements → (2) Group by language consistency → (3) Each group is a candidate bounded context → (4) Each bounded context maps to a feature. Context Mapper automates this: User Stories → Subdomains (via noun/verb extraction) → Bounded Contexts of type FEATURE. |
+| **Where used** | Phase 1: after feature list identification, verify each feature has consistent language. Phase 2: noun/verb extraction from project discovery answers populates the Entities table, which is the DDD candidate model. The "Rules (Business)" section captures the ubiquitous language rules that govern each feature. |
+
+---
+
+### 32. Object Calisthenics — Nine Rules
+
+| | |
+|---|---|
+| **Source** | Bay, J. "Object Calisthenics." *The Thoughtworks Anthology* (PragProg, 2008). Original in IEEE Software/DevX, ~2005. |
+| **Date** | ~2005 |
+| **URL** | https://www.bennadel.com/resources/uploads/2012/objectcalisthenics.pdf |
+| **Alternative** | — |
+| **Status** | Practitioner synthesis |
+| **Core finding** | 9 rules to internalize OOP: (1) One level indentation per method, (2) No ELSE, (3) Wrap primitives/Strings, (4) First class collections, (5) One dot per line, (6) No abbreviations, (7) Classes ≤50 lines, (8) ≤2 instance variables, (9) No getters/setters. 7 of 9 enforce data encapsulation; 1 drives polymorphism; 1 drives naming. |
+| **Mechanism** | Restrictions force decomposition. When you cannot use getters, behavior must move into the object. When you cannot use ELSE, you use polymorphism. When classes must be ≤2 ivars, you discover missing abstractions. |
+| **Where used** | Refactor phase in `implementation/SKILL.md`: rule checklist with PASS/FAIL per rule. |
+
+---
+
+### 33. Refactoring
+
+| | |
+|---|---|
+| **Source** | Fowler, M. (1999/2018). *Refactoring: Improving the Design of Existing Code* (2nd ed.). Addison-Wesley. |
+| **Date** | 1999, 2018 |
+| **URL** | https://martinfowler.com/books/refactoring.html |
+| **Alternative** | — |
+| **Status** | Confirmed — foundational |
+| **Core finding** | Refactoring = behavior-preserving transformations. 68 catalogued refactorings, each small enough to do safely but cumulative effect significant. Code smells (duplicate code, long methods, feature envy) indicate refactoring opportunities. |
+| **Mechanism** | Small steps reduce risk. Each refactoring is reversible. Test suite validates behavior unchanged. |
+| **Where used** | Refactor phase in `implementation/SKILL.md`: smell detection triggers refactoring. |
+
+---
+
+### 34. Design Patterns
+
+| | |
+|---|---|
+| **Source** | Gamma, E., Helm, R., Johnson, R., Vlissides, J. (1995). *Design Patterns: Elements of Reusable Object-Oriented Software*. Addison-Wesley. |
+| **Date** | 1995 |
+| **URL** | — |
+| **Alternative** | — |
+| **Status** | Confirmed — foundational |
+| **Core finding** | 23 patterns catalogued in 3 categories: Creational (5), Structural (7), Behavioral (11). Key principles: "Favor composition over inheritance," "Program to an interface, not an implementation." |
+| **Mechanism** | Patterns are recurring solutions to common problems. Named and catalogued so developers don't rediscover them. |
+| **Where used** | Refactor phase: when ObjCal rules fail, patterns provide alternative structure. |
+
+---
+
+### 35. SOLID Principles
+
+| | |
+|---|---|
+| **Source** | Martin, R. C. (2000). "Principles of OOD." *ButUncleBob.com*. Acronym coined by Michael Feathers (2004). |
+| **Date** | 2000 |
+| **URL** | https://blog.interface-solv.com/wp-content/uploads/2020/07/Principles-Of-OOD.pdf |
+| **Alternative** | — |
+| **Status** | Confirmed |
+| **Core finding** | S: One reason to change. O: Open extension, closed modification. L: Subtypes substitutable. I: No forced stub methods. D: Depend on abstractions, not concretes. |
+| **Mechanism** | Each principle targets a specific coupling failure mode. Together they produce low coupling, high cohesion. |
+| **Where used** | Refactor self-check table in `implementation/SKILL.md`: 5-row SOLID table with PASS/FAIL. |
+
+---
+
+### 36. QDIR — Bad-Smells + OO Metrics Prioritization
+
+| | |
+|---|---|
+| **Source** | Malhotra, R., Singh, P. (2020). "Exploiting bad-smells and object-oriented characteristics to prioritize classes for refactoring." *Int. J. Syst. Assur. Eng. Manag.* 11(Suppl 2), 133–144. Springer. |
+| **Date** | 2020 |
+| **URL** | https://doi.org/10.1007/s13198-020-01001-x |
+| **Alternative** | — |
+| **Status** | Confirmed — empirical |
+| **Core finding** | QDIR (Quality Depreciation Index Rule) combines bad-smell severity with OO metrics (LOC, WMC, CBO, RFC, DIT) to prioritize classes for refactoring. Validated on 8 open-source Java systems. |
+| **Mechanism** | Classes with high smell severity AND high OO metrics are prioritized. QDIR = weighted sum. |
+| **Where used** | Refactor prioritization in Step 4: when smell detected, check OO metrics to prioritize. |
+
+---
+
+### 37. Smells + Architectural Refactoring
+
+| | |
+|---|---|
+| **Source** | Silva, C. et al. (2020). "When Are Smells Indicators of Architectural Refactoring Opportunities." *Proc. 28th Int. Conf. on Program Comprehension*. ACM. |
+| **Date** | 2020 |
+| **URL** | https://doi.org/10.1145/3387904.3389276 |
+| **Alternative** | — |
+| **Status** | Confirmed — empirical |
+| **Core finding** | Study of 50 projects, 52,667 refactored elements. 67.53% of smells co-occur. Smells that co-occur are indicators of architectural refactoring in 88.53% of cases. |
+| **Mechanism** | Single smells are often code-level; co-occurring smells indicate architectural problems. Pattern catalog for smells→specific architectural refactorings. |
+| **Where used** | Smell detection triggers architectural analysis when co-occurrence patterns detected. |
+
+---
+
+### 38. SPIRIT Tool — Code Smell Prioritization
+
+| | |
+|---|---|
+| **Source** | Vidal, S. A., Marcos, C., Díaz-Pace, J. A. (2014). "An Approach to Prioritize Code Smells for Refactoring." *Automated Software Engineering*, 23(3), 501–532. Carleton University/Springer. |
+| **Date** | 2014 |
+| **URL** | https://doi.org/10.1007/s10515-014-0175-x |
+| **Alternative** | — |
+| **Status** | Confirmed — tool |
+| **Core finding** | SPIRIT (Smart Identification of Refactoring opportunITies) prioritizes smells by 3 criteria: (1) component stability, (2) impact on modifiability scenarios, (3) smell relevance. Top-ranked smells correlate with expert developer judgment. |
+| **Mechanism** | Semi-automated ranking. Combines version history (stable vs. unstable), impact analysis, and smell type. |
+| **Where used** | Refactor prioritization: stability = has the class changed recently? Unstable + smelly = prioritize. |
+
+---
+
+### 39. Bad Engineering Properties of OOP
+
+| | |
+|---|---|
+| **Source** | Cardelli, L. (1996). "Bad Engineering Properties of Object-Oriented Languages." *ACM Computing Surveys*, 28(4), 150. |
+| **Date** | 1996 |
+| **URL** | https://www.microsoft.com/en-us/research/publication/bad-engineering-properties-of-object-oriented-languages/ |
+| **Alternative** | — |
+| **Status** | Confirmed — foundational critique |
+| **Core finding** | OOP has 5 "economy" problems: (1) Execution (virtual methods prevent inlining), (2) Compilation (no code/interface separation), (3) Small-scale dev (expressive type systems missing), (4) Large-scale dev (poor class extension/modification), (5) Language features (baroque complexity). |
+| **Mechanism** | OOP is not universally superior. Trade-offs exist. Knowing these helps avoid over-engineering. |
+| **Where used** | Anti-pre-pattern: know when OOP adds complexity vs. value. Feedback item 2 rationale. |
+
+---
+
+### 40. Code Complexity Model of OOP
+
+| | |
+|---|---|
+| **Source** | Aluthwaththage, J. H., Thathsarani, H. A. N. N. (2024). "A Novel OO-Based Code Complexity Metric." *Proc. Future Technologies Conference (FTC)*, 616–628. Springer/IEEE. |
+| **Date** | 2024 |
+| **URL** | https://link.springer.com/chapter/10.1007/978-3-031-73125-9_39 |
+| **Alternative** | Misra et al. (2024). "A Suite of Object Oriented Cognitive Complexity Metrics." IEEE. |
+| **Status** | Partially confirmed — recent |
+| **Core finding** | CWC (Combined Weighted Complexity) measures OOP complexity at statement level, considering 8 factors: nesting depth, control types, compound conditions, try-catch, threads, pointers, references, dynamic memory. Addresses gap in existing metrics ignoring cognitive load. |
+| **Mechanism** | Granular complexity scoring. Higher scores indicate more cognitively demanding code. |
+| **Where used** | Complexity measurement in Step 4 refactor: when function >20 lines, compute CWC-style granular score. |
+
+---
+
+### 41. Metric Thresholds for Smell Detection
+
+| | |
+|---|---|
+| **Source** | Bigonha, M. A. S., et al. (2019). "The usefulness of software metric thresholds for detection of bad smells and fault prediction." *Information and Software Technology*, 115, 79–92. |
+| **Date** | 2019 |
+| **URL** | https://doi.org/10.1016/j.infsof.2019.08.005 |
+| **Alternative** | Catal et al. (2018). "Software metrics thresholds calculation techniques." Info. Softw. Technol. |
+| **Status** | Confirmed |
+| **Core finding** | Metric thresholds (e.g., LOC > 600) used for smell detection are unreliable. Study on 92 open-source systems found precision too low for practical use. Neither heuristic-based (DECOR) nor ML approaches achieve acceptable accuracy. ROC Curves best of 3 threshold techniques but still insufficient alone. |
+| **Mechanism** | Fixed thresholds are context-dependent. Thresholds should be project-specific, not universal. |
+| **Where used** | Anti-pre-pattern: do not rely on fixed thresholds. Use co-occurrence patterns (Entry 37) instead. |
+
+---
+
+### 42. Hexagonal Architecture — Ports and Adapters
+
+| | |
+|---|---|
+| **Source** | Cockburn, A. (2005). "Hexagonal Architecture." *alistair.cockburn.us*. https://alistair.cockburn.us/hexagonal-architecture/ |
+| **Date** | 2005 |
+| **URL** | https://alistair.cockburn.us/hexagonal-architecture/ |
+| **Alternative** | Freeman, S., & Pryce, N. (2009). *Growing Object-Oriented Software, Guided by Tests*. Addison-Wesley. (Chapter 7: "Ports and Adapters") |
+| **Status** | Confirmed — foundational; widely adopted as Clean Architecture, Onion Architecture |
+| **Core finding** | The application domain should have no knowledge of external systems (databases, filesystems, network, UI). All contact between the domain and the outside world passes through a **port** (an interface / Protocol) and an **adapter** (a concrete implementation of that port). This makes the domain independently testable without any infrastructure. The key structural rule: dependency arrows point inward — domain code never imports from adapters; adapters import from domain. |
+| **Mechanism** | Two distinct sides of any application: the "driving side" (actors who initiate action — tests, UI, CLI) and the "driven side" (actors the application drives — databases, filesystems, external services). Each driven-side dependency is hidden behind a port. Tests supply a test adapter; production supplies a real adapter. Substituting adapters requires no domain code changes. This is what SOLID-D ("depend on abstractions") looks like at the architectural layer — not just at the class level. |
+| **Where used** | Step 2 (Architecture): every external dependency identified during domain analysis must be assigned a port (Protocol) and a concrete adapter. Module structure always includes `<package>/adapters/<dep>.py` alongside `<package>/domain/`. The `adapters/` layer is decided at Step 2, not discovered during Step 4 refactoring. |
+
+---
+
+### 43. Feature-Driven Development — Domain Modeling to Feature List
+
+| | |
+|---|---|
+| **Source** | Ambler, S. W. (2002). *Agile Modeling: Effective Practices for eXtreme Programming and the Unified Process*. Wiley. Supplemented by: agilemodeling.com — "Feature Driven Development and Agile Modeling." |
+| **Date** | 2002 |
+| **URL** | https://www.agilemodeling.com/essays/fdd.htm |
+| **Alternative** | Palmer, S. R., & Felsing, J. M. (2002). *A Practical Guide to Feature-Driven Development*. Prentice Hall. |
+| **Status** | Confirmed |
+| **Core finding** | FDD requires domain modeling *before* feature naming. Features are expressed as "Action result object" triples (e.g., "Enroll a student in a seminar"). Features group into Feature Sets (shared domain object), which group into Subject Areas. 78% of organisations doing Agile also do initial high-level agile requirements modeling; 85% find it worthwhile. |
+| **Mechanism** | Domain modeling extracts the vocabulary (nouns = candidate classes, verbs = candidate methods). Feature identification then asks: "what verbs act on each noun?" This produces a list of small, deliverable units that are coherent with the domain rather than reflecting technical or organisational boundaries. |
+| **Where used** | Phase 1 of `scope/SKILL.md`: after the interview summary is confirmed, PO performs domain analysis (nouns/verbs → subject areas → FDD "Action object" feature names) before creating `.feature` file stubs. |
+
+---
+
+### 44. Affinity Mapping / KJ Method — Bottom-Up Feature Identification
+
+| | |
+|---|---|
+| **Source** | Krause, R., & Pernice, K. (2024). Affinity Diagramming for Collaboratively Sorting UX Findings and Design Ideas. *Nielsen Norman Group*. https://www.nngroup.com/articles/affinity-diagram/ |
+| **Date** | 2024 (method origin: Kawakita, J., 1960s) |
+| **URL** | https://www.nngroup.com/articles/affinity-diagram/ |
+| **Alternative** | Kawakita, J. (1967). *Abduction*. Chuokoronsha (KJ Method original). |
+| **Status** | Confirmed |
+| **Core finding** | Affinity diagramming (KJ Method) groups raw observations/requirements into clusters by bottom-up similarity — no categories are named until grouping is complete. This prevents confirmation bias from top-down pre-labelling. Each named cluster becomes a candidate feature. Dot voting on clusters produces a prioritized feature list. Small clusters must not be discarded — they often represent minority concerns or genuinely novel features. |
+| **Mechanism** | Bottom-up category emergence: when categories are not imposed in advance, the grouping reflects actual similarity in the data rather than the analyst's prior mental model. NN/G: "the journey is more important than the destination — the discussions that occurred while building the diagram are more impactful than the final format." |
+| **Where used** | Phase 1 of `scope/SKILL.md` (alternative to FDD domain modeling): PO uses affinity mapping on interview answers to derive feature clusters before creating `.feature` stubs. Best suited when working from interview transcripts solo rather than with a cross-silo team. |
+
+---
+
+### 45. Event Storming — Domain Events to Functional Areas
+
+| | |
+|---|---|
+| **Source** | Brandolini, A. (2013–present). *EventStorming*. Leanpub / eventstorming.com. https://eventstorming.com |
+| **Date** | 2013 |
+| **URL** | https://eventstorming.com; Bourgau, P. (2017). Detailed Agenda of a DDD Big Picture Event Storming. https://philippe.bourgau.net/detailed-agenda-of-a-ddd-big-picture-event-storming-part-1/ |
+| **Alternative** | Brandolini, A. (2021). *Introducing EventStorming*. Leanpub. |
+| **Status** | Confirmed |
+| **Core finding** | Event Storming is a collaborative workshop where domain experts place past-tense domain events on a timeline. Sorting the events creates natural Functional Area clusters — these are candidate feature groups / Subject Areas. The workshop also produces Ubiquitous Language (shared vocabulary), a Problem Inventory (open questions), and Actor roles (for user story "As a [role]" parts). It does NOT produce Gherkin directly; its output feeds into Example Mapping per story. |
+| **Mechanism** | Temporal sequencing of domain events forces resolution of conflicting mental models across organisational silos. Clusters emerge from shared vocabulary and causal proximity — not from the facilitator's prior structure. Bourgau: "Although nobody understands Bounded Context from the start, everyone gets Functional Area." |
+| **Where used** | Optional alternative in Phase 1 of `scope/SKILL.md` for cross-silo discovery. Best suited when multiple stakeholders from different departments need to build shared understanding. Outputs (Functional Areas + Ubiquitous Language) map directly to Subject Areas (feature groups) and the Entities table in `.feature` file discovery sections. |
+
+---
+
+### 46. Critical Incident Technique — Gap-Finding via Past Events
+
+| | |
+|---|---|
+| **Source** | Flanagan, J. C. (1954). "The critical incident technique." *Psychological Bulletin*, 51(4), 327–357. |
+| **Date** | 1954 |
+| **URL** | https://doi.org/10.1037/h0061470 |
+| **Alternative** | Rosala, M. (2020). The Critical Incident Technique in UX. *Nielsen Norman Group*. https://www.nngroup.com/articles/critical-incident-technique/ |
+| **Status** | Confirmed — foundational; ~200 follow-on empirical studies in marketing alone (Gremler 2004) |
+| **Core finding** | Anchoring an interview on a specific past incident ("Tell me about a time when X broke down") breaks schema-based recall. Stakeholders describing actual past events report real workarounds, edge cases, and failure modes that never surface when asked "how does this usually work?" The technique explicitly requires both positive and negative incidents — positive first to establish rapport, negative second to surface failures. |
+| **Mechanism** | Direct questions ("how does the system work?") elicit the stakeholder's mental schema — a sanitized, normalized, gap-free description of how things *should* work. Incidents bypass the schema because episodic memory is anchored to specific sensory and emotional detail that the schema lacks. Flanagan: "a critical incident must occur in a situation where the purpose or intent of the act seems fairly clear to the observer and where its consequences are sufficiently definite to leave little doubt." |
+| **Where used** | Session 2 (gap-finding) of Phase 1 and Phase 2 in `scope/SKILL.md`. CIT prompts: "Tell me about a specific time this worked well / broke down." Follow up: "What were you trying to do? What made it difficult? What did you do instead?" |
+
+---
+
+### 47. Cognitive Interview — Memory-Enhancing Elicitation Technique
+
+| | |
+|---|---|
+| **Source** | Fisher, R. P., & Geiselman, R. E. (1992). *Memory-Enhancing Techniques for Investigative Interviewing: The Cognitive Interview*. Charles C. Thomas. |
+| **Date** | 1984 (original); 1987 (enhanced CI); 1992 (manual) |
+| **URL** | DOI: 10.1037/0021-9010.74.5.722 (1989 field study) |
+| **Alternative** | Moody, W., Will, R. P., & Blanton, J. E. (1996). "Enhancing knowledge elicitation using the cognitive interview." *Expert Systems with Applications*, 10(1), 127–133. DOI: 10.1016/0957-4174(95)00039-9 |
+| **Status** | Confirmed — meta-analysis: Köhnken, Milne, Memon & Bull (1999), *Psychology, Crime & Law*, 5(1-2), 3–27. DOI: 10.1080/10683169908414991 |
+| **Core finding** | The enhanced CI elicits ~35% more correct information than standard interviews with equal accuracy rates (85% vs. 82%). Moody et al. (1996) directly applied CI to knowledge elicitation from domain experts, finding it superior for capturing episodic knowledge that standard structured interviews miss. |
+| **Mechanism** | Four retrieval mnemonics: (1) **Mental reinstatement of context** — stakeholder mentally returns to a specific past situation; (2) **Report everything** — all details including seemingly minor ones; (3) **Temporal reversal** — narrate events from a different starting point to disrupt schema-based reconstruction; (4) **Perspective change** — describe the situation from another actor's viewpoint. Each mnemonic opens a different memory access route, collectively surfacing what direct questions cannot. |
+| **Where used** | Session 2 (gap-finding) of Phase 1 and Phase 2 in `scope/SKILL.md`. CI perspective change prompt: "What do you think the end user experiences in that situation?" CI reversal prompt: "Walk me through that scenario starting from when it went wrong." |
+
+---
+
+### 48. Laddering / Means-End Chain — Surfacing Unstated Motivations
+
+| | |
+|---|---|
+| **Source** | Reynolds, T. J., & Gutman, J. (1988). "Laddering theory, method, analysis, and interpretation." *Journal of Advertising Research*, 28(1), 11–31. |
+| **Date** | 1988 (method origin: Kelly, G. (1955). *The Psychology of Personal Constructs*. Norton.) |
+| **URL** | https://en.wikipedia.org/wiki/Repertory_grid |
+| **Alternative** | Hunter, M. G., & Beck, J. E. (2000). "Using repertory grids to conduct cross-cultural information systems research." *Information Systems Research*, 11(1), 93–101. DOI: 10.1287/isre.11.1.93.11786 |
+| **Status** | Confirmed — operationalised in IS research (Hunter & Beck 2000); embedded in NNG interview protocols (Rosala 2021) |
+| **Core finding** | Repeatedly asking "Why is that important to you?" climbs a means-end chain from concrete attribute → functional consequence → psychosocial consequence → terminal value. The stakeholder's first answer is rarely the real constraint — it is the socially expected, conscious-level response. The real motivation (and the actual constraint that requirements must satisfy) emerges two or three levels up the ladder. |
+| **Mechanism** | The Gherkin "So that [benefit]" clause is structurally a single-rung means-end ladder. Full laddering reveals the value conflicts between stakeholders whose surface requirements look identical but whose ladders diverge at the consequence level. Without laddering, requirements that satisfy the stated attribute may fail the underlying goal. |
+| **Where used** | Session 2 (gap-finding) of Phase 1 and Phase 2 in `scope/SKILL.md`. Laddering probe: "Why is that important to you?", "What does that enable for you?", "What would break if that weren't available?" Climb until the stakeholder reaches a terminal value they cannot explain further. |
+
+---
+
+### 49. Funnel Technique — Question Ordering to Prevent Priming
+
+| | |
+|---|---|
+| **Source** | Rosala, M., & Moran, K. (2022). The Funnel Technique in Qualitative User Research. *Nielsen Norman Group*. https://www.nngroup.com/articles/the-funnel-technique-in-qualitative-user-research/ |
+| **Date** | 2022 |
+| **URL** | https://www.nngroup.com/articles/the-funnel-technique-in-qualitative-user-research/ |
+| **Alternative** | Christel, M. G., & Kang, K. C. (1992). *Issues in Requirements Elicitation*. CMU/SEI-92-TR-012. https://www.sei.cmu.edu/library/abstracts/reports/92tr012.cfm |
+| **Status** | Confirmed — standard NNG qualitative research protocol |
+| **Core finding** | Starting with broad open-ended questions before narrowing to specifics prevents the interviewer from priming the interviewee's responses. Once a category label is introduced, the interviewee interprets subsequent questions through that frame and under-reports items that don't fit it. Broad-to-narrow sequencing within each topic cluster is the evidence-based default for discovery interviews. |
+| **Mechanism** | Priming bias is structural: human memory is associative, so any category name the interviewer introduces activates a schema that filters what the interviewee considers worth reporting. The funnel sequences questions so the interviewee's own categories emerge first, before the interviewer's categories are introduced. |
+| **Where used** | Within each session of Phase 1 and Phase 2 in `scope/SKILL.md`. Within each topic cluster: start with "Tell me about..." before asking specific follow-up probes. Applies alongside CIT, CI, and Laddering — all of which are also open-ended by design. |
+
+---
+
+### 50. Issues in Requirements Elicitation — Why Direct Questions Fail
+
+| | |
+|---|---|
+| **Source** | Christel, M. G., & Kang, K. C. (1992). *Issues in Requirements Elicitation*. CMU/SEI-92-TR-012. Software Engineering Institute, Carnegie Mellon University. |
+| **Date** | 1992 |
+| **URL** | https://www.sei.cmu.edu/library/abstracts/reports/92tr012.cfm |
+| **Alternative** | Sommerville, I., & Sawyer, P. (1997). *Requirements Engineering: A Good Practice Guide*. Wiley. |
+| **Status** | Confirmed — foundational SEI technical report; widely cited in RE literature |
+| **Core finding** | Stakeholders have three structural problems that make direct questioning insufficient: (1) they omit information that is "obvious" to them but unknown to the analyst; (2) they have trouble communicating needs they have never had to articulate; (3) they may not know what they want until they see what they don't want. These are not stakeholder failures — they are structural properties of tacit knowledge. |
+| **Mechanism** | Expert knowledge is largely procedural and tacit. When asked "how does the system work?", experts describe what they believe happens, not what actually happens. This sanitized account is internally consistent but incomplete. Gap-finding techniques (CIT, CI, Laddering) are required because they bypass the expert's mental schema and access the episodic memory layer where real complexity lives. |
+| **Where used** | Theoretical justification for the 3-session interview structure and the use of CIT, CI, and Laddering in `scope/SKILL.md`. Answers the question: "why not just ask the stakeholder directly what they need?" |
+
+---
+
 ## Bibliography
 
 1. Cialdini, R. B. (2001). *Influence: The Psychology of Persuasion* (rev. ed.). HarperBusiness.
@@ -467,3 +813,36 @@ This document explains the cognitive and social-science mechanisms that justify 
 31. Sharma, A., & Henley, A. (2026). Modular Prompt Optimization. arXiv:2601.04055. https://arxiv.org/abs/2601.04055
 32. Rogers, C. R., & Farson, R. E. (1957). *Active Listening*. Industrial Relations Center, University of Chicago.
 33. McNaughton, D., Hamlin, D., McCarthy, J., Head-Reeves, D., & Schreiner, M. (2008). Learning to Listen: Teaching an Active Listening Strategy to Preservice Education Professionals. *Topics in Early Childhood Special Education*, 27(4), 223–231.
+34. Kipling, R. (1902). *Just So Stories*. Macmillan.
+35. Brandenburg, L. (2025). *Requirements Discovery Checklist Pack*. TechCanvass. https://www.businessanalyststoolkit.com/requirements-elicitation-questions/
+36. Sherwen. (2025). "10 Questions to Consider During Requirements Gathering." https://www.sherwen.com/insights/10-questions-you-must-ask-during-requirements-gathering
+37. Evans, E. (2003). *Domain-Driven Design: Tackling Complexity in the Heart of Software*. Addison-Wesley.
+38. Context Mapper. (2025). Rapid Object-Oriented Analysis and Design. https://contextmapper.org/docs/rapid-ooad
+39. Bay, J. (2005). "Object Calisthenics." *IEEE Software/DevX*. https://www.bennadel.com/resources/uploads/2012/objectcalisthenics.pdf
+40. Fowler, M. (1999/2018). *Refactoring: Improving the Design of Existing Code*. Addison-Wesley. https://martinfowler.com/books/refactoring.html
+41. Gamma, E., Helm, R., Johnson, R., Vlissides, J. (1995). *Design Patterns: Elements of Reusable Object-Oriented Software*. Addison-Wesley.
+42. Martin, R. C. (2000). "Principles of OOD." *ButUncleBob.com*. https://blog.interface-solv.com/wp-content/uploads/2020/07/Principles-Of-OOD.pdf
+43. Malhotra, R., & Singh, P. (2020). Exploiting bad-smells and object-oriented characteristics to prioritize classes for refactoring. *Int. J. Syst. Assur. Eng. Manag.*, 11(Suppl 2), 133–144. https://doi.org/10.1007/s13198-020-01001-x
+44. Silva, C. et al. (2020). When Are Smells Indicators of Architectural Refactoring Opportunities. *Proc. 28th Int. Conf. on Program Comprehension*. ACM. https://doi.org/10.1145/3387904.3389276
+45. Vidal, S. A., Marcos, C., & Díaz-Pace, J. A. (2014). An Approach to Prioritize Code Smells for Refactoring. *Automated Software Engineering*, 23(3), 501–532. https://doi.org/10.1007/s10515-014-0175-x
+46. Cardelli, L. (1996). Bad Engineering Properties of Object-Oriented Languages. *ACM Computing Surveys*, 28(4), 150. https://www.microsoft.com/en-us/research/publication/bad-engineering-properties-of-object-oriented-languages/
+47. Aluthwaththage, J. H., & Thathsarani, H. A. N. N. (2024). A Novel OO-Based Code Complexity Metric. *Proc. Future Technologies Conference (FTC)*, 616–628. https://link.springer.com/chapter/10.1007/978-3-031-73125-9_39
+48. Bigonha, M. A. S., et al. (2019). The usefulness of software metric thresholds for detection of bad smells and fault prediction. *Information and Software Technology*, 115, 79–92. https://doi.org/10.1016/j.infsof.2019.08.005
+49. Ambler, S. W. (2002). *Agile Modeling: Effective Practices for eXtreme Programming and the Unified Process*. Wiley. https://www.agilemodeling.com/essays/fdd.htm
+50. Palmer, S. R., & Felsing, J. M. (2002). *A Practical Guide to Feature-Driven Development*. Prentice Hall.
+51. Krause, R., & Pernice, K. (2024). Affinity Diagramming for Collaboratively Sorting UX Findings and Design Ideas. *Nielsen Norman Group*. https://www.nngroup.com/articles/affinity-diagram/
+52. Brandolini, A. (2013–present). *EventStorming*. Leanpub / eventstorming.com. https://eventstorming.com
+53. Bourgau, P. (2017). Detailed Agenda of a DDD Big Picture Event Storming. https://philippe.bourgau.net/detailed-agenda-of-a-ddd-big-picture-event-storming-part-1/
+54. Nielsen, J. (2010). *Interviewing Users*. Nielsen Norman Group. https://www.nngroup.com/articles/interviewing-users/
+55. Farrell, S. (2017). UX Research Cheat Sheet. *Nielsen Norman Group*. https://www.nngroup.com/articles/ux-research-cheat-sheet/
+56. Flanagan, J. C. (1954). The critical incident technique. *Psychological Bulletin*, 51(4), 327–357. https://doi.org/10.1037/h0061470
+57. Fisher, R. P., & Geiselman, R. E. (1992). *Memory-Enhancing Techniques for Investigative Interviewing: The Cognitive Interview*. Charles C. Thomas.
+58. Fisher, R. P., Geiselman, R. E., & Amador, M. (1989). Field test of the cognitive interview: Enhancing the recollection of actual victims and witnesses of crime. *Journal of Applied Psychology*, 74(5), 722–727. https://doi.org/10.1037/0021-9010.74.5.722
+59. Köhnken, G., Milne, R., Memon, A., & Bull, R. (1999). The cognitive interview: A meta-analysis. *Psychology, Crime & Law*, 5(1-2), 3–27. https://doi.org/10.1080/10683169908414991
+60. Moody, W., Will, R. P., & Blanton, J. E. (1996). Enhancing knowledge elicitation using the cognitive interview. *Expert Systems with Applications*, 10(1), 127–133. https://doi.org/10.1016/0957-4174(95)00039-9
+61. Reynolds, T. J., & Gutman, J. (1988). Laddering theory, method, analysis, and interpretation. *Journal of Advertising Research*, 28(1), 11–31.
+62. Christel, M. G., & Kang, K. C. (1992). *Issues in Requirements Elicitation*. CMU/SEI-92-TR-012. Software Engineering Institute, Carnegie Mellon University. https://www.sei.cmu.edu/library/abstracts/reports/92tr012.cfm
+63. Rosala, M. (2020). The Critical Incident Technique in UX. *Nielsen Norman Group*. https://www.nngroup.com/articles/critical-incident-technique/
+64. Rosala, M., & Moran, K. (2022). The Funnel Technique in Qualitative User Research. *Nielsen Norman Group*. https://www.nngroup.com/articles/the-funnel-technique-in-qualitative-user-research/
+65. Cockburn, A. (2005). Hexagonal Architecture. *alistair.cockburn.us*. https://alistair.cockburn.us/hexagonal-architecture/
+66. Freeman, S., & Pryce, N. (2009). *Growing Object-Oriented Software, Guided by Tests*. Addison-Wesley.

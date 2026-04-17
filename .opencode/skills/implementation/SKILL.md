@@ -203,34 +203,41 @@ Update `## Cycle State` Phase: `REFACTOR`
 
 After refactor is complete and `test-fast` passes, write the self-declaration **into `TODO.md`** under a `## Self-Declaration` block (replacing any prior one), then request the reviewer check. The reviewer will read `TODO.md` directly — do not paste the checklist into a separate message.
 
+If a pattern smell was detected during refactor, load `skill design-patterns` to identify and apply the correct pattern before writing this block.
+
 **Write this block into `TODO.md` now, filling in every item before requesting review:**
 
 ```markdown
 ## Self-Declaration (@id:<hex>)
-- [ ] YAGNI-1: No abstractions beyond current AC — `file:line`
-- [ ] YAGNI-2: No speculative parameters or flags for hypothetical future use — `file:line`
-- [ ] KISS-1: Every function has one job, describable in one sentence without "and" — `file:line`
-- [ ] KISS-2: No unnecessary indirection, wrapper layers, or complexity — `file:line`
-- [ ] DRY-1: No logic block duplicated across two or more locations — `file:line`
-- [ ] DRY-2: Every shared concept extracted to exactly one place — `file:line`
-- [ ] SOLID-S: Each class/function has one reason to change — `file:line`
-- [ ] SOLID-O: New behavior added by extension, no existing class body edited — `file:line` or N/A
-- [ ] SOLID-L: Every subtype fully substitutable; no narrowed contract or surprise raise — `file:line` or N/A
-- [ ] SOLID-I: No Protocol/ABC forces an implementor to leave a method as `...` or raise — `file:line` or N/A
-- [ ] SOLID-D: Domain classes depend on Protocols, not on I/O or framework imports directly — `file:line`
-- [ ] OC-1: Max one indent level per method; inner blocks extracted to named helpers — deepest: `file:line`
-- [ ] OC-2: No `else` after `return`; all branches return early and the happy path is flat — `file:line` or N/A
-- [ ] OC-3: No bare `int`/`str`/`float` as domain concepts in public signatures; each wrapped in a named type — `file:line` or N/A
-- [ ] OC-4: No bare `list[X]`/`set[X]` as domain values; each wrapped in a named collection class — `file:line` or N/A
-- [ ] OC-5: No `a.b.c()` chains; each dot navigation step assigned to a named local — `file:line` or N/A
-- [ ] OC-6: No abbreviations anywhere; every name is a full word readable without context — `file:line` or N/A
-- [ ] OC-7: Every function ≤ 20 lines, every class ≤ 50 lines — longest: `file:line`
-- [ ] OC-8: Every class has ≤ 2 `self.x` in `__init__`; if > 2 before this cycle, name the new value object extracted and cite `file:line` per class
-- [ ] OC-9: No `get_x()`/`set_x()` pairs; state changes via commands, queries return values — `file:line` or N/A
-- [ ] Semantic: test Given/When/Then operates at the same abstraction level as the AC — `file:line`
+As a developer I declare this code follows YAGNI-1 (no abstractions beyond current AC) — YES | `file:line`
+As a developer I declare this code follows YAGNI-2 (no speculative parameters or flags) — YES | `file:line`
+As a developer I declare this code follows KISS-1 (every function has one job) — YES | `file:line`
+As a developer I declare this code follows KISS-2 (no unnecessary indirection) — YES | `file:line`
+As a developer I declare this code follows DRY-1 (no duplicated logic) — YES | `file:line`
+As a developer I declare this code follows DRY-2 (every shared concept in one place) — YES | `file:line`
+As a developer I declare this code follows SOLID-S (one reason to change) — YES | `file:line`
+As a developer I declare this code follows SOLID-O (extension not modification) — YES | `file:line` or N/A | reason
+As a developer I declare this code follows SOLID-L (subtypes fully substitutable) — YES | `file:line` or N/A | reason
+As a developer I declare this code follows SOLID-I (no forced stub methods) — YES | `file:line` or N/A | reason
+As a developer I declare this code follows SOLID-D (domain depends on Protocols) — YES | `file:line`
+As a developer I declare this code follows OC-1 (max one indent level per method) — YES | deepest: `file:line`
+As a developer I declare this code follows OC-2 (no else after return) — YES | `file:line` or N/A | reason
+As a developer I declare this code follows OC-3 (no bare primitives as domain concepts) — YES | `file:line` or N/A | reason
+As a developer I declare this code follows OC-4 (no bare collections as domain values) — YES | `file:line` or N/A | reason
+As a developer I declare this code follows OC-5 (no chained dot navigation) — YES | `file:line` or N/A | reason
+As a developer I declare this code follows OC-6 (no abbreviations) — YES | `file:line` or N/A | reason
+As a developer I declare this code follows OC-7 (functions ≤20 lines, classes ≤50 lines) — YES | longest: `file:line`
+As a developer I declare this code follows OC-8 (≤2 instance variables per class) — YES | `file:line`
+As a developer I declare this code follows OC-9 (no getters/setters) — YES | `file:line` or N/A | reason
+As a developer I declare this code has no missing Creational pattern (no smell: repeated construction or scattered instantiation) — YES | `file:line` or N/A | reason
+As a developer I declare this code has no missing Structural pattern (no smell: feature envy or parallel conditionals on type) — YES | `file:line` or N/A | reason
+As a developer I declare this code has no missing Behavioral pattern (no smell: large state machine, scattered notification, or repeated algorithm skeleton) — YES | `file:line` or N/A | reason
+As a developer I declare test abstraction matches AC level (semantic alignment) — YES | `file:line`
 ```
 
-*For every item: check the box AND cite `file:line` evidence, or write `N/A` with a one-line reason. An unchecked box or missing evidence is an automatic REJECTED.*
+**A `NO` answer is not an automatic rejection** — it is a flag. State the reason inline and fix before requesting review. Do not submit a self-declaration with a `NO` item unresolved.
+
+*For every item: provide `file:line` evidence, or write `N/A` with a one-line reason. A missing answer or missing evidence is an automatic REJECTED.*
 
 Update `## Cycle State` Phase: `SELF-DECLARE`
 
@@ -245,7 +252,7 @@ The reviewer is scoped to **code design only** (not full Step 5):
 
 **What the reviewer receives**: The developer's completed `## Self-Declaration` block in `TODO.md`, with `file:line` evidence for each rule.
 
-**What the reviewer does**: Independently inspects the actual code for each rule the developer claimed compliant. The self-declaration is an audit target — the reviewer verifies claims, not just reads them.
+**What the reviewer does**: Independently inspects the actual code for each rule the developer claimed `YES`. The self-declaration is an audit target — the reviewer verifies YES claims, not just reads them. The reviewer does NOT re-audit items the developer already flagged as N/A with a reason.
 
 **What the reviewer does NOT check** (deferred to Step 5):
 - Lint compliance
@@ -260,17 +267,30 @@ The reviewer responds using this template:
 
 | Rule | Developer Claims | Reviewer Verdict | Evidence |
 |------|-----------------|------------------|----------|
-| YAGNI | <summary> | PASS / FAIL | `file:line` or N/A |
-| KISS | <summary> | PASS / FAIL | `file:line` or N/A |
-| DRY | <summary> | PASS / FAIL | `file:line` or N/A |
-| SOLID-S | <summary> | PASS / FAIL | `file:line` or N/A |
-| SOLID-O | <summary> | PASS / FAIL | `file:line` or N/A |
-| SOLID-L | <summary> | PASS / FAIL | `file:line` or N/A |
-| SOLID-I | <summary> | PASS / FAIL | `file:line` or N/A |
-| SOLID-D | <summary> | PASS / FAIL | `file:line` or N/A |
-| OC-1 thru OC-9 | <summary> | PASS / FAIL | `file:line` or N/A |
-| Design patterns | <summary> | PASS / FAIL | `file:line` or N/A |
-| Semantic alignment | <summary> | PASS / FAIL | `file:line` or N/A |
+| YAGNI-1 | YES / N/A | PASS / FAIL | `file:line` or N/A |
+| YAGNI-2 | YES / N/A | PASS / FAIL | `file:line` or N/A |
+| KISS-1 | YES / N/A | PASS / FAIL | `file:line` or N/A |
+| KISS-2 | YES / N/A | PASS / FAIL | `file:line` or N/A |
+| DRY-1 | YES / N/A | PASS / FAIL | `file:line` or N/A |
+| DRY-2 | YES / N/A | PASS / FAIL | `file:line` or N/A |
+| SOLID-S | YES / N/A | PASS / FAIL | `file:line` or N/A |
+| SOLID-O | YES / N/A | PASS / FAIL | `file:line` or N/A |
+| SOLID-L | YES / N/A | PASS / FAIL | `file:line` or N/A |
+| SOLID-I | YES / N/A | PASS / FAIL | `file:line` or N/A |
+| SOLID-D | YES / N/A | PASS / FAIL | `file:line` or N/A |
+| OC-1 | YES / N/A | PASS / FAIL | `file:line` or N/A |
+| OC-2 | YES / N/A | PASS / FAIL | `file:line` or N/A |
+| OC-3 | YES / N/A | PASS / FAIL | `file:line` or N/A |
+| OC-4 | YES / N/A | PASS / FAIL | `file:line` or N/A |
+| OC-5 | YES / N/A | PASS / FAIL | `file:line` or N/A |
+| OC-6 | YES / N/A | PASS / FAIL | `file:line` or N/A |
+| OC-7 | YES / N/A | PASS / FAIL | `file:line` or N/A |
+| OC-8 | YES / N/A | PASS / FAIL | `file:line` or N/A |
+| OC-9 | YES / N/A | PASS / FAIL | `file:line` or N/A |
+| Creational pattern | YES / N/A | PASS / FAIL | `file:line` or N/A |
+| Structural pattern | YES / N/A | PASS / FAIL | `file:line` or N/A |
+| Behavioral pattern | YES / N/A | PASS / FAIL | `file:line` or N/A |
+| Semantic alignment | YES / N/A | PASS / FAIL | `file:line` or N/A |
 
 Decision: APPROVED / REJECTED
 ```

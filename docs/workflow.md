@@ -113,15 +113,71 @@ Each step has a designated agent and a specific deliverable. No step is skipped.
 │  STEP 2 — ARCHITECTURE                           agent: developer   │
 ├─────────────────────────────────────────────────────────────────────┤
 │                                                                     │
+│  PREREQUISITES (stop if any fail — escalate to PO)                 │
+│    [ ] in-progress/ has no .feature file (WIP = 1)                 │
+│    [ ] feature Status: BASELINED                                    │
+│    [ ] feature has Rule: + Example: + @id tags                      │
+│    [ ] package name confirmed (pyproject.toml → directory exists)   │
+│                                                                     │
 │  mv backlog/<name>.feature → in-progress/<name>.feature             │
-│  Read docs/features/discovery.md (project-level)                   │
-│  Read ALL backlog .feature files (discovery + entities sections)    │
-│  Read in-progress .feature file (full)                              │
-│  Identify cross-feature entities, shared interfaces, extension pts  │
-│  Silent pre-mortem (YAGNI/KISS/DRY/SOLID/OC/patterns)              │
-│  Append Architecture section to in-progress .feature description   │
-│    (Module Structure + ADRs + Build Changes)                        │
-│  Architecture contradiction check — resolve with PO if needed       │
+│                                                                     │
+│  READ (all before writing anything)                                 │
+│    docs/features/discovery.md (project-level)                      │
+│    ALL backlog .feature files (discovery + entities sections)       │
+│    in-progress .feature file (full: Rules + Examples + @id)        │
+│                                                                     │
+│  DOMAIN ANALYSIS                                                    │
+│    From Entities table + Rules (Business) in .feature file:        │
+│    Nouns → named classes, value objects, aggregates                 │
+│    Verbs → method names with typed signatures                       │
+│    Datasets → named types (not bare dict/list)                      │
+│    Bounded Context check: same word, different meaning across       │
+│      features? → module boundary goes there                         │
+│    Cross-feature entities → candidate shared domain layer           │
+│                                                                     │
+│  SILENT PRE-MORTEM (before writing anything)                        │
+│    "In 6 months this design is a mess. What mistakes did we make?"  │
+│    For each candidate class: >2 ivars? >1 reason to change?         │
+│    For each external dep: is it behind a Protocol?                  │
+│    Any noun serving double duty across modules?                     │
+│    Any structure missing a named design pattern?                    │
+│    → If pattern smell detected: load skill design-patterns          │
+│                                                                     │
+│  Write Architecture section in in-progress .feature file            │
+│    ### Module Structure                                             │
+│      <package>/domain/<noun>.py                                     │
+│        class <Noun>:          ← named class + responsibilities      │
+│            field: Type                                              │
+│        def <verb>(<Noun>) -> <Type>: ...  ← typed signatures        │
+│        class <DepName>(Protocol): ...     ← external dep contract   │
+│      <package>/domain/service.py          ← cross-entity operations │
+│      <package>/adapters/<dep>.py          ← Protocol impl           │
+│    ### Key Decisions                                                │
+│      ADR-NNN: <title>                                               │
+│      Decision: <what>                                               │
+│      Reason: <why in one sentence>                                  │
+│      Alternatives considered: <what was rejected and why>           │
+│    ### Build Changes (new runtime deps — requires PO approval)      │
+│                                                                     │
+│  NOTE: signatures are informative — tests/implementation may        │
+│  refine them; record significant changes as ADR updates             │
+│                                                                     │
+│  ARCHITECTURE SMELL CHECK — hard gate (fix before commit)           │
+│    [ ] No planned class with >2 responsibilities (SOLID-S)         │
+│    [ ] No planned class with >2 instance variables (OC-8)          │
+│    [ ] All external deps assigned a Protocol/Adapter (SOLID-D +    │
+│        Hexagonal Architecture)                                      │
+│    [ ] No noun with different meaning across planned modules        │
+│        (DDD Bounded Context)                                        │
+│    [ ] No missing Creational pattern: repeated construction         │
+│        without Factory/Builder                                      │
+│    [ ] No missing Structural pattern: type-switching logic          │
+│        without Strategy/Visitor                                     │
+│    [ ] No missing Behavioral pattern: state machine or scattered    │
+│        notification without State/Observer                          │
+│    [ ] Each ADR consistent with each @id AC — no contradictions    │
+│    [ ] Technically infeasible story → escalate to PO               │
+│                                                                     │
 │  commit: feat(<name>): add architecture                             │
 │                                                                     │
 └─────────────────────────────────────────────────────────────────────┘
@@ -158,9 +214,10 @@ Each step has a designated agent and a specific deliverable. No step is skipped.
 │  REFACTOR:    DRY → SOLID → Object Calisthenics (9 rules)           │
 │               → type hints → docstrings                             │
 │  SELF-DECLARE: write ## Self-Declaration block in TODO.md           │
-│               21-item checklist (YAGNI×2, KISS×2, DRY×2,           │
-│               SOLID×5, OC×9, Semantic×1) with file:line evidence    │
-│               each item: checked box + evidence, or N/A + reason    │
+│               24 first-person declarations (YAGNI×2, KISS×2,        │
+│               DRY×2, SOLID×5, OC×9, Patterns×3, Semantic×1)        │
+│               "As a developer I declare [rule] — YES | file:line"   │
+│               or N/A | reason; load design-patterns if smell found   │
 │  REVIEWER:    code-design check only (no lint/pyright/coverage)     │
 │               reviewer independently verifies YES claims            │
 │               reviewer does NOT re-audit self-declared failures     │
@@ -320,27 +377,30 @@ Test: @id:<hex> — <description>
 Phase: RED | GREEN | REFACTOR | SELF-DECLARE | REVIEWER(code-design) | COMMITTED
 
 ## Self-Declaration (@id:<hex>)
-- [x] YAGNI-1: No abstractions beyond current AC — `file:line`
-- [x] YAGNI-2: No speculative parameters or flags — `file:line`
-- [x] KISS-1: Every function has one job — `file:line`
-- [x] KISS-2: No unnecessary indirection — `file:line`
-- [x] DRY-1: No duplicated logic — `file:line`
-- [x] DRY-2: Every shared concept in one place — `file:line`
-- [x] SOLID-S: One reason to change — `file:line`
-- [x] SOLID-O: Extension, not modification — `file:line` or N/A
-- [x] SOLID-L: Subtypes fully substitutable — `file:line` or N/A
-- [x] SOLID-I: No forced stub methods — `file:line` or N/A
-- [x] SOLID-D: Domain depends on Protocols — `file:line`
-- [x] OC-1: One indent level per method — `file:line`
-- [x] OC-2: No else after return — `file:line` or N/A
-- [x] OC-3: No bare primitives as domain concepts — `file:line` or N/A
-- [x] OC-4: No bare collections as domain values — `file:line` or N/A
-- [x] OC-5: No chained dot navigation — `file:line` or N/A
-- [x] OC-6: No abbreviations — `file:line` or N/A
-- [x] OC-7: Functions ≤ 20 lines, classes ≤ 50 lines — `file:line`
-- [x] OC-8: ≤ 2 instance variables per class — `file:line`
-- [x] OC-9: No getters/setters — `file:line` or N/A
-- [x] Semantic: test abstraction matches AC level — `file:line`
+As a developer I declare this code follows YAGNI-1 (no abstractions beyond current AC) — YES | `file:line`
+As a developer I declare this code follows YAGNI-2 (no speculative parameters or flags) — YES | `file:line`
+As a developer I declare this code follows KISS-1 (every function has one job) — YES | `file:line`
+As a developer I declare this code follows KISS-2 (no unnecessary indirection) — YES | `file:line`
+As a developer I declare this code follows DRY-1 (no duplicated logic) — YES | `file:line`
+As a developer I declare this code follows DRY-2 (every shared concept in one place) — YES | `file:line`
+As a developer I declare this code follows SOLID-S (one reason to change) — YES | `file:line`
+As a developer I declare this code follows SOLID-O (extension not modification) — YES | `file:line` or N/A | reason
+As a developer I declare this code follows SOLID-L (subtypes fully substitutable) — YES | `file:line` or N/A | reason
+As a developer I declare this code follows SOLID-I (no forced stub methods) — YES | `file:line` or N/A | reason
+As a developer I declare this code follows SOLID-D (domain depends on Protocols) — YES | `file:line`
+As a developer I declare this code follows OC-1 (max one indent level per method) — YES | deepest: `file:line`
+As a developer I declare this code follows OC-2 (no else after return) — YES | `file:line` or N/A | reason
+As a developer I declare this code follows OC-3 (no bare primitives as domain concepts) — YES | `file:line` or N/A | reason
+As a developer I declare this code follows OC-4 (no bare collections as domain values) — YES | `file:line` or N/A | reason
+As a developer I declare this code follows OC-5 (no chained dot navigation) — YES | `file:line` or N/A | reason
+As a developer I declare this code follows OC-6 (no abbreviations) — YES | `file:line` or N/A | reason
+As a developer I declare this code follows OC-7 (functions ≤20 lines, classes ≤50 lines) — YES | longest: `file:line`
+As a developer I declare this code follows OC-8 (≤2 instance variables per class) — YES | `file:line`
+As a developer I declare this code follows OC-9 (no getters/setters) — YES | `file:line` or N/A | reason
+As a developer I declare this code has no missing Creational pattern (no smell: repeated construction or scattered instantiation) — YES | `file:line` or N/A | reason
+As a developer I declare this code has no missing Structural pattern (no smell: feature envy or parallel conditionals on type) — YES | `file:line` or N/A | reason
+As a developer I declare this code has no missing Behavioral pattern (no smell: large state machine, scattered notification, or repeated algorithm skeleton) — YES | `file:line` or N/A | reason
+As a developer I declare test abstraction matches AC level (semantic alignment) — YES | `file:line`
 
 ## Progress
 - [x] @id:<hex>: <done> — reviewer(code-design) APPROVED
