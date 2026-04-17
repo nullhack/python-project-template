@@ -110,7 +110,7 @@ Each step has a designated agent and a specific deliverable. No step is skipped.
 └─────────────────────────────────────────────────────────────────────┘
                               ↓  PO picks feature from backlog
 ┌─────────────────────────────────────────────────────────────────────┐
-│  STEP 2 — ARCHITECTURE                           agent: developer   │
+│  STEP 2 — ARCHITECTURE                           agent: software-engineer   │
 ├─────────────────────────────────────────────────────────────────────┤
 │                                                                     │
 │  PREREQUISITES (stop if any fail — escalate to PO)                 │
@@ -183,78 +183,152 @@ Each step has a designated agent and a specific deliverable. No step is skipped.
 └─────────────────────────────────────────────────────────────────────┘
                               ↓
 ┌─────────────────────────────────────────────────────────────────────┐
-│  STEP 3 — TEST FIRST                             agent: developer   │
+│  STEP 3 — TDD LOOP                              agent: software-engineer   │
 ├─────────────────────────────────────────────────────────────────────┤
 │                                                                     │
-│  uv run task gen-tests   →  creates tests/features/<name>/          │
-│                              one <rule-slug>_test.py per Rule:      │
-│                              test_<rule_slug>_<hex>() per Example   │
-│  Write test bodies (real assertions, not raise NotImplementedError) │
-│  Confirm every test FAILS (ImportError / AssertionError)            │
-│  ★ STOP — reviewer checks test design + semantic alignment          │
-│  ★ WAIT for APPROVED                                                │
-│  commit: test(<name>): write failing tests                          │
+│  PREREQUISITES (stop if any fail — escalate to PO)                 │
+│    [ ] Architecture section present in in-progress .feature file   │
+│    [ ] All tests written in tests/features/<feature>/              │
 │                                                                     │
+│  Build TODO.md test list                                            │
+│    List all @id tags from in-progress .feature file                │
+│    Order: fewest dependencies first; most impactful within that    │
+│    Each @id = one TODO item, status: pending                       │
+│                                                                     │
+│  OUTER LOOP — one @id at a time                                    │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │  Pick next pending @id → mark in_progress in TODO.md       │   │
+│  │  (WIP limit: exactly one in_progress at all times)         │   │
+│  │                                                             │   │
+│  │  INNER LOOP                                                 │   │
+│  │  ┌───────────────────────────────────────────────────────┐ │   │
+│  │  │  RED                                                  │ │   │
+│  │  │    Write test body (Given/When/Then → Arrange/Act/Assert) │ │
+│  │  │    uv run task test-fast                              │ │   │
+│  │  │    EXIT: this @id FAILS                               │ │   │
+│  │  │    (if it passes: test is wrong — fix it first)       │ │   │
+│  │  ├───────────────────────────────────────────────────────┤ │   │
+│  │  │  GREEN                                                │ │   │
+│  │  │    Write minimum code — YAGNI + KISS only             │ │   │
+│  │  │    (no DRY, SOLID, OC here — those belong in REFACTOR)│ │   │
+│  │  │    uv run task test-fast                              │ │   │
+│  │  │    EXIT: this @id passes AND all prior tests pass     │ │   │
+│  │  │    (fix implementation only; do not advance @id)      │ │   │
+│  │  ├───────────────────────────────────────────────────────┤ │   │
+│  │  │  REFACTOR                                             │ │   │
+│  │  │    Apply: DRY → SOLID → OC → patterns                 │ │   │
+│  │  │    Load design-patterns skill if smell detected       │ │   │
+│  │  │    Add type hints and docstrings                      │ │   │
+│  │  │    uv run task test-fast after each change            │ │   │
+│  │  │    EXIT: test-fast passes; no smells remain           │ │   │
+│  │  └───────────────────────────────────────────────────────┘ │   │
+│  │                                                             │   │
+│  │  Mark @id completed in TODO.md                             │   │
+│  │  Commit when a meaningful increment is green               │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│  Repeat until all @id items completed                              │
+│                                                                     │
+│  QUALITY GATE (all @id green)                                      │
+│    uv run task lint                                                │
+│    uv run task static-check                                        │
+│    uv run task test           (coverage must be 100%)              │
+│    timeout 10s uv run task run                                     │
+│    coverage < 100%: add test in tests/unit/ for uncovered branch   │
+│      (do NOT add @id tests for coverage — @id tests are AC only)     │
+│    All must pass before Self-Declaration                           │
+│                                                                     │
+│  SELF-DECLARATION (once, after all quality gates pass)             │
+│    As a software-engineer I declare:                               │
+│      * YAGNI: no code without a failing test — YES/NO | file:line │
+│      * YAGNI: no speculative abstractions — YES/NO | file:line   │
+│      * KISS: simplest solution that passes — YES/NO | file:line   │
+│      * KISS: no premature optimization — YES/NO | file:line       │
+│      * DRY: no duplication — YES/NO | file:line                  │
+│      * DRY: no redundant comments — YES/NO | file:line            │
+│      * SOLID-S: one reason to change per class — YES/NO | file:line│
+│      * SOLID-O: open for extension, closed for modification        │
+│                   — YES/NO | file:line                            │
+│      * SOLID-L: subtypes substitutable — YES/NO | file:line       │
+│      * SOLID-I: no forced unused deps — YES/NO | file:line        │
+│      * SOLID-D: depend on abstractions, not concretions            │
+│                   — YES/NO | file:line                            │
+│      * OC-1: one level of indentation per method — YES/NO | file:line│
+│      * OC-2: no else after return — YES/NO | file:line            │
+│      * OC-3: primitive types wrapped — YES/NO | file:line        │
+│      * OC-4: first-class collections — YES/NO | file:line        │
+│      * OC-5: one dot per line — YES/NO | file:line                │
+│      * OC-6: no abbreviations — YES/NO | file:line                │
+│      * OC-7: ≤20 lines per function — YES/NO | file:line          │
+│      * OC-8: ≤2 instance variables per class — YES/NO | file:line │
+│      * OC-9: no getters/setters — YES/NO | file:line              │
+│      * Patterns: no creational smell — YES/NO | file:line         │
+│      * Patterns: no structural smell — YES/NO | file:line         │
+│      * Patterns: no behavioral smell — YES/NO | file:line         │
+│      * Semantic: tests operate at same abstraction as AC           │
+│                   — YES/NO | file:line                            │
+│                                                                     │
+│  → Hand off to Step 4 (Verify)                                     │
 └─────────────────────────────────────────────────────────────────────┘
                               ↓
 ┌─────────────────────────────────────────────────────────────────────┐
-│  STEP 4 — IMPLEMENT                              agent: developer   │
+│  STEP 4 — VERIFY                                  agent: reviewer   │
 ├─────────────────────────────────────────────────────────────────────┤
 │                                                                     │
-│  For each failing test (one at a time):                             │
+│  Default hypothesis: BROKEN. Prove otherwise or REJECT.             │
 │                                                                     │
-│    RED → GREEN → REFACTOR → SELF-DECLARE ─STOP─ REVIEWER ─WAIT─   │
-│                                                          ↓ APPROVED │
-│                                                       COMMIT        │
-│                                                          ↓          │
-│                                                    next test        │
+│  4a. READ                                                           │
+│    in-progress .feature file (Rules + Examples + @id)             │
+│    Self-Declaration from software-engineer                         │
 │                                                                     │
-│  RED:         confirm test fails                                    │
-│  GREEN:       minimum code to pass (YAGNI + KISS only)              │
-│  REFACTOR:    DRY → SOLID → Object Calisthenics (9 rules)           │
-│               → type hints → docstrings                             │
-│  SELF-DECLARE: write ## Self-Declaration block in TODO.md           │
-│               24 first-person declarations (YAGNI×2, KISS×2,        │
-│               DRY×2, SOLID×5, OC×9, Patterns×3, Semantic×1)        │
-│               "As a developer I declare [rule] — YES | file:line"   │
-│               or N/A | reason; load design-patterns if smell found   │
-│  REVIEWER:    code-design check only (no lint/pyright/coverage)     │
-│               reviewer independently verifies YES claims            │
-│               reviewer does NOT re-audit self-declared failures     │
-│  COMMIT:      feat(<name>): implement <what>                        │
+│  4b. pyproject.toml GATE                                           │
+│    git diff main -- pyproject.toml                                 │
+│    Any change → REJECT immediately                                 │
+│    software-engineer must revert + get stakeholder approval        │
 │                                                                     │
-│  After all tests green:                                             │
-│    lint + static-check + test + timeout run  (all must pass)        │
-│    developer pre-mortem (2-3 sentences)                             │
+│  4c. COMMIT HISTORY                                                 │
+│    git log --oneline main..HEAD                                    │
+│    All commits follow conventional commit format?                  │
+│    No "fix tests", "wip", "temp" commits?                          │
 │                                                                     │
+│  4d. COMMANDS                                                       │
+│    uv run task lint           (must exit 0)                        │
+│    uv run task static-check   (must exit 0)                        │
+│    uv run task test           (must exit 0, coverage 100%)         │
+│    timeout 10s uv run task run (exit 124 = hung = REJECT)          │
+│                                                                     │
+│  4e. PRODUCTION GATE                                                │
+│    Does the application behave as described in the feature file?   │
+│    Run manually or via integration test — not just green CI        │
+│    Input → output check for each Rule: block                       │
+│                                                                     │
+│  4f. CODE REVIEW (semantic — not covered by tooling)               │
+│    [ ] Tests operate at same abstraction level as AC              │
+│    [ ] No test asserts implementation details                      │
+│    [ ] Each @id test covers exactly one Example                   │
+│    [ ] No logic in tests (no if/for/while)                         │
+│    [ ] Module structure matches Architecture section               │
+│    [ ] No external dependency outside adapters/                   │
+│    [ ] Docstrings explain why, not what                             │
+│                                                                     │
+│  4g. SELF-DECLARATION AUDIT                                        │
+│    For every YES claim: find the file:line — does it hold?          │
+│    For every NO claim: is the deviation justified?                 │
+│    Undeclared violations → REJECT                                  │
+│                                                                     │
+│  4h. INTERACTIVE (if any doubt remains)                            │
+│    Ask software-engineer one targeted question per ambiguity        │
+│    Do not proceed to report if question is unanswered              │
+│                                                                     │
+│  4i. REPORT                                                         │
+│    APPROVED — all gates passed, no undeclared violations           │
+│    REJECTED — list each failure with file:line and required fix    │
+│                                                                     │
+│  On APPROVED → notify PO                                            │
+│  On REJECTED → return to software-engineer (Step 3 quality gate)  │
 └─────────────────────────────────────────────────────────────────────┘
-                              ↓
+                               ↓ APPROVED
 ┌─────────────────────────────────────────────────────────────────────┐
-│  STEP 5 — VERIFY                                  agent: reviewer   │
-├─────────────────────────────────────────────────────────────────────┤
-│                                                                     │
-│  Default hypothesis: broken despite green checks                    │
-│                                                                     │
-│  1. Read feature file — all @id Examples, interaction model         │
-│  2. Check commit history — one commit per test, clean status        │
-│  3. Production-grade gate:                                          │
-│       app exits cleanly + output changes with input                 │
-│  4. Code review (stop on first failure):                            │
-│       4a Correctness (dead code, DRY, YAGNI)                        │
-│       4b KISS (one thing, nesting, size)                            │
-│       4c SOLID (5-row table)                                        │
-│       4d Object Calisthenics (9-row table)                          │
-│       4e Design Patterns (5 smells)                                 │
-│       4f Tests (docstrings, contracts, @id coverage, naming)        │
-│       4g Code Quality (noqa, type hints, docstrings, coverage)      │
-│  5. Run: gen-tests --orphans → lint → static-check → test           │
-│  6. Interactive verification (if UI involved)                       │
-│  7. Written report: APPROVED or REJECTED                            │
-│                                                                     │
-└─────────────────────────────────────────────────────────────────────┘
-                              ↓ APPROVED
-┌─────────────────────────────────────────────────────────────────────┐
-│  STEP 6 — ACCEPT                             agent: product-owner   │
+│  STEP 5 — ACCEPT                             agent: product-owner   │
 ├─────────────────────────────────────────────────────────────────────┤
 │                                                                     │
 │  PO runs/observes the feature (real user interaction)               │
@@ -336,16 +410,12 @@ Two discovery sources:
 
 | Command | When | Purpose |
 |---|---|---|
-| `uv run task gen-tests` | Step 3, Step 4 | Reads `.feature` files → creates/syncs test stubs in `tests/features/` |
-| `uv run task gen-tests -- --check` | Before gen-tests | Dry run — preview what would change |
-| `uv run task gen-tests -- --orphans` | Step 5 | List tests with no matching `@id` — already validated by gen-tests |
 | `uv run task gen-todo` | Every session | Reads in-progress `.feature` → syncs `TODO.md` |
-| `uv run task gen-id` | Step 1 Phase 4 | Generate 8-char hex `@id` for a new Example |
-| `uv run task test-fast` | Step 4 cycle | Fast test run (no coverage) — used during Red-Green-Refactor |
-| `uv run task test` | Handoff, Step 5 | Full suite with coverage — must reach 100% |
-| `uv run task lint` | Handoff, Step 5 | ruff — must exit 0 |
-| `uv run task static-check` | Handoff, Step 5 | pyright — must exit 0, 0 errors |
-| `timeout 10s uv run task run` | Handoff, Step 5 | App must exit cleanly (exit 124 = hang = fix it) |
+| `uv run task test-fast` | Step 3 cycle | Fast test run (no coverage) — used during Red-Green-Refactor |
+| `uv run task test` | Handoff, Step 4 | Full suite with coverage — must reach 100% |
+| `uv run task lint` | Handoff, Step 4 | ruff — must exit 0 |
+| `uv run task static-check` | Handoff, Step 4 | pyright — must exit 0, 0 errors |
+| `timeout 10s uv run task run` | Handoff, Step 4 | App must exit cleanly (exit 124 = hang = fix it) |
 
 ---
 
@@ -354,11 +424,11 @@ Two discovery sources:
 ```
 tests/
   features/<feature-name>/
-    <rule-slug>_test.py     ← generated by gen-tests, one per Rule: block
+    <rule-slug>_test.py     ← developer-written, one per Rule: block
                               function: test_<rule_slug>_<8char_hex>()
   unit/
     <anything>_test.py      ← developer-authored extras, no @id traceability
-                              plain pytest or Hypothesis @given (developer's choice)
+                              plain pytest or Hypothesis @given (developer choice)
 ```
 
 ---
@@ -369,41 +439,42 @@ tests/
 # Current Work
 
 Feature: <name>
-Step: <1-6> (<step name>)
+Step: <1-5> (<step name>)
 Source: docs/features/in-progress/<name>.feature
 
 ## Cycle State
 Test: @id:<hex> — <description>
-Phase: RED | GREEN | REFACTOR | SELF-DECLARE | REVIEWER(code-design) | COMMITTED
+Phase: RED | GREEN | REFACTOR
 
-## Self-Declaration (@id:<hex>)
-As a developer I declare this code follows YAGNI-1 (no abstractions beyond current AC) — YES | `file:line`
-As a developer I declare this code follows YAGNI-2 (no speculative parameters or flags) — YES | `file:line`
-As a developer I declare this code follows KISS-1 (every function has one job) — YES | `file:line`
-As a developer I declare this code follows KISS-2 (no unnecessary indirection) — YES | `file:line`
-As a developer I declare this code follows DRY-1 (no duplicated logic) — YES | `file:line`
-As a developer I declare this code follows DRY-2 (every shared concept in one place) — YES | `file:line`
-As a developer I declare this code follows SOLID-S (one reason to change) — YES | `file:line`
-As a developer I declare this code follows SOLID-O (extension not modification) — YES | `file:line` or N/A | reason
-As a developer I declare this code follows SOLID-L (subtypes fully substitutable) — YES | `file:line` or N/A | reason
-As a developer I declare this code follows SOLID-I (no forced stub methods) — YES | `file:line` or N/A | reason
-As a developer I declare this code follows SOLID-D (domain depends on Protocols) — YES | `file:line`
-As a developer I declare this code follows OC-1 (max one indent level per method) — YES | deepest: `file:line`
-As a developer I declare this code follows OC-2 (no else after return) — YES | `file:line` or N/A | reason
-As a developer I declare this code follows OC-3 (no bare primitives as domain concepts) — YES | `file:line` or N/A | reason
-As a developer I declare this code follows OC-4 (no bare collections as domain values) — YES | `file:line` or N/A | reason
-As a developer I declare this code follows OC-5 (no chained dot navigation) — YES | `file:line` or N/A | reason
-As a developer I declare this code follows OC-6 (no abbreviations) — YES | `file:line` or N/A | reason
-As a developer I declare this code follows OC-7 (functions ≤20 lines, classes ≤50 lines) — YES | longest: `file:line`
-As a developer I declare this code follows OC-8 (≤2 instance variables per class) — YES | `file:line`
-As a developer I declare this code follows OC-9 (no getters/setters) — YES | `file:line` or N/A | reason
-As a developer I declare this code has no missing Creational pattern (no smell: repeated construction or scattered instantiation) — YES | `file:line` or N/A | reason
-As a developer I declare this code has no missing Structural pattern (no smell: feature envy or parallel conditionals on type) — YES | `file:line` or N/A | reason
-As a developer I declare this code has no missing Behavioral pattern (no smell: large state machine, scattered notification, or repeated algorithm skeleton) — YES | `file:line` or N/A | reason
-As a developer I declare test abstraction matches AC level (semantic alignment) — YES | `file:line`
+## Self-Declaration
+As a software-engineer I declare:
+* YAGNI: no code without a failing test — AGREE/DISAGREE | file:line
+* YAGNI: no speculative abstractions — AGREE/DISAGREE | file:line
+* KISS: simplest solution that passes — AGREE/DISAGREE | file:line
+* KISS: no premature optimization — AGREE/DISAGREE | file:line
+* DRY: no duplication — AGREE/DISAGREE | file:line
+* DRY: no redundant comments — AGREE/DISAGREE | file:line
+* SOLID-S: one reason to change per class — AGREE/DISAGREE | file:line
+* SOLID-O: open for extension, closed for modification — AGREE/DISAGREE | file:line
+* SOLID-L: subtypes substitutable — AGREE/DISAGREE | file:line
+* SOLID-I: no forced unused deps — AGREE/DISAGREE | file:line
+* SOLID-D: depend on abstractions, not concretions — AGREE/DISAGREE | file:line
+* OC-1: one level of indentation per method — AGREE/DISAGREE | deepest: file:line
+* OC-2: no else after return — AGREE/DISAGREE | file:line
+* OC-3: primitive types wrapped — AGREE/DISAGREE | file:line
+* OC-4: first-class collections — AGREE/DISAGREE | file:line
+* OC-5: one dot per line — AGREE/DISAGREE | file:line
+* OC-6: no abbreviations — AGREE/DISAGREE | file:line
+* OC-7: ≤20 lines per function, ≤50 per class — AGREE/DISAGREE | longest: file:line
+* OC-8: ≤2 instance variables per class — AGREE/DISAGREE | file:line
+* OC-9: no getters/setters — AGREE/DISAGREE | file:line
+* Patterns: no creational smell — AGREE/DISAGREE | file:line
+* Patterns: no structural smell — AGREE/DISAGREE | file:line
+* Patterns: no behavioral smell — AGREE/DISAGREE | file:line
+* Semantic: tests operate at same abstraction as AC — AGREE/DISAGREE | file:line
 
 ## Progress
-- [x] @id:<hex>: <done> — reviewer(code-design) APPROVED
+- [x] @id:<hex>: <done>
 - [~] @id:<hex>: <in progress>
 - [ ] @id:<hex>: <next>
 
@@ -411,7 +482,7 @@ As a developer I declare test abstraction matches AC level (semantic alignment) 
 <one actionable sentence>
 ```
 
-`## Cycle State` is updated at every phase transition. `## Self-Declaration` is replaced per-test cycle. Both sections are present only during Step 4; omit when in other steps.
+`## Cycle State` is updated at every phase transition. `## Self-Declaration` is written once after all quality gates pass in Step 3. Both sections are present only during Step 3; omit when in other steps.
 
 ---
 

@@ -11,11 +11,10 @@ Features flow through 6 steps with a WIP limit of 1 feature at a time. The files
 
 ```
 STEP 1: SCOPE          (product-owner)  → discovery + Gherkin stories + criteria
-STEP 2: ARCH           (developer)      → read all backlog features, design module structure
-STEP 3: TEST FIRST     (developer)      → sync stubs, write failing tests
-STEP 4: IMPLEMENT      (developer)      → Red-Green-Refactor, commit per green test
-STEP 5: VERIFY         (reviewer)       → run all commands, review code
-STEP 6: ACCEPT         (product-owner)  → demo, validate, move folder to completed/
+STEP 2: ARCH           (software-engineer)      → read all backlog features, design module structure
+STEP 3: TDD LOOP       (software-engineer)      → RED → GREEN → REFACTOR, one @id at a time
+STEP 4: VERIFY         (reviewer)       → run all commands, review code
+STEP 5: ACCEPT         (product-owner)  → demo, validate, move folder to completed/
 ```
 
 **PO picks the next feature from backlog. Developer never self-selects.**
@@ -26,14 +25,14 @@ STEP 6: ACCEPT         (product-owner)  → demo, validate, move folder to compl
 
 - **Product Owner (PO)** — AI agent. Interviews the stakeholder, writes discovery docs, Gherkin features, and acceptance criteria. Accepts or rejects deliveries.
 - **Stakeholder** — Human. Answers PO's questions, provides domain knowledge, approves PO syntheses to confirm discovery is complete.
-- **Developer** — AI agent. Architecture, test bodies, implementation, git. Never edits `.feature` files. Escalates spec gaps to PO.
+- **Software Engineer** — AI agent. Architecture, test bodies, implementation, git. Never edits `.feature` files. Escalates spec gaps to PO.
 - **Reviewer** — AI agent. Adversarial verification. Reports spec gaps to PO.
 
 ## Agents
 
 - **product-owner** — defines scope (4 phases), picks features, accepts deliveries
-- **developer** — architecture, tests, code, git, releases (Steps 2-4 + release)
-- **reviewer** — runs commands and reviews code at Step 5, produces APPROVED/REJECTED report
+- **software-engineer** — architecture, tests, code, git, releases (Steps 2-3 + release)
+- **reviewer** — runs commands and reviews code at Step 4, produces APPROVED/REJECTED report
 - **setup-project** — one-time setup to initialize a new project from this template
 
 ## Skills
@@ -42,14 +41,13 @@ STEP 6: ACCEPT         (product-owner)  → demo, validate, move folder to compl
 |---|---|---|
 | `session-workflow` | all agents | every session |
 | `scope` | product-owner | 1 |
-| `tdd` | developer | 3 |
-| `implementation` | developer | 4 |
-| `design-patterns` | developer | 2 (on-demand, if smell detected), 4 (refactor) |
-| `verify` | reviewer | 5 |
-| `code-quality` | developer | pre-handoff (redirects to `verify`) |
-| `pr-management` | developer | 6 |
-| `git-release` | developer | 6 |
-| `create-skill` | developer | meta |
+| `implementation` | software-engineer | 2, 3 |
+| `design-patterns` | software-engineer | 2 (on-demand, if smell detected), 3 (refactor) |
+| `verify` | reviewer | 4 |
+| `code-quality` | software-engineer | pre-handoff (redirects to `verify`) |
+| `pr-management` | software-engineer | 5 |
+| `git-release` | software-engineer | 5 |
+| `create-skill` | software-engineer | meta |
 
 **Session protocol**: Every agent loads `skill session-workflow` at session start. Load additional skills as needed for the current step.
 
@@ -77,7 +75,7 @@ Clusters from Phase 2 Session 2 → one `Rule:` block per user story. Each `Rule
 ### Phase 4 — Criteria (PO alone)
 Pre-mortem per Rule (all Rules must be checked before writing Examples). Write `Example:` blocks — declarative Given/When/Then, MoSCoW triage (Must/Should/Could) per Example. Review checklist (4.3). Commit: `feat(criteria): write acceptance criteria for <name>`
 
-**Criteria are frozen**: no `Example:` changes after commit. Change = `@deprecated` tag + new Example with new `@id`.
+**Criteria are frozen**: no `Example:` changes after commit. Adding new Example with new `@id` replaces old.
 
 ## Filesystem Structure
 
@@ -86,89 +84,22 @@ docs/features/
   discovery.md                        ← project-level (Status + Questions only)
   backlog/<feature-name>.feature      ← one per feature; discovery + Rules + Examples
   in-progress/<feature-name>.feature  ← file moves here at Step 2
-  completed/<feature-name>.feature    ← file moves here at Step 6
+  completed/<feature-name>.feature    ← file moves here at Step 5
 
 tests/
   features/<feature-name>/
-    <rule-slug>_test.py               ← one per Rule: block, stubs from gen-tests
+    <rule-slug>_test.py               ← one per Rule: block, software-engineer-written
   unit/
-    <anything>_test.py                ← developer-authored extras (no @id traceability)
+    <anything>_test.py                ← software-engineer-authored extras (no @id traceability)
 ```
 
-Tests in `tests/unit/` are developer-authored extras not covered by any `@id` criterion. Any test style is valid — plain `assert` or Hypothesis `@given`. Use Hypothesis when the test covers a **property** that holds across many inputs (mathematical invariants, parsing contracts, value object constraints). Use plain pytest for specific behaviors or single edge cases discovered during refactoring.
+Tests in `tests/unit/` are software-engineer-authored extras not covered by any `@id` criterion. Any test style is valid — plain `assert` or Hypothesis `@given`. Use Hypothesis when the test covers a **property** that holds across many inputs (mathematical invariants, parsing contracts, value object constraints). Use plain pytest for specific behaviors or single edge cases discovered during refactoring.
 
 - `@pytest.mark.slow` is mandatory on every `@given`-decorated test (Hypothesis is genuinely slow)
 - `@example(...)` is optional but encouraged when using `@given` to document known corner cases
-- No `@id` tags — tests with `@id` belong in `tests/features/`, generated by `gen-tests`
+- No `@id` tags — tests with `@id` belong in `tests/features/`, written by software-engineer
 
-## Gherkin Format
-
-```gherkin
-Feature: Bounce physics
-
-  Discovery:
-
-  Status: BASELINED (2026-01-10)
-
-  Entities:
-  | Type | Name | Candidate Class/Method | In Scope |
-  |------|------|----------------------|----------|
-  | Noun | Ball | Ball | Yes |
-  | Verb | Bounce | Ball.bounce() | Yes |
-
-  Rules (Business):
-  - Ball velocity reverses on wall contact
-
-  Constraints:
-  - Physics runs at 60fps
-
-  Questions:
-  | ID | Question | Answer | Status |
-  |----|----------|--------|--------|
-  | Q1 | Does gravity apply? | No, constant velocity | ANSWERED |
-
-  All questions answered. Discovery frozen.
-
-  Rule: Wall bounce
-    As a game engine
-    I want balls to bounce off walls
-    So that gameplay feels physical
-
-    @id:a3f2b1c4
-    Example: Ball bounces off top wall
-      Given a ball moving upward reaches y=0
-      When the physics engine processes the next frame
-      Then the ball velocity y-component becomes positive
-
-    @deprecated @id:b5c6d7e8
-    Example: Old behavior no longer needed
-      Given ...
-      When ...
-      Then ...
-```
-
-- Each feature is a **single `.feature` file**; user stories are `Rule:` blocks within it
-- The feature description (free text before the first `Rule:`) contains all discovery content: Status, Entities, Rules (business), Constraints, Questions, and later Architecture
-- `@id:<8-char-hex>` — generated with `uv run task gen-id`
-- `@deprecated` — marks superseded criteria; `gen-tests` adds `@pytest.mark.deprecated` to the mapped test
-- `Example:` keyword (not `Scenario:`)
-- Each Example must be observably distinct from every other
-
-## Test Conventions
-
-### Test Stub Generation
-
-```bash
-uv run task gen-tests              # sync all features
-uv run task gen-tests -- --check   # dry run
-uv run task gen-tests -- --orphans # list orphaned tests
-```
-
-- backlog / in-progress: full write (create stubs, update docstrings, rename functions)
-- completed: only toggle `@pytest.mark.deprecated` (no docstring changes)
-- Orphaned tests (no matching `@id`) get `@pytest.mark.skip(reason="orphan: ...")`
-
-### Test File Layout
+## Test File Layout
 
 ```
 tests/features/<feature-name>/<rule-slug>_test.py
@@ -200,9 +131,12 @@ def test_wall_bounce_a3f2b1c4() -> None:
 - `@pytest.mark.unit` — isolated, one function/class, no external state
 - `@pytest.mark.integration` — multiple components, external state
 - `@pytest.mark.slow` — takes > 50ms; additionally applied alongside `unit` or `integration`
-- `@pytest.mark.deprecated` — auto-skipped by conftest hook; added by `gen-tests`
+- Tests do not use markers — software-engineer writes test bodies directly
 
-Every test gets exactly one of `unit` or `integration`. Slow tests additionally get `slow`.
+### Markers (available if needed)
+- `@pytest.mark.unit` — isolated, one function/class, no external state
+- `@pytest.mark.integration` — multiple components, external state
+- `@pytest.mark.slow` — takes > 50ms; additionally applied alongside `unit` or `integration`
 
 ## Development Commands
 
@@ -231,12 +165,6 @@ uv run task lint
 # Type checking
 uv run task static-check
 
-# Generate an 8-char hex ID
-uv run task gen-id
-
-# Sync test stubs from .feature files
-uv run task gen-tests
-
 # Serve documentation
 uv run task doc-serve
 ```
@@ -262,7 +190,7 @@ During Step 4 (Implementation), correctness priorities are:
 2. **One test green** — the specific test under work passes, plus `test-fast` still passes
 3. **Reviewer code-design check** — reviewer verifies design + semantic alignment (no lint/pyright/coverage)
 4. **Commit** — only after reviewer APPROVED
-5. **Quality tooling** — `lint`, `static-check`, full `test` with coverage run only at developer handoff (before Step 5)
+5. **Quality tooling** — `lint`, `static-check`, full `test` with coverage run only at software-engineer handoff (before Step 5)
 
 Design correctness is far more important than lint/pyright/coverage compliance. A well-designed codebase with minor lint issues is better than a lint-clean codebase with poor design.
 
@@ -275,11 +203,7 @@ Design correctness is far more important than lint/pyright/coverage compliance. 
 
 ## Deprecation Process
 
-1. PO adds `@deprecated` tag to Example in `.feature` file
-2. Run `uv run task gen-tests` — script adds `@pytest.mark.deprecated` to mapped test
-3. Deprecated tests auto-skip via conftest hook
-4. Feature is done when all non-deprecated tests pass
-5. No special folder — features move to `completed/` normally
+This template does not support deprecation. Criteria changes are handled by adding new Examples with new `@id` tags.
 
 ## Release Management
 
@@ -289,7 +213,7 @@ Version format: `v{major}.{minor}.{YYYYMMDD}`
 - Same-day second release: increment minor, keep same date
 - Each release gets a unique adjective-animal name
 
-Use `@developer /skill git-release` for the full release process.
+Use `@software-engineer /skill git-release` for the full release process.
 
 ## Session Management
 

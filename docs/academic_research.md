@@ -778,6 +778,66 @@ This document explains the cognitive and social-science mechanisms that justify 
 
 ---
 
+### 51. Canon TDD — Authoritative Red-Green-Refactor Definition
+
+| | |
+|---|---|
+| **Source** | Beck, K. (2023). "Canon TDD." *tidyfirst.substack.com*. December 11, 2023. |
+| **Date** | 2023 |
+| **URL** | https://tidyfirst.substack.com/p/canon-tdd |
+| **Alternative** | Fowler, M. (2023). "Test Driven Development." *martinfowler.com*. December 11, 2023. https://martinfowler.com/bliki/TestDrivenDevelopment.html |
+| **Status** | Confirmed — canonical source; explicitly authored to stop strawman critiques |
+| **Core finding** | The canonical TDD loop is: (1) write a list of test scenarios; (2) convert exactly one item into a runnable test; (3) make it pass; (4) optionally refactor; (5) repeat. Writing all test code before any implementation is an explicit anti-pattern ("Mistake: convert all items on the list into concrete tests, then make them pass"). |
+| **Mechanism** | The interleaving of test-writing and implementation is not cosmetic — each test drives interface decisions at the moment they are cheapest to make. Batch-writing tests first forces speculative interface decisions that later require rework when earlier tests reveal structural problems. |
+| **Where used** | Justifies merging Step 3 (test bodies) into the implementation loop. Removing the separate "write all tests" phase and replacing it with one-@id-at-a-time interleaved TDD. |
+
+---
+
+### 52. Growing Object-Oriented Software, Guided by Tests (GOOS) — Outer/Inner TDD Loop
+
+| | |
+|---|---|
+| **Source** | Freeman, S., & Pryce, N. (2009). *Growing Object-Oriented Software, Guided by Tests*. Addison-Wesley. |
+| **Date** | 2009 |
+| **URL** | — |
+| **Alternative** | — |
+| **Status** | Confirmed — canonical ATDD/BDD integration model |
+| **Core finding** | Acceptance tests and unit tests operate at two separate, nested timescales. The outer loop: write one failing acceptance test (Gherkin/feature-level) before writing any implementation. The inner loop: drive implementation with unit-level Red-Green-Refactor cycles until the acceptance test passes. The acceptance test stays red throughout all inner cycles and goes green only when the feature is complete. |
+| **Mechanism** | The outer loop provides direction (what to build); the inner loop provides momentum (how to build it). Running acceptance tests first prevents tunnel vision during unit-level work — the developer always has a red acceptance test as the north star. This is the canonical model for integrating Gherkin acceptance criteria (@id Examples) with unit TDD. |
+| **Where used** | Justifies the two-level structure in Step 3 (TDD Loop): outer loop per @id acceptance test, inner loop per unit. Each @id Example is the acceptance test for one outer loop iteration. |
+
+---
+
+### 53. Is TDD Dead? — Anti-Bureaucracy Evidence
+
+| | |
+|---|---|
+| **Source** | Beck, K., Fowler, M., & Hansson, D. H. (2014). "Is TDD Dead?" Video series, *martinfowler.com*. May–June 2014. https://martinfowler.com/articles/is-tdd-dead/ |
+| **Date** | 2014 |
+| **URL** | https://martinfowler.com/articles/is-tdd-dead/ |
+| **Alternative** | — |
+| **Status** | Confirmed — primary evidence for what TDD practitioners reject as overhead |
+| **Core finding** | Per-cycle human reviewer gates, per-cycle checklists, and tests that provide zero delta coverage are all explicitly identified as harmful overhead in TDD workflows. The green bar is the quality gate — not a checklist. DHH: "Many people used to think that documentation was more important than code. Now he's concerned that people think tests are more important than functional code." Beck: "Tests with zero delta coverage should be deleted unless they provide some kind of communication purpose." |
+| **Mechanism** | Administrative overhead added to TDD workflows increases the cost per cycle without increasing coverage or catching defects. The optimal TDD loop is as lean as productive — ceremony that does not eliminate a failure mode should be eliminated. Fowler: "The sign of too much testing is whenever you change the code you think you expend more effort changing the tests than changing the code." |
+| **Where used** | Justifies removing per-test reviewer gates and per-test 24-item self-declaration from the TDD loop. Self-declaration moves to end-of-feature (once), preserving Cialdini+Tetlock accountability at feature granularity without interrupting cycle momentum. |
+
+---
+
+### 54. Introducing BDD — Behavioural-Driven Development Origin
+
+| | |
+|---|---|
+| **Source** | North, D. (2006). "Introducing BDD." *Better Software Magazine*, March 2006. https://dannorth.net/introducing-bdd/ |
+| **Date** | 2006 |
+| **URL** | https://dannorth.net/introducing-bdd/ |
+| **Alternative** | Fowler, M. (2013). "Given When Then." *martinfowler.com*. https://martinfowler.com/bliki/GivenWhenThen.html |
+| **Status** | Confirmed — primary BDD source |
+| **Core finding** | BDD evolved directly from TDD to address persistent practitioner confusion: where to start, what to test, how much to test in one go, and what to call tests. BDD reframes TDD vocabulary around observable behavior: scenarios instead of tests, Given-When-Then (G/W/T) instead of Arrange-Act-Assert (AAA). The underlying mechanics are identical — G/W/T is AAA with shared-vocabulary semantics for collaboration between technical and non-technical stakeholders. |
+| **Mechanism** | The "Given" clause captures preconditions (Arrange), "When" captures the triggering event (Act), and "Then" captures the observable outcome (Assert). Translating from AAA to G/W/T shifts the focus from implementation mechanics to user-observable behavior, making acceptance criteria verifiable by non-technical stakeholders and executable by the test suite simultaneously. |
+| **Where used** | Theoretical link between Gherkin @id Examples (Step 1 output) and the TDD inner loop (Step 3). Each @id Example is a G/W/T specification that maps directly to a test function. The outer GOOS loop is an acceptance test written in BDD vocabulary; the inner loop is unit TDD. |
+
+---
+
 ## Bibliography
 
 1. Cialdini, R. B. (2001). *Influence: The Psychology of Persuasion* (rev. ed.). HarperBusiness.
@@ -846,3 +906,7 @@ This document explains the cognitive and social-science mechanisms that justify 
 64. Rosala, M., & Moran, K. (2022). The Funnel Technique in Qualitative User Research. *Nielsen Norman Group*. https://www.nngroup.com/articles/the-funnel-technique-in-qualitative-user-research/
 65. Cockburn, A. (2005). Hexagonal Architecture. *alistair.cockburn.us*. https://alistair.cockburn.us/hexagonal-architecture/
 66. Freeman, S., & Pryce, N. (2009). *Growing Object-Oriented Software, Guided by Tests*. Addison-Wesley.
+67. Beck, K. (2023). "Canon TDD." *tidyfirst.substack.com*. https://tidyfirst.substack.com/p/canon-tdd
+68. Beck, K., Fowler, M., & Hansson, D. H. (2014). "Is TDD Dead?" Video series. *martinfowler.com*. https://martinfowler.com/articles/is-tdd-dead/
+69. Fowler, M. (2014). "Self Testing Code." *martinfowler.com*. https://martinfowler.com/bliki/SelfTestingCode.html
+70. North, D. (2006). "Introducing BDD." *Better Software Magazine*. https://dannorth.net/introducing-bdd/
