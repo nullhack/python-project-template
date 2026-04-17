@@ -16,7 +16,7 @@ Every session starts by reading state. Every session ends by writing state. This
 1. Read `TODO.md` — find current feature, current step, and the "Next" line.
    - If `TODO.md` does not exist, run `uv run task gen-todo` to create it, then read the result.
 2. If a feature is active, read:
-   - `docs/features/in-progress/<name>/discovery.md` — feature discovery
+   - `docs/features/in-progress/<name>.feature` — feature file (discovery + architecture + Rules + Examples)
    - `docs/features/discovery.md` — project-level discovery (for context)
 3. Run `git status` — understand what is committed vs. what is not
 4. Confirm scope: you are working on exactly one step of one feature
@@ -56,7 +56,7 @@ When a step completes within a session:
 
 Feature: <name>
 Step: <1-6> (<step name>)
-Source: docs/features/in-progress/<name>/discovery.md
+Source: docs/features/in-progress/<name>.feature
 
 ## Progress
 - [x] `@id:<hex>`: <description>
@@ -68,9 +68,9 @@ Source: docs/features/in-progress/<name>/discovery.md
 ```
 
 **Source path by step:**
-- Step 1: `Source: docs/features/backlog/<name>/discovery.md`
-- Steps 2–5: `Source: docs/features/in-progress/<name>/discovery.md`
-- Step 6: `Source: docs/features/completed/<name>/discovery.md`
+- Step 1: `Source: docs/features/backlog/<name>.feature`
+- Steps 2–5: `Source: docs/features/in-progress/<name>.feature`
+- Step 6: `Source: docs/features/completed/<name>.feature`
 
 Status markers:
 - `[ ]` — not started
@@ -90,16 +90,27 @@ Next: PO picks feature from docs/features/backlog/ and moves it to docs/features
 
 During Step 4 (Implementation), TODO.md **must** include a `## Cycle State` block to track Red-Green-Refactor-Review progress. This block is **mandatory** — missing it means the cycle is unverifiable.
 
+When `Phase: SELF-DECLARE` or later, a `## Self-Declaration` block is also **mandatory**. The reviewer reads it directly from TODO.md. A missing or incomplete self-declaration (unchecked boxes, missing `file:line`) = automatic REJECTED.
+
+For the full Self-Declaration checklist template (21 items), see `implementation/SKILL.md` — the "Design Self-Declaration" section under REFACTOR.
+
 ```markdown
 # Current Work
 
 Feature: <name>
 Step: 4 (implement)
-Source: docs/features/in-progress/<name>/discovery.md
+Source: docs/features/in-progress/<name>.feature
 
 ## Cycle State
 Test: `@id:<hex>` — <description>
 Phase: RED | GREEN | REFACTOR | SELF-DECLARE | REVIEWER(code-design) | COMMITTED
+
+## Self-Declaration (@id:<hex>)
+- [x] YAGNI-1: … — `file:line`
+- [x] YAGNI-2: … — `file:line`
+- [x] KISS-1: … — `file:line`
+  … (full checklist from implementation/SKILL.md)
+- [x] Semantic: test abstraction matches AC abstraction — `file:line`
 
 ## Progress
 - [x] `@id:<hex>`: <description> — reviewer(code-design) APPROVED
@@ -142,3 +153,4 @@ Run `gen-todo` at session start (after reading TODO.md) and at session end (befo
 5. The "Next" line must be actionable enough that a fresh AI can execute it without asking questions
 6. During Step 4, always update `## Cycle State` when transitioning between RED/GREEN/REFACTOR/SELF-DECLARE/REVIEWER phases
 7. When a step completes, update TODO.md and commit **before** any further work
+8. During Step 4, write the `## Self-Declaration (@id:<hex>)` block into TODO.md at SELF-DECLARE phase — every checkbox must be checked with a `file:line` or `N/A` before requesting reviewer(code-design)

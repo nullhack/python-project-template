@@ -1,6 +1,6 @@
 """Generate and sync the TODO.md session bookmark from .feature files.
 
-Reads the in-progress feature folder (or backlog if no in-progress feature),
+Reads the in-progress .feature file (or reports none if not present),
 merges missing @id rows into the existing TODO.md, and writes the result.
 
 Modes:
@@ -10,7 +10,7 @@ Modes:
 Merge rules:
     - Adds @id rows that are in .feature files but missing from TODO.md
     - Never removes or downgrades existing [x], [~], [-] rows
-    - Updates the Feature/Step/Source header from the in-progress folder
+    - Updates the Feature/Step/Source header from the in-progress file
     - If no feature is in-progress, writes the "No feature in progress" format
 """
 
@@ -41,53 +41,48 @@ class Criterion:
 
 
 def find_in_progress_feature() -> tuple[str, Path] | None:
-    """Find the single feature currently in docs/features/in-progress/.
+    """Find the single .feature file currently in docs/features/in-progress/.
 
     Returns:
-        Tuple of (feature_name, feature_path) or None if nothing is in progress.
+        Tuple of (feature_name, feature_file_path) or None if nothing is in progress.
+        feature_name is the .feature file stem (e.g. 'display-version').
     """
     in_progress = FEATURES_DIR / "in-progress"
     if not in_progress.exists():
         return None
-    folders = [
-        f
-        for f in in_progress.iterdir()
-        if f.is_dir() and f.name != ".gitkeep" and not f.name.startswith(".")
+    feature_files = [
+        f for f in in_progress.iterdir() if f.is_file() and f.suffix == ".feature"
     ]
-    if not folders:
+    if not feature_files:
         return None
-    return folders[0].name, folders[0]
+    feature_file = feature_files[0]
+    return feature_file.stem, feature_file
 
 
 def find_backlog_features() -> list[str]:
     """List feature names in docs/features/backlog/.
 
     Returns:
-        Sorted list of feature folder names.
+        Sorted list of .feature file stems.
     """
     backlog = FEATURES_DIR / "backlog"
     if not backlog.exists():
         return []
     return sorted(
-        f.name
-        for f in backlog.iterdir()
-        if f.is_dir() and f.name != ".gitkeep" and not f.name.startswith(".")
+        f.stem for f in backlog.iterdir() if f.is_file() and f.suffix == ".feature"
     )
 
 
 def extract_criteria(feature_path: Path) -> list[Criterion]:
-    """Extract all @id-tagged Examples from .feature files in a feature folder.
+    """Extract all @id-tagged Examples from a single .feature file.
 
     Args:
-        feature_path: Path to the feature folder.
+        feature_path: Path to the .feature file.
 
     Returns:
         Ordered list of Criterion objects (deprecated ones included).
     """
-    criteria: list[Criterion] = []
-    for feature_file in sorted(feature_path.glob("*.feature")):
-        criteria.extend(_parse_feature_file(feature_file))
-    return criteria
+    return _parse_feature_file(feature_path)
 
 
 def _parse_feature_file(path: Path) -> list[Criterion]:
@@ -340,7 +335,7 @@ def sync_todo(*, check_only: bool = False) -> int:
     step = (
         _extract_header_field(existing_text, "Step") or "? (unknown — update manually)"
     )
-    source = f"docs/features/in-progress/{feature_name}/discovery.md"
+    source = f"docs/features/in-progress/{feature_name}.feature"
     next_action = _extract_next_action(existing_text)
 
     progress_lines = build_progress_lines(criteria, existing_progress)

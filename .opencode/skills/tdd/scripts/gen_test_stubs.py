@@ -1,7 +1,13 @@
 """Generate and sync pytest test stubs from Gherkin .feature files.
 
-Scans all feature folders under docs/features/{backlog,in-progress,completed}/
+Scans all .feature files under docs/features/{backlog,in-progress,completed}/
 and creates or updates test stubs in tests/features/<feature-name>/.
+
+Each Rule: block in a .feature file maps to one test file:
+    tests/features/<feature-name>/<rule-slug>_test.py
+
+Test function naming:
+    test_<rule_slug>_<8char_hex>()
 
 Modes:
     uv run task gen-tests              Sync all features (default)
@@ -55,29 +61,38 @@ class GherkinExample:
 
 
 @dataclass(frozen=True, slots=True)
-class FeatureFile:
-    """A parsed .feature file with its examples."""
+class RuleBlock:
+    """A Rule: block with its examples, mapped to one test file."""
 
-    path: Path
-    feature_name: str
-    story_slug: str
+    rule_title: str
+    rule_slug: str
     examples: list[GherkinExample]
 
 
+@dataclass(frozen=True, slots=True)
+class FeatureFile:
+    """A parsed .feature file with its Rule blocks."""
+
+    path: Path
+    feature_name: str
+    feature_slug: str
+    rules: list[RuleBlock]
+
+
 def slugify(name: str) -> str:
-    """Convert a feature folder name to a Python-safe slug.
+    """Convert a name to a Python-safe slug.
 
     Args:
-        name: The feature folder name (kebab-case).
+        name: Kebab-case or space-separated name.
 
     Returns:
         Underscore-separated lowercase string.
     """
-    return name.replace("-", "_").lower()
+    return re.sub(r"[^a-z0-9]+", "_", name.lower()).strip("_")
 
 
 def parse_feature_file(path: Path) -> FeatureFile | None:
-    """Parse a .feature file into structured data.
+    """Parse a .feature file into structured data with Rule blocks.
 
     Args:
         path: Path to the .feature file.
@@ -91,30 +106,81 @@ def parse_feature_file(path: Path) -> FeatureFile | None:
     if not feature or not feature.get("name"):
         return None
 
-    story_slug = path.stem
-    examples = _extract_examples(feature, str(path))
+    feature_slug = slugify(path.stem)
+    rules = _extract_rules(feature, str(path))
     return FeatureFile(
         path=path,
         feature_name=feature["name"],
-        story_slug=story_slug,
-        examples=examples,
+        feature_slug=feature_slug,
+        rules=rules,
     )
 
 
-def _extract_examples(
-    feature: dict[str, Any], source_file: str
-) -> list[GherkinExample]:
-    """Extract all Example blocks from a parsed Gherkin feature AST.
+def _extract_rules(feature: dict[str, Any], source_file: str) -> list[RuleBlock]:
+    """Extract Rule blocks from a parsed Gherkin feature AST.
+
+    Each Rule: block becomes one RuleBlock with its examples.
+    Examples not under any Rule are grouped into a synthetic rule
+    using the feature name as the slug.
 
     Args:
         feature: The 'feature' dict from gherkin-official Parser output.
         source_file: Path string for provenance tracking.
 
     Returns:
+        List of RuleBlock objects.
+    """
+    rules: list[RuleBlock] = []
+    orphan_examples: list[GherkinExample] = []
+
+    for child in feature.get("children", []):
+        rule_node: dict[str, Any] | None = child.get("rule")
+        scenario_node: dict[str, Any] | None = child.get("scenario")
+
+        if rule_node is not None:
+            rule_title = rule_node.get("name", "")
+            rule_slug = slugify(rule_title)
+            examples = _extract_examples_from_rule(rule_node, source_file)
+            if examples:
+                rules.append(
+                    RuleBlock(
+                        rule_title=rule_title,
+                        rule_slug=rule_slug,
+                        examples=examples,
+                    )
+                )
+        elif scenario_node is not None:
+            example = _scenario_to_example(scenario_node, source_file)
+            if example is not None:
+                orphan_examples.append(example)
+
+    if orphan_examples:
+        feature_slug = slugify(feature.get("name", "feature"))
+        rules.append(
+            RuleBlock(
+                rule_title=feature.get("name", ""),
+                rule_slug=feature_slug,
+                examples=orphan_examples,
+            )
+        )
+
+    return rules
+
+
+def _extract_examples_from_rule(
+    rule_node: dict[str, Any], source_file: str
+) -> list[GherkinExample]:
+    """Extract Example blocks from a Rule node.
+
+    Args:
+        rule_node: The 'rule' dict from the Gherkin AST.
+        source_file: Path string for provenance tracking.
+
+    Returns:
         List of parsed GherkinExample objects.
     """
     examples: list[GherkinExample] = []
-    for child in feature.get("children", []):
+    for child in rule_node.get("children", []):
         scenario: dict[str, Any] | None = child.get("scenario")
         if scenario is None:
             continue
@@ -194,17 +260,17 @@ def _extract_steps(steps: list[dict[str, Any]]) -> tuple[str, str, str]:
     return given, when, then
 
 
-def generate_stub(feature_slug: str, example: GherkinExample) -> str:
+def generate_stub(rule_slug: str, example: GherkinExample) -> str:
     """Generate a single test stub function.
 
     Args:
-        feature_slug: Underscored feature folder name.
+        rule_slug: Underscored rule title (used as function prefix).
         example: The parsed Gherkin example.
 
     Returns:
         Complete test function source code as a string.
     """
-    func_name = f"test_{feature_slug}_{example.id_hex}"
+    func_name = f"test_{rule_slug}_{example.id_hex}"
     markers = ["@pytest.mark.unit"]
     if example.deprecated:
         markers.append("@pytest.mark.deprecated")
@@ -244,47 +310,38 @@ def _build_docstring(example: GherkinExample) -> list[str]:
     ]
 
 
-def generate_test_file(
-    feature_slug: str, story_slug: str, examples: list[GherkinExample]
-) -> str:
-    """Generate a complete test file for one .feature file.
+def generate_test_file(rule_slug: str, examples: list[GherkinExample]) -> str:
+    """Generate a complete test file for one Rule: block.
 
     Args:
-        feature_slug: Underscored feature folder name.
-        story_slug: The story file stem (becomes test file name).
-        examples: All examples from that .feature file.
+        rule_slug: Underscored rule title (file name stem + function prefix).
+        examples: All examples from that Rule block.
 
     Returns:
         Complete test module source code.
     """
     header = (
-        f'"""Tests for {story_slug.replace("_", " ")} story."""\n\nimport pytest\n\n\n'
+        f'"""Tests for {rule_slug.replace("_", " ")} rule."""\n\nimport pytest\n\n\n'
     )
-    stubs = "\n\n".join(generate_stub(feature_slug, ex) for ex in examples)
+    stubs = "\n\n".join(generate_stub(rule_slug, ex) for ex in examples)
     return header + stubs + "\n"
 
 
-def find_feature_folders() -> dict[str, list[tuple[Path, str]]]:
-    """Find all feature folders across all stages.
+def find_feature_files() -> list[tuple[Path, str, str]]:
+    """Find all .feature files across all stages.
 
     Returns:
-        Dict mapping feature folder name to list of (feature_file_path, stage).
+        List of (feature_file_path, feature_name, stage) tuples.
+        feature_name is the .feature file stem (e.g. 'display-version').
     """
-    features: dict[str, list[tuple[Path, str]]] = {}
+    results: list[tuple[Path, str, str]] = []
     for stage in FEATURE_STAGES:
         stage_dir = FEATURES_DIR / stage
         if not stage_dir.exists():
             continue
-        for folder in sorted(stage_dir.iterdir()):
-            if not folder.is_dir():
-                continue
-            feature_files = sorted(folder.glob("*.feature"))
-            if feature_files:
-                name = folder.name
-                features.setdefault(name, [])
-                for ff in feature_files:
-                    features[name].append((ff, stage))
-    return features
+        for feature_file in sorted(stage_dir.glob("*.feature")):
+            results.append((feature_file, feature_file.stem, stage))
+    return results
 
 
 def read_existing_test_ids(test_file: Path) -> set[str]:
@@ -303,20 +360,18 @@ def read_existing_test_ids(test_file: Path) -> set[str]:
 
 
 def sync_test_file(
-    feature_slug: str,
-    story_slug: str,
+    rule_slug: str,
     examples: list[GherkinExample],
     test_file: Path,
     stage: str,
     *,
     check_only: bool = False,
 ) -> list[str]:
-    """Sync a single test file with its .feature examples.
+    """Sync a single test file with its Rule: block examples.
 
     Args:
-        feature_slug: Underscored feature folder name.
-        story_slug: The story file stem.
-        examples: Parsed examples from the .feature file.
+        rule_slug: Underscored rule title.
+        examples: Parsed examples from the Rule block.
         test_file: Path to the test file to create/update.
         stage: Feature stage (backlog, in-progress, completed).
         check_only: If True, report changes without writing.
@@ -330,7 +385,7 @@ def sync_test_file(
     if not test_file.exists():
         if stage == "completed":
             return actions
-        content = generate_test_file(feature_slug, story_slug, examples)
+        content = generate_test_file(rule_slug, examples)
         actions.append(f"CREATE {test_file} ({len(examples)} stubs)")
         if not check_only:
             test_file.parent.mkdir(parents=True, exist_ok=True)
@@ -346,7 +401,7 @@ def sync_test_file(
 
     actions.extend(
         _sync_full(
-            feature_slug,
+            rule_slug,
             examples,
             example_ids,
             existing_ids,
@@ -410,7 +465,7 @@ def _sync_deprecated_markers(
 
 
 def _sync_full(
-    feature_slug: str,
+    rule_slug: str,
     examples: list[GherkinExample],
     example_ids: set[str],
     existing_ids: set[str],
@@ -421,7 +476,7 @@ def _sync_full(
     """Full sync for backlog/in-progress features.
 
     Args:
-        feature_slug: Underscored feature folder name.
+        rule_slug: Underscored rule title.
         examples: Parsed examples.
         example_ids: Set of IDs from .feature file.
         existing_ids: Set of IDs found in existing test file.
@@ -440,11 +495,11 @@ def _sync_full(
 
     for ex in examples:
         if ex.id_hex in new_ids:
-            stub = "\n\n" + generate_stub(feature_slug, ex)
+            stub = "\n\n" + generate_stub(rule_slug, ex)
             modified += stub
             actions.append(f"ADD stub for @id:{ex.id_hex}")
         elif ex.id_hex in existing_ids:
-            modified, doc_actions = _update_docstring(modified, feature_slug, ex)
+            modified, doc_actions = _update_docstring(modified, rule_slug, ex)
             actions.extend(doc_actions)
 
     for oid in orphan_ids:
@@ -472,13 +527,13 @@ def _sync_full(
 
 
 def _update_docstring(
-    text: str, feature_slug: str, example: GherkinExample
+    text: str, rule_slug: str, example: GherkinExample
 ) -> tuple[str, list[str]]:
     """Update the docstring of an existing test to match the .feature file.
 
     Args:
         text: Full test file content.
-        feature_slug: Underscored feature folder name.
+        rule_slug: Underscored rule title.
         example: The Gherkin example to match.
 
     Returns:
@@ -507,7 +562,7 @@ def _update_docstring(
 
     old_func = re.search(rf"def (test_\w+_{example.id_hex})\b", text)
     if old_func:
-        expected_name = f"test_{feature_slug}_{example.id_hex}"
+        expected_name = f"test_{rule_slug}_{example.id_hex}"
         if old_func.group(1) != expected_name:
             text = text.replace(old_func.group(1), expected_name)
             actions.append(f"RENAME {old_func.group(1)} -> {expected_name}")
@@ -515,28 +570,32 @@ def _update_docstring(
 
 
 def find_duplicate_ids() -> list[str]:
-    """Find @id hex values that appear in more than one .feature file.
+    """Find @id hex values that appear in more than one distinct feature file.
 
-    Args:
-        None.
+    A feature that appears in multiple stage directories (backlog, in-progress,
+    completed) with the same stem is counted only once — that is expected during
+    migrations. Duplicates are only flagged when the same @id appears in two
+    different feature files (different stems).
 
     Returns:
         List of warning strings describing each duplicate @id.
     """
-    id_sources: dict[str, list[str]] = {}
-    for name, files in find_feature_folders().items():
-        for fpath, _stage in files:
-            parsed = parse_feature_file(fpath)
-            if not parsed:
-                continue
-            for ex in parsed.examples:
-                id_sources.setdefault(ex.id_hex, []).append(f"{name}/{fpath.name}")
+    id_sources: dict[str, set[str]] = {}
+    for fpath, feature_name, _stage in find_feature_files():
+        parsed = parse_feature_file(fpath)
+        if not parsed:
+            continue
+        for rule in parsed.rules:
+            for ex in rule.examples:
+                id_sources.setdefault(ex.id_hex, set()).add(
+                    f"{feature_name}/{rule.rule_slug}"
+                )
 
     warnings: list[str] = []
     for id_hex, sources in sorted(id_sources.items()):
         if len(sources) > 1:
-            locations = ", ".join(sources)
-            warnings.append(f"@id:{id_hex} appears in multiple features: {locations}")
+            locations = ", ".join(sorted(sources))
+            warnings.append(f"@id:{id_hex} appears in multiple locations: {locations}")
     return warnings
 
 
@@ -547,12 +606,11 @@ def find_orphaned_tests() -> list[str]:
         List of orphan descriptions.
     """
     all_feature_ids: set[str] = set()
-    features = find_feature_folders()
-    for _name, files in features.items():
-        for fpath, _stage in files:
-            parsed = parse_feature_file(fpath)
-            if parsed:
-                all_feature_ids.update(ex.id_hex for ex in parsed.examples)
+    for fpath, _name, _stage in find_feature_files():
+        parsed = parse_feature_file(fpath)
+        if parsed:
+            for rule in parsed.rules:
+                all_feature_ids.update(ex.id_hex for ex in rule.examples)
 
     orphans: list[str] = []
     if not TESTS_DIR.exists():
@@ -566,12 +624,12 @@ def find_orphaned_tests() -> list[str]:
 
 
 def _sync_all_features(
-    features: dict[str, list[tuple[Path, str]]], *, check_only: bool
+    feature_files: list[tuple[Path, str, str]], *, check_only: bool
 ) -> int:
-    """Sync test stubs for all feature folders.
+    """Sync test stubs for all feature files.
 
     Args:
-        features: Mapping of feature name to list of (fpath, stage) tuples.
+        feature_files: List of (fpath, feature_name, stage) tuples.
         check_only: If True, report actions without writing files.
 
     Returns:
@@ -582,19 +640,16 @@ def _sync_all_features(
         print(f"WARNING: {warning}")
 
     all_actions: list[str] = []
-    for name, files in sorted(features.items()):
-        feature_slug = slugify(name)
-        for fpath, stage in files:
-            parsed = parse_feature_file(fpath)
-            if not parsed:
-                print(f"SKIP {fpath} — no Feature: line found")
-                continue
-            story_slug = slugify(parsed.story_slug)
-            test_file = TESTS_DIR / name / f"{story_slug}_test.py"
+    for fpath, feature_name, stage in sorted(feature_files):
+        parsed = parse_feature_file(fpath)
+        if not parsed:
+            print(f"SKIP {fpath} — no Feature: line found")
+            continue
+        for rule in parsed.rules:
+            test_file = TESTS_DIR / feature_name / f"{rule.rule_slug}_test.py"
             actions = sync_test_file(
-                feature_slug,
-                story_slug,
-                parsed.examples,
+                rule.rule_slug,
+                rule.examples,
                 test_file,
                 stage,
                 check_only=check_only,
@@ -631,12 +686,12 @@ def main() -> int:
         print("No orphaned tests found.")
         return 0
 
-    features = find_feature_folders()
-    if not features:
-        print("No feature folders with .feature files found.")
+    feature_files = find_feature_files()
+    if not feature_files:
+        print("No .feature files found.")
         return 0
 
-    return _sync_all_features(features, check_only=check_only)
+    return _sync_all_features(feature_files, check_only=check_only)
 
 
 if __name__ == "__main__":

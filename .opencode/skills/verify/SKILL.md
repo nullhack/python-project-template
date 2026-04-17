@@ -18,8 +18,9 @@ This skill guides the reviewer through Step 5: independent verification that the
 ## Scope Guard — Step 4 vs. Step 5
 
 If you are invoked for a **per-test code-design check during Step 4** (not a full Step 5 review):
-- The developer will provide a completed **Design Self-Declaration** checklist with `file:line` evidence for each rule.
+- The developer's completed **Design Self-Declaration** is in the `## Self-Declaration` block of `TODO.md`. Read it first.
 - **Independently verify each claim** against the actual code using sections 4a–4e (YAGNI, KISS, DRY, SOLID, Object Calisthenics, Design Patterns) and the semantic alignment check.
+- If any item in the `## Self-Declaration` block is unchecked or has no `file:line` evidence, reject immediately — the developer has not completed the self-declaration.
 - Do **NOT** run any commands (no lint, no static-check, no test suite).
 - Respond using the verification table template in `implementation/SKILL.md` — compare developer claims vs. your independent findings for each rule.
 
@@ -33,11 +34,11 @@ After the developer signals Step 4 is complete and all self-verification checks 
 
 ### 1. Read the Feature Docs
 
-Read the feature folder `docs/features/in-progress/<name>/`. Extract:
-- All `@id` tags and their Example titles from `.feature` files
+Read `docs/features/in-progress/<name>.feature`. Extract:
+- All `@id` tags and their Example titles from `Rule:` blocks
 - The interaction model (if the feature involves user interaction)
-- The developer's pre-mortem (if present in the Architecture section of `discovery.md`)
-- The Rules and Constraints sections from `discovery.md`
+- The developer's pre-mortem (if present in the Architecture section of the feature description)
+- The Rules (Business) and Constraints sections from the feature description
 
 ### 2. Check Commit History
 
@@ -105,7 +106,7 @@ Read the source files changed in this feature. **Do this before running lint/sta
 | 5 | One dot per line | Reduces coupling to transitive dependencies | `a.b.c()` chains = FAIL | | |
 | 6 | No abbreviations | Names are documentation; abbreviations lose meaning | `mgr`, `tmp`, `calc` = FAIL | | |
 | 7 | Small entities | Smaller units are easier to test, read, and replace | Functions > 20 lines or classes > 50 lines = FAIL | | |
-| 8 | ≤ 2 instance variables | Forces single responsibility through structural constraint | Count `self.x` assignments in `__init__` | | |
+| 8 | ≤ 2 instance variables | Forces responsibility splitting by making it structurally impossible to hold too much state in one class | For EVERY class: count `self.x` in `__init__`. If > 2: FAIL immediately. The only valid fix is a new named value object (OC-3) or collection class (OC-4). Invalid workarounds = FAIL: hardcoded constants, inlined literals, class-level variables, moving fields to a parent class, or merging into a dict/tuple. | | |
 | 9 | No getters/setters | Enforces tell-don't-ask; behavior lives with data | `get_x()`/`set_x()` pairs = FAIL | | |
 
 #### 4e. Design Patterns — any FAIL → REJECTED
@@ -127,7 +128,8 @@ Read the source files changed in this feature. **Do this before running lint/sta
 | No internal attribute access | Search for `_x` in assertions | None found | `_x`, `isinstance`, `type()` found | Replace with public API assertion |
 | Every `@id` has a mapped test | Match `@id` tags in `.feature` files to test functions | All mapped | Missing test | Write the missing test |
 | No `@id` used by two functions | Check for duplicate `@id` hex in test function names | None | Duplicate found | Consolidate into Hypothesis `@given` + `@example` or escalate to PO |
-| Function naming | Test names match `test_<feature_slug>_<8char_hex>` | All match | Mismatch | Rename function |
+| Function naming | Test names match `test_<rule_slug>_<8char_hex>` | All match | Mismatch | Rename function |
+| All Hypothesis tests have `@pytest.mark.slow` | Read every `@given`-decorated test for the `@slow` marker | All present | Any missing | Add `@pytest.mark.slow` |
 
 #### 4g. Code Quality — any FAIL → REJECTED
 
@@ -184,7 +186,7 @@ Record what input was given and what output was observed.
 ### @id Traceability
 | @id | Example Title | Test | Status |
 |-----|---------------|------|--------|
-| `@id:a3f2b1c4` | <title> | `tests/features/<name>/<story>_test.py::test_<slug>_a3f2b1c4` | COVERED / NOT COVERED |
+| `@id:a3f2b1c4` | <title> | `tests/features/<name>/<rule>_test.py::test_<rule_slug>_a3f2b1c4` | COVERED / NOT COVERED |
 
 ### Code Review Findings
 - PASS: <aspect>
@@ -222,3 +224,4 @@ OR
 | Duplicate `@id` in tests | 0 |
 | Empty evidence cells | 0 |
 | Orphaned tests | 0 |
+| Hypothesis tests missing `@pytest.mark.slow` | 0 |
