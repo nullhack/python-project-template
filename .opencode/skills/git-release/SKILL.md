@@ -2,14 +2,14 @@
 name: git-release
 description: Create releases with hybrid major.minor.calver versioning and AI-generated adjective-animal naming
 version: "1.0"
-author: developer
-audience: developer
+author: software-engineer
+audience: software-engineer
 workflow: release-management
 ---
 
 # Git Release
 
-Create a tagged GitHub release after the PO accepts the feature (Step 6).
+Create a tagged GitHub release after the PO accepts the feature (Step 5).
 
 ## Version Format
 

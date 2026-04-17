@@ -157,11 +157,11 @@ Record what input was given and what output was observed.
 
 Read the software-engineer's Self-Declaration from `TODO.md`.
 
-For every **YES** claim:
+For every **AGREE** claim:
 - Find the `file:line` — does it hold?
 
-For every **NO** claim:
-- Is the deviation justified?
+For every **DISAGREE** claim:
+- REJECT — the software-engineer must fix before requesting review again.
 
 Undeclared violations → REJECT.
 

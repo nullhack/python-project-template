@@ -4,7 +4,7 @@ A Python template to quickstart any project with a production-ready workflow, qu
 
 ## Workflow Overview
 
-Features flow through 6 steps with a WIP limit of 1 feature at a time. The filesystem enforces WIP:
+Features flow through 5 steps with a WIP limit of 1 feature at a time. The filesystem enforces WIP:
 - `docs/features/backlog/<feature-name>.feature` — features waiting to be worked on
 - `docs/features/in-progress/<feature-name>.feature` — exactly one feature being built right now
 - `docs/features/completed/<feature-name>.feature` — accepted and shipped features
@@ -17,7 +17,7 @@ STEP 4: VERIFY         (reviewer)       → run all commands, review code
 STEP 5: ACCEPT         (product-owner)  → demo, validate, move folder to completed/
 ```
 
-**PO picks the next feature from backlog. Developer never self-selects.**
+**PO picks the next feature from backlog. Software-engineer never self-selects.**
 
 **Verification is adversarial.** The reviewer's job is to try to break the feature, not to confirm it works. The default hypothesis is "it might be broken despite green checks; prove otherwise."
 
@@ -127,13 +127,7 @@ def test_wall_bounce_a3f2b1c4() -> None:
     raise NotImplementedError
 ```
 
-### Markers (4 total)
-- `@pytest.mark.unit` — isolated, one function/class, no external state
-- `@pytest.mark.integration` — multiple components, external state
-- `@pytest.mark.slow` — takes > 50ms; additionally applied alongside `unit` or `integration`
-- Tests do not use markers — software-engineer writes test bodies directly
-
-### Markers (available if needed)
+### Markers (3 total)
 - `@pytest.mark.unit` — isolated, one function/class, no external state
 - `@pytest.mark.integration` — multiple components, external state
 - `@pytest.mark.slow` — takes > 50ms; additionally applied alongside `unit` or `integration`
@@ -182,9 +176,9 @@ uv run task doc-serve
 - **Semantic alignment**: tests must operate at the same abstraction level as the acceptance criteria they cover
 - **Integration tests**: multi-component features require at least one `@pytest.mark.integration` test exercising the public entry point
 
-### Developer Quality Gate Priority Order
+### Software-Engineer Quality Gate Priority Order
 
-During Step 4 (Implementation), correctness priorities are:
+During Step 3 (TDD Loop), correctness priorities are:
 
 1. **Design correctness** — YAGNI > KISS > DRY > SOLID > Object Calisthenics > appropriate design patterns
 2. **One test green** — the specific test under work passes, plus `test-fast` still passes

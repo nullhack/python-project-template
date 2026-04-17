@@ -2,8 +2,8 @@
 name: create-skill
 description: Create new OpenCode skills following the skill definition standard
 version: "1.0"
-author: developer
-audience: developer
+author: software-engineer
+audience: software-engineer
 workflow: opencode
 ---
 
@@ -83,10 +83,10 @@ Add the skill name to the agent's "Available Skills" section so the agent knows 
 |---|---|---|
 | `session-workflow` | all agents | Session start/end protocol |
 | `scope` | product-owner | Step 1: define acceptance criteria |
-| `tdd` | developer | Step 3: write failing tests |
-| `implementation` | developer | Step 4: Red-Green-Refactor |
-| `verify` | reviewer | Step 5: run commands and review code |
-| `code-quality` | developer | Quick reference: four handoff commands before Step 5 |
-| `pr-management` | developer | Create PRs with proper format |
-| `git-release` | developer | Calver versioning and release naming |
-| `create-skill` | developer | Create new skills |
+| `implementation` | software-engineer | Steps 2-3: architecture + TDD loop |
+| `design-patterns` | software-engineer | Steps 2, 3: refactor when smell detected |
+| `verify` | reviewer | Step 4: adversarial verification |
+| `code-quality` | software-engineer | Quick reference — redirects to verify |
+| `pr-management` | software-engineer | Step 5: create PR with squash merge |
+| `git-release` | software-engineer | Step 5: calver versioning and release |
+| `create-skill` | software-engineer | Create new skills |

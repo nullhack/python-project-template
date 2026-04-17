@@ -153,4 +153,4 @@ Run `gen-todo` at session start (after reading TODO.md) and at session end (befo
 5. The "Next" line must be actionable enough that a fresh AI can execute it without asking questions
 6. During Step 3, always update `## Cycle State` when transitioning between RED/GREEN/REFACTOR phases
 7. When a step completes, update TODO.md and commit **before** any further work
-8. During Step 3, write the `## Self-Declaration` block into TODO.md after all quality gates pass — every claim must have YES/NO with `file:line` evidence
+8. During Step 3, write the `## Self-Declaration` block into TODO.md after all quality gates pass — every claim must have AGREE/DISAGREE with `file:line` evidence

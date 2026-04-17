@@ -6,7 +6,7 @@ This document describes the complete feature lifecycle used to develop software 
 
 ## Overview
 
-Features flow through 6 steps with a WIP limit of 1 feature at a time. The filesystem enforces the limit:
+Features flow through 5 steps with a WIP limit of 1 feature at a time. The filesystem enforces the limit:
 
 ```
 docs/features/backlog/<name>.feature      ← waiting
@@ -239,33 +239,33 @@ Each step has a designated agent and a specific deliverable. No step is skipped.
 │                                                                     │
 │  SELF-DECLARATION (once, after all quality gates pass)             │
 │    As a software-engineer I declare:                               │
-│      * YAGNI: no code without a failing test — YES/NO | file:line │
-│      * YAGNI: no speculative abstractions — YES/NO | file:line   │
-│      * KISS: simplest solution that passes — YES/NO | file:line   │
-│      * KISS: no premature optimization — YES/NO | file:line       │
-│      * DRY: no duplication — YES/NO | file:line                  │
-│      * DRY: no redundant comments — YES/NO | file:line            │
-│      * SOLID-S: one reason to change per class — YES/NO | file:line│
+│      * YAGNI: no code without a failing test — AGREE/DISAGREE | file:line │
+│      * YAGNI: no speculative abstractions — AGREE/DISAGREE | file:line   │
+│      * KISS: simplest solution that passes — AGREE/DISAGREE | file:line   │
+│      * KISS: no premature optimization — AGREE/DISAGREE | file:line       │
+│      * DRY: no duplication — AGREE/DISAGREE | file:line                  │
+│      * DRY: no redundant comments — AGREE/DISAGREE | file:line            │
+│      * SOLID-S: one reason to change per class — AGREE/DISAGREE | file:line│
 │      * SOLID-O: open for extension, closed for modification        │
-│                   — YES/NO | file:line                            │
-│      * SOLID-L: subtypes substitutable — YES/NO | file:line       │
-│      * SOLID-I: no forced unused deps — YES/NO | file:line        │
+│                   — AGREE/DISAGREE | file:line                            │
+│      * SOLID-L: subtypes substitutable — AGREE/DISAGREE | file:line       │
+│      * SOLID-I: no forced unused deps — AGREE/DISAGREE | file:line        │
 │      * SOLID-D: depend on abstractions, not concretions            │
-│                   — YES/NO | file:line                            │
-│      * OC-1: one level of indentation per method — YES/NO | file:line│
-│      * OC-2: no else after return — YES/NO | file:line            │
-│      * OC-3: primitive types wrapped — YES/NO | file:line        │
-│      * OC-4: first-class collections — YES/NO | file:line        │
-│      * OC-5: one dot per line — YES/NO | file:line                │
-│      * OC-6: no abbreviations — YES/NO | file:line                │
-│      * OC-7: ≤20 lines per function — YES/NO | file:line          │
-│      * OC-8: ≤2 instance variables per class — YES/NO | file:line │
-│      * OC-9: no getters/setters — YES/NO | file:line              │
-│      * Patterns: no creational smell — YES/NO | file:line         │
-│      * Patterns: no structural smell — YES/NO | file:line         │
-│      * Patterns: no behavioral smell — YES/NO | file:line         │
+│                   — AGREE/DISAGREE | file:line                            │
+│      * OC-1: one level of indentation per method — AGREE/DISAGREE | file:line│
+│      * OC-2: no else after return — AGREE/DISAGREE | file:line            │
+│      * OC-3: primitive types wrapped — AGREE/DISAGREE | file:line        │
+│      * OC-4: first-class collections — AGREE/DISAGREE | file:line        │
+│      * OC-5: one dot per line — AGREE/DISAGREE | file:line                │
+│      * OC-6: no abbreviations — AGREE/DISAGREE | file:line                │
+│      * OC-7: ≤20 lines per function — AGREE/DISAGREE | file:line          │
+│      * OC-8: ≤2 instance variables per class — AGREE/DISAGREE | file:line │
+│      * OC-9: no getters/setters — AGREE/DISAGREE | file:line              │
+│      * Patterns: no creational smell — AGREE/DISAGREE | file:line         │
+│      * Patterns: no structural smell — AGREE/DISAGREE | file:line         │
+│      * Patterns: no behavioral smell — AGREE/DISAGREE | file:line         │
 │      * Semantic: tests operate at same abstraction as AC           │
-│                   — YES/NO | file:line                            │
+│                   — AGREE/DISAGREE | file:line                            │
 │                                                                     │
 │  → Hand off to Step 4 (Verify)                                     │
 └─────────────────────────────────────────────────────────────────────┘
@@ -336,7 +336,7 @@ Each step has a designated agent and a specific deliverable. No step is skipped.
 │                                                                     │
 │  ACCEPTED:                                                          │
 │    mv in-progress/<name>.feature → completed/<name>.feature         │
-│    developer creates PR (squash merge) + tags release               │
+│    software-engineer creates PR (squash merge) + tags release               │
 │                                                                     │
 │  REJECTED:                                                          │
 │    feedback in TODO.md → back to relevant step                      │
@@ -378,7 +378,7 @@ Feature: <title>
   Synthesis: <full synthesis across clusters>
   Approved: YES / NO
 
-  Architecture:                         ← added at Step 2 by developer
+  Architecture:                         ← added at Step 2 by software-engineer
 
   ### Module Structure
   - <package>/domain/entity.py — ...
@@ -424,10 +424,10 @@ Two discovery sources:
 ```
 tests/
   features/<feature-name>/
-    <rule-slug>_test.py     ← developer-written, one per Rule: block
+    <rule-slug>_test.py     ← software-engineer-written, one per Rule: block
                               function: test_<rule_slug>_<8char_hex>()
   unit/
-    <anything>_test.py      ← developer-authored extras, no @id traceability
+    <anything>_test.py      ← software-engineer-authored extras, no @id traceability
                               plain pytest or Hypothesis @given (developer choice)
 ```
 

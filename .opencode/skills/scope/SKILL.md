@@ -255,7 +255,7 @@ All Rules must have their pre-mortems completed before any Examples are written.
 
 ### 4.2 Write Example Blocks
 
-Add `Example:` blocks under each `Rule:`. Each Example gets an `@id:<8-char-hex>` tag (generated with `uv run task gen-id`).
+Add `Example:` blocks under each `Rule:`. Each Example gets an `@id:<8-char-hex>` tag.
 
 **Format** (mandatory):
 
@@ -322,7 +322,6 @@ git commit -m "feat(criteria): write acceptance criteria for <name>"
 **After this commit, the `Example:` blocks are frozen.** Any change requires:
 1. Add `@deprecated` tag to the old Example
 2. Write a new Example with a new `@id`
-3. Run `uv run task gen-tests` to sync test stubs
 
 ---
 

@@ -2,8 +2,8 @@
 name: design-patterns
 description: Reference skill for GoF design patterns, SOLID, Object Calisthenics, Python Zen, and other SE principles — with smell triggers and Python before/after examples
 version: "1.0"
-author: developer
-audience: developer
+author: software-engineer
+audience: software-engineer
 workflow: feature-lifecycle
 ---
 
@@ -11,7 +11,7 @@ workflow: feature-lifecycle
 
 Load this skill when:
 - Running the architecture smell check in Step 2 and a smell is detected
-- Refactoring in Step 4 and a pattern smell appears in the self-declaration
+- Refactoring in Step 3 and a pattern smell appears in the self-declaration
 
 ---
 
@@ -20,7 +20,7 @@ Load this skill when:
 1. **Identify the smell** from the checklist in your self-declaration or architecture check
 2. **Find the smell category** below (Creational / Structural / Behavioral)
 3. **Read the trigger and the before/after example**
-4. **Apply the pattern** and update the Architecture section (Step 2) or the refactored code (Step 4)
+4. **Apply the pattern** and update the Architecture section (Step 2) or the refactored code (Step 3)
 
 ---
 
