@@ -33,28 +33,77 @@ Each step has a designated agent and a specific deliverable. No step is skipped.
 │  STEP 1 — SCOPE                              agent: product-owner   │
 ├─────────────────────────────────────────────────────────────────────┤
 │                                                                     │
-│  Phase 1 — Project Discovery (once per project)                     │
-│    PO asks stakeholder 7 questions → silent pre-mortem              │
-│    → paraphrase + clarify + summarize → stakeholder confirms        │
-│    → baseline docs/features/discovery.md                           │
-│    → create backlog/<name>.feature stubs (discovery section only)  │
+│  Phase 1 — Project Discovery                                        │
+│  [runs ONCE; skip if discovery.md BASELINED]                        │
+│  [adding features later: append new Qs to Session 1, re-fill]      │
 │                                                                     │
-│  Phase 2 — Feature Discovery (per feature)                          │
-│    PO populates Entities table in .feature file description         │
-│    → generates questions from gaps, ambiguities, boundaries         │
-│    → interview rounds → after each round:                           │
-│        paraphrase + clarify + summarize → stakeholder confirms      │
-│    → stakeholder says "baseline" to freeze discovery                │
-│    → decomposition check (>2 concerns or >8 examples → split)       │
-│    → Status: BASELINED written into .feature file description       │
+│    Session 1 — Individual Scope Elicitation                         │
+│      5Ws + Success + Failure + Out-of-scope                         │
+│      Gap-finding per answer: CIT · Laddering · CI Perspective       │
+│      [new questions from elucidation added in the moment]           │
+│      Level 1: paraphrase each answer on the spot                    │
+│      → PO writes synthesis → stakeholder confirms or corrects       │
+│      → PO runs silent pre-mortem on confirmed synthesis             │
+│      [template §1: synthesis confirmed → unlocks Session 2]         │
+│                                                                     │
+│    Session 2 — Cluster / Big Picture                                │
+│      Questions target clusters and cross-cutting concerns           │
+│      Gap-finding per cluster: CIT · Laddering · CI Perspective      │
+│      [new questions from elucidation added in the moment]           │
+│      Level 1: paraphrase each answer                                │
+│      Level 2: synthesis when transitioning between clusters         │
+│      [template §2: all clusters answered → unlocks Session 3]       │
+│                                                                     │
+│    Session 3 — Synthesis Approval + Feature Derivation              │
+│      PO produces full synthesis across all clustered areas          │
+│      → stakeholder approves or corrects; PO refines until approved  │
+│      [template §3: approval → unlocks domain analysis]              │
+│      Domain analysis: nouns/verbs → subject areas                   │
+│      Name features (FDD "Action object" / Affinity clusters)        │
+│      Create backlog/<name>.feature stubs                            │
+│      Status: BASELINED written to discovery.md                      │
+│                                                                     │
+│  Phase 2 — Feature Discovery (repeats per feature)                  │
+│  [each .feature has its own 3-session discovery template]           │
+│                                                                     │
+│    Session 1 — Individual Entity Elicitation                        │
+│      Populate Entities table from project discovery                 │
+│      Gap-finding per answer: CIT · Laddering · CI Perspective       │
+│      [new questions from elucidation added in the moment]           │
+│      Level 1: paraphrase each answer                                │
+│      → PO writes synthesis → stakeholder confirms or corrects       │
+│      → PO runs silent pre-mortem on confirmed synthesis             │
+│      [template §1: synthesis confirmed → unlocks Session 2]         │
+│                                                                     │
+│    Session 2 — Cluster / Big Picture for this Feature               │
+│      Questions target clusters of behavior within this feature      │
+│      Gap-finding per cluster: CIT · Laddering · CI Perspective      │
+│      [new questions from elucidation added in the moment]           │
+│      Level 1: paraphrase · Level 2: cluster transition summaries    │
+│      [template §2: all clusters answered → unlocks Session 3]       │
+│                                                                     │
+│    Session 3 — Feature Synthesis Approval + Story Derivation        │
+│      PO produces synthesis of feature scope and clusters            │
+│      → stakeholder approves or corrects; PO refines until approved  │
+│      Clusters → candidate user stories (Rules)                      │
+│      Status: BASELINED written to .feature discovery section        │
+│      [template §3: approval + stories → unlocks decomp check]       │
+│                                                                     │
+│    DECOMPOSITION CHECK                                              │
+│      >2 distinct concerns OR >8 candidate Examples?                 │
+│      YES → split into separate .feature files, re-run Phase 2       │
+│      NO  → proceed                                                  │
 │                                                                     │
 │  Phase 3 — Stories (PO alone)                                       │
-│    Write Rule: blocks with user story headers (no Examples yet)     │
+│    Clusters from Phase 2 Session 2 → one Rule: block per story      │
+│    INVEST gate: all 6 letters must pass before committing           │
 │    commit: feat(stories): write user stories for <name>             │
 │                                                                     │
 │  Phase 4 — Criteria (PO alone)                                      │
-│    Silent pre-mortem per Rule                                       │
-│    Write @id-tagged Example: blocks under each Rule:                │
+│    4.1 Pre-mortem per Rule (all Rules checked before Examples)      │
+│    4.2 Write @id-tagged Examples (Given/When/Then, declarative)     │
+│        MoSCoW triage: Must / Should / Could per Example             │
+│    4.3 Review checklist                                             │
 │    commit: feat(criteria): write acceptance criteria for <name>     │
 │    ★ FROZEN — changes require @deprecated + new Example             │
 │                                                                     │
@@ -175,7 +224,7 @@ Feature: <title>
 
   Discovery:
 
-  Status: BASELINED (YYYY-MM-DD)
+  Status: ELICITING | BASELINED (YYYY-MM-DD)
 
   Entities:
   | Type | Name | Candidate Class/Method | In Scope |
@@ -186,8 +235,17 @@ Feature: <title>
   Constraints:
   - <non-functional requirement>
 
-  Questions:
+  Session 1 — Individual Entity Elicitation:
+  | ID | Question | Answer | Status |     ← OPEN / ANSWERED
+  Synthesis: <PO synthesis — confirmed by stakeholder>
+
+  Session 2 — Cluster / Big Picture:
   | ID | Question | Answer | Status |
+  Clusters: <named topic clusters derived from answers>
+
+  Session 3 — Feature Synthesis:
+  Synthesis: <full synthesis across clusters>
+  Approved: YES / NO
 
   Architecture:                         ← added at Step 2 by developer
 
@@ -212,8 +270,8 @@ Feature: <title>
 ```
 
 Two discovery sources:
-- `docs/features/discovery.md` — project-level (Who/What/Why/When, once per project)
-- Feature file description — per-feature discovery, entities, questions, architecture
+- `docs/features/discovery.md` — project-level 3-session discovery (once per project; additive for new features)
+- Feature file description — per-feature 3-session discovery, entities, clusters, architecture
 
 ---
 
@@ -301,7 +359,7 @@ Phase: RED | GREEN | REFACTOR | SELF-DECLARE | REVIEWER(code-design) | COMMITTED
 
 | Role | Type | Responsibilities |
 |---|---|---|
-| **Stakeholder** | Human | Answers questions, provides domain knowledge, says "baseline" |
+| **Stakeholder** | Human | Answers questions, provides domain knowledge, approves syntheses |
 | **Product Owner** | AI agent | Interviews stakeholder, writes `.feature` files, picks features, accepts deliveries |
 | **Developer** | AI agent | Architecture, tests, code, git, releases |
 | **Reviewer** | AI agent | Adversarial verification — defaults to REJECTED until proven correct |

@@ -11,7 +11,7 @@ Features flow through 6 steps with a WIP limit of 1 feature at a time. The files
 
 ```
 STEP 1: SCOPE          (product-owner)  → discovery + Gherkin stories + criteria
-STEP 2: ARCH           (developer)      → design module structure, get PO approval
+STEP 2: ARCH           (developer)      → read all backlog features, design module structure
 STEP 3: TEST FIRST     (developer)      → sync stubs, write failing tests
 STEP 4: IMPLEMENT      (developer)      → Red-Green-Refactor, commit per green test
 STEP 5: VERIFY         (reviewer)       → run all commands, review code
@@ -25,7 +25,7 @@ STEP 6: ACCEPT         (product-owner)  → demo, validate, move folder to compl
 ## Roles
 
 - **Product Owner (PO)** — AI agent. Interviews the stakeholder, writes discovery docs, Gherkin features, and acceptance criteria. Accepts or rejects deliveries.
-- **Stakeholder** — Human. Answers PO's questions, provides domain knowledge, says "baseline" when discovery is complete.
+- **Stakeholder** — Human. Answers PO's questions, provides domain knowledge, approves PO syntheses to confirm discovery is complete.
 - **Developer** — AI agent. Architecture, test bodies, implementation, git. Never edits `.feature` files. Escalates spec gaps to PO.
 - **Reviewer** — AI agent. Adversarial verification. Reports spec gaps to PO.
 
@@ -55,21 +55,28 @@ STEP 6: ACCEPT         (product-owner)  → demo, validate, move folder to compl
 ## Step 1 — SCOPE (4 Phases)
 
 ### Phase 1 — Project Discovery (once per project)
-PO creates `docs/features/discovery.md`. Asks stakeholder 7 standard questions (Who/What/Why/When/Success/Failure/Out-of-scope). Silent pre-mortem generates follow-up questions. All questions presented at once. Autonomous baseline when all questions are answered. PO identifies feature list and creates one `backlog/<feature-name>.feature` file per feature (discovery section only).
+PO creates `docs/features/discovery.md` using the 3-session template. **Skip Phase 1 entirely if `discovery.md` Status is BASELINED.** To add features to an existing project: append new questions to Session 1 and re-fill from there.
+
+- **Session 1** — Individual scope elicitation: 5Ws + Success + Failure + Out-of-scope. Gap-finding per answer using CIT, Laddering, and CI Perspective Change. PO writes synthesis; stakeholder confirms or corrects. PO runs silent pre-mortem on confirmed synthesis. Template §1 must be confirmed before Session 2.
+- **Session 2** — Cluster / big picture: questions target clusters and cross-cutting concerns. Gap-finding per cluster. Level 2 synthesis when transitioning between clusters. Template §2 must be complete before Session 3.
+- **Session 3** — Synthesis approval + feature derivation: PO produces full synthesis of all clusters; stakeholder approves or corrects (PO refines until approved). Domain analysis: nouns/verbs → subject areas → FDD "Action object" feature names. Create `backlog/<name>.feature` stubs. Write `Status: BASELINED` to `discovery.md`.
 
 ### Phase 2 — Feature Discovery (per feature)
-PO derives targeted questions from feature entities: extract nouns/verbs from project discovery, populate the Entities table in the feature file description, then generate questions from gaps, ambiguities, and boundary conditions. Silent pre-mortem before the first interview round. Present all questions to the stakeholder at once; iterate with follow-up rounds (pre-mortem after each) until stakeholder says "baseline" to freeze discovery.
+Each `.feature` file has its own 3-session discovery template in its description. **Sessions are enforced by the template: each section must be filled before proceeding to the next.**
+
+- **Session 1** — Individual entity elicitation: populate Entities table from project discovery; generate questions from entity gaps using CIT, Laddering, CI Perspective Change. PO writes synthesis; stakeholder confirms. Silent pre-mortem on confirmed synthesis.
+- **Session 2** — Cluster / big picture: questions target clusters of behavior within this feature. Gap-finding per cluster. Level 2 cluster transition summaries.
+- **Session 3** — Feature synthesis approval + story derivation: PO produces synthesis of feature scope and clusters; stakeholder approves or corrects (PO refines until approved). Clusters become candidate user stories (Rules). Write `Status: BASELINED` to `.feature` discovery section.
+
+**Decomposition check**: after Session 3, does this feature span >2 distinct concerns OR have >8 candidate Examples? YES → split into separate `.feature` files, re-run Phase 2. NO → proceed.
 
 ### Phase 3 — Stories (PO alone)
-One `Rule:` block per user story within the feature's `.feature` file. Each `Rule:` has the user story header (`As a / I want / So that`) as its description — no `Example:` blocks yet. Commit: `feat(stories): write user stories for <name>`
+Clusters from Phase 2 Session 2 → one `Rule:` block per user story. Each `Rule:` has the user story header (`As a / I want / So that`) as its description — no `Example:` blocks yet. INVEST gate: all 6 letters must pass. Commit: `feat(stories): write user stories for <name>`
 
 ### Phase 4 — Criteria (PO alone)
-Silent pre-mortem per Rule. Write `Example:` blocks with `@id:<8-char-hex>` tags under each `Rule:`. Each Example must be observably distinct. If a single feature spans **>2 distinct concerns** OR has **>8 candidate Examples**, split into separate `.feature` files in `backlog/` before writing Rules. Commit: `feat(criteria): write acceptance criteria for <name>`
+Pre-mortem per Rule (all Rules must be checked before writing Examples). Write `Example:` blocks — declarative Given/When/Then, MoSCoW triage (Must/Should/Could) per Example. Review checklist (4.3). Commit: `feat(criteria): write acceptance criteria for <name>`
 
-### Feature Decomposition Threshold
-Before moving to Phase 3, check: does this feature span **>2 distinct concerns** OR have **>8 candidate Examples**? If yes, split into separate `.feature` files in `backlog/` before writing Rules. Each feature file should address a single cohesive concern.
-
-**Baseline is frozen**: no `.feature` changes after criteria are written. Change = `@deprecated` tag + new Example.
+**Criteria are frozen**: no `Example:` changes after commit. Change = `@deprecated` tag + new Example with new `@id`.
 
 ## Filesystem Structure
 
@@ -287,23 +294,7 @@ Use `@developer /skill git-release` for the full release process.
 
 Every session: load `skill session-workflow`. Read `TODO.md` first, update it at the end.
 
-`TODO.md` is a 15-line bookmark — not a project journal:
-```markdown
-# Current Work
-
-Feature: <name>
-Step: <1-6> (<step name>)
-Source: docs/features/in-progress/<name>.feature
-
-## Progress
-- [x] `<@id:hex>`: <description>          ← done
-- [~] `<@id:hex>`: <description>          ← in progress
-- [ ] `<@id:hex>`: <description>          ← next
-- [-] `<@id:hex>`: <description>          ← cancelled
-
-## Next
-<One actionable sentence>
-```
+`TODO.md` is a session bookmark — not a project journal. See `docs/workflow.md` for the full structure including the Cycle State and Self-Declaration blocks used during Step 4.
 
 ## Setup
 

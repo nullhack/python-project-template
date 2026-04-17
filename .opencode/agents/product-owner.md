@@ -58,4 +58,4 @@ When a gap is reported (by developer or reviewer):
 ## Available Skills
 
 - `session-workflow` — session start/end protocol
-- `scope` — Step 1: full 4-phase discovery, stories, and criteria protocol
+- `scope` — Step 1: 3-session discovery (Phase 1 + 2), stories (Phase 3), and criteria (Phase 4)
