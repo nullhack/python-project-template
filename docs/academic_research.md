@@ -417,6 +417,21 @@ This document explains the cognitive and social-science mechanisms that justify 
 
 ---
 
+### 28. Active Listening — Paraphrase-Clarify-Summarize
+
+| | |
+|---|---|
+| **Source** | Rogers, C. R., & Farson, R. E. (1957). *Active Listening*. Industrial Relations Center, University of Chicago. |
+| **Date** | 1957 |
+| **URL** | — |
+| **Alternative** | McNaughton, D. et al. (2008). Learning to Listen. *Topics in Early Childhood Special Education*, 27(4), 223–231. (LAFF strategy: Listen, Ask, Focus, Find) |
+| **Status** | Confirmed — foundational clinical research; widely replicated across professional and educational contexts |
+| **Core finding** | Active listening — paraphrasing what was heard in the listener's own words, asking clarifying questions, then summarizing the main points and intent — reduces misunderstanding, builds trust, and confirms mutual understanding before proceeding. The three-step responding sequence (Paraphrase → Clarify → Summarize) is the operationalizable form of the broader active listening construct. |
+| **Mechanism** | Paraphrasing forces the listener to reconstruct the speaker's meaning in their own language, surfacing gaps immediately. Clarifying questions address residual ambiguity. Summarizing creates a shared record that both parties can confirm or correct. Together they eliminate the assumption that "I heard" equals "I understood." Without this protocol, agents (human or AI) proceed on partial or misread requirements, producing work that is technically complete but semantically wrong. |
+| **Where used** | PO summarization protocol in `scope/SKILL.md`: after each interview round, the PO must produce a "Here is what I understood" block (paraphrase → clarify → summarize) before moving to Phase 3 (Stories) or Phase 4 (Criteria). The stakeholder confirms or corrects before the PO proceeds. |
+
+---
+
 ## Bibliography
 
 1. Cialdini, R. B. (2001). *Influence: The Psychology of Persuasion* (rev. ed.). HarperBusiness.
@@ -450,3 +465,5 @@ This document explains the cognitive and social-science mechanisms that justify 
 29. Liu, N. F. et al. (2023). Lost in the Middle: How Language Models Use Long Contexts. *Transactions of the Association for Computational Linguistics*. arXiv:2307.03172. https://arxiv.org/abs/2307.03172
 30. McKinnon, R. (2025). arXiv:2511.05850. https://arxiv.org/abs/2511.05850
 31. Sharma, A., & Henley, A. (2026). Modular Prompt Optimization. arXiv:2601.04055. https://arxiv.org/abs/2601.04055
+32. Rogers, C. R., & Farson, R. E. (1957). *Active Listening*. Industrial Relations Center, University of Chicago.
+33. McNaughton, D., Hamlin, D., McCarthy, J., Head-Reeves, D., & Schreiner, M. (2008). Learning to Listen: Teaching an Active Listening Strategy to Preservice Education Professionals. *Topics in Early Childhood Special Education*, 27(4), 223–231.
