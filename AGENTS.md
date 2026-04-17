@@ -48,6 +48,7 @@ STEP 5: ACCEPT         (product-owner)  → demo, validate, move folder to compl
 | `pr-management` | software-engineer | 5 |
 | `git-release` | software-engineer | 5 |
 | `create-skill` | software-engineer | meta |
+| `create-agent` | human-user | meta |
 
 **Session protocol**: Every agent loads `skill session-workflow` at session start. Load additional skills as needed for the current step.
 
