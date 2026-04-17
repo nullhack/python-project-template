@@ -428,7 +428,7 @@ tests/
                               function: test_<rule_slug>_<8char_hex>()
   unit/
     <anything>_test.py      ← software-engineer-authored extras, no @id traceability
-                              plain pytest or Hypothesis @given (developer choice)
+                              plain pytest or Hypothesis @given (software-engineer choice)
 ```
 
 ---

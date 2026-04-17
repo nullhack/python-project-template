@@ -44,16 +44,15 @@ docs/features/in-progress/   ← exactly one feature being built
 docs/features/completed/     ← accepted and shipped features
 ```
 
-**3 roles, 6 steps:**
+**4 roles, 5 steps:**
 
 | Step | Role | What happens |
 |------|------|-------------|
 | 1. SCOPE | Product Owner | Discovery + Gherkin stories + `@id` criteria |
-| 2. ARCH | Developer | Design module structure, get PO approval |
-| 3. TEST FIRST | Developer | Sync stubs, write failing tests mapped to `@id` |
-| 4. IMPLEMENT | Developer | Red→Green→Refactor, commit per green test |
-| 5. VERIFY | Reviewer | Run all commands, code review, `@id` traceability |
-| 6. ACCEPT | Product Owner | Demo, validate, move folder to completed/ |
+| 2. ARCH | Software Engineer | Design module structure, read all backlog features |
+| 3. TDD LOOP | Software Engineer | RED→GREEN→REFACTOR, one `@id` at a time |
+| 4. VERIFY | Reviewer | Run all commands, adversarial code review |
+| 5. ACCEPT | Product Owner | Demo, validate, move folder to completed/ |
 
 ### AI Agents
 
