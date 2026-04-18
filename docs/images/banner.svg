@@ -1,0 +1,129 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 160" width="600" height="160" role="img" aria-label="Python Project Template">
+  <defs>
+
+    <!-- Antique gold for border and accents -->
+    <linearGradient id="g-gold" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%"   stop-color="#c9a84c" stop-opacity="0"/>
+      <stop offset="15%"  stop-color="#e8c96a"/>
+      <stop offset="85%"  stop-color="#c9a84c"/>
+      <stop offset="100%" stop-color="#c9a84c" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="g-gold-solid" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%"   stop-color="#e8c96a"/>
+      <stop offset="100%" stop-color="#a07830"/>
+    </linearGradient>
+
+    <!-- "Project" — deep warm brown, harmonizes with marble and gold -->
+    <linearGradient id="g-main-text" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%"   stop-color="#5c3d1e"/>
+      <stop offset="100%" stop-color="#3b2410"/>
+    </linearGradient>
+
+    <!-- "Python" — muted steel blue, smaller, secondary -->
+    <linearGradient id="g-python" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%"   stop-color="#7baabf"/>
+      <stop offset="100%" stop-color="#4a7a96"/>
+    </linearGradient>
+
+    <!-- Logo badge -->
+    <linearGradient id="g-bg" x1="0%" y1="0%" x2="60%" y2="100%">
+      <stop offset="0%"   stop-color="#faf7f2"/>
+      <stop offset="100%" stop-color="#ede8e0"/>
+    </linearGradient>
+    <linearGradient id="g-marble" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%"   stop-color="#f0ece4"/>
+      <stop offset="100%" stop-color="#c8c0b8"/>
+    </linearGradient>
+    <linearGradient id="g-stone" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%"   stop-color="#d6cfc6"/>
+      <stop offset="100%" stop-color="#a89f96"/>
+    </linearGradient>
+    <linearGradient id="g-shadow-lg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%"   stop-color="#9c9189"/>
+      <stop offset="100%" stop-color="#7a6f67"/>
+    </linearGradient>
+    <linearGradient id="g-ring" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%"   stop-color="#b5a99e"/>
+      <stop offset="100%" stop-color="#7a6f67"/>
+    </linearGradient>
+
+  </defs>
+
+  <!-- White background -->
+  <rect x="0" y="0" width="600" height="160" rx="8" fill="white"/>
+
+  <!-- Golden border — top -->
+  <line x1="12" y1="6"  x2="588" y2="6"  stroke="url(#g-gold)" stroke-width="1.2"/>
+  <!-- Golden border — bottom -->
+  <line x1="12" y1="154" x2="588" y2="154" stroke="url(#g-gold)" stroke-width="1.2"/>
+  <!-- Golden border — left -->
+  <line x1="6" y1="12" x2="6" y2="148" stroke="#c9a84c" stroke-width="1.2" opacity="0.6"/>
+  <!-- Golden border — right -->
+  <line x1="594" y1="12" x2="594" y2="148" stroke="#c9a84c" stroke-width="1.2" opacity="0.6"/>
+  <!-- Corner dots -->
+  <circle cx="6"   cy="6"   r="2" fill="#c9a84c" opacity="0.7"/>
+  <circle cx="594" cy="6"   r="2" fill="#c9a84c" opacity="0.7"/>
+  <circle cx="6"   cy="154" r="2" fill="#c9a84c" opacity="0.7"/>
+  <circle cx="594" cy="154" r="2" fill="#c9a84c" opacity="0.7"/>
+
+  <!-- ── LOGO — centered at x=82, y=80 ── -->
+  <circle cx="82" cy="80" r="60" fill="url(#g-bg)"/>
+  <circle cx="82" cy="80" r="60" fill="none" stroke="url(#g-ring)" stroke-width="1.8"/>
+
+  <g transform="translate(82,80) scale(0.65) translate(-100,-100)">
+    <polygon points="100,34  168,62  32,62" fill="url(#g-marble)"/>
+    <line x1="100" y1="34" x2="168" y2="62" stroke="url(#g-stone)" stroke-width="2" stroke-linecap="round"/>
+    <line x1="100" y1="34" x2="32"  y2="62" stroke="url(#g-stone)" stroke-width="2" stroke-linecap="round"/>
+    <rect x="32" y="62" width="136" height="11" fill="url(#g-marble)"/>
+    <rect x="32" y="71" width="136" height="2"  fill="url(#g-shadow-lg)" opacity="0.25"/>
+    <rect x="50"  y="73" width="17" height="64" fill="url(#g-marble)"/>
+    <rect x="91"  y="73" width="17" height="64" fill="url(#g-marble)"/>
+    <rect x="133" y="73" width="17" height="64" fill="url(#g-marble)"/>
+    <rect x="64"  y="73" width="3" height="64" fill="url(#g-shadow-lg)" opacity="0.22"/>
+    <rect x="105" y="73" width="3" height="64" fill="url(#g-shadow-lg)" opacity="0.22"/>
+    <rect x="147" y="73" width="3" height="64" fill="url(#g-shadow-lg)" opacity="0.22"/>
+    <rect x="32" y="137" width="136" height="10" fill="url(#g-marble)"/>
+    <rect x="38" y="147" width="124" height="8"  fill="url(#g-stone)"/>
+    <rect x="44" y="155" width="112" height="7"  fill="url(#g-shadow-lg)" opacity="0.45"/>
+  </g>
+
+  <!-- Vertical gold divider between logo and text -->
+  <line x1="158" y1="22" x2="158" y2="138" stroke="#c9a84c" stroke-width="1" opacity="0.5"/>
+
+  <!-- ── TEXT BLOCK ─────────────────────────────────────────────────
+       "python" — small, tracked, steel blue, caps — superscript label
+       "Project Template" — large, dominant, modern geometric serif
+       with "Project" in dark slate and "Template" in gold
+  ─────────────────────────────────────────────────────────────────── -->
+
+  <!-- "python" — small label above, widely tracked, all caps -->
+  <text x="178" y="58"
+        font-family="'Gill Sans', 'Optima', Candara, sans-serif"
+        font-size="13"
+        font-weight="400"
+        letter-spacing="7"
+        fill="url(#g-python)"
+        text-anchor="start">PYTHON</text>
+
+  <!-- Thin gold rule under label -->
+  <line x1="178" y1="65" x2="560" y2="65" stroke="#c9a84c" stroke-width="0.8" opacity="0.45"/>
+
+  <!-- "Project" — large, dark slate -->
+  <text x="175" y="112"
+        font-family="'Gill Sans', 'Optima', Candara, sans-serif"
+        font-size="46"
+        font-weight="600"
+        letter-spacing="2"
+        fill="url(#g-main-text)"
+        text-anchor="start">Project</text>
+
+  <!-- "Template" — large, antique gold -->
+  <text x="175" y="145"
+        font-family="'Gill Sans', 'Optima', Candara, sans-serif"
+        font-size="32"
+        font-weight="600"
+        letter-spacing="10"
+        fill="url(#g-gold-solid)"
+        text-anchor="start">TEMPLATE</text>
+
+</svg>
