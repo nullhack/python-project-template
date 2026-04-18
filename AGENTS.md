@@ -115,7 +115,7 @@ def test_<rule_slug>_<8char_hex>() -> None:
 ### Docstring Format (mandatory)
 
 ```python
-@pytest.mark.unit
+@pytest.mark.skip(reason="not yet implemented")
 def test_wall_bounce_a3f2b1c4() -> None:
     """
     Given: A ball moving upward reaches y=0
@@ -125,13 +125,11 @@ def test_wall_bounce_a3f2b1c4() -> None:
     # Given
     # When
     # Then
-    raise NotImplementedError
 ```
 
-### Markers (3 total)
-- `@pytest.mark.unit` — isolated, one function/class, no external state
-- `@pytest.mark.integration` — multiple components, external state
-- `@pytest.mark.slow` — takes > 50ms; additionally applied alongside `unit` or `integration`
+### Markers
+- `@pytest.mark.slow` — takes > 50ms; applied to Hypothesis tests and any test with I/O, network, or DB
+- `@pytest.mark.deprecated` — auto-skipped by conftest; used for superseded Examples
 
 ## Development Commands
 
@@ -175,7 +173,7 @@ uv run task doc-serve
 - **Max nesting**: 2 levels
 - **Instance variables**: ≤ 2 per class
 - **Semantic alignment**: tests must operate at the same abstraction level as the acceptance criteria they cover
-- **Integration tests**: multi-component features require at least one `@pytest.mark.integration` test exercising the public entry point
+- **Integration tests**: multi-component features require at least one test in `tests/features/` that exercises the public entry point end-to-end
 
 ### Software-Engineer Quality Gate Priority Order
 

@@ -80,8 +80,6 @@ pydocstyle.convention = "google"
 minversion = "6.0"
 markers = [
     "slow: marks tests as slow (deselect with '-m \"not slow\"')",
-    "unit: isolated tests for a single function or class",
-    "integration: tests covering multiple components together",
     "deprecated: marks tests for deprecated AC; automatically skipped (deselect with '-m \"not deprecated\"')",
 ]
 addopts = """
@@ -103,7 +101,6 @@ exclude_lines = [
     "if self.debug:",
     "if settings.DEBUG",
     "raise AssertionError",
-    "raise NotImplementedError",
     "if 0:",
     "if __name__ == .__main__.:",
 ]

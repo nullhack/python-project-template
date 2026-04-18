@@ -104,7 +104,7 @@ uv run task static-check    # pyright type checking (Step 4 handoff)
 ## Test Conventions
 
 ```python
-@pytest.mark.unit
+@pytest.mark.skip(reason="not yet implemented")
 def test_bounce_physics_a3f2b1c4() -> None:
     """
     Given: A ball moving upward reaches y=0
@@ -119,7 +119,7 @@ def test_bounce_physics_a3f2b1c4() -> None:
     ...
 ```
 
-**Markers**: `@pytest.mark.unit` · `@pytest.mark.integration` · `@pytest.mark.slow` · `@pytest.mark.deprecated`
+**Markers**: `@pytest.mark.slow` · `@pytest.mark.deprecated`
 
 ## Technology Stack
 

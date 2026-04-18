@@ -243,8 +243,10 @@ def test_<rule_slug>_<8char_hex>() -> None:
 
 ### Docstring Format (mandatory)
 
+New tests start as skipped stubs. Remove `@pytest.mark.skip` when implementing in the RED phase.
+
 ```python
-@pytest.mark.unit
+@pytest.mark.skip(reason="not yet implemented")
 def test_wall_bounce_a3f2b1c4() -> None:
     """
     Given: A ball moving upward reaches y=0
@@ -262,19 +264,13 @@ def test_wall_bounce_a3f2b1c4() -> None:
 
 ### Markers
 
-Every test gets exactly one of:
-- `@pytest.mark.unit` — isolated, no external state
-- `@pytest.mark.integration` — multiple components, external state
-
-Additionally:
 - `@pytest.mark.slow` — takes > 50ms (Hypothesis, DB, network, terminal I/O)
+- `@pytest.mark.deprecated` — auto-skipped by conftest; used for superseded Examples
 
 ```python
-@pytest.mark.unit
 def test_wall_bounce_a3f2b1c4() -> None:
     ...
 
-@pytest.mark.integration
 @pytest.mark.slow
 def test_checkout_flow_b2c3d4e5() -> None:
     ...
@@ -285,7 +281,6 @@ def test_checkout_flow_b2c3d4e5() -> None:
 When using `@given` in `tests/unit/`:
 
 ```python
-@pytest.mark.unit
 @pytest.mark.slow
 @given(x=st.floats(min_value=-100, max_value=100, allow_nan=False))
 @example(x=0.0)
@@ -321,7 +316,8 @@ If testing through the real entry point is infeasible, escalate to PO to adjust 
 - Write every test as if you cannot see the production code — test what a caller observes
 - No `isinstance()`, `type()`, or internal attribute (`_x`) checks in assertions
 - One assertion concept per test (multiple `assert` ok if they verify the same thing)
-- No `pytest.skip` or `pytest.mark.xfail` without written justification
+- No `pytest.mark.xfail` without written justification
+- `pytest.mark.skip` is only valid on stubs (`reason="not yet implemented"`) — remove it when implementing
 - Test data embedded directly in the test, not loaded from external files
 
 ### Test Tool Decision
