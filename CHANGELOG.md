@@ -2,6 +2,29 @@
 
 All notable changes to this template will be documented in this file.
 
+## [v5.0.20260418] - Structured Phascolarctos - 2026-04-18
+
+### Added
+- **design-patterns skill**: Full GoF pattern catalogue with smell-triggered patterns, SOLID, Object Calisthenics, Python Zen, Law of Demeter, CQS, Tell Don't Ask — loaded on demand at Steps 2-3
+- **create-agent skill**: Research-backed agent creation guide with OpenAI/Anthropic best practices, ownership boundaries, tool surface design, and escalation rules
+- **software-engineer agent**: Dedicated agent file replacing `developer.md`; owns Steps 2-3 and release
+- **3-session discovery structure**: Phase 1 and Phase 2 now each use a 3-session template with template gates (§1/§2/§3 must be confirmed before proceeding); active listening protocol (3 levels) codified in scope skill
+
+### Changed
+- **5-step workflow** (breaking): Steps restructured — TDD loop merged into Step 3, Verify is Step 4, Accept is Step 5; all agents, skills, and docs updated to match
+- **Behavior groups terminology**: "Cluster" renamed to "behavior group" throughout scope skill, AGENTS.md, workflow.md, and templates for clearer AI focus
+- **Story candidates terminology**: Phase 3 now derives "story candidates" → `Rule:` blocks, removing ambiguity from the cluster-to-story mapping
+- **Test stub format** (breaking): Stubs now use `@pytest.mark.skip(reason="not yet implemented")` instead of `raise NotImplementedError`; skip marker is removed when implementing in RED phase
+- **Dropped `@pytest.mark.unit` and `@pytest.mark.integration`**: Only `@pytest.mark.slow` and `@pytest.mark.deprecated` remain; folder structure (`tests/features/` vs `tests/unit/`) encodes test type
+- **BASELINED gate enforced**: PO may not move a feature to `in-progress/` unless its discovery section has `Status: BASELINED`; enforced in product-owner.md and session-workflow
+- **tdd skill removed**: Replaced by implementation skill with inline TDD guidance
+- **gen_test_stubs.py removed**: Script deleted along with tdd skill
+
+### Fixed
+- **pyproject.toml**: Removed broken `gen-tests` task; removed `raise NotImplementedError` from coverage exclusions; removed `unit`/`integration` marker definitions
+- **Role naming**: `developer` → `software-engineer` across all files
+- **Step count**: All references to "6 steps" updated to "5 steps"
+
 ## [v4.1.20260416] - Recursive Acinonyx - 2026-04-16
 
 ### Added

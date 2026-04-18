@@ -735,7 +735,7 @@ wheels = [
 
 [[package]]
 name = "python-project-template"
-version = "4.1.20260416"
+version = "5.0.20260418"
 source = { virtual = "." }
 dependencies = [
     { name = "fire" },
