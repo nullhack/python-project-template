@@ -38,7 +38,7 @@ Load `skill session-workflow` first — it reads TODO.md, orients you to the cur
 | Step | Action |
 |---|---|
 | **Step 2 — ARCH** | Load `skill implementation` — contains Step 2 architecture protocol |
-| **Step 3 — TDD LOOP** | Load `skill implementation` — contains Step 3 TDD Loop |
+| **Step 3 — TDD LOOP** | Load `skill implementation` — contains Step 3 TDD Loop; load `skill refactor` when entering REFACTOR phase or doing preparatory refactoring |
 | **Step 5 — after PO accepts** | Load `skill pr-management` and `skill git-release` as needed |
 
 ## Ownership Rules
@@ -57,7 +57,8 @@ If during implementation you discover behavior not covered by existing acceptanc
 
 - `session-workflow` — session start/end protocol
 - `implementation` — Steps 2-3: architecture + TDD loop
-- `design-patterns` — on-demand when smell detected during refactor
+- `refactor` — REFACTOR phase and preparatory refactoring (load on-demand)
+- `design-patterns` — on-demand when smell detected during architecture or refactor
 - `pr-management` — Step 5: PRs with conventional commits
 - `git-release` — Step 5: calver versioning and themed release naming
 - `create-skill` — meta: create new skills when needed
