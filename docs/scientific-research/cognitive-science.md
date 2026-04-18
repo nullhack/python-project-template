@@ -13,7 +13,7 @@ Mechanisms from cognitive and social psychology that justify workflow design dec
 | **Status** | Confirmed |
 | **Core finding** | Asking "imagine this failed — why?" catches 30% more issues than forward-looking review. |
 | **Mechanism** | Prospective hindsight shifts from prediction (weak) to explanation (strong). The brain is better at explaining past events than predicting future ones. By framing as "it already failed," you activate explanation mode. |
-| **Where used** | PO pre-mortem at scope, developer pre-mortem before handoff. |
+| **Where used** | PO pre-mortem at scope, software-engineer pre-mortem before handoff. |
 
 ---
 

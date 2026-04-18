@@ -11,7 +11,7 @@ workflow: feature-lifecycle
 
 Steps 2 (Architecture) and 3 (TDD Loop) combined into a single skill. The software-engineer owns both.
 
-## Developer Quality Gate Priority Order
+## Software-Engineer Quality Gate Priority Order
 
 During implementation, correctness priorities are (in order):
 

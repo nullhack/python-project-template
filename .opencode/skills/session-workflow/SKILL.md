@@ -73,11 +73,12 @@ Source: docs/features/in-progress/<name>.feature
 Run @<agent-name> — <one concrete action>
 ```
 
-**"Next" line format**: Always prefix with `Run @<agent-name>` so the human knows exactly which agent to invoke. Examples:
-- `Run @software-engineer — implement @id:a1b2c3d4 (Step 3 RED)`
-- `Run @reviewer — verify feature display-version at Step 4`
-- `Run @product-owner — pick next BASELINED feature from backlog`
-- `Run @product-owner — accept feature display-version at Step 5`
+**"Next" line format**: Always prefix with `Run @<agent-name>` so the human knows exactly which agent to invoke. Agent names are defined in `AGENTS.md` — use the name exactly as listed there. Examples:
+- `Run @<software-engineer-agent> — implement @id:a1b2c3d4 (Step 3 RED)`
+- `Run @<software-engineer-agent> — load skill implementation and begin Step 2 (Architecture) for <feature-name>`
+- `Run @<reviewer-agent> — verify feature <feature-name> at Step 4`
+- `Run @<product-owner-agent> — pick next BASELINED feature from backlog`
+- `Run @<product-owner-agent> — accept feature <feature-name> at Step 5`
 
 **Source path by step:**
 - Step 1: `Source: docs/features/backlog/<name>.feature`
@@ -95,7 +96,7 @@ When no feature is active:
 # Current Work
 
 No feature in progress.
-Next: Run @product-owner — load skill feature-selection and pick the next BASELINED feature from backlog.
+Next: Run @<product-owner-agent> — load skill feature-selection and pick the next BASELINED feature from backlog.
 ```
 
 ## Step 3 (TDD Loop) Cycle-Aware TODO Format
