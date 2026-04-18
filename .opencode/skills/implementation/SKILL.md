@@ -52,6 +52,7 @@ Update `TODO.md` Source path from `backlog/` to `in-progress/`.
 1. Read `docs/features/discovery.md` (project-level)
 2. Read **ALL** `.feature` files in `docs/features/backlog/` (discovery + entities sections)
 3. Read in-progress `.feature` file (full: Rules + Examples + @id)
+4. Read **ALL** existing `.py` files in `<package>/` — understand what already exists before adding anything
 
 ### Domain Analysis
 
@@ -78,44 +79,73 @@ For each noun:
 
 If pattern smell detected, load `skill design-patterns`.
 
-### Write Architecture Section
+### Write Stubs into Package
 
-Append to `docs/features/in-progress/<name>.feature` (before first `Rule:`):
+From the domain analysis, write or extend `.py` files in `<package>/`. For each entity:
 
-```gherkin
-  Architecture:
+- **If the file already exists**: add the new class or method signature — do not remove or alter existing code.
+- **If the file does not exist**: create it with the new signatures only.
 
-  ### Module Structure
-  - `<package>/domain/<noun>.py` — named class + responsibilities
-  - `<package>/domain/service.py` — cross-entity operations
-  - `<package>/adapters/<dep>.py` — Protocol implementation
+**Stub rules (strictly enforced):**
+- Method bodies must be `...` — no logic, no conditionals, no imports beyond `typing` and domain types
+- No docstrings — signatures will change; add docstrings after GREEN (lint enforces this at quality gate)
+- No inline comments, no TODO comments, no speculative code
 
-  ### Key Decisions
-  ADR-001: <title>
-  Decision: <what>
-  Reason: <why in one sentence>
-  Alternatives considered: <what was rejected and why>
+**Example — correct stub style:**
 
-  ### Build Changes (needs PO approval: yes/no)
-  - New runtime dependency: <name> — reason: <why>
+```python
+from dataclasses import dataclass
+from typing import Protocol
+
+
+@dataclass(frozen=True, slots=True)
+class EmailAddress:
+    value: str
+
+    def validate(self) -> None: ...
+
+
+class UserRepository(Protocol):
+    def save(self, user: "User") -> None: ...
+    def find_by_email(self, email: EmailAddress) -> "User | None": ...
 ```
 
-Signatures are informative — tests/implementation may refine them. Record significant changes as ADR updates.
+**File placement (common patterns, not required names):**
+- `<package>/domain/<noun>.py` — entities, value objects
+- `<package>/domain/service.py` — cross-entity operations
+
+Place stubs where responsibility dictates — do not pre-create `ports/` or `adapters/` folders unless a concrete external dependency was identified in scope. Structure follows domain analysis, not a template.
+
+### Write ADR Files (significant decisions only)
+
+For each significant architectural decision, create `docs/architecture/adr-NNN-<title>.md`:
+
+```markdown
+# ADR-NNN: <title>
+
+**Decision:** <what was decided>
+**Reason:** <why, one sentence>
+**Alternatives considered:** <what was rejected and why>
+```
+
+Only write an ADR if the decision is non-obvious or has meaningful trade-offs. Routine YAGNI choices do not need an ADR.
 
 ### Architecture Smell Check (hard gate)
 
-- [ ] No planned class with >2 responsibilities (SOLID-S)
-- [ ] No planned class with >2 instance variables (OC-8)
-- [ ] All external deps assigned a Protocol/Adapter (SOLID-D + Hexagonal)
-- [ ] No noun with different meaning across planned modules (DDD BC)
-- [ ] No missing Creational pattern
-- [ ] No missing Structural pattern  
-- [ ] No missing Behavioral pattern
+Apply to the stub files just written:
+
+- [ ] No class with >2 responsibilities (SOLID-S)
+- [ ] No class with >2 instance variables (OC-8)
+- [ ] All external deps assigned a Protocol (SOLID-D + Hexagonal) — N/A if no external dependencies identified in scope
+- [ ] No noun with different meaning across modules (DDD Bounded Context)
+- [ ] No missing Creational pattern: repeated construction without Factory/Builder
+- [ ] No missing Structural pattern: type-switching without Strategy/Visitor
+- [ ] No missing Behavioral pattern: state machine or scattered notification without State/Observer
 - [ ] Each ADR consistent with each @id AC — no contradictions
 
-If any check fails: fix before committing.
+If any check fails: fix the stub files before committing.
 
-Commit: `feat(<feature-name>): add architecture`
+Commit: `feat(<feature-name>): add architecture stubs`
 
 ---
 
@@ -123,14 +153,35 @@ Commit: `feat(<feature-name>): add architecture`
 
 ### Prerequisites
 
-- [ ] Architecture section present in in-progress `.feature` file
-- [ ] All tests written in `tests/features/<feature-name>/`
+- [ ] Architecture stubs present in `<package>/` (committed by Step 2)
+- [ ] Read all `docs/architecture/adr-NNN-*.md` files — understand the architectural decisions before writing any test
+- [ ] Test stub files exist in `tests/features/<feature-name>/` — one file per `Rule:` block, all `@id` functions present with `@pytest.mark.skip`; if missing, write them now before entering RED
+
+### Write Test Stubs (if not present)
+
+For each `Rule:` block in the in-progress `.feature` file, create `tests/features/<feature-name>/<rule-slug>_test.py` if it does not already exist. Write one function per `@id` Example, all skipped:
+
+```python
+@pytest.mark.skip(reason="not yet implemented")
+def test_<rule_slug>_<8char_hex>() -> None:
+    """
+    Given: ...
+    When: ...
+    Then: ...
+    """
+    # Given
+    # When
+    # Then
+```
+
+Run `uv run task gen-todo` after writing stubs to sync `@id` rows into `TODO.md`.
 
 ### Build TODO.md Test List
 
 1. List all `@id` tags from in-progress `.feature` file
 2. Order: fewest dependencies first; most impactful within that set
 3. Each `@id` = one TODO item, status: `pending`
+4. Confirm each `@id` has a corresponding skipped stub in `tests/features/<feature-name>/` — if any are missing, add them before proceeding
 
 ### Outer Loop — One @id at a time
 
@@ -141,7 +192,10 @@ For each pending `@id`:
 ```
 INNER LOOP
 ├── RED
-│   ├── Write test body (Given/When/Then → Arrange/Act/Assert)
+│   ├── Confirm stub for this @id exists in tests/features/<feature-name>/ with @pytest.mark.skip
+│   ├── Read existing stubs in `<package>/` — base the test on the current data model and signatures
+│   ├── Write test body (Given/When/Then → Arrange/Act/Assert); remove @pytest.mark.skip
+│   ├── Update stub signatures as needed — edit the `.py` file directly
 │   ├── uv run task test-fast
 │   └── EXIT: this @id FAILS
 │       (if it passes: test is wrong — fix it first)
@@ -154,10 +208,8 @@ INNER LOOP
 │       (fix implementation only; do not advance to next @id)
 │
 └── REFACTOR
-    ├── Apply: DRY → SOLID → OC → patterns
-    ├── Load design-patterns skill if smell detected
-    ├── Add type hints and docstrings
-    ├── uv run task test-fast after each change
+    ├── Load `skill refactor` — follow its protocol for this phase
+    ├── uv run task test-fast after each individual change
     └── EXIT: test-fast passes; no smells remain
 
 Mark @id completed in TODO.md
@@ -344,25 +396,28 @@ Extra tests in `tests/unit/` are allowed freely (coverage, edge cases, etc.) —
 
 ## Signature Design
 
-Design signatures before writing bodies. Use Python protocols for abstractions:
+Signatures are written during Step 2 (Architecture) and refined during Step 3 (RED). They live directly in the package `.py` files — never in the `.feature` file.
+
+Key rules:
+- Bodies are always `...` in the architecture stub
+- GREEN phase replaces `...` with the minimum implementation
+- REFACTOR phase cleans up the result
+
+Use Python Protocols for external dependencies if they are identified in scope — never depend on a concrete class directly:
 
 ```python
 from typing import Protocol
 from dataclasses import dataclass
 
+
 @dataclass(frozen=True, slots=True)
 class EmailAddress:
-    """A validated email address."""
-
     value: str
 
-    def __post_init__(self) -> None:
-        if "@" not in self.value:
-            raise ValueError(f"Invalid email: {self.value!r}")
+    def validate(self) -> None: ...
+
 
 class UserRepository(Protocol):
-    """Persistence interface for users."""
-
     def save(self, user: "User") -> None: ...
     def find_by_email(self, email: EmailAddress) -> "User | None": ...
 ```

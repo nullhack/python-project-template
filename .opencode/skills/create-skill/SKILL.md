@@ -27,7 +27,7 @@ Before writing any skill, research the domain to ground the skill in industry st
    - Vendor documentation (OpenAI, Anthropic, Google, Microsoft)
    - Industry standards (ISO, NIST, OMG)
    - Established methodologies (e.g., FDD, Scrum, Kanban for process skills)
-3. **Read existing research**: Check `docs/academic_research.md` for related entries
+3. **Read existing research**: Check `docs/scientific-research/` for related entries — each file covers a domain (testing, oop-design, architecture, ai-agents, etc.)
 4. **Synthesize conclusions**: Extract actionable conclusions — what works, why, and when to apply it
 5. **Embed as guidance**: Write the skill's steps, checklists, and decision rules based on those conclusions — not as academic citations but as direct guidance ("Use X because it produces Y outcome")
 
@@ -133,6 +133,7 @@ Add the skill name to the agent's "Available Skills" section so the agent knows 
 | Skill | Used By | Purpose |
 |---|---|---|
 | `session-workflow` | all agents | Session start/end protocol |
+| `feature-selection` | product-owner | Score and select next backlog feature (WSJF) |
 | `scope` | product-owner | Step 1: define acceptance criteria |
 | `implementation` | software-engineer | Steps 2-3: architecture + TDD loop |
 | `design-patterns` | software-engineer | Steps 2, 3: refactor when smell detected |

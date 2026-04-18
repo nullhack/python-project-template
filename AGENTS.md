@@ -11,7 +11,7 @@ Features flow through 5 steps with a WIP limit of 1 feature at a time. The files
 
 ```
 STEP 1: SCOPE          (product-owner)  → discovery + Gherkin stories + criteria
-STEP 2: ARCH           (software-engineer)      → read all backlog features, design module structure
+STEP 2: ARCH           (software-engineer)      → read all features + existing package files, write domain stubs (signatures only, no bodies); ADRs to docs/architecture/
 STEP 3: TDD LOOP       (software-engineer)      → RED → GREEN → REFACTOR, one @id at a time
 STEP 4: VERIFY         (reviewer)       → run all commands, review code
 STEP 5: ACCEPT         (product-owner)  → demo, validate, move folder to completed/
@@ -40,9 +40,11 @@ STEP 5: ACCEPT         (product-owner)  → demo, validate, move folder to compl
 | Skill | Used By | Step |
 |---|---|---|
 | `session-workflow` | all agents | every session |
+| `feature-selection` | product-owner | between features (idle state) |
 | `scope` | product-owner | 1 |
 | `implementation` | software-engineer | 2, 3 |
-| `design-patterns` | software-engineer | 2 (on-demand, if smell detected), 3 (refactor) |
+| `design-patterns` | software-engineer | 2, 3 (on-demand, when GoF pattern needed) |
+| `refactor` | software-engineer | 3 (REFACTOR phase + preparatory refactoring) |
 | `verify` | reviewer | 4 |
 | `code-quality` | software-engineer | pre-handoff (redirects to `verify`) |
 | `pr-management` | software-engineer | 5 |
@@ -86,6 +88,10 @@ docs/features/
   backlog/<feature-name>.feature      ← one per feature; discovery + Rules + Examples
   in-progress/<feature-name>.feature  ← file moves here at Step 2
   completed/<feature-name>.feature    ← file moves here at Step 5
+
+docs/architecture/
+  STEP2-ARCH.md                       ← Step 2 reference diagram (canonical)
+  adr-NNN-<title>.md                  ← one per significant architectural decision
 
 tests/
   features/<feature-name>/

@@ -125,6 +125,7 @@ Each step has a designated agent and a specific deliverable. No step is skipped.
 │    docs/features/discovery.md (project-level)                      │
 │    ALL backlog .feature files (discovery + entities sections)       │
 │    in-progress .feature file (full: Rules + Examples + @id)        │
+│    ALL existing .py files in <package>/  ← know what exists first  │
 │                                                                     │
 │  DOMAIN ANALYSIS                                                    │
 │    From Entities table + Rules (Business) in .feature file:        │
@@ -143,30 +144,28 @@ Each step has a designated agent and a specific deliverable. No step is skipped.
 │    Any structure missing a named design pattern?                    │
 │    → If pattern smell detected: load skill design-patterns          │
 │                                                                     │
-│  Write Architecture section in in-progress .feature file            │
-│    ### Module Structure                                             │
-│      <package>/domain/<noun>.py                                     │
-│        class <Noun>:          ← named class + responsibilities      │
-│            field: Type                                              │
-│        def <verb>(<Noun>) -> <Type>: ...  ← typed signatures        │
-│        class <DepName>(Protocol): ...     ← external dep contract   │
-│      <package>/domain/service.py          ← cross-entity operations │
-│      <package>/adapters/<dep>.py          ← Protocol impl           │
-│    ### Key Decisions                                                │
-│      ADR-NNN: <title>                                               │
-│      Decision: <what>                                               │
-│      Reason: <why in one sentence>                                  │
-│      Alternatives considered: <what was rejected and why>           │
-│    ### Build Changes (new runtime deps — requires PO approval)      │
+│  WRITE STUBS INTO PACKAGE (signatures only — bodies must be `...`) │
+│    If file exists → add class/method; do not remove existing code  │
+│    If file does not exist → create with signatures only             │
+│    File placement (common patterns, not required names):            │
+│      <package>/domain/<noun>.py   ← entities, value objects        │
+│      <package>/domain/service.py  ← cross-entity operations        │
+│      Do not pre-create ports/ or adapters/ without a concrete dep  │
+│    Stub rules:                                                      │
+│      Bodies: `...` only — no logic, no conditionals                │
+│      No docstrings — add after GREEN when signatures are stable     │
+│      No inline comments, no TODO, no speculative code              │
 │                                                                     │
-│  NOTE: signatures are informative — tests/implementation may        │
-│  refine them; record significant changes as ADR updates             │
+│  WRITE ADR FILES (significant decisions only)                       │
+│    docs/architecture/adr-NNN-<title>.md                            │
+│      Decision: <what>  Reason: <why>                               │
+│      Alternatives considered: <what was rejected and why>           │
 │                                                                     │
 │  ARCHITECTURE SMELL CHECK — hard gate (fix before commit)           │
-│    [ ] No planned class with >2 responsibilities (SOLID-S)         │
-│    [ ] No planned class with >2 instance variables (OC-8)          │
-│    [ ] All external deps assigned a Protocol/Adapter (SOLID-D +    │
-│        Hexagonal Architecture)                                      │
+│    [ ] No class with >2 responsibilities (SOLID-S)                 │
+│    [ ] No class with >2 instance variables (OC-8)                  │
+│    [ ] All external deps assigned a Protocol (SOLID-D + Hexagonal) │
+│        N/A if no external dependencies identified in scope          │
 │    [ ] No noun with different meaning across planned modules        │
 │        (DDD Bounded Context)                                        │
 │    [ ] No missing Creational pattern: repeated construction         │
@@ -178,7 +177,7 @@ Each step has a designated agent and a specific deliverable. No step is skipped.
 │    [ ] Each ADR consistent with each @id AC — no contradictions    │
 │    [ ] Technically infeasible story → escalate to PO               │
 │                                                                     │
-│  commit: feat(<name>): add architecture                             │
+│  commit: feat(<name>): add architecture stubs                       │
 │                                                                     │
 └─────────────────────────────────────────────────────────────────────┘
                               ↓
@@ -187,7 +186,8 @@ Each step has a designated agent and a specific deliverable. No step is skipped.
 ├─────────────────────────────────────────────────────────────────────┤
 │                                                                     │
 │  PREREQUISITES (stop if any fail — escalate to PO)                 │
-│    [ ] Architecture section present in in-progress .feature file   │
+│    [ ] Architecture stubs present in <package>/ (Step 2 committed) │
+│    [ ] Read all docs/architecture/adr-NNN-*.md files               │
 │    [ ] All tests written in tests/features/<feature>/              │
 │                                                                     │
 │  Build TODO.md test list                                            │
@@ -203,7 +203,9 @@ Each step has a designated agent and a specific deliverable. No step is skipped.
 │  │  INNER LOOP                                                 │   │
 │  │  ┌───────────────────────────────────────────────────────┐ │   │
 │  │  │  RED                                                  │ │   │
+│  │  │    Read stubs in <package>/ — base test on them       │ │   │
 │  │  │    Write test body (Given/When/Then → Arrange/Act/Assert) │ │
+│  │  │    Update stub signatures as needed — edit .py directly │ │ │
 │  │  │    uv run task test-fast                              │ │   │
 │  │  │    EXIT: this @id FAILS                               │ │   │
 │  │  │    (if it passes: test is wrong — fix it first)       │ │   │
@@ -216,10 +218,8 @@ Each step has a designated agent and a specific deliverable. No step is skipped.
 │  │  │    (fix implementation only; do not advance @id)      │ │   │
 │  │  ├───────────────────────────────────────────────────────┤ │   │
 │  │  │  REFACTOR                                             │ │   │
-│  │  │    Apply: DRY → SOLID → OC → patterns                 │ │   │
-│  │  │    Load design-patterns skill if smell detected       │ │   │
-│  │  │    Add type hints and docstrings                      │ │   │
-│  │  │    uv run task test-fast after each change            │ │   │
+│  │  │    Load skill refactor — follow its protocol          │ │   │
+│  │  │    uv run task test-fast after each individual change │ │   │
 │  │  │    EXIT: test-fast passes; no smells remain           │ │   │
 │  │  └───────────────────────────────────────────────────────┘ │   │
 │  │                                                             │   │
@@ -368,25 +368,19 @@ Feature: <title>
 
   Session 1 — Individual Entity Elicitation:
   | ID | Question | Answer | Status |     ← OPEN / ANSWERED
+  Template §1: PENDING | CONFIRMED
   Synthesis: <PO synthesis — confirmed by stakeholder>
+  Pre-mortem: <gaps identified; new questions added above>
 
   Session 2 — Behavior Groups / Big Picture:
   | ID | Question | Answer | Status |
-  Behavior Groups: <named behavior groups derived from answers>
+  Template §2: PENDING | CONFIRMED
+  Behavior Groups:
+  - <behavior group name>: <one-sentence summary>
 
   Session 3 — Feature Synthesis:
-  Synthesis: <full synthesis across behavior groups>
-  Approved: YES / NO
-
-  Architecture:                         ← added at Step 2 by software-engineer
-
-  ### Module Structure
-  - <package>/domain/entity.py — ...
-
-  ### Key Decisions
-  ADR-001: <title>
-  Decision: <what>
-  Reason: <why>
+  Template §3: PENDING | CONFIRMED — stakeholder approved YYYY-MM-DD
+  Synthesis: <full synthesis across all behavior groups>
 
   Rule: <story title>
     As a <role>
@@ -402,7 +396,40 @@ Feature: <title>
 
 Two discovery sources:
 - `docs/features/discovery.md` — project-level 3-session discovery (once per project; additive for new features)
-- Feature file description — per-feature 3-session discovery, entities, clusters, architecture
+- Feature file description — per-feature 3-session discovery, entities, business rules, and acceptance criteria
+
+---
+
+## Architecture Artifacts
+
+Architectural decisions made during Step 2 are recorded as ADR files:
+
+```
+docs/architecture/
+  adr-template.md          ← blank template — copy to create a new ADR
+  adr-001-<title>.md       ← one file per significant decision
+  adr-002-<title>.md
+  ...
+```
+
+**ADR format** (copy `adr-template.md` and fill in):
+
+```markdown
+# ADR-NNN: <title>
+
+**Status:** PROPOSED | ACCEPTED | SUPERSEDED by ADR-NNN
+
+**Decision:** <what was decided — one sentence>
+
+**Reason:** <why — one sentence>
+
+**Alternatives considered:**
+- <option>: <why rejected>
+```
+
+Write an ADR only for non-obvious decisions with real trade-offs — module boundaries, external dependency strategy, Protocol vs. concrete class, data model choices. Routine YAGNI choices do not need an ADR.
+
+Domain entity and service stubs (signatures, no bodies) live directly in the package under `<package>/domain/`, `<package>/ports/`, and `<package>/adapters/` — written at Step 2, filled in during Step 3.
 
 ---
 

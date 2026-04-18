@@ -123,6 +123,7 @@ Read the source files changed in this feature. **Do this before running lint/sta
 | Contract test | Would test survive internal rewrite? | Yes | No |
 | No internal attribute access | Search for `_x` in assertions | None found | `_x`, `isinstance`, `type()` |
 | Every `@id` has a mapped test | Match `@id` to test functions | All mapped | Missing test |
+| No orphaned skipped stubs | Search for `@pytest.mark.skip` in `tests/features/` | None found | Any found — stub was written but never implemented |
 | Function naming | Matches `test_<rule_slug>_<8char_hex>` | All match | Mismatch |
 | Hypothesis tests have `@slow` | Read every `@given` for `@slow` marker | All present | Any missing |
 
@@ -218,6 +219,10 @@ Undeclared violations → REJECT.
 OR
 **REJECTED** — fix the following:
 1. `<file>:<line>` — <specific, actionable fix>
+
+### Next Steps
+**If APPROVED**: Run `@product-owner` — accept the feature at Step 5.
+**If REJECTED**: Run `@software-engineer` — apply the fixes listed above, re-run quality gate, update Self-Declaration, then signal Step 4 again.
 ```
 
 ## Standards Summary

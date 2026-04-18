@@ -59,4 +59,5 @@ When a gap is reported (by software-engineer or reviewer):
 ## Available Skills
 
 - `session-workflow` — session start/end protocol
+- `feature-selection` — when TODO.md is idle: score and select next backlog feature using WSJF
 - `scope` — Step 1: 3-session discovery (Phase 1 + 2), stories (Phase 3), and criteria (Phase 4)
