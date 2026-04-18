@@ -63,7 +63,7 @@ Ask the stakeholder to describe the same situation from another actor's point of
 Three levels of active listening apply throughout every interview session:
 
 - **Level 1 — Per answer**: immediately paraphrase each answer before moving to the next question. "So if I understand correctly, you're saying that X happens when Y?" Catches misunderstanding in the moment.
-- **Level 2 — Per cluster**: brief synthesis when transitioning between topic clusters. "We've covered [area A] and [area B]. Before I ask about [area C], here is what I understood so far: [summary]. Does that capture it?" Confirms completeness, gives stakeholder a recovery point.
+- **Level 2 — Per group**: brief synthesis when transitioning between behavior groups. "We've covered [area A] and [area B]. Before I ask about [area C], here is what I understood so far: [summary]. Does that capture it?" Confirms completeness, gives stakeholder a recovery point.
 - **Level 3 — End of session**: full synthesis of everything discussed. Present to stakeholder for approval. This is the accuracy gate, the baseline signal, and the input to domain modeling.
 
 Do not introduce topic labels or categories during active listening. The summary must reflect what the stakeholder said, not new framing that prompts reactions to things they haven't considered.
@@ -98,20 +98,20 @@ Do not introduce topic labels or categories during active listening. The summary
 4. Run a **silent pre-mortem** on the confirmed synthesis: "Imagine we build exactly what was described, ship it, and it fails. What was missing?" Add any discoveries as new questions to the Questions table.
 5. Mark `Template §1: CONFIRMED` in `discovery.md`. This unlocks Session 2.
 
-### Session 2 — Cluster / Big Picture
+### Session 2 — Behavior Groups / Big Picture
 
-**Before the session**: Review the confirmed Session 1 synthesis. Identify topic clusters (cross-cutting concerns, system-wide constraints, integration points, lifecycle questions). Prepare cluster-level questions.
+**Before the session**: Review the confirmed Session 1 synthesis. Identify behavior groups (cross-cutting concerns, system-wide constraints, integration points, lifecycle questions). Prepare group-level questions.
 
-**During the session**: Apply Level 1 active listening per answer. Apply Level 2 active listening when transitioning between clusters. Apply CIT, Laddering, and CI Perspective Change per cluster. Add new questions in the moment.
+**During the session**: Apply Level 1 active listening per answer. Apply Level 2 active listening when transitioning between groups. Apply CIT, Laddering, and CI Perspective Change per group. Add new questions in the moment.
 
 **After the session**:
 
-1. For each cluster, write a **Cluster Summary** in `discovery.md`.
+1. For each group, write a **Group Summary** in `discovery.md`.
 2. Mark `Template §2: CONFIRMED` in `discovery.md`. This unlocks Session 3.
 
 ### Session 3 — Synthesis Approval + Feature Derivation
 
-**Before the session**: Produce a **Full Synthesis** across all clusters from Sessions 1 and 2. Write it to `discovery.md`.
+**Before the session**: Produce a **Full Synthesis** across all behavior groups from Sessions 1 and 2. Write it to `discovery.md`.
 
 **During the session**: Present the full synthesis to the stakeholder. "This is my understanding of the full scope. Please correct anything that is missing or wrong." Stakeholder approves or corrects. PO refines until the stakeholder explicitly approves.
 
@@ -152,26 +152,26 @@ Commit: `feat(discovery): baseline project discovery`
 3. Run a **silent pre-mortem** on the confirmed synthesis.
 4. Mark `Template §1: CONFIRMED`. This unlocks Session 2.
 
-### Session 2 — Cluster / Big Picture for This Feature
+### Session 2 — Behavior Groups / Big Picture for This Feature
 
-**Before the session**: Review the confirmed Session 1 synthesis. Identify clusters of behavior within this feature (happy paths, error paths, edge cases, lifecycle events, integration points).
+**Before the session**: Review the confirmed Session 1 synthesis. Identify behavior groups within this feature (happy paths, error paths, edge cases, lifecycle events, integration points).
 
-**During the session**: Apply Level 1 active listening per answer. Apply Level 2 active listening when transitioning between clusters. Apply CIT, Laddering, and CI Perspective Change per cluster.
+**During the session**: Apply Level 1 active listening per answer. Apply Level 2 active listening when transitioning between groups. Apply CIT, Laddering, and CI Perspective Change per group.
 
 **After the session**:
 
-1. Write **Cluster Summaries** in the `.feature` file. Name each cluster — these names become candidate `Rule:` titles.
+1. Write **Group Summaries** in the `.feature` file. Name each group — these names become candidate `Rule:` titles.
 2. Mark `Template §2: CONFIRMED`. This unlocks Session 3.
 
 ### Session 3 — Feature Synthesis Approval + Story Derivation
 
-**Before the session**: Produce a **Full Synthesis** of the feature scope, covering all clusters from Sessions 1 and 2.
+**Before the session**: Produce a **Full Synthesis** of the feature scope, covering all behavior groups from Sessions 1 and 2.
 
 **During the session**: Present the full synthesis to the stakeholder. Stakeholder approves or corrects. PO refines until explicitly approved.
 
 **After the session** (PO alone):
 
-1. Map each named cluster from Session 2 to a candidate user story (Rule).
+1. Map each named group from Session 2 to a candidate user story (Rule).
 2. Write `Status: BASELINED (YYYY-MM-DD)` to the `.feature` file's discovery section.
 3. Mark `Template §3: CONFIRMED`.
 
@@ -355,16 +355,16 @@ Feature: <Feature title>
   Template §1: CONFIRMED
   Synthesis: <PO synthesis — confirmed by stakeholder>
 
-  Session 2 — Cluster / Big Picture:
+  Session 2 — Behavior Groups / Big Picture:
   | ID | Question | Answer | Status |
   |----|----------|--------|--------|
   | Q2 | ... | ... | OPEN / ANSWERED |
   Template §2: CONFIRMED
-  Clusters:
-  - <Cluster name>: <one-sentence summary>
+  Behavior Groups:
+  - <Behavior group name>: <one-sentence summary>
 
   Session 3 — Feature Synthesis:
-  Synthesis: <full synthesis across all clusters>
+  Synthesis: <full synthesis across all behavior groups>
   Template §3: CONFIRMED — stakeholder approved YYYY-MM-DD
 
   Rule: <User story title>
@@ -409,19 +409,19 @@ Template §1: CONFIRMED
 Synthesis: <PO synthesis — confirmed by stakeholder>
 Pre-mortem: <gaps identified; new questions added above>
 
-## Session 2 — Cluster / Big Picture
+## Session 2 — Behavior Groups / Big Picture
 
 | ID | Question | Answer | Status |
 |----|----------|--------|--------|
 | Q2 | ... | ... | OPEN / ANSWERED |
 
 Template §2: CONFIRMED
-Clusters:
-- <Cluster name>: <one-sentence summary>
+Behavior Groups:
+- <Behavior group name>: <one-sentence summary>
 
 ## Session 3 — Full Synthesis
 
-<3–6 paragraph synthesis of all scope, clusters, and boundaries>
+<3–6 paragraph synthesis of all scope, behavior groups, and boundaries>
 
 Template §3: CONFIRMED — stakeholder approved YYYY-MM-DD
 ```

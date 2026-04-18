@@ -20,13 +20,13 @@ Feature: <feature-name>
   Synthesis: (fill after stakeholder confirms)
   Pre-mortem: (fill after synthesis is confirmed)
 
-  Session 2 — Cluster / Big Picture:
+  Session 2 — Behavior Groups / Big Picture:
   | ID | Question | Answer | Status |
   |----|----------|--------|--------|
 
   Template §2: PENDING
-  Clusters:
-  - (fill after all cluster questions are answered)
+  Behavior Groups:
+  - (fill after all group questions are answered)
 
   Session 3 — Feature Synthesis:
   (fill after Sessions 1 and 2 are complete)

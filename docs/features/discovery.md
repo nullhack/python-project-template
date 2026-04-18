@@ -23,14 +23,14 @@ Pre-mortem: (fill after synthesis is confirmed)
 
 ---
 
-## Session 2 — Cluster / Big Picture
+## Session 2 — Behavior Groups / Big Picture
 
 | ID | Question | Answer | Status |
 |----|----------|--------|--------|
 
 Template §2: PENDING
-Clusters:
-- (fill after all cluster questions are answered)
+Behavior Groups:
+- (fill after all group questions are answered)
 
 ---
 

@@ -58,20 +58,20 @@ STEP 5: ACCEPT         (product-owner)  → demo, validate, move folder to compl
 PO creates `docs/features/discovery.md` using the 3-session template. **Skip Phase 1 entirely if `discovery.md` Status is BASELINED.** To add features to an existing project: append new questions to Session 1 and re-fill from there.
 
 - **Session 1** — Individual scope elicitation: 5Ws + Success + Failure + Out-of-scope. Gap-finding per answer using CIT, Laddering, and CI Perspective Change. PO writes synthesis; stakeholder confirms or corrects. PO runs silent pre-mortem on confirmed synthesis. Template §1 must be confirmed before Session 2.
-- **Session 2** — Cluster / big picture: questions target clusters and cross-cutting concerns. Gap-finding per cluster. Level 2 synthesis when transitioning between clusters. Template §2 must be complete before Session 3.
-- **Session 3** — Synthesis approval + feature derivation: PO produces full synthesis of all clusters; stakeholder approves or corrects (PO refines until approved). Domain analysis: nouns/verbs → subject areas → FDD "Action object" feature names. Create `backlog/<name>.feature` stubs. Write `Status: BASELINED` to `discovery.md`.
+- **Session 2** — Behavior groups / big picture: questions target behavior groups and cross-cutting concerns. Gap-finding per group. Level 2 synthesis when transitioning between groups. Template §2 must be complete before Session 3.
+- **Session 3** — Synthesis approval + feature derivation: PO produces full synthesis of all behavior groups; stakeholder approves or corrects (PO refines until approved). Domain analysis: nouns/verbs → subject areas → FDD "Action object" feature names. Create `backlog/<name>.feature` stubs. Write `Status: BASELINED` to `discovery.md`.
 
 ### Phase 2 — Feature Discovery (per feature)
 Each `.feature` file has its own 3-session discovery template in its description. **Sessions are enforced by the template: each section must be filled before proceeding to the next.**
 
 - **Session 1** — Individual entity elicitation: populate Entities table from project discovery; generate questions from entity gaps using CIT, Laddering, CI Perspective Change. PO writes synthesis; stakeholder confirms. Silent pre-mortem on confirmed synthesis.
-- **Session 2** — Cluster / big picture: questions target clusters of behavior within this feature. Gap-finding per cluster. Level 2 cluster transition summaries.
-- **Session 3** — Feature synthesis approval + story derivation: PO produces synthesis of feature scope and clusters; stakeholder approves or corrects (PO refines until approved). Clusters become candidate user stories (Rules). Write `Status: BASELINED` to `.feature` discovery section.
+- **Session 2** — Behavior groups / big picture: questions target behavior groups within this feature. Gap-finding per group. Level 2 group transition summaries.
+- **Session 3** — Feature synthesis approval + story derivation: PO produces synthesis of feature scope and behavior groups; stakeholder approves or corrects (PO refines until approved). Story candidates become candidate user stories (Rules). Write `Status: BASELINED` to `.feature` discovery section.
 
 **Decomposition check**: after Session 3, does this feature span >2 distinct concerns OR have >8 candidate Examples? YES → split into separate `.feature` files, re-run Phase 2. NO → proceed.
 
 ### Phase 3 — Stories (PO alone)
-Clusters from Phase 2 Session 2 → one `Rule:` block per user story. Each `Rule:` has the user story header (`As a / I want / So that`) as its description — no `Example:` blocks yet. INVEST gate: all 6 letters must pass. Commit: `feat(stories): write user stories for <name>`
+Story candidates from Phase 2 Session 2 → one `Rule:` block per user story. Each `Rule:` has the user story header (`As a / I want / So that`) as its description — no `Example:` blocks yet. INVEST gate: all 6 letters must pass. Commit: `feat(stories): write user stories for <name>`
 
 ### Phase 4 — Criteria (PO alone)
 Pre-mortem per Rule (all Rules must be checked before writing Examples). Write `Example:` blocks — declarative Given/When/Then, MoSCoW triage (Must/Should/Could) per Example. Review checklist (4.3). Commit: `feat(criteria): write acceptance criteria for <name>`

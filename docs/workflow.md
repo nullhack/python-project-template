@@ -46,20 +46,20 @@ Each step has a designated agent and a specific deliverable. No step is skipped.
 │      → PO runs silent pre-mortem on confirmed synthesis             │
 │      [template §1: synthesis confirmed → unlocks Session 2]         │
 │                                                                     │
-│    Session 2 — Cluster / Big Picture                                │
-│      Questions target clusters and cross-cutting concerns           │
-│      Gap-finding per cluster: CIT · Laddering · CI Perspective      │
+│    Session 2 — Behavior Groups / Big Picture                       │
+│      Questions target behavior groups and cross-cutting concerns   │
+│      Gap-finding per group: CIT · Laddering · CI Perspective         │
 │      [new questions from elucidation added in the moment]           │
 │      Level 1: paraphrase each answer                                │
-│      Level 2: synthesis when transitioning between clusters         │
-│      [template §2: all clusters answered → unlocks Session 3]       │
+│      Level 2: synthesis when transitioning between groups        │
+│      [template §2: all groups answered → unlocks Session 3]          │
 │                                                                     │
 │    Session 3 — Synthesis Approval + Feature Derivation              │
-│      PO produces full synthesis across all clustered areas          │
+│      PO produces full synthesis across all behavior groups         │
 │      → stakeholder approves or corrects; PO refines until approved  │
 │      [template §3: approval → unlocks domain analysis]              │
 │      Domain analysis: nouns/verbs → subject areas                   │
-│      Name features (FDD "Action object" / Affinity clusters)        │
+│      Name features (FDD "Action object" / Affinity groups)           │
 │      Create backlog/<name>.feature stubs                            │
 │      Status: BASELINED written to discovery.md                      │
 │                                                                     │
@@ -75,18 +75,18 @@ Each step has a designated agent and a specific deliverable. No step is skipped.
 │      → PO runs silent pre-mortem on confirmed synthesis             │
 │      [template §1: synthesis confirmed → unlocks Session 2]         │
 │                                                                     │
-│    Session 2 — Cluster / Big Picture for this Feature               │
-│      Questions target clusters of behavior within this feature      │
-│      Gap-finding per cluster: CIT · Laddering · CI Perspective      │
+│    Session 2 — Behavior Groups / Big Picture for this Feature        │
+│      Questions target behavior groups within this feature            │
+│      Gap-finding per group: CIT · Laddering · CI Perspective         │
 │      [new questions from elucidation added in the moment]           │
-│      Level 1: paraphrase · Level 2: cluster transition summaries    │
-│      [template §2: all clusters answered → unlocks Session 3]       │
+│      Level 1: paraphrase · Level 2: group transition summaries      │
+│      [template §2: all groups answered → unlocks Session 3]          │
 │                                                                     │
-│    Session 3 — Feature Synthesis Approval + Story Derivation        │
-│      PO produces synthesis of feature scope and clusters            │
-│      → stakeholder approves or corrects; PO refines until approved  │
-│      Clusters → candidate user stories (Rules)                      │
-│      Status: BASELINED written to .feature discovery section        │
+│    Session 3 — Feature Synthesis Approval + Story Derivation       │
+│      PO produces synthesis of feature scope and behavior groups     │
+│      → stakeholder approves or corrects; PO refines until approved │
+│      Story candidates → candidate user stories (Rules)               │
+│      Status: BASELINED written to .feature discovery section         │
 │      [template §3: approval + stories → unlocks decomp check]       │
 │                                                                     │
 │    DECOMPOSITION CHECK                                              │
@@ -95,7 +95,7 @@ Each step has a designated agent and a specific deliverable. No step is skipped.
 │      NO  → proceed                                                  │
 │                                                                     │
 │  Phase 3 — Stories (PO alone)                                       │
-│    Clusters from Phase 2 Session 2 → one Rule: block per story      │
+│    Story candidates from Phase 2 Session 2 → one Rule: block per story │
 │    INVEST gate: all 6 letters must pass before committing           │
 │    commit: feat(stories): write user stories for <name>             │
 │                                                                     │
@@ -370,12 +370,12 @@ Feature: <title>
   | ID | Question | Answer | Status |     ← OPEN / ANSWERED
   Synthesis: <PO synthesis — confirmed by stakeholder>
 
-  Session 2 — Cluster / Big Picture:
+  Session 2 — Behavior Groups / Big Picture:
   | ID | Question | Answer | Status |
-  Clusters: <named topic clusters derived from answers>
+  Behavior Groups: <named behavior groups derived from answers>
 
   Session 3 — Feature Synthesis:
-  Synthesis: <full synthesis across clusters>
+  Synthesis: <full synthesis across behavior groups>
   Approved: YES / NO
 
   Architecture:                         ← added at Step 2 by software-engineer
