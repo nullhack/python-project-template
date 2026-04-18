@@ -27,7 +27,7 @@ Every session starts by reading state. Every session ends by writing state. This
 3. Run `git status` — understand what is committed vs. what is not
 4. Confirm scope: you are working on exactly one step of one feature
 
-If TODO.md says "No feature in progress", report to the PO that backlog features are waiting. **The software-engineer never self-selects a feature from the backlog — only the PO picks.** The PO must verify the feature has `Status: BASELINED` in its discovery section before moving it to `in-progress/` — if not baselined, the PO must complete Step 1 first.
+If TODO.md says "No feature in progress", load `skill feature-selection` — it guides the PO through scoring and selecting the next BASELINED backlog feature. **The software-engineer never self-selects a feature from the backlog — only the PO picks.** The PO must verify the feature has `Status: BASELINED` in its discovery section before moving it to `in-progress/` — if not baselined, the PO must complete Step 1 first.
 
 ## Session End
 
@@ -70,8 +70,14 @@ Source: docs/features/in-progress/<name>.feature
 - [ ] `@id:<hex>`: <description>
 
 ## Next
-<One sentence: exactly what to do in the next session>
+Run @<agent-name> — <one concrete action>
 ```
+
+**"Next" line format**: Always prefix with `Run @<agent-name>` so the human knows exactly which agent to invoke. Examples:
+- `Run @software-engineer — implement @id:a1b2c3d4 (Step 3 RED)`
+- `Run @reviewer — verify feature display-version at Step 4`
+- `Run @product-owner — pick next BASELINED feature from backlog`
+- `Run @product-owner — accept feature display-version at Step 5`
 
 **Source path by step:**
 - Step 1: `Source: docs/features/backlog/<name>.feature`
@@ -89,7 +95,7 @@ When no feature is active:
 # Current Work
 
 No feature in progress.
-Next: PO picks a feature from docs/features/backlog/ that has Status: BASELINED and moves it to docs/features/in-progress/.
+Next: Run @product-owner — load skill feature-selection and pick the next BASELINED feature from backlog.
 ```
 
 ## Step 3 (TDD Loop) Cycle-Aware TODO Format
