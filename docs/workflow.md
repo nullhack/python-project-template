@@ -108,7 +108,7 @@ Each step has a designated agent and a specific deliverable. No step is skipped.
 │    ★ FROZEN — changes require @deprecated + new Example             │
 │                                                                     │
 └─────────────────────────────────────────────────────────────────────┘
-                              ↓  PO picks feature from backlog
+                              ↓  PO picks feature from backlog — only if Status: BASELINED
 ┌─────────────────────────────────────────────────────────────────────┐
 │  STEP 2 — ARCHITECTURE                           agent: software-engineer   │
 ├─────────────────────────────────────────────────────────────────────┤
