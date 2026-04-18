@@ -256,3 +256,57 @@ The session-workflow skill should enforce reading and updating this section at s
 4. Self-declare: "I have read all backlog features and this architecture accounts for the full known feature set"
 
 This is distinct from Item 4 (hollow PO approval) — the fix here is about the developer's reading obligation before making architectural decisions.
+
+---
+
+## 19. Workflow Diagram — Redundancies and Late Error Detection
+
+### Redundancies
+
+**19a. Step 3 reviewer gate is a subset of Step 4's per-test reviewer gate**
+
+Step 3 stops for reviewer approval of test design and semantic alignment before any implementation starts. Step 4 then repeats the same semantic alignment check per-test cycle. The Step 3 check reviews all tests at once before any code exists — but semantic alignment is best verified when both the test and the implementation can be seen side by side. The Step 3 review is premature and likely re-done anyway during Step 4.
+
+**19b. Step 5 code review overlaps heavily with Step 4 self-declaration + per-test reviewer**
+
+Step 5 checks Correctness, KISS, SOLID, ObjCal, Design Patterns, Tests, Code Quality (4a–4g). All of these except tooling (lint/coverage) were already covered by the 21-item self-declaration and per-test reviewer in Step 4. Step 5 implies a full re-audit of already-reviewed work, rather than a targeted spot-check of what is novel or risky.
+
+**19c. `gen-tests --check` listed as a separate pre-step that nothing uses**
+
+The `--check` dry-run appears in the tools table as "Before gen-tests" but is never referenced in the actual workflow steps. Either make it a mandatory gate or remove it.
+
+**19d. Step 2 architecture commit and Step 3 gen-tests commit are always consecutive**
+
+These two commits are always paired and never independently useful. Step 2 commits architecture, Step 3 immediately runs `gen-tests` and commits stubs. Combining them into one step would reduce overhead without losing traceability.
+
+### Late Error Detection
+
+**19e. Architecture locked before test bodies reveal structural problems**
+
+Test bodies are written in Step 3 after the architecture is committed in Step 2. If a test body reveals an architectural flaw (wrong abstraction, missing entity), the developer must return to Step 2 — but the diagram has no explicit back-arrow from Step 3 to Step 2. The diagram implies Step 3 is always forward.
+
+**19f. Decomposition check happens at the end of Phase 2, after all discovery is done**
+
+If a feature is too large (>2 concerns, >8 examples), the split happens after discovery questions are already answered. The check should happen earlier — at Phase 1 when the feature list is identified, or at the start of Phase 2 before generating questions.
+
+**19g. `lint + static-check` run only at handoff (end of Step 4)**
+
+A type error or lint violation introduced in cycle 3 is not caught until all cycles are complete. Running these tools only at handoff means multiple commits may need to be unwound.
+
+**19h. Production-grade input→output check first appears in Step 5**
+
+Step 5 verifies that "output changes with input". This basic correctness property is not checked by the developer until the reviewer finds it. The developer's pre-mortem at end of Step 4 exists but is vague — it does not mandate the input→output check explicitly.
+
+### Proposed Improvements
+
+| # | Issue | Proposed change |
+|---|---|---|
+| A | Step 3 reviewer gate redundant with Step 4 | Merge Step 3 into Step 2: after architecture commit, run `gen-tests` to create stubs. Test body writing becomes the first action of Step 4 (write test → RED → GREEN → REFACTOR → SELF-DECLARE → REVIEWER → COMMIT). Removes one full reviewer interaction. |
+| B | Step 5 is a full re-audit of already-reviewed work | Reframe Step 5 as a spot-check + tooling run: skip re-checking items covered by per-test reviewers; focus on (a) tooling — lint, static-check, coverage, orphans, (b) integration/system behavior, (c) semantic alignment of the feature as a whole. |
+| C | Decomposition check too late | Move to Phase 1 (when feature stubs are created) and add a lightweight re-check at the start of Phase 2 (before generating questions). |
+| D | `lint + static-check` run only at handoff | Run `lint + static-check` (not coverage) after each Step 4 commit as a fast sanity check. Keep full `test` with coverage at handoff only. |
+| E | Step 2 + Step 3 always consecutive | Merge into one step: architecture + `gen-tests` stubs in one commit. Test bodies are the opening move of Step 4. |
+| F | No back-arrow from Step 3 to Step 2 | Add explicit "if test body reveals arch flaw → back to Step 2" path in the diagram. |
+| G | Input→output check first found by reviewer | Make it explicit in the developer's Step 4 self-verification (before handoff): run with two different inputs, confirm output differs. |
+
+**Highest-value change: A + E combined.** Collapsing Steps 2+3 removes a full reviewer interaction. Test body writing as the opening move of Step 4 means architectural flaws are discovered immediately when the developer cannot make the test fail for the right reason.
