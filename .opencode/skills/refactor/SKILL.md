@@ -291,7 +291,7 @@ Before marking the `@id` complete, verify all of the following. Each failed item
 | OC-5 | One dot per line | `obj.repo.find(id).name` |
 | OC-6 | No abbreviations | `usr`, `mgr`, `cfg`, `val`, `tmp` |
 | OC-7 | Classes ≤ 50 lines, methods ≤ 20 lines | Any method requiring scrolling |
-| OC-8 | ≤ 2 instance variables per class | `__init__` with 3+ `self.x =` assignments |
+| OC-8 | ≤ 2 instance variables per class *(behavioural classes only; dataclasses, Pydantic models, value objects, and TypedDicts are exempt)* | `__init__` with 3+ `self.x =` assignments in a behavioural class |
 | OC-9 | No getters/setters | `def get_name(self)` / `def set_name(self, v)` |
 
 ### SOLID (Martin 2000)

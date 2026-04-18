@@ -163,7 +163,9 @@ Each step has a designated agent and a specific deliverable. No step is skipped.
 │                                                                     │
 │  ARCHITECTURE SMELL CHECK — hard gate (fix before commit)           │
 │    [ ] No class with >2 responsibilities (SOLID-S)                 │
-│    [ ] No class with >2 instance variables (OC-8)                  │
+│    [ ] No behavioural class with >2 instance variables (OC-8;      │
+│        dataclasses, Pydantic models, value objects, TypedDicts      │
+│        are exempt)                                                  │
 │    [ ] All external deps assigned a Protocol (SOLID-D + Hexagonal) │
 │        N/A if no external dependencies identified in scope          │
 │    [ ] No noun with different meaning across planned modules        │
@@ -221,6 +223,11 @@ Each step has a designated agent and a specific deliverable. No step is skipped.
 │  │  │    Load skill refactor — follow its protocol          │ │   │
 │  │  │    uv run task test-fast after each individual change │ │   │
 │  │  │    EXIT: test-fast passes; no smells remain           │ │   │
+│  │  ├───────────────────────────────────────────────────────┤ │   │
+│  │  │  SELF-DECLARE                                         │ │   │
+│  │  │    Fill Self-Declaration block in TODO.md             │ │   │
+│  │  │    AGREE/DISAGREE per principle with file:line        │ │   │
+│  │  │    DISAGREE requires inline justification             │ │   │
 │  │  └───────────────────────────────────────────────────────┘ │   │
 │  │                                                             │   │
 │  │  Mark @id completed in TODO.md                             │   │
@@ -259,7 +266,7 @@ Each step has a designated agent and a specific deliverable. No step is skipped.
 │      * OC-5: one dot per line — AGREE/DISAGREE | file:line                │
 │      * OC-6: no abbreviations — AGREE/DISAGREE | file:line                │
 │      * OC-7: ≤20 lines per function — AGREE/DISAGREE | file:line          │
-│      * OC-8: ≤2 instance variables per class — AGREE/DISAGREE | file:line │
+│      * OC-8: ≤2 instance variables per class (behavioural classes only; dataclasses, Pydantic models, value objects, and TypedDicts are exempt) — AGREE/DISAGREE | file:line │
 │      * OC-9: no getters/setters — AGREE/DISAGREE | file:line              │
 │      * Patterns: no creational smell — AGREE/DISAGREE | file:line         │
 │      * Patterns: no structural smell — AGREE/DISAGREE | file:line         │
@@ -471,7 +478,7 @@ Source: docs/features/in-progress/<name>.feature
 
 ## Cycle State
 Test: @id:<hex> — <description>
-Phase: RED | GREEN | REFACTOR
+Phase: RED | GREEN | REFACTOR | SELF-DECLARE
 
 ## Self-Declaration
 As a software-engineer I declare:
@@ -493,7 +500,7 @@ As a software-engineer I declare:
 * OC-5: one dot per line — AGREE/DISAGREE | file:line
 * OC-6: no abbreviations — AGREE/DISAGREE | file:line
 * OC-7: ≤20 lines per function, ≤50 per class — AGREE/DISAGREE | longest: file:line
-* OC-8: ≤2 instance variables per class — AGREE/DISAGREE | file:line
+* OC-8: ≤2 instance variables per class (behavioural classes only; dataclasses, Pydantic models, value objects, and TypedDicts are exempt) — AGREE/DISAGREE | file:line
 * OC-9: no getters/setters — AGREE/DISAGREE | file:line
 * Patterns: no creational smell — AGREE/DISAGREE | file:line
 * Patterns: no structural smell — AGREE/DISAGREE | file:line
@@ -534,7 +541,7 @@ As a software-engineer I declare:
 | Function length | ≤ 20 lines |
 | Class length | ≤ 50 lines |
 | Max nesting | 2 levels |
-| Instance variables per class | ≤ 2 |
+| Instance variables per class | ≤ 2 (behavioural classes only; dataclasses, Pydantic models, value objects, TypedDicts are exempt) |
 | `noqa` comments | 0 |
 | `type: ignore` comments | 0 |
 | Orphaned tests | 0 |

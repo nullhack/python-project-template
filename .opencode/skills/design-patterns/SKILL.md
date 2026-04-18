@@ -393,3 +393,13 @@ class JsonImporter(Importer):
 | Class directly calls B, C, D on state change | Observer |
 | Two functions share the same skeleton, differ in one step | Template Method |
 | Subsystem is complex and callers need a simple entry point | Facade |
+
+---
+
+## Core Heuristic — Procedural vs OOP
+
+> **When procedural code requires modifying existing functions to add new variants, OOP is the fix.**
+
+Procedural code is open to inspection but open to modification too — every new case touches existing logic.
+OOP (via Strategy, State, Observer, etc.) closes existing code to modification and opens it to extension through new types.
+The smell is always the same: **a place in the codebase that must change every time the domain grows.**
