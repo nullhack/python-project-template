@@ -2,6 +2,25 @@
 
 All notable changes to this template will be documented in this file.
 
+## [v5.1.20260418] - Emergent Colugo - 2026-04-18
+
+### Added
+- **refactor skill**: Standalone skill with Fowler's full catalogue, green-bar rule, two-hats rule, SOLID/OC self-declaration table, and preparatory refactoring protocol — loaded on demand at REFACTOR phase
+- **feature-selection skill**: WSJF-based backlog prioritisation (Reinertsen 2009) with Kano value scoring and dependency gate — PO loads this when `TODO.md` is idle
+- **ADR template**: `docs/architecture/adr-template.md` for Step 2 architectural decisions
+- **Logo and banner**: visual identity added to README (SVG assets in `docs/images/`)
+
+### Changed
+- **Architecture stubs**: Step 2 now writes stubs directly into `<package>/` instead of an Architecture section in the feature file; stubs have no docstrings (add after GREEN when lint enforces them); folder structure is suggested, not prescribed — `ports/` and `adapters/` only created when a concrete external dependency is confirmed
+- **design-patterns skill**: Narrowed to pure GoF catalogue (23 patterns, smell-triggered before/after examples); SOLID, OC, LoD, CQS, Python Zen moved to refactor skill self-declaration checklist
+- **session-workflow**: `Next` line in TODO.md now requires `Run @<agent-name>` prefix so the human always knows which agent to invoke; idle state loads `skill feature-selection` instead of a vague prompt
+- **verify skill**: Added orphaned-stub check (skip-marked tests that were never implemented); report template now includes structured `Next Steps` block directing the human to the correct agent
+- **Scientific research**: `docs/academic_research.md` split into 9 domain files under `docs/scientific-research/` (cognitive-science, testing, architecture, oop-design, refactoring-empirical, requirements-elicitation, domain-modeling, software-economics, ai-agents)
+
+### Fixed
+- Stale `docs/architecture/STEP2-ARCH.md` reference removed from workflow diagram and skill
+- Protocol smell-check gate now marked N/A when no external dependencies are identified in scope
+
 ## [v5.0.20260418] - Structured Phascolarctos - 2026-04-18
 
 ### Added
