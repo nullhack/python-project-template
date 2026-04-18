@@ -2,16 +2,18 @@
 name: code-quality
 description: Enforce code quality using ruff, pytest coverage, and static type checking
 version: "2.0"
-author: developer
-audience: developer, reviewer
+author: software-engineer
+audience: software-engineer, reviewer
 workflow: feature-lifecycle
 ---
 
 # Code Quality
 
-Run these four commands before handing off to the reviewer (Step 5). All must pass.
+Run these four commands before handing off to the reviewer (Step 4). All must pass.
 
-## Developer Self-Check
+**This is a quick reference. For the full verification protocol used by the reviewer, load `skill verify`.**
+
+## Software-Engineer Self-Check
 
 Before handing off to reviewer:
 

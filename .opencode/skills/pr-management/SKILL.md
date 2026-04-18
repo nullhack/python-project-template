@@ -2,8 +2,8 @@
 name: pr-management
 description: Create pull requests with conventional commits, proper formatting, and branch workflow
 version: "1.0"
-author: developer
-audience: developer
+author: software-engineer
+audience: software-engineer
 workflow: git-management
 ---
 

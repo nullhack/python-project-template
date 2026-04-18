@@ -1,8 +1,8 @@
 ---
 name: session-workflow
 description: Session start and end protocol — read TODO.md, continue from checkpoint, update and commit
-version: "2.1"
-author: developer
+version: "3.0"
+author: software-engineer
 audience: all-agents
 workflow: session-management
 ---
@@ -14,14 +14,20 @@ Every session starts by reading state. Every session ends by writing state. This
 ## Session Start
 
 1. Read `TODO.md` — find current feature, current step, and the "Next" line.
-   - If `TODO.md` does not exist, run `uv run task gen-todo` to create it, then read the result.
+   - If `TODO.md` does not exist, create a basic one:
+     ```markdown
+     # Current Work
+
+     No feature in progress.
+     Next: PO picks feature from docs/features/backlog/ and moves it to docs/features/in-progress/.
+     ```
 2. If a feature is active, read:
-   - `docs/features/in-progress/<name>/discovery.md` — feature discovery
+   - `docs/features/in-progress/<name>.feature` — feature file (discovery + architecture + Rules + Examples)
    - `docs/features/discovery.md` — project-level discovery (for context)
 3. Run `git status` — understand what is committed vs. what is not
 4. Confirm scope: you are working on exactly one step of one feature
 
-If TODO.md says "No feature in progress", report to the PO that backlog features are waiting. **The developer never self-selects a feature from the backlog — only the PO picks.**
+If TODO.md says "No feature in progress", load `skill feature-selection` — it guides the PO through scoring and selecting the next BASELINED backlog feature. **The software-engineer never self-selects a feature from the backlog — only the PO picks.** The PO must verify the feature has `Status: BASELINED` in its discovery section before moving it to `in-progress/` — if not baselined, the PO must complete Step 1 first.
 
 ## Session End
 
@@ -55,8 +61,8 @@ When a step completes within a session:
 # Current Work
 
 Feature: <name>
-Step: <1-6> (<step name>)
-Source: docs/features/in-progress/<name>/discovery.md
+Step: <1-5> (<step name>)
+Source: docs/features/in-progress/<name>.feature
 
 ## Progress
 - [x] `@id:<hex>`: <description>
@@ -64,13 +70,20 @@ Source: docs/features/in-progress/<name>/discovery.md
 - [ ] `@id:<hex>`: <description>
 
 ## Next
-<One sentence: exactly what to do in the next session>
+Run @<agent-name> — <one concrete action>
 ```
 
+**"Next" line format**: Always prefix with `Run @<agent-name>` so the human knows exactly which agent to invoke. Agent names are defined in `AGENTS.md` — use the name exactly as listed there. Examples:
+- `Run @<software-engineer-agent> — implement @id:a1b2c3d4 (Step 3 RED)`
+- `Run @<software-engineer-agent> — load skill implementation and begin Step 2 (Architecture) for <feature-name>`
+- `Run @<reviewer-agent> — verify feature <feature-name> at Step 4`
+- `Run @<product-owner-agent> — pick next BASELINED feature from backlog`
+- `Run @<product-owner-agent> — accept feature <feature-name> at Step 5`
+
 **Source path by step:**
-- Step 1: `Source: docs/features/backlog/<name>/discovery.md`
-- Steps 2–5: `Source: docs/features/in-progress/<name>/discovery.md`
-- Step 6: `Source: docs/features/completed/<name>/discovery.md`
+- Step 1: `Source: docs/features/backlog/<name>.feature`
+- Steps 2–4: `Source: docs/features/in-progress/<name>.feature`
+- Step 5: `Source: docs/features/completed/<name>.feature`
 
 Status markers:
 - `[ ]` — not started
@@ -83,26 +96,31 @@ When no feature is active:
 # Current Work
 
 No feature in progress.
-Next: PO picks feature from docs/features/backlog/ and moves it to docs/features/in-progress/.
+Next: Run @<product-owner-agent> — load skill feature-selection and pick the next BASELINED feature from backlog.
 ```
 
-## Step 4 Cycle-Aware TODO Format
+## Step 3 (TDD Loop) Cycle-Aware TODO Format
 
-During Step 4 (Implementation), TODO.md **must** include a `## Cycle State` block to track Red-Green-Refactor-Review progress. This block is **mandatory** — missing it means the cycle is unverifiable.
+During Step 3 (TDD Loop), TODO.md **must** include a `## Cycle State` block to track Red-Green-Refactor progress.
+
+When `Phase: REFACTOR` is complete, a `## Self-Declaration` block is also **mandatory** before handing off to Step 4.
 
 ```markdown
 # Current Work
 
 Feature: <name>
-Step: 4 (implement)
-Source: docs/features/in-progress/<name>/discovery.md
+Step: 3 (TDD Loop)
+Source: docs/features/in-progress/<name>.feature
 
 ## Cycle State
 Test: `@id:<hex>` — <description>
-Phase: RED | GREEN | REFACTOR | SELF-DECLARE | REVIEWER(code-design) | COMMITTED
+Phase: RED | GREEN | REFACTOR
+
+## Self-Declaration
+As a software-engineer I declare this code follows YAGNI-1 ... (full checklist in implementation/SKILL.md)
 
 ## Progress
-- [x] `@id:<hex>`: <description> — reviewer(code-design) APPROVED
+- [x] `@id:<hex>`: <description>
 - [~] `@id:<hex>`: <description>          ← in progress (see Cycle State)
 - [ ] `@id:<hex>`: <description>          ← next
 
@@ -110,11 +128,11 @@ Phase: RED | GREEN | REFACTOR | SELF-DECLARE | REVIEWER(code-design) | COMMITTED
 <One actionable sentence>
 ```
 
-### Reviewer Scope Legend
+### Phase Transitions
 
-When referencing reviewer interactions in TODO.md:
-- `reviewer(code-design)` — per-test design check during Step 4 (YAGNI/KISS/DRY/SOLID/ObjCal/patterns + semantic alignment only)
-- `reviewer(full-verify)` — Step 5 full verification (lint, pyright, coverage, semantic review, adversarial testing)
+- Move from `RED` → `GREEN` when the test fails with a real assertion
+- Move from `GREEN` → `REFACTOR` when the test passes
+- Move from `REFACTOR` → mark `@id` complete in `## Progress` when test-fast passes
 
 ## gen-todo Script
 
@@ -140,5 +158,6 @@ Run `gen-todo` at session start (after reading TODO.md) and at session end (befo
 3. Never leave uncommitted changes — commit as WIP if needed
 4. One step per session where possible; do not start Step N+1 in the same session as Step N
 5. The "Next" line must be actionable enough that a fresh AI can execute it without asking questions
-6. During Step 4, always update `## Cycle State` when transitioning between RED/GREEN/REFACTOR/SELF-DECLARE/REVIEWER phases
+6. During Step 3, always update `## Cycle State` when transitioning between RED/GREEN/REFACTOR phases
 7. When a step completes, update TODO.md and commit **before** any further work
+8. During Step 3, write the `## Self-Declaration` block into TODO.md after all quality gates pass — every claim must have AGREE/DISAGREE with `file:line` evidence

@@ -2,6 +2,75 @@
 
 All notable changes to this template will be documented in this file.
 
+## [v5.2.20260418] - Emergent Colugo - 2026-04-18 (hotfix)
+
+### Fixed
+- **Role naming**: Replaced stale `developer` agent-role references with `software-engineer` in `implementation/SKILL.md`, `docs/scientific-research/ai-agents.md`, `docs/scientific-research/cognitive-science.md`, and `docs/features/completed/display-version.feature`
+- **session-workflow**: Replaced hardcoded agent names in `## Next` line examples with `@<agent-name>` placeholders; added note pointing to `AGENTS.md` as source of truth; added missing Step 2 (Architecture) example
+
+## [v5.1.20260418] - Emergent Colugo - 2026-04-18
+
+### Added
+- **refactor skill**: Standalone skill with Fowler's full catalogue, green-bar rule, two-hats rule, SOLID/OC self-declaration table, and preparatory refactoring protocol — loaded on demand at REFACTOR phase
+- **feature-selection skill**: WSJF-based backlog prioritisation (Reinertsen 2009) with Kano value scoring and dependency gate — PO loads this when `TODO.md` is idle
+- **ADR template**: `docs/architecture/adr-template.md` for Step 2 architectural decisions
+- **Logo and banner**: visual identity added to README (SVG assets in `docs/images/`)
+
+### Changed
+- **Architecture stubs**: Step 2 now writes stubs directly into `<package>/` instead of an Architecture section in the feature file; stubs have no docstrings (add after GREEN when lint enforces them); folder structure is suggested, not prescribed — `ports/` and `adapters/` only created when a concrete external dependency is confirmed
+- **design-patterns skill**: Narrowed to pure GoF catalogue (23 patterns, smell-triggered before/after examples); SOLID, OC, LoD, CQS, Python Zen moved to refactor skill self-declaration checklist
+- **session-workflow**: `Next` line in TODO.md now requires `Run @<agent-name>` prefix so the human always knows which agent to invoke; idle state loads `skill feature-selection` instead of a vague prompt
+- **verify skill**: Added orphaned-stub check (skip-marked tests that were never implemented); report template now includes structured `Next Steps` block directing the human to the correct agent
+- **Scientific research**: `docs/academic_research.md` split into 9 domain files under `docs/scientific-research/` (cognitive-science, testing, architecture, oop-design, refactoring-empirical, requirements-elicitation, domain-modeling, software-economics, ai-agents)
+
+### Fixed
+- Stale `docs/architecture/STEP2-ARCH.md` reference removed from workflow diagram and skill
+- Protocol smell-check gate now marked N/A when no external dependencies are identified in scope
+
+## [v5.0.20260418] - Structured Phascolarctos - 2026-04-18
+
+### Added
+- **design-patterns skill**: Full GoF pattern catalogue with smell-triggered patterns, SOLID, Object Calisthenics, Python Zen, Law of Demeter, CQS, Tell Don't Ask — loaded on demand at Steps 2-3
+- **create-agent skill**: Research-backed agent creation guide with OpenAI/Anthropic best practices, ownership boundaries, tool surface design, and escalation rules
+- **software-engineer agent**: Dedicated agent file replacing `developer.md`; owns Steps 2-3 and release
+- **3-session discovery structure**: Phase 1 and Phase 2 now each use a 3-session template with template gates (§1/§2/§3 must be confirmed before proceeding); active listening protocol (3 levels) codified in scope skill
+
+### Changed
+- **5-step workflow** (breaking): Steps restructured — TDD loop merged into Step 3, Verify is Step 4, Accept is Step 5; all agents, skills, and docs updated to match
+- **Behavior groups terminology**: "Cluster" renamed to "behavior group" throughout scope skill, AGENTS.md, workflow.md, and templates for clearer AI focus
+- **Story candidates terminology**: Phase 3 now derives "story candidates" → `Rule:` blocks, removing ambiguity from the cluster-to-story mapping
+- **Test stub format** (breaking): Stubs now use `@pytest.mark.skip(reason="not yet implemented")` instead of `raise NotImplementedError`; skip marker is removed when implementing in RED phase
+- **Dropped `@pytest.mark.unit` and `@pytest.mark.integration`**: Only `@pytest.mark.slow` and `@pytest.mark.deprecated` remain; folder structure (`tests/features/` vs `tests/unit/`) encodes test type
+- **BASELINED gate enforced**: PO may not move a feature to `in-progress/` unless its discovery section has `Status: BASELINED`; enforced in product-owner.md and session-workflow
+- **tdd skill removed**: Replaced by implementation skill with inline TDD guidance
+- **gen_test_stubs.py removed**: Script deleted along with tdd skill
+
+### Fixed
+- **pyproject.toml**: Removed broken `gen-tests` task; removed `raise NotImplementedError` from coverage exclusions; removed `unit`/`integration` marker definitions
+- **Role naming**: `developer` → `software-engineer` across all files
+- **Step count**: All references to "6 steps" updated to "5 steps"
+
+## [v4.1.20260416] - Recursive Acinonyx - 2026-04-16
+
+### Added
+- **Single `.feature` file per feature**: Each feature is now one `.feature` file with `Rule:` blocks for user stories and `Example:` blocks for ACs — discovery content embedded in the feature description free text; replaces the folder-per-feature structure
+- **Rule-scoped test files**: `gen_test_stubs.py` rewritten to parse `Rule:` blocks; each Rule maps to one test file (`<rule-slug>_test.py`); function naming is now `test_<rule_slug>_<id_hex>()`
+- **Hypothesis-only `tests/unit/`**: Every test in `tests/unit/` must use `@given`; `@pytest.mark.slow` is mandatory on all Hypothesis tests; plain `assert` tests without `@given` are forbidden
+- **Mandatory `## Self-Declaration` in TODO.md**: Developer writes the 21-item checklist into a `## Self-Declaration (@id:<hex>)` block in `TODO.md` at `SELF-DECLARE` phase before requesting reviewer check (Rule 8 in session-workflow)
+
+### Changed
+- **`gen_test_stubs.py`**: Scans `docs/features/{backlog,in-progress,completed}/*.feature` directly (not subfolders); generates one test file per `Rule:` block
+- **`gen_todo.py`**: `find_in_progress_feature()` now finds `.feature` files directly in `in-progress/`; source path is `docs/features/in-progress/<name>.feature`
+- **`skills/tdd/SKILL.md`**: Test Tool Decision table updated to separate `tests/features/` (plain pytest, generated) from `tests/unit/` (Hypothesis only); `tests/unit/` rules section added
+- **`skills/implementation/SKILL.md`**: Unit test rule tightened — `@given` required, `@pytest.mark.slow` mandatory, plain tests forbidden
+- **`skills/verify/SKILL.md`**: Two new rows in section 4f: `@given` check and `@slow` check; two new rows in Standards Summary
+- **`skills/scope/SKILL.md`**: All four phases rewritten for file-based workflow; `discovery-template.md` converted to `.feature` file template
+- **`skills/session-workflow/SKILL.md`**: Step 4 TODO format updated with mandatory `## Self-Declaration` block template; Rule 8 added
+- **Completed feature migrated**: `docs/features/completed/display-version/` (three files) merged into `docs/features/completed/display-version.feature` (single file with two `Rule:` blocks)
+
+### Fixed
+- **OC-8 clarification**: The only valid fix for > 2 `self.x` is a new named class (Rule 3 or Rule 4); hardcoded constants, class-level variables, inlined literals, and parent-class moves are all invalid workarounds and remain FAIL
+
 ## [v4.0.20260416] - Precise Tarsius - 2026-04-16
 
 ### Added
