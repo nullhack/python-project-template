@@ -135,7 +135,7 @@ Only write an ADR if the decision is non-obvious or has meaningful trade-offs. R
 Apply to the stub files just written:
 
 - [ ] No class with >2 responsibilities (SOLID-S)
-- [ ] No class with >2 instance variables (OC-8)
+- [ ] No behavioural class with >2 instance variables (OC-8; dataclasses, Pydantic models, value objects, and TypedDicts are exempt)
 - [ ] All external deps assigned a Protocol (SOLID-D + Hexagonal) — N/A if no external dependencies identified in scope
 - [ ] No noun with different meaning across modules (DDD Bounded Context)
 - [ ] No missing Creational pattern: repeated construction without Factory/Builder
@@ -254,7 +254,7 @@ As a software-engineer I declare:
 * OC-5: one dot per line — AGREE/DISAGREE | file:line
 * OC-6: no abbreviations — AGREE/DISAGREE | file:line
 * OC-7: ≤20 lines per function, ≤50 per class — AGREE/DISAGREE | longest: file:line
-* OC-8: ≤2 instance variables per class — AGREE/DISAGREE | file:line
+* OC-8: ≤2 instance variables per class (behavioural classes only; dataclasses, Pydantic models, value objects, and TypedDicts are exempt) — AGREE/DISAGREE | file:line
 * OC-9: no getters/setters — AGREE/DISAGREE | file:line
 * Patterns: no creational smell — AGREE/DISAGREE | file:line
 * Patterns: no structural smell — AGREE/DISAGREE | file:line
