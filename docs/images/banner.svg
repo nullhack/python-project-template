@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 160" width="600" height="160" role="img" aria-label="Python Project Template">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 830 160" width="830" height="160" role="img" aria-label="Python Project Template">
   <defs>
 
     <!-- Antique gold for border and accents -->
@@ -50,21 +50,21 @@
   </defs>
 
   <!-- White background -->
-  <rect x="0" y="0" width="600" height="160" rx="8" fill="white"/>
+  <rect x="0" y="0" width="830" height="160" rx="8" fill="white"/>
 
   <!-- Golden border — top -->
-  <line x1="12" y1="6"  x2="588" y2="6"  stroke="url(#g-gold)" stroke-width="1.2"/>
+  <line x1="12" y1="6"  x2="818" y2="6"  stroke="url(#g-gold)" stroke-width="1.2"/>
   <!-- Golden border — bottom -->
-  <line x1="12" y1="154" x2="588" y2="154" stroke="url(#g-gold)" stroke-width="1.2"/>
+  <line x1="12" y1="154" x2="818" y2="154" stroke="url(#g-gold)" stroke-width="1.2"/>
   <!-- Golden border — left -->
   <line x1="6" y1="12" x2="6" y2="148" stroke="#c9a84c" stroke-width="1.2" opacity="0.6"/>
   <!-- Golden border — right -->
-  <line x1="594" y1="12" x2="594" y2="148" stroke="#c9a84c" stroke-width="1.2" opacity="0.6"/>
+  <line x1="824" y1="12" x2="824" y2="148" stroke="#c9a84c" stroke-width="1.2" opacity="0.6"/>
   <!-- Corner dots -->
   <circle cx="6"   cy="6"   r="2" fill="#c9a84c" opacity="0.7"/>
-  <circle cx="594" cy="6"   r="2" fill="#c9a84c" opacity="0.7"/>
+  <circle cx="824" cy="6"   r="2" fill="#c9a84c" opacity="0.7"/>
   <circle cx="6"   cy="154" r="2" fill="#c9a84c" opacity="0.7"/>
-  <circle cx="594" cy="154" r="2" fill="#c9a84c" opacity="0.7"/>
+  <circle cx="824" cy="154" r="2" fill="#c9a84c" opacity="0.7"/>
 
   <!-- ── LOGO — centered at x=82, y=80 ── -->
   <circle cx="82" cy="80" r="60" fill="url(#g-bg)"/>
@@ -90,13 +90,7 @@
   <!-- Vertical gold divider between logo and text -->
   <line x1="158" y1="22" x2="158" y2="138" stroke="#c9a84c" stroke-width="1" opacity="0.5"/>
 
-  <!-- ── TEXT BLOCK ─────────────────────────────────────────────────
-       "python" — small, tracked, steel blue, caps — superscript label
-       "Project Template" — large, dominant, modern geometric serif
-       with "Project" in dark slate and "Template" in gold
-  ─────────────────────────────────────────────────────────────────── -->
-
-  <!-- "python" — small label above, widely tracked, all caps -->
+  <!-- "PYTHON" — small label, widely tracked, steel blue -->
   <text x="178" y="58"
         font-family="'Gill Sans', 'Optima', Candara, sans-serif"
         font-size="13"
@@ -106,9 +100,9 @@
         text-anchor="start">PYTHON</text>
 
   <!-- Thin gold rule under label -->
-  <line x1="178" y1="65" x2="560" y2="65" stroke="#c9a84c" stroke-width="0.8" opacity="0.45"/>
+  <line x1="178" y1="65" x2="818" y2="65" stroke="#c9a84c" stroke-width="0.8" opacity="0.45"/>
 
-  <!-- "Project" — large, dark slate -->
+  <!-- "Project" — large, warm brown -->
   <text x="175" y="112"
         font-family="'Gill Sans', 'Optima', Candara, sans-serif"
         font-size="46"

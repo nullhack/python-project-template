@@ -1,8 +1,8 @@
 <div align="center">
 
-<img src="docs/images/banner.svg" alt="Python Project Template" width="600"/>
+<img src="docs/images/banner.svg" alt="Python Project Template" width="100%"/>
 
-<br/>
+<br/><br/>
 
 [![Contributors][contributors-shield]][contributors-url]
 [![Forks][forks-shield]][forks-url]
