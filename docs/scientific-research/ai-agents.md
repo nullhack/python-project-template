@@ -14,7 +14,7 @@ Foundations for the agent architecture, file structure, and context management d
 | **Status** | Confirmed — corrects the belief that subagents should be "lean routing agents" |
 | **Core finding** | "Define the smallest agent that can own a clear task. Add more agents only when you need separate ownership, different instructions, different tool surfaces, or different approval policies." The split criterion is ownership boundary, not instruction volume. |
 | **Mechanism** | Multiple agents competing to own the same concern create authority conflicts and inconsistent tool access. The right unit is the smallest coherent domain that requires exclusive responsibility. |
-| **Where used** | Agent design in `.opencode/agents/*.md` — 4 agents, each owning a distinct domain (PO, developer, reviewer, setup). |
+| **Where used** | Agent design in `.opencode/agents/*.md` — 4 agents, each owning a distinct domain (PO, software-engineer, reviewer, setup). |
 
 ---
 

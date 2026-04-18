@@ -36,7 +36,7 @@ Feature: Display version
   All questions answered. Discovery frozen.
 
   Rule: Version retrieval
-    As a developer
+    As a software-engineer
     I want to retrieve the application version programmatically
     So that I can display or log it at runtime
 
@@ -53,7 +53,7 @@ Feature: Display version
       Then an INFO log message in the format "Version: <version>" is emitted
 
   Rule: Verbosity control
-    As a developer
+    As a software-engineer
     I want to control log verbosity via a parameter
     So that I can tune output for different environments
 

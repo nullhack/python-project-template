@@ -2,6 +2,12 @@
 
 All notable changes to this template will be documented in this file.
 
+## [v5.2.20260418] - Emergent Colugo - 2026-04-18 (hotfix)
+
+### Fixed
+- **Role naming**: Replaced stale `developer` agent-role references with `software-engineer` in `implementation/SKILL.md`, `docs/scientific-research/ai-agents.md`, `docs/scientific-research/cognitive-science.md`, and `docs/features/completed/display-version.feature`
+- **session-workflow**: Replaced hardcoded agent names in `## Next` line examples with `@<agent-name>` placeholders; added note pointing to `AGENTS.md` as source of truth; added missing Step 2 (Architecture) example
+
 ## [v5.1.20260418] - Emergent Colugo - 2026-04-18
 
 ### Added
