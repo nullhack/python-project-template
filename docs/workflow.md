@@ -492,7 +492,7 @@ As a software-engineer I declare:
 |---|---|---|
 | **Stakeholder** | Human | Answers questions, provides domain knowledge, approves syntheses |
 | **Product Owner** | AI agent | Interviews stakeholder, writes `.feature` files, picks features, accepts deliveries |
-| **Developer** | AI agent | Architecture, tests, code, git, releases |
+| **Software Engineer** | AI agent | Architecture, tests, code, git, releases |
 | **Reviewer** | AI agent | Adversarial verification — defaults to REJECTED until proven correct |
 
 ---
