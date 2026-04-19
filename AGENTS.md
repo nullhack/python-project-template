@@ -60,6 +60,7 @@ STEP 5: ACCEPT         (product-owner)  → demo, validate, move .feature to com
 | `code-quality` | software-engineer | pre-handoff (redirects to `verify`) |
 | `pr-management` | software-engineer | 5 |
 | `git-release` | software-engineer | 5 |
+| `living-docs` | product-owner | 5 (after acceptance) + on stakeholder demand |
 | `create-skill` | software-engineer | meta |
 | `create-agent` | human-user | meta |
 
@@ -117,6 +118,10 @@ docs/
   discovery_journal.md                ← raw Q&A, PO appends after every session
   discovery.md                        ← synthesis changelog, PO appends after every session
   architecture.md                     ← all architectural decisions, SE appends after Step 2
+  glossary.md                         ← living glossary, PO updates via living-docs skill
+  c4/
+    context.md                        ← C4 Level 1 diagram, PO updates via living-docs skill
+    container.md                      ← C4 Level 2 diagram, PO updates via living-docs skill
   features/
     backlog/<feature-name>.feature    ← narrative + Rules + Examples
     in-progress/<feature-name>.feature
@@ -230,7 +235,7 @@ Use `@software-engineer /skill git-release` for the full release process. When r
 
 Every session: load `skill session-workflow`. Read `TODO.md` first, update it at the end.
 
-`TODO.md` is a session bookmark — not a project journal. See `docs/workflow.md` for the full structure including the Cycle State block used during Step 3.
+`TODO.md` is a session bookmark — not a project journal. See `.opencode/skills/session-workflow/SKILL.md` for the full structure including the Cycle State block used during Step 3.
 
 ## Setup
 

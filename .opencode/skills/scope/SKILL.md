@@ -143,7 +143,7 @@ If a feature is new (just created as a stub): write its initial description now.
 After all `.feature` files are updated, append one `## Session: YYYY-MM-DD` block to `docs/discovery.md`. The block contains:
 - `### Feature List` — which features were added or changed (0–N entries); if nothing changed, write "No changes"
 - `### Domain Model` — new or updated domain entities and verbs; if nothing changed, write "No changes"
-- `### Scope` (first session only) — 3–5 sentence synthesis of who the users are, what the product does, why it exists, success/failure conditions, and explicit out-of-scope
+- `### Context` (first session only) — 3–5 sentence synthesis of who the users are, what the product does, why it exists, success/failure conditions, and explicit out-of-scope
 
 **Step D — Mark session complete**
 
@@ -429,7 +429,7 @@ Rules:
 
 ## Session: YYYY-MM-DD
 
-### Scope
+### Context
 <3–5 sentence synthesis of who the users are, what the product does, why it exists,
 success/failure conditions, and out-of-scope boundaries.>
 (First session only. Omit this subsection in subsequent sessions.)
