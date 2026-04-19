@@ -51,19 +51,18 @@ When a gap is reported (by software-engineer or reviewer):
 
 | Situation | Action |
 |---|---|
-| Edge case within current user stories | Add a new Example with a new `@id` to the relevant `.feature` file. |
+| Edge case within current user stories | Add a new Example to the relevant `.feature` file. |
 | New behavior beyond current stories | Add to backlog as a new feature. Do not extend the current feature. |
-| Behavior contradicts an existing Example | Write a new Example with new `@id`. |
-| Post-merge defect | Move the `.feature` file back to `in-progress/`, add new Example with `@id`, resume at Step 3. |
+| Behavior contradicts an existing Example | Add `@deprecated` to the old Example; write a new Example. |
+| Post-merge defect | Move the `.feature` file back to `in-progress/`, add new Example, resume at Step 3. |
 
 ## Bug Handling
 
 When a defect is reported against any feature:
 
-1. Add a `@bug @id:<new-8-char-hex>` Example to the relevant `Rule:` block in the `.feature` file.
-2. Write the Example using the standard `Given/When/Then` format describing the correct behavior.
-3. Update TODO.md to note the new `@id` for the SE to implement.
-4. SE implements the `@id` test in `tests/features/` **and** a `@given` Hypothesis property test in `tests/unit/`. Both are required.
+1. Add a `@bug` Example to the relevant `Rule:` block in the `.feature` file using the standard `Given/When/Then` format describing the correct behavior.
+2. Update TODO.md to note the new bug Example for the SE to implement.
+3. SE implements the test in `tests/features/` **and** a `@given` Hypothesis property test in `tests/unit/`. Both are required.
 
 ## Available Skills
 

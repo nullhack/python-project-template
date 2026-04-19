@@ -188,7 +188,7 @@ If `docs/glossary.md` already exists:
 **When run standalone** (stakeholder on demand): commit after all diagrams and glossary are updated:
 
 ```
-docs(living-docs): update C4 and glossary after <feature-name>
+docs(living-docs): update C4 and glossary after <feature-stem>
 ```
 
 If triggered without a specific feature (general refresh):
