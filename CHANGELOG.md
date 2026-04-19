@@ -2,6 +2,20 @@
 
 All notable changes to this template will be documented in this file.
 
+## [v6.2.20260419] - Autonomous Stenella - 2026-04-19
+
+### Added
+- **pytest-beehave integration**: `@id` tags now auto-assigned to untagged `Example:` blocks on every `pytest` run; test stubs auto-generated from `.feature` files at Step 2 end — no manual ID generation or stub writing required (#78)
+- **Self-declaration defense in depth**: all 25 items numbered 1–25 in `implementation/SKILL.md`; `verify/SKILL.md` now hard-gates on completeness (count must equal 25, sequence must be gapless) before item audit begins (#78)
+
+### Changed
+- **Naming convention**: `.feature` file paths now use `<feature-stem>` (kebab); test directories use `<feature_slug>` (underscore) — applied consistently across all skills, `AGENTS.md`, and docs (#78)
+- **`conftest.py`**: removed manual `deprecated` marker skip hook — now owned entirely by pytest-beehave (#78)
+- **`scope/SKILL.md`**: removed all manual `@id` generation instructions and `@id` uniqueness checklist items — assignment is automatic (#78)
+- **`product-owner.md`**: removed `@id` from bug handling and gap-resolution table — PO writes `Example:` blocks only (#78)
+- **README**: added "Why this template?" section; added `pytest-beehave` to tooling table; replaced static stub example with a two-part Gherkin-in → stub-out illustration (#78)
+- **`verify/SKILL.md` report table**: expanded Self-Declaration Audit from 21 collapsed rows to 25 numbered rows matching the implementation template exactly (#78)
+
 ## [v6.1.20260419] - Contextual Ambystoma - 2026-04-19 (hotfix)
 
 ### Added
