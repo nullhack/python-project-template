@@ -17,7 +17,11 @@ This skill guides the reviewer through Step 4: independent verification that the
 
 **You never move `.feature` files.** After producing an APPROVED report: update TODO.md `Next:` to `Run @product-owner — accept feature <name> at Step 5.` then stop. The PO accepts the feature and moves the file.
 
-The reviewer produces one written report (see template below) that includes: all gate results, the SE Self-Declaration Audit, the **Reviewer Stance Declaration**, and the final APPROVED/REJECTED verdict. Do not start until the software-engineer has committed all work and communicated the Self-Declaration verbally in the handoff message.
+## When to Use (Step 4)
+
+After the software-engineer signals Step 3 is complete and all self-verification checks pass. Do not start verification until the software-engineer has committed all work and communicated the Self-Declaration verbally in the handoff message.
+
+The reviewer produces one written report (see template below) that includes: all gate results, the SE Self-Declaration Audit, the **Reviewer Stance Declaration**, and the final APPROVED/REJECTED verdict.
 
 ## Step-by-Step
 
@@ -158,6 +162,18 @@ If a command fails, stop and REJECT immediately. Do not run subsequent commands.
 If the feature involves user interaction: run the app, provide real input, verify output changes.
 
 Record what input was given and what output was observed.
+
+### 8. Self-Declaration Audit
+
+Read the software-engineer's Self-Declaration from the handoff message.
+
+For every **AGREE** claim:
+- Find the `file:line` — does it hold?
+
+For every **DISAGREE** claim:
+- REJECT — the software-engineer must fix before requesting review again.
+
+Undeclared violations → REJECT.
 
 ### 9. Write the Report
 
