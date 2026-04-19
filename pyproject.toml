@@ -81,6 +81,7 @@ minversion = "6.0"
 markers = [
     "slow: marks tests as slow (deselect with '-m \"not slow\"')",
     "deprecated: marks tests for deprecated AC; automatically skipped (deselect with '-m \"not deprecated\"')",
+    "bug: marks tests that reproduce a reported defect (deselect with '-m \"not bug\"')",
 ]
 addopts = """
 --maxfail=10 \
