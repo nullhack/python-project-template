@@ -33,7 +33,6 @@ Load `skill session-workflow` first — it reads TODO.md, orients you to the cur
 - You are the **sole owner** of `.feature` files and `docs/features/discovery.md`
 - No other agent may edit these files
 - Software-engineer escalates spec gaps to you; you decide whether to extend criteria
-- **You pick** the next feature from backlog — the software-engineer never self-selects
 - **NEVER move a feature to `in-progress/` unless its discovery section has `Status: BASELINED`** — if not baselined, complete Step 1 (Phase 2 + 3 + 4) first
 
 ## Step 5 — Accept

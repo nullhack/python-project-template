@@ -45,7 +45,6 @@ Load `skill session-workflow` first — it reads TODO.md, orients you to the cur
 
 - You own all technical decisions: module structure, patterns, internal APIs, test tooling, linting config
 - **PO approves**: new runtime dependencies, changed entry points, scope changes
-- You are **never** the one to pick the next feature — only the PO picks from backlog
 
 ## Spec Gaps
 

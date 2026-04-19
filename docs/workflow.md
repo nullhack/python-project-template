@@ -157,7 +157,7 @@ Each step has a designated agent and a specific deliverable. No step is skipped.
 │      No inline comments, no TODO, no speculative code              │
 │                                                                     │
 │  WRITE ADR FILES (significant decisions only)                       │
-│    docs/architecture/adr-NNN-<title>.md                            │
+│    docs/architecture/adr.md                                        │
 │      Decision: <what>  Reason: <why>                               │
 │      Alternatives considered: <what was rejected and why>           │
 │                                                                     │

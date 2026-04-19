@@ -38,6 +38,10 @@ Read each `.feature` file in `docs/features/backlog/`. Check its discovery secti
 - Non-BASELINED features are not eligible — they need Step 1 (scope) first
 - If no BASELINED features exist: inform the stakeholder; run `@product-owner` with `skill scope` to baseline the most promising backlog item first
 
+**IMPORTANT**
+
+**NEVER move a feature to `in-progress/` unless its discovery section has `Status: BASELINED`**
+
 ### 3. Score Each Candidate
 
 For each BASELINED feature, fill this table:

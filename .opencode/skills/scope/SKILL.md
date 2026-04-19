@@ -149,8 +149,7 @@ Commit: `feat(discovery): baseline project discovery`
 
 1. Write the **Session 1 Synthesis** in the `.feature` file: summarize the key entities, their relationships, and the constraints that emerged.
 2. Present the synthesis to the stakeholder. Stakeholder confirms or corrects. PO refines until approved.
-3. Run a **silent pre-mortem** on the confirmed synthesis.
-4. Mark `Template §1: CONFIRMED`. This unlocks Session 2.
+3. Mark `Template §1: CONFIRMED`. This unlocks Session 2.
 
 ### Session 2 — Behavior Groups / Big Picture for This Feature
 

@@ -58,4 +58,6 @@ You never edit `.feature` files or add Examples yourself.
 ## Available Skills
 
 - `session-workflow` — session start/end protocol
+- `refactor` — Code refactoring heuristics
+- `design-patterns` — Reference for code smell and design patterns
 - `verify` — Step 4: full verification protocol with all tables, gates, and report template

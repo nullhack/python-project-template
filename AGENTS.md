@@ -90,8 +90,7 @@ docs/features/
   completed/<feature-name>.feature    ← file moves here at Step 5
 
 docs/architecture/
-  STEP2-ARCH.md                       ← Step 2 reference diagram (canonical)
-  adr-NNN-<title>.md                  ← one per significant architectural decision
+  adr.md                  ← one per significant architectural decision
 
 tests/
   features/<feature-name>/
@@ -112,25 +111,14 @@ Tests in `tests/unit/` are software-engineer-authored extras not covered by any 
 tests/features/<feature-name>/<rule_slug>_test.py
 ```
 
-### Function Naming
-
-```python
-def test_<rule_slug>_<8char_hex>() -> None:
-```
-
-### Docstring Format (mandatory)
+### Stub Format (mandatory)
 
 ```python
 @pytest.mark.skip(reason="not yet implemented")
-def test_wall_bounce_a3f2b1c4() -> None:
+def test_<feature_slug>_<@id>() -> None:
     """
-    Given: A ball moving upward reaches y=0
-    When: The physics engine processes the next frame
-    Then: The ball velocity y-component becomes positive
+    <@id steps raw text including new lines>
     """
-    # Given
-    # When
-    # Then
 ```
 
 ### Markers
@@ -155,8 +143,8 @@ uv run task test-fast
 # Run full test suite with coverage
 uv run task test
 
-# Run slow tests only
-uv run task test-slow
+# Run tests with coverage report generation
+uv run task test-build
 
 # Lint and format
 uv run task lint
@@ -164,32 +152,30 @@ uv run task lint
 # Type checking
 uv run task static-check
 
-# Serve documentation
-uv run task doc-serve
+# Build documentation
+uv run task doc-build
 ```
 
 ## Code Quality Standards
 
-- **Principles (in priority order)**: YAGNI > KISS > DRY > SOLID > Object Calisthenics
-- **Linting**: ruff, Google docstring convention, `noqa` forbidden
+- **Principles (in priority order)**: YAGNI > KISS > DRY > SOLID > Object Calisthenics > appropriate design patterns > complex code > complicate code > failing code > no code
+- **Linting**: ruff format, ruff check, Google docstring convention, `noqa` forbidden
 - **Type checking**: pyright, 0 errors required
 - **Coverage**: 100% (measured against your actual package)
-- **Function length**: ≤ 20 lines
-- **Class length**: ≤ 50 lines
+- **Function length**: ≤ 20 lines (code lines only, excluding docstrings)
+- **Class length**: ≤ 50 lines (code lines only, excluding docstrings)
 - **Max nesting**: 2 levels
 - **Instance variables**: ≤ 2 per class *(exception: dataclasses, Pydantic models, value objects, and TypedDicts are exempt — they may carry as many fields as the domain requires)*
 - **Semantic alignment**: tests must operate at the same abstraction level as the acceptance criteria they cover
-- **Integration tests**: multi-component features require at least one test in `tests/features/` that exercises the public entry point end-to-end
 
 ### Software-Engineer Quality Gate Priority Order
 
 During Step 3 (TDD Loop), correctness priorities are:
 
-1. **Design correctness** — YAGNI > KISS > DRY > SOLID > Object Calisthenics > appropriate design patterns
+1. **Design correctness** — YAGNI > KISS > DRY > SOLID > Object Calisthenics > appropriated design patterns > complex code > complicated code > failing code > no code
 2. **One test green** — the specific test under work passes, plus `test-fast` still passes
-3. **Reviewer code-design check** — reviewer verifies design + semantic alignment (no lint/pyright/coverage)
-4. **Commit** — only after reviewer APPROVED
-5. **Quality tooling** — `lint`, `static-check`, full `test` with coverage run only at software-engineer handoff (before Step 5)
+3. **Reviewer code-design check** — reviewer verifies design + semantic alignment (no lint/pyright/coverage yet)
+5. **Quality tooling** — `lint`, `static-check`, full `test` with coverage run only at software-engineer handoff (before Step 4)
 
 Design correctness is far more important than lint/pyright/coverage compliance. A well-designed codebase with minor lint issues is better than a lint-clean codebase with poor design.
 
@@ -200,10 +186,6 @@ Design correctness is far more important than lint/pyright/coverage compliance. 
 - Both are required. All-green automated checks are necessary but not sufficient for APPROVED.
 - Reviewer defaults to REJECTED unless correctness is proven.
 
-## Deprecation Process
-
-This template does not support deprecation. Criteria changes are handled by adding new Examples with new `@id` tags.
-
 ## Release Management
 
 Version format: `v{major}.{minor}.{YYYYMMDD}`
@@ -212,13 +194,13 @@ Version format: `v{major}.{minor}.{YYYYMMDD}`
 - Same-day second release: increment minor, keep same date
 - Each release gets a unique adjective-animal name
 
-Use `@software-engineer /skill git-release` for the full release process.
+Use `@software-engineer /skill git-release` for the full release process. When requested by the stakeholder
 
 ## Session Management
 
 Every session: load `skill session-workflow`. Read `TODO.md` first, update it at the end.
 
-`TODO.md` is a session bookmark — not a project journal. See `docs/workflow.md` for the full structure including the Cycle State and Self-Declaration blocks used during Step 4.
+`TODO.md` is a session bookmark — not a project journal. See `docs/workflow.md` for the full structure including the Cycle State and Self-Declaration blocks used during Step 3.
 
 ## Setup
 
