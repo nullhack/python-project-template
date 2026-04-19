@@ -23,6 +23,7 @@ Documentation = "https://github.com/nullhack/python-project-template/tree/main/d
 dev = [
     "pdoc>=14.0",
     "pytest>=9.0.3",
+    "pytest-beehave[html]>=3.0",
     "pytest-cov>=6.1.1",
     "pytest-html>=4.1.1",
     "pytest-mock>=3.14.0",
@@ -121,7 +122,7 @@ pytest \
   --cov-config=pyproject.toml \
   --cov-report html:docs/coverage \
   --cov-report term:skip-covered \
-  --cov=pytest_beehave \
+  --cov=app \
   --cov-fail-under=100 \
   --hypothesis-show-statistics \
   --html=docs/tests/report.html \
@@ -153,3 +154,6 @@ dev = [
     "gherkin-official>=39.0.0",
     "safety>=3.7.0",
 ]
+
+[tool.beehave]
+features_path = "docs/features"

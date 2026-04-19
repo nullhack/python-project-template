@@ -32,23 +32,35 @@ uv run task test && uv run task lint && uv run task static-check
 
 ---
 
-## What You Get
+## Why this template?
 
-### A structured 5-step development cycle
+Most Python templates give you a folder structure and a `Makefile`. This one gives you a **complete delivery system**:
+
+- **No feature starts without written acceptance criteria** — Gherkin `Example:` blocks traced to tests
+- **No feature ships without adversarial review** — the reviewer's default hypothesis is "broken"
+- **No guesswork on test stubs** — they are generated automatically from your `.feature` files
+- **No manual `@id` tags** — assigned automatically when you run tests
+- **AI agents for every role** — PO, SE, and reviewer each have scoped instructions; none can exceed their authority
+
+---
+
+## How it works
+
+### 5-step delivery cycle
 
 ```
 SCOPE → ARCH → TDD LOOP → VERIFY → ACCEPT
 ```
 
-| Step | Who | What |
-|------|-----|------|
-| **SCOPE** | Product Owner | Discovery interviews → Gherkin stories → `@id` criteria |
-| **ARCH** | Software Engineer | Module design, ADRs, test stubs |
-| **TDD LOOP** | Software Engineer | RED → GREEN → REFACTOR, one `@id` at a time |
-| **VERIFY** | Reviewer | Adversarial verification — default hypothesis: broken |
-| **ACCEPT** | Product Owner | Demo, validate, ship |
+| Step | Role | Output |
+|------|------|--------|
+| **1 · SCOPE** | Product Owner | Discovery interviews + Gherkin stories + acceptance criteria |
+| **2 · ARCH** | Software Engineer | Module stubs, ADRs, auto-generated test stubs |
+| **3 · TDD LOOP** | Software Engineer | RED → GREEN → REFACTOR, one criterion at a time |
+| **4 · VERIFY** | Reviewer | Adversarial check — lint, types, coverage, semantic review |
+| **5 · ACCEPT** | Product Owner | Demo, validate, ship |
 
-WIP limit of 1. Features are `.feature` files that move between filesystem folders:
+**WIP limit: 1 feature at a time.** Features are `.feature` files that move through folders:
 
 ```
 docs/features/backlog/      ← waiting
@@ -58,12 +70,12 @@ docs/features/completed/    ← shipped
 
 ### AI agents included
 
-```
-@product-owner      — scope, stories, acceptance
-@software-engineer  — architecture, TDD, git, releases
-@reviewer           — adversarial verification
-@setup-project      — one-time project initialisation
-```
+| Agent | Responsibility |
+|-------|---------------|
+| `@product-owner` | Scope, stories, acceptance criteria, delivery acceptance |
+| `@software-engineer` | Architecture, TDD loop, git, releases |
+| `@reviewer` | Adversarial verification — default position: broken |
+| `@setup-project` | One-time project initialisation |
 
 ### Quality tooling, pre-configured
 
@@ -73,6 +85,7 @@ docs/features/completed/    ← shipped
 | `ruff` | Lint + format (Google docstrings) |
 | `pyright` | Static type checking — 0 errors |
 | `pytest` + `hypothesis` | Tests + property-based testing |
+| `pytest-beehave` | Auto-generates test stubs from `.feature` files |
 | `pytest-cov` | Coverage — 100% required |
 | `pdoc` | API docs → GitHub Pages |
 | `taskipy` | Task runner |
@@ -91,7 +104,7 @@ uv run task run           # Run the app
 
 ---
 
-## Code Standards
+## Code standards
 
 | | |
 |---|---|
@@ -104,19 +117,31 @@ uv run task run           # Run the app
 
 ---
 
-## Test Convention
+## Test convention
+
+Write acceptance criteria in Gherkin:
+
+```gherkin
+@id:a3f2b1c4
+Example: User sees version on startup
+  Given the application starts
+  When no arguments are passed
+  Then the version string is printed to stdout
+```
+
+Run tests once — a traced, skipped stub appears automatically:
 
 ```python
 @pytest.mark.skip(reason="not yet implemented")
-def test_feature_a3f2b1c4() -> None:
+def test_display_version_a3f2b1c4() -> None:
     """
-    Given: ...
-    When:  ...
-    Then:  ...
+    Given the application starts
+    When no arguments are passed
+    Then the version string is printed to stdout
     """
 ```
 
-Each test is traced to exactly one `@id` acceptance criterion.
+Each test is traced to exactly one acceptance criterion. No orphan tests. No untested criteria.
 
 ---
 

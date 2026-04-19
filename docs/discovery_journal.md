@@ -23,7 +23,7 @@ Status: IN-PROGRESS
 |----|----------|--------|
 | Q8 | ... | ... |
 
-### Feature: <feature-name>
+### Feature: <feature-stem>
 
 | ID | Question | Answer |
 |----|----------|--------|

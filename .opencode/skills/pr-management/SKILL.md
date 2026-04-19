@@ -14,7 +14,7 @@ Create and manage pull requests after the reviewer approves the feature (Step 5)
 ## Branch Naming
 
 ```
-feature/<feature-name>    # new feature
+feature/<feature-stem>    # new feature
 fix/<issue-description>   # bug fix
 refactor/<scope>          # refactoring
 docs/<scope>              # documentation
@@ -42,7 +42,7 @@ git commit -m "chore(deps): add python-dotenv dependency"
 
 ```bash
 # Push branch
-git push -u origin feature/<feature-name>
+git push -u origin feature/<feature-stem>
 
 # Create PR
 gh pr create \

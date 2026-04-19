@@ -265,9 +265,9 @@ Refactoring commits are always **separate** from feature commits.
 
 | Commit type | Message format | When |
 |---|---|---|
-| Preparatory refactoring | `refactor(<feature-name>): <what>` | Before RED, to make the feature easier |
-| REFACTOR phase | `refactor(<feature-name>): <what>` | After GREEN, cleaning up the green code |
-| Feature addition | `feat(<feature-name>): <what>` | After GREEN (never mixed with refactor) |
+| Preparatory refactoring | `refactor(<feature-stem>): <what>` | Before RED, to make the feature easier |
+| REFACTOR phase | `refactor(<feature-stem>): <what>` | After GREEN, cleaning up the green code |
+| Feature addition | `feat(<feature-stem>): <what>` | After GREEN (never mixed with refactor) |
 
 Never mix a structural cleanup with a behavior addition in one commit. This keeps history bisectable and CI green at every commit.
 

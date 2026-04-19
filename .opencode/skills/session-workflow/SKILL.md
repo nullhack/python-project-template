@@ -24,7 +24,7 @@ Every session starts by reading state. Every session ends by writing state. This
 2. **If you are the PO** and Step 1 (SCOPE) is active: check `docs/discovery_journal.md` for the most recent session block.
    - If the most recent block has `Status: IN-PROGRESS` → the previous session was interrupted. Resume it before starting a new session: finish updating `.feature` files and `docs/discovery.md`, then mark the block `Status: COMPLETE`.
 3. If a feature is active at Step 2–5, read:
-   - `docs/features/in-progress/<name>.feature` — feature file (Rules + Examples + @id)
+   - `docs/features/in-progress/<feature-stem>.feature` — feature file (Rules + Examples + @id)
    - `docs/discovery.md` — project-level synthesis changelog (for context)
 4. Run `git status` — understand what is committed vs. what is not
 5. Confirm scope: you are working on exactly one step of one feature
@@ -43,7 +43,7 @@ Every session starts by reading state. Every session ends by writing state. This
 2. Commit any uncommitted work (even WIP):
    ```bash
    git add -A
-   git commit -m "WIP(<feature-name>): <what was done>"
+   git commit -m "WIP(<feature-stem>): <what was done>"
    ```
 3. If a step is fully complete, use the proper commit message instead of WIP.
 
@@ -55,7 +55,7 @@ When a step completes within a session:
 2. Commit the TODO.md update:
    ```bash
    git add TODO.md
-   git commit -m "chore: complete step <N> for <feature-name>"
+   git commit -m "chore: complete step <N> for <feature-stem>"
    ```
 3. Only then begin the next step (in a new session where possible — see Rule 4).
 
@@ -64,9 +64,9 @@ When a step completes within a session:
 ```markdown
 # Current Work
 
-Feature: <name>
+Feature: <feature-stem>
 Step: <1-5> (<step name>)
-Source: docs/features/in-progress/<name>.feature
+Source: docs/features/in-progress/<feature-stem>.feature
 
 ## Progress
 - [x] `@id:<hex>`: <description>
@@ -79,15 +79,15 @@ Run @<agent-name> — <one concrete action>
 
 **"Next" line format**: Always prefix with `Run @<agent-name>` so the human knows exactly which agent to invoke. Agent names are defined in `AGENTS.md` — use the name exactly as listed there. Examples:
 - `Run @<software-engineer-agent> — implement @id:a1b2c3d4 (Step 3 RED)`
-- `Run @<software-engineer-agent> — load skill implementation and begin Step 2 (Architecture) for <feature-name>`
-- `Run @<reviewer-agent> — verify feature <feature-name> at Step 4`
+- `Run @<software-engineer-agent> — load skill implementation and begin Step 2 (Architecture) for <feature-stem>`
+- `Run @<reviewer-agent> — verify feature <feature-stem> at Step 4`
 - `Run @<product-owner-agent> — pick next BASELINED feature from backlog`
-- `Run @<product-owner-agent> — accept feature <feature-name> at Step 5`
+- `Run @<product-owner-agent> — accept feature <feature-stem> at Step 5`
 
 **Source path by step:**
-- Step 1: `Source: docs/features/backlog/<name>.feature`
-- Steps 2–4: `Source: docs/features/in-progress/<name>.feature`
-- Step 5: `Source: docs/features/completed/<name>.feature`
+- Step 1: `Source: docs/features/backlog/<feature-stem>.feature`
+- Steps 2–4: `Source: docs/features/in-progress/<feature-stem>.feature`
+- Step 5: `Source: docs/features/completed/<feature-stem>.feature`
 
 Status markers:
 - `[ ]` — not started
@@ -110,9 +110,9 @@ During Step 3 (TDD Loop), TODO.md **must** include a `## Cycle State` block to t
 ```markdown
 # Current Work
 
-Feature: <name>
+Feature: <feature-stem>
 Step: 3 (TDD Loop)
-Source: docs/features/in-progress/<name>.feature
+Source: docs/features/in-progress/<feature-stem>.feature
 
 ## Cycle State
 Test: `@id:<hex>` — <description>

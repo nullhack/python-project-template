@@ -2,12 +2,12 @@
 
 ---
 
-## YYYY-MM-DD — <feature-name>: <short title>
+## YYYY-MM-DD — <feature-stem>: <short title>
 
 Decision: <what was decided — one sentence>
 Reason: <why — one sentence>
 Alternatives considered: <what was rejected and why>
-Feature: <feature-name>
+Feature: <feature-stem>
 
 ---
 
@@ -16,4 +16,4 @@ Feature: <feature-name>
 Decision: <what was decided>
 Reason: <why>
 Alternatives considered: <what was rejected and why>
-Affected features: <feature-name>, <feature-name>
+Affected features: <feature-stem>, <feature-stem>

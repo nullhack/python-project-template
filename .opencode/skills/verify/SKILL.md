@@ -60,6 +60,8 @@ Run before code review. If any row is FAIL, stop immediately with REJECTED.
 
 ### 5. Self-Declaration Audit
 
+**Completeness check (hard gate — REJECT if failed)**: Count the numbered items in the SE's Self-Declaration. The template in `implementation/SKILL.md` has exactly 25 items numbered 1–25. If the count is not 25, or any number in the sequence 1–25 is missing, REJECT immediately — do not proceed to item-level audit.
+
 Read the software-engineer's Self-Declaration from the handoff message.
 
 For every **AGREE** claim:
@@ -162,7 +164,7 @@ Record what input was given and what output was observed.
 ### 9. Write the Report
 
 ```markdown
-## Step 4 Verification Report — <feature-name>
+## Step 4 Verification Report — <feature-stem>
 
 ### pyproject.toml Gate
 | Check | Result | Notes |
@@ -183,29 +185,33 @@ Record what input was given and what output was observed.
 | uv run task test | PASS / FAIL | |
 
 ### Self-Declaration Audit
-| Claim | Software-Engineer Claims | Reviewer Verdict | Evidence |
-|------|-------------------------|------------------|----------|
-| YAGNI | AGREE/DISAGREE | PASS/FAIL | |
-| KISS | AGREE/DISAGREE | PASS/FAIL | |
-| DRY | AGREE/DISAGREE | PASS/FAIL | |
-| SOLID-S | AGREE/DISAGREE | PASS/FAIL | |
-| SOLID-O | AGREE/DISAGREE | PASS/FAIL | |
-| SOLID-L | AGREE/DISAGREE | PASS/FAIL | |
-| SOLID-I | AGREE/DISAGREE | PASS/FAIL | |
-| SOLID-D | AGREE/DISAGREE | PASS/FAIL | |
-| OC-1 | AGREE/DISAGREE | PASS/FAIL | |
-| OC-2 | AGREE/DISAGREE | PASS/FAIL | |
-| OC-3 | AGREE/DISAGREE | PASS/FAIL | |
-| OC-4 | AGREE/DISAGREE | PASS/FAIL | |
-| OC-5 | AGREE/DISAGREE | PASS/FAIL | |
-| OC-6 | AGREE/DISAGREE | PASS/FAIL | |
-| OC-7 | AGREE/DISAGREE | PASS/FAIL | |
-| OC-8 | AGREE/DISAGREE | PASS/FAIL | |
-| OC-9 | AGREE/DISAGREE | PASS/FAIL | |
-| Patterns Creational | AGREE/DISAGREE | PASS/FAIL | |
-| Patterns Structural | AGREE/DISAGREE | PASS/FAIL | |
-| Patterns Behavioral | AGREE/DISAGREE | PASS/FAIL | |
-| Semantic | AGREE/DISAGREE | PASS/FAIL | |
+| # | Claim | SE Claims | Reviewer Verdict | Evidence |
+|---|-------|-----------|------------------|----------|
+| 1 | YAGNI: no code without a failing test | AGREE/DISAGREE | PASS/FAIL | |
+| 2 | YAGNI: no speculative abstractions | AGREE/DISAGREE | PASS/FAIL | |
+| 3 | KISS: simplest solution that passes | AGREE/DISAGREE | PASS/FAIL | |
+| 4 | KISS: no premature optimization | AGREE/DISAGREE | PASS/FAIL | |
+| 5 | DRY: no duplication | AGREE/DISAGREE | PASS/FAIL | |
+| 6 | DRY: no redundant comments | AGREE/DISAGREE | PASS/FAIL | |
+| 7 | SOLID-S: one reason to change per class | AGREE/DISAGREE | PASS/FAIL | |
+| 8 | SOLID-O: open for extension, closed for modification | AGREE/DISAGREE | PASS/FAIL | |
+| 9 | SOLID-L: subtypes substitutable | AGREE/DISAGREE | PASS/FAIL | |
+| 10 | SOLID-I: no forced unused deps | AGREE/DISAGREE | PASS/FAIL | |
+| 11 | SOLID-D: depend on abstractions, not concretions | AGREE/DISAGREE | PASS/FAIL | |
+| 12 | OC-1: one level of indentation per method | AGREE/DISAGREE | PASS/FAIL | |
+| 13 | OC-2: no else after return | AGREE/DISAGREE | PASS/FAIL | |
+| 14 | OC-3: primitive types wrapped | AGREE/DISAGREE | PASS/FAIL | |
+| 15 | OC-4: first-class collections | AGREE/DISAGREE | PASS/FAIL | |
+| 16 | OC-5: one dot per line | AGREE/DISAGREE | PASS/FAIL | |
+| 17 | OC-6: no abbreviations | AGREE/DISAGREE | PASS/FAIL | |
+| 18 | OC-7: ≤20 lines per function, ≤50 per class | AGREE/DISAGREE | PASS/FAIL | |
+| 19 | OC-8: ≤2 instance variables (behavioural classes only) | AGREE/DISAGREE | PASS/FAIL | |
+| 20 | OC-9: no getters/setters | AGREE/DISAGREE | PASS/FAIL | |
+| 21 | Patterns: no good reason remains to refactor using OOP or Design Patterns | AGREE/DISAGREE | PASS/FAIL | |
+| 22 | Patterns: no creational smell | AGREE/DISAGREE | PASS/FAIL | |
+| 23 | Patterns: no structural smell | AGREE/DISAGREE | PASS/FAIL | |
+| 24 | Patterns: no behavioral smell | AGREE/DISAGREE | PASS/FAIL | |
+| 25 | Semantic: tests operate at same abstraction as AC | AGREE/DISAGREE | PASS/FAIL | |
 
 ### Reviewer Stance Declaration
 
