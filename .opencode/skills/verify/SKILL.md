@@ -19,7 +19,7 @@ This skill guides the reviewer through Step 4: independent verification that the
 
 ## When to Use (Step 4)
 
-After the software-engineer signals Step 3 is complete and all self-verification checks pass. Do not start verification until the software-engineer has committed all work and written the Self-Declaration.
+After the software-engineer signals Step 3 is complete and all self-verification checks pass. Do not start verification until the software-engineer has committed all work and communicated the Self-Declaration verbally in the handoff message.
 
 The reviewer produces one written report (see template below) that includes: all gate results, the SE Self-Declaration Audit, the **Reviewer Stance Declaration**, and the final APPROVED/REJECTED verdict.
 
@@ -31,7 +31,7 @@ Read `docs/features/in-progress/<name>.feature`. Extract:
 - All `@id` tags and their Example titles from `Rule:` blocks
 - The interaction model (if the feature involves user interaction)
 - The architectural decisions in `docs/architecture.md` relevant to this feature
-- The software-engineer's Self-Declaration from `TODO.md`
+- The software-engineer's Self-Declaration (communicated verbally in the handoff message)
 
 ### 2. pyproject.toml Gate
 
@@ -160,7 +160,7 @@ Record what input was given and what output was observed.
 
 ### 8. Self-Declaration Audit
 
-Read the software-engineer's Self-Declaration from `TODO.md`.
+Read the software-engineer's Self-Declaration from the handoff message.
 
 For every **AGREE** claim:
 - Find the `file:line` — does it hold?
