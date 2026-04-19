@@ -15,8 +15,8 @@ The glossary is a secondary artifact derived from the code, the domain model, an
 
 ## When to Use
 
-- **PO at Step 5** — after the feature is accepted and moved to `completed/`, run this skill to reflect the new feature in C4 diagrams and glossary.
-- **Stakeholder on demand** — when the stakeholder asks "what does the system look like?" or "what does term X mean in this context?".
+- **As part of the release process (Step 5)** — the `git-release` skill calls this skill inline at step 5, before the version-bump commit. Do not commit separately; the release process stages all files together.
+- **Stakeholder on demand** — when the stakeholder asks "what does the system look like?" or "what does term X mean in this context?". In this case, commit with the standalone message in Step 5 below.
 
 ## Ownership Rules
 
@@ -183,13 +183,15 @@ If `docs/glossary.md` already exists:
 
 ## Step 5 — Commit
 
-After both C4 diagrams and glossary are updated:
+**When called from the release process**: skip this step — the `git-release` skill stages and commits all files together.
+
+**When run standalone** (stakeholder on demand): commit after all diagrams and glossary are updated:
 
 ```
 docs(living-docs): update C4 and glossary after <feature-name>
 ```
 
-If this is a stakeholder-requested update without a specific feature trigger:
+If triggered without a specific feature (general refresh):
 
 ```
 docs(living-docs): refresh C4 diagrams and glossary
@@ -207,4 +209,5 @@ docs(living-docs): refresh C4 diagrams and glossary
 - [ ] No existing glossary entry removed
 - [ ] Every new term has a traceable source in completed feature files or `docs/architecture.md`; no term is invented
 - [ ] No edits made to `docs/architecture.md` or `docs/discovery.md`
-- [ ] Committed with `docs(living-docs): ...` message
+- [ ] If standalone: committed with `docs(living-docs): ...` message
+- [ ] If called from release: files staged but not committed (release process commits)

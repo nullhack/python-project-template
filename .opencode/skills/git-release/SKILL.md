@@ -82,17 +82,29 @@ Add at the top:
 - description (#PR-number)
 ```
 
-### 5. Regenerate lockfile and commit version bump
+### 5. Update living docs
+
+Run the `living-docs` skill to reflect the newly accepted feature in C4 diagrams and the glossary. This step runs inline — do not commit separately.
+
+Load and execute the full `living-docs` skill now:
+- Update `docs/c4/context.md` (C4 Level 1)
+- Update `docs/c4/container.md` (C4 Level 2, if multi-container)
+- Update `docs/glossary.md` (living glossary)
+
+The `living-docs` commit step is **skipped** here — all changed files are staged together with the version bump in step 6.
+
+### 6. Regenerate lockfile and commit version bump
 
 After updating `pyproject.toml`, regenerate the lockfile — CI runs `uv sync --locked` and will fail if it is stale:
 
 ```bash
 uv lock
-git add pyproject.toml <package>/__init__.py CHANGELOG.md uv.lock
+git add pyproject.toml <package>/__init__.py CHANGELOG.md uv.lock \
+  docs/c4/context.md docs/c4/container.md docs/glossary.md
 git commit -m "chore(release): bump version to v{version} - {Adjective Animal}"
 ```
 
-### 6. Create GitHub release
+### 7. Create GitHub release
 
 Assign the SHA first so it expands correctly inside the notes string:
 
@@ -123,7 +135,7 @@ gh release create "v{version}" \
 **SHA**: \`${SHA}\`"
 ```
 
-### 7. If a hotfix commit follows the release tag
+### 8. If a hotfix commit follows the release tag
 
 If CI fails after the release (e.g. a stale lockfile) and a hotfix commit is pushed, reassign the tag and GitHub release to that commit:
 
@@ -151,6 +163,7 @@ The release notes and title do not need to change — only the target commit mov
 - [ ] `uv lock` run after version bump — lockfile must be up to date
 - [ ] `<package>/__version__` matches `pyproject.toml` version
 - [ ] CHANGELOG.md updated
+- [ ] `living-docs` skill run — C4 diagrams and glossary reflect the new feature
 - [ ] Release name not used before
 - [ ] Release notes follow the template format
 - [ ] If a hotfix was pushed after the tag: tag reassigned to hotfix commit
