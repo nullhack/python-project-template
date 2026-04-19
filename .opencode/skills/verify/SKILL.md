@@ -15,9 +15,13 @@ This skill guides the reviewer through Step 4: independent verification that the
 
 **Every PASS/FAIL cell must have evidence.** Empty evidence = UNCHECKED = REJECTED.
 
+**You never move `.feature` files.** After producing an APPROVED report: update TODO.md `Next:` to `Run @product-owner — accept feature <name> at Step 5.` then stop. The PO accepts the feature and moves the file.
+
 ## When to Use (Step 4)
 
 After the software-engineer signals Step 3 is complete and all self-verification checks pass. Do not start verification until the software-engineer has committed all work and written the Self-Declaration.
+
+The reviewer produces one written report (see template below) that includes: all gate results, the SE Self-Declaration Audit, the **Reviewer Stance Declaration**, and the final APPROVED/REJECTED verdict.
 
 ## Step-by-Step
 
@@ -26,7 +30,7 @@ After the software-engineer signals Step 3 is complete and all self-verification
 Read `docs/features/in-progress/<name>.feature`. Extract:
 - All `@id` tags and their Example titles from `Rule:` blocks
 - The interaction model (if the feature involves user interaction)
-- The Architecture section (module structure, ADRs)
+- The architectural decisions in `docs/architecture.md` relevant to this feature
 - The software-engineer's Self-Declaration from `TODO.md`
 
 ### 2. pyproject.toml Gate
@@ -124,7 +128,7 @@ Read the source files changed in this feature. **Do this before running lint/sta
 | No internal attribute access | Search for `_x` in assertions | None found | `_x`, `isinstance`, `type()` |
 | Every `@id` has a mapped test | Match `@id` to test functions | All mapped | Missing test |
 | No orphaned skipped stubs | Search for `@pytest.mark.skip` in `tests/features/` | None found | Any found — stub was written but never implemented |
-| Function naming | Matches `test_<rule_slug>_<8char_hex>` | All match | Mismatch |
+| Function naming | Matches `test_<feature_slug>_<8char_hex>` | All match | Mismatch |
 | Hypothesis tests have `@slow` | Read every `@given` for `@slow` marker | All present | Any missing |
 
 #### 5g. Code Quality — any FAIL → REJECTED
@@ -213,6 +217,20 @@ Undeclared violations → REJECT.
 | Patterns Structural | AGREE/DISAGREE | PASS/FAIL | |
 | Patterns Behavioral | AGREE/DISAGREE | PASS/FAIL | |
 | Semantic | AGREE/DISAGREE | PASS/FAIL | |
+
+### Reviewer Stance Declaration
+
+Write this block **before** the Decision. Every `DISAGREE` must include an inline explanation. A `DISAGREE` with no explanation auto-forces `REJECTED`.
+
+```markdown
+## Reviewer Stance Declaration
+As a reviewer I declare:
+* Adversarial: I actively tried to find a failure mode, not just confirm passing — AGREE/DISAGREE | note:
+* Manual trace: I traced at least one execution path manually beyond automated output — AGREE/DISAGREE | path:
+* Boundary check: I checked the boundary conditions and edge cases of every Rule — AGREE/DISAGREE | gaps:
+* Semantic read: I read each test against its AC and confirmed it tests the right observable behavior — AGREE/DISAGREE | mismatches:
+* Independence: my verdict was not influenced by how much effort has already been spent — AGREE/DISAGREE
+```
 
 ### Decision
 **APPROVED** — all gates passed, no undeclared violations

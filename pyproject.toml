@@ -1,6 +1,6 @@
 [project]
 name = "python-project-template"
-version = "5.2.20260418"
+version = "6.0.20260419"
 description = "Python template with some awesome tools to quickstart any Python project"
 readme = "README.md"
 requires-python = ">=3.13"
@@ -81,13 +81,13 @@ minversion = "6.0"
 markers = [
     "slow: marks tests as slow (deselect with '-m \"not slow\"')",
     "deprecated: marks tests for deprecated AC; automatically skipped (deselect with '-m \"not deprecated\"')",
+    "bug: marks tests that reproduce a reported defect (deselect with '-m \"not bug\"')",
 ]
 addopts = """
 --maxfail=10 \
 --color=yes \
 --tb=short \
 -q \
---html=docs/tests/report.html \
 """
 testpaths = ["tests"]
 python_files = ["*_test.py"]
@@ -107,21 +107,28 @@ exclude_lines = [
 
 [tool.taskipy.tasks]
 run = "python -m app"
-test-report = """\
+test-coverage = """\
 pytest \
+  --cov-config=pyproject.toml \
+  --cov=app \
+  --cov-fail-under=100 \
+  --tb=no
+"""
+test-build = """\
+pytest \
+  -p no:beehave \
   --doctest-modules \
   --cov-config=pyproject.toml \
   --cov-report html:docs/coverage \
   --cov-report term:skip-covered \
-  --cov=app \
+  --cov=pytest_beehave \
   --cov-fail-under=100 \
   --hypothesis-show-statistics \
+  --html=docs/tests/report.html \
+  --self-contained-html \
 """
-test = """\
-pytest -m "not slow" -q && \
-task test-report\
-"""
-test-fast = "pytest -m \"not slow\" -q"
+test = "pytest --tb=short"
+test-fast = "pytest -m \"not slow\" -q --no-header --tb=no"
 test-slow = "pytest -m slow"
 ruff-check = "ruff check . --fix"
 ruff-format = "ruff format ."
@@ -140,8 +147,6 @@ pytest \
 """
 doc-publish = "task doc-build && ghp-import -n -p -f docs"
 static-check = "pyright"
-gen-id = "python -c \"import uuid; [print(uuid.uuid4().hex[:8]) for _ in range(20)]\""
-gen-todo = "python .opencode/skills/session-workflow/scripts/gen_todo.py"
 
 [dependency-groups]
 dev = [

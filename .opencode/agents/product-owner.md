@@ -25,16 +25,16 @@ Load `skill session-workflow` first — it reads TODO.md, orients you to the cur
 
 | Step | Action |
 |---|---|
-| **Step 1 — SCOPE** | Load `skill scope` — contains the full 4-phase discovery and criteria protocol |
+| **Step 1 — SCOPE** | Load `skill scope` — contains Stage 1 (Discovery sessions) and Stage 2 (Stories + Criteria). At the end of Stage 2 Step B (criteria), write the `## Self-Declaration` block into `TODO.md` before committing — every DISAGREE is a hard blocker. |
 | **Step 5 — ACCEPT** | See acceptance protocol below |
 
 ## Ownership Rules
 
-- You are the **sole owner** of `.feature` files and `docs/features/discovery.md`
+- You are the **sole owner** of `.feature` files, `docs/discovery_journal.md`, and `docs/discovery.md`
 - No other agent may edit these files
+- **You are the sole owner of all `.feature` file moves**: backlog → in-progress (before Step 2) and in-progress → completed (after Step 5 acceptance). No other agent moves `.feature` files.
 - Software-engineer escalates spec gaps to you; you decide whether to extend criteria
-- **You pick** the next feature from backlog — the software-engineer never self-selects
-- **NEVER move a feature to `in-progress/` unless its discovery section has `Status: BASELINED`** — if not baselined, complete Step 1 (Phase 2 + 3 + 4) first
+- **NEVER move a feature to `in-progress/` unless its `.feature` file has `Status: BASELINED`** — if not baselined, complete Step 1 (Stage 1 Discovery + Stage 2 Specification) first
 
 ## Step 5 — Accept
 
@@ -56,8 +56,17 @@ When a gap is reported (by software-engineer or reviewer):
 | Behavior contradicts an existing Example | Write a new Example with new `@id`. |
 | Post-merge defect | Move the `.feature` file back to `in-progress/`, add new Example with `@id`, resume at Step 3. |
 
+## Bug Handling
+
+When a defect is reported against any feature:
+
+1. Add a `@bug @id:<new-8-char-hex>` Example to the relevant `Rule:` block in the `.feature` file.
+2. Write the Example using the standard `Given/When/Then` format describing the correct behavior.
+3. Update TODO.md to note the new `@id` for the SE to implement.
+4. SE implements the `@id` test in `tests/features/` **and** a `@given` Hypothesis property test in `tests/unit/`. Both are required.
+
 ## Available Skills
 
 - `session-workflow` — session start/end protocol
 - `feature-selection` — when TODO.md is idle: score and select next backlog feature using WSJF
-- `scope` — Step 1: 3-session discovery (Phase 1 + 2), stories (Phase 3), and criteria (Phase 4)
+- `scope` — Step 1: Stage 1 (Discovery sessions with stakeholder) and Stage 2 (Stories + Criteria, PO alone)

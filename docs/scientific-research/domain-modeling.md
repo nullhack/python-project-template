@@ -14,7 +14,7 @@ Foundations for bounded context identification, ubiquitous language, and feature
 | **Status** | Confirmed — foundational DDD literature |
 | **Core finding** | A Bounded Context is a boundary within which a particular ubiquitous language is consistent. Features are identified by grouping related user stories that share the same language. The decomposition criterion is "single responsibility per context" + "consistency of language." |
 | **Mechanism** | In DDD: (1) Extract ubiquitous language from requirements → (2) Group by language consistency → (3) Each group is a candidate bounded context → (4) Each bounded context maps to a feature. Context Mapper automates this: User Stories → Subdomains (via noun/verb extraction) → Bounded Contexts of type FEATURE. |
-| **Where used** | Phase 1: after feature list identification, verify each feature has consistent language. Phase 2: noun/verb extraction from project discovery answers populates the Entities table — domain analysis cannot begin before this. The "Rules (Business)" section captures the ubiquitous language rules that govern each feature. |
+| **Where used** | Stage 1 Discovery: after session synthesis, verify each feature has consistent language. Noun/verb extraction from discovery answers builds the Domain Model in `docs/discovery.md`. The `Rules (Business):` section in `.feature` files captures the ubiquitous language rules that govern each feature. |
 
 ---
 

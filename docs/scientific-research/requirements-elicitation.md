@@ -27,7 +27,7 @@ Foundations for the PO interview structure, Gherkin criteria, and feature discov
 | **Status** | Confirmed |
 | **Core finding** | Inserting a "rules" layer between stories and examples prevents redundant or contradictory acceptance criteria. A story with many rules needs splitting; a story with many open questions is not ready for development. |
 | **Mechanism** | Four card types: Story (yellow), Rules (blue), Examples (green), Questions (red). The rules layer groups related examples under the business rule they illustrate. Red cards (unanswered questions) are a first-class signal to stop and investigate. |
-| **Where used** | `## Rules` section in per-feature `discovery.md` (Phase 2). PO identifies business rules before writing Examples in Phase 4. |
+| **Where used** | `Rules (Business):` section in each `.feature` file. PO identifies business rules before writing Examples in Stage 2 Step B. |
 
 ---
 
@@ -40,7 +40,7 @@ Foundations for the PO interview structure, Gherkin criteria, and feature discov
 | **Status** | Confirmed |
 | **Core finding** | Declarative Gherkin ("When Bob logs in") produces specifications that survive UI changes. Imperative Gherkin ("When I click the Login button") couples specs to implementation details and breaks on every UI redesign. |
 | **Mechanism** | Declarative steps describe *what happens* at the business level. Imperative steps describe *how the user interacts with a specific UI*. AI agents are especially prone to writing imperative Gherkin because they mirror literal steps. |
-| **Where used** | Declarative vs. imperative table in Phase 4 of `scope/SKILL.md`. |
+| **Where used** | Declarative vs. imperative table in Stage 2 Step B (Criteria) of `scope/SKILL.md`. |
 
 ---
 
@@ -53,7 +53,7 @@ Foundations for the PO interview structure, Gherkin criteria, and feature discov
 | **Status** | Confirmed |
 | **Core finding** | Classifying requirements as Must/Should/Could/Won't forces explicit negotiation about what is essential vs. desired. When applied *within* a single story, it reveals bloated stories that should be split. |
 | **Mechanism** | DSDM mandates that Musts cannot exceed 60% of total effort. At the story level: if a story has 12 Examples and only 3 are Musts, the remaining 9 can be deferred. This prevents gold-plating and keeps stories small. |
-| **Where used** | MoSCoW triage in Phase 4 of `scope/SKILL.md`. |
+| **Where used** | MoSCoW triage in Stage 2 Step B (Criteria) of `scope/SKILL.md`. |
 
 ---
 
@@ -80,7 +80,7 @@ Foundations for the PO interview structure, Gherkin criteria, and feature discov
 | **Status** | Synthesized rule of thumb — each component individually confirmed |
 | **Core finding** | Active listening in requirements interviews operates at three granularities: **Level 1** (per answer) — immediate paraphrase; **Level 2** (per topic cluster) — transition summary; **Level 3** (end of interview) — full synthesis serving four downstream purposes. |
 | **Level 3 — four uses** | 1. Accuracy gate (NN/G). 2. Scope crystallization (Ambler/FDD). 3. Input to domain modeling (Ambler/FDD). 4. Baseline trigger (Wynne/Cucumber). |
-| **Where used** | Phase 1 and Phase 2 of `scope/SKILL.md`. |
+| **Where used** | Stage 1 Discovery sessions in `scope/SKILL.md`. |
 
 ---
 
@@ -93,7 +93,7 @@ Foundations for the PO interview structure, Gherkin criteria, and feature discov
 | **Alternative** | Hermagoras of Temnos (2nd century BCE) — seven circumstances of rhetoric. |
 | **Status** | Practitioner synthesis — journalism, business analysis, investigative methodology |
 | **Core finding** | The six interrogative questions (Who, What, When, Where, Why, How) form a complete framework for gathering all essential facts about any situation. Together they ensure completeness and prevent gaps. |
-| **Where used** | Phase 1 project discovery: the initial seven questions are an adaptation of the 5W1H framework. |
+| **Where used** | Stage 1 Discovery, General questions (first session): the initial seven questions are an adaptation of the 5W1H framework. |
 
 ---
 
@@ -105,7 +105,7 @@ Foundations for the PO interview structure, Gherkin criteria, and feature discov
 | **Date** | 2025 |
 | **Status** | Practitioner synthesis — consolidated BA methodology, not peer-reviewed |
 | **Core finding** | Ten questions consistently make the most difference in requirements elicitation: (1) What problem are we solving? (2) What happens if we do nothing? (3) Who uses this? (4) What does success look like? (5) Walk me through how this works today. (6) Where does this usually break? (7) What decisions will this help? (8) What should definitely not happen? (9) What happens if input is wrong? (10) What assumptions are we making? |
-| **Where used** | Phase 1 project discovery: the "Success", "Failure", and "Out-of-scope" questions map to this framework. |
+| **Where used** | Stage 1 Discovery, General questions: the "Success", "Failure", and "Out-of-scope" questions map to this framework. |
 
 ---
 
@@ -119,7 +119,7 @@ Foundations for the PO interview structure, Gherkin criteria, and feature discov
 | **Status** | Confirmed |
 | **Core finding** | FDD requires domain modeling *before* feature naming. Features are expressed as "Action result object" triples. Features group into Feature Sets (shared domain object), which group into Subject Areas. |
 | **Mechanism** | Domain modeling extracts the vocabulary (nouns = candidate classes, verbs = candidate methods). Feature identification then asks: "what verbs act on each noun?" |
-| **Where used** | Phase 1 of `scope/SKILL.md`: after interview summary is confirmed, PO performs domain analysis (nouns/verbs → subject areas → FDD "Action object" feature names). |
+| **Where used** | Stage 1 Discovery in `scope/SKILL.md`: after session synthesis, PO performs domain analysis (nouns/verbs → subject areas → FDD "Action object" feature names) for first session. |
 
 ---
 
@@ -132,7 +132,7 @@ Foundations for the PO interview structure, Gherkin criteria, and feature discov
 | **Alternative** | Kawakita, J. (1967). *Abduction*. Chuokoronsha. |
 | **Status** | Confirmed |
 | **Core finding** | Affinity diagramming groups raw observations/requirements into clusters by bottom-up similarity — no categories are named until grouping is complete. This prevents confirmation bias from top-down pre-labelling. |
-| **Where used** | Phase 1 of `scope/SKILL.md` (alternative to FDD domain modeling): PO uses affinity mapping on interview answers to derive feature clusters. Best suited when working from interview transcripts solo. |
+| **Where used** | Stage 1 Discovery in `scope/SKILL.md` (alternative to FDD domain modeling): PO uses affinity mapping on interview answers to derive feature clusters. Best suited when working from interview transcripts solo. |
 
 ---
 
@@ -145,7 +145,7 @@ Foundations for the PO interview structure, Gherkin criteria, and feature discov
 | **Status** | Confirmed |
 | **Core finding** | Event Storming is a collaborative workshop where domain experts place past-tense domain events on a timeline. Sorting the events creates natural Functional Area clusters — these are candidate feature groups. The workshop also produces Ubiquitous Language, a Problem Inventory, and Actor roles. |
 | **Mechanism** | Temporal sequencing of domain events forces resolution of conflicting mental models across organisational silos. Clusters emerge from shared vocabulary and causal proximity. |
-| **Where used** | Optional alternative in Phase 1 of `scope/SKILL.md` for cross-silo discovery. |
+| **Where used** | Optional alternative in Stage 1 Discovery in `scope/SKILL.md` for cross-silo discovery. |
 
 ---
 
@@ -159,7 +159,7 @@ Foundations for the PO interview structure, Gherkin criteria, and feature discov
 | **Status** | Confirmed — foundational; ~200 follow-on empirical studies |
 | **Core finding** | Anchoring an interview on a specific past incident ("Tell me about a time when X broke down") breaks schema-based recall. Stakeholders describing actual past events report real workarounds, edge cases, and failure modes that never surface when asked "how does this usually work?" |
 | **Mechanism** | Direct questions elicit the stakeholder's mental schema — a sanitized, gap-free description of how things *should* work. Incidents bypass the schema because episodic memory is anchored to specific sensory and emotional detail. |
-| **Where used** | Session 2 (gap-finding) of Phase 1 and Phase 2 in `scope/SKILL.md`. |
+| **Where used** | Cross-cutting and per-feature questions (gap-finding) in Stage 1 Discovery in `scope/SKILL.md`. |
 
 ---
 
@@ -173,7 +173,7 @@ Foundations for the PO interview structure, Gherkin criteria, and feature discov
 | **Status** | Confirmed — meta-analysis: Köhnken et al. (1999), *Psychology, Crime & Law*, 5(1-2), 3–27. |
 | **Core finding** | The enhanced CI elicits ~35% more correct information than standard interviews with equal accuracy rates. |
 | **Mechanism** | Four retrieval mnemonics: (1) mental reinstatement of context; (2) report everything; (3) temporal reversal; (4) perspective change. Each mnemonic opens a different memory access route, collectively surfacing what direct questions cannot. |
-| **Where used** | Session 2 (gap-finding) of Phase 1 and Phase 2 in `scope/SKILL.md`. |
+| **Where used** | Cross-cutting and per-feature questions (gap-finding) in Stage 1 Discovery in `scope/SKILL.md`. |
 
 ---
 
@@ -186,7 +186,7 @@ Foundations for the PO interview structure, Gherkin criteria, and feature discov
 | **Status** | Confirmed — operationalised in IS research (Hunter & Beck 2000) |
 | **Core finding** | Repeatedly asking "Why is that important to you?" climbs a means-end chain from concrete attribute → functional consequence → psychosocial consequence → terminal value. The stakeholder's first answer is rarely the real constraint. |
 | **Mechanism** | The Gherkin "So that [benefit]" clause is structurally a single-rung means-end ladder. Full laddering reveals value conflicts between stakeholders whose surface requirements look identical but whose ladders diverge at the consequence level. |
-| **Where used** | Session 2 (gap-finding) of Phase 1 and Phase 2 in `scope/SKILL.md`. |
+| **Where used** | Cross-cutting and per-feature questions (gap-finding) in Stage 1 Discovery in `scope/SKILL.md`. |
 
 ---
 
@@ -200,7 +200,7 @@ Foundations for the PO interview structure, Gherkin criteria, and feature discov
 | **Status** | Confirmed — standard NNG qualitative research protocol |
 | **Core finding** | Starting with broad open-ended questions before narrowing to specifics prevents the interviewer from priming the interviewee's responses. |
 | **Mechanism** | Priming bias is structural: any category name the interviewer introduces activates a schema that filters what the interviewee considers worth reporting. The funnel sequences questions so the interviewee's own categories emerge first. |
-| **Where used** | Within each session of Phase 1 and Phase 2 in `scope/SKILL.md`. |
+| **Where used** | Within each Stage 1 Discovery session in `scope/SKILL.md`. |
 
 ---
 

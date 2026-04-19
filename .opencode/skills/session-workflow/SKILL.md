@@ -19,15 +19,20 @@ Every session starts by reading state. Every session ends by writing state. This
      # Current Work
 
      No feature in progress.
-     Next: PO picks feature from docs/features/backlog/ and moves it to docs/features/in-progress/.
+     Next: Run @product-owner — load skill feature-selection and pick the next BASELINED feature from backlog.
      ```
-2. If a feature is active, read:
-   - `docs/features/in-progress/<name>.feature` — feature file (discovery + architecture + Rules + Examples)
-   - `docs/features/discovery.md` — project-level discovery (for context)
-3. Run `git status` — understand what is committed vs. what is not
-4. Confirm scope: you are working on exactly one step of one feature
+2. **If you are the PO** and Step 1 (SCOPE) is active: check `docs/discovery_journal.md` for the most recent session block.
+   - If the most recent block has `Status: IN-PROGRESS` → the previous session was interrupted. Resume it before starting a new session: finish updating `.feature` files and `docs/discovery.md`, then mark the block `Status: COMPLETE`.
+3. If a feature is active at Step 2–5, read:
+   - `docs/features/in-progress/<name>.feature` — feature file (Rules + Examples + @id)
+   - `docs/discovery.md` — project-level synthesis changelog (for context)
+4. Run `git status` — understand what is committed vs. what is not
+5. Confirm scope: you are working on exactly one step of one feature
 
-If TODO.md says "No feature in progress", load `skill feature-selection` — it guides the PO through scoring and selecting the next BASELINED backlog feature. **The software-engineer never self-selects a feature from the backlog — only the PO picks.** The PO must verify the feature has `Status: BASELINED` in its discovery section before moving it to `in-progress/` — if not baselined, the PO must complete Step 1 first.
+**If TODO.md says "No feature in progress":**
+
+- **PO**: Load `skill feature-selection` — it guides you through scoring and selecting the next BASELINED backlog feature. You must verify the feature has `Status: BASELINED` before moving it to `in-progress/`. Only you may move it.
+- **Software-engineer or reviewer**: Update TODO.md `Next:` line to `Run @product-owner — load skill feature-selection and pick the next BASELINED feature from backlog.` Then **stop**. Never self-select a feature. Never move a `.feature` file.
 
 ## Session End
 
@@ -35,13 +40,12 @@ If TODO.md says "No feature in progress", load `skill feature-selection` — it 
    - Mark completed criteria `[x]`
    - Mark in-progress criteria `[~]`
    - Update the "Next" line with one concrete action
-2. Run `uv run task gen-todo` to sync any new @id rows from .feature files into TODO.md.
-3. Commit any uncommitted work (even WIP):
+2. Commit any uncommitted work (even WIP):
    ```bash
    git add -A
    git commit -m "WIP(<feature-name>): <what was done>"
    ```
-4. If a step is fully complete, use the proper commit message instead of WIP.
+3. If a step is fully complete, use the proper commit message instead of WIP.
 
 ## Step Completion Protocol
 
@@ -103,8 +107,6 @@ Next: Run @<product-owner-agent> — load skill feature-selection and pick the n
 
 During Step 3 (TDD Loop), TODO.md **must** include a `## Cycle State` block to track Red-Green-Refactor progress.
 
-When `Phase: REFACTOR` is complete, a `## Self-Declaration` block is also **mandatory** before handing off to Step 4.
-
 ```markdown
 # Current Work
 
@@ -115,9 +117,6 @@ Source: docs/features/in-progress/<name>.feature
 ## Cycle State
 Test: `@id:<hex>` — <description>
 Phase: RED | GREEN | REFACTOR
-
-## Self-Declaration
-As a software-engineer I declare this code follows YAGNI-1 ... (full checklist in implementation/SKILL.md)
 
 ## Progress
 - [x] `@id:<hex>`: <description>
@@ -134,23 +133,6 @@ As a software-engineer I declare this code follows YAGNI-1 ... (full checklist i
 - Move from `GREEN` → `REFACTOR` when the test passes
 - Move from `REFACTOR` → mark `@id` complete in `## Progress` when test-fast passes
 
-## gen-todo Script
-
-`uv run task gen-todo` keeps TODO.md in sync with `.feature` files:
-
-```bash
-uv run task gen-todo              # merge-write: add missing @id rows, preserve existing status
-uv run task gen-todo -- --check   # dry run — report what would change
-```
-
-**Merge rules:**
-- Adds any `@id` rows from in-progress `.feature` files that are missing in `## Progress`
-- Never removes or downgrades existing `[x]`, `[~]`, `[-]` rows
-- Preserves the `Step:` field and `## Next` line from the current TODO.md
-- If no feature is in-progress, writes the "No feature in progress" format
-
-Run `gen-todo` at session start (after reading TODO.md) and at session end (before committing).
-
 ## Rules
 
 1. Never skip reading TODO.md at session start
@@ -160,4 +142,3 @@ Run `gen-todo` at session start (after reading TODO.md) and at session end (befo
 5. The "Next" line must be actionable enough that a fresh AI can execute it without asking questions
 6. During Step 3, always update `## Cycle State` when transitioning between RED/GREEN/REFACTOR phases
 7. When a step completes, update TODO.md and commit **before** any further work
-8. During Step 3, write the `## Self-Declaration` block into TODO.md after all quality gates pass — every claim must have AGREE/DISAGREE with `file:line` evidence

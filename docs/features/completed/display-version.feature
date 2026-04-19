@@ -1,21 +1,11 @@
 Feature: Display version
 
-  Discovery:
+  Reads the application version from pyproject.toml at runtime and logs it at INFO
+  level. Log output is controlled by a verbosity parameter; the version is visible
+  at DEBUG and INFO but suppressed at WARNING and above. An invalid verbosity value
+  raises a descriptive error.
 
   Status: COMPLETED
-
-  Entities:
-  | Type | Name             | Candidate Class/Method      | In Scope |
-  |------|------------------|-----------------------------|----------|
-  | Noun | Version string   | version()                   | Yes      |
-  | Noun | pyproject.toml   | (source of truth)           | Yes      |
-  | Noun | Log output       | logging                     | Yes      |
-  | Noun | Verbosity level  | ValidVerbosity              | Yes      |
-  | Noun | Entry point      | main()                      | Yes      |
-  | Verb | Retrieve         | version()                   | Yes      |
-  | Verb | Display / Log    | main()                      | Yes      |
-  | Verb | Configure        | ValidVerbosity              | Yes      |
-  | Verb | Validate         | main() raises ValueError    | Yes      |
 
   Rules (Business):
   - Version is read from pyproject.toml at runtime using tomllib
@@ -28,12 +18,6 @@ Feature: Display version
   - No hardcoded __version__ constant — pyproject.toml is the single source of truth
   - Entry point: app/__main__.py (main(verbosity) function)
   - Version logic: app/version.py (version() function)
-
-  Questions:
-  | ID | Question | Answer | Status |
-  |----|----------|--------|--------|
-
-  All questions answered. Discovery frozen.
 
   Rule: Version retrieval
     As a software-engineer

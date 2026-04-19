@@ -33,79 +33,70 @@ Each step has a designated agent and a specific deliverable. No step is skipped.
 │  STEP 1 — SCOPE                              agent: product-owner   │
 ├─────────────────────────────────────────────────────────────────────┤
 │                                                                     │
-│  Phase 1 — Project Discovery                                        │
-│  [runs ONCE; skip if discovery.md BASELINED]                        │
-│  [adding features later: append new Qs to Session 1, re-fill]      │
+│  Stage 1 — Discovery (PO + stakeholder, iterative)                  │
+│  Sessions happen any time scope needs establishing or refining.     │
+│  Every session follows the same structure.                          │
 │                                                                     │
-│    Session 1 — Individual Scope Elicitation                         │
-│      5Ws + Success + Failure + Out-of-scope                         │
-│      Gap-finding per answer: CIT · Laddering · CI Perspective       │
-│      [new questions from elucidation added in the moment]           │
-│      Level 1: paraphrase each answer on the spot                    │
-│      → PO writes synthesis → stakeholder confirms or corrects       │
-│      → PO runs silent pre-mortem on confirmed synthesis             │
-│      [template §1: synthesis confirmed → unlocks Session 2]         │
+│    SESSION START                                                     │
+│      Check docs/discovery_journal.md last block for Status:        │
+│        IN-PROGRESS → resume interrupted session first               │
+│        (missing file) → create journal + discovery.md from templates│
+│      Append new session header to journal:                          │
+│        ## YYYY-MM-DD — Session N                                    │
+│        Status: IN-PROGRESS          ← written BEFORE any questions  │
 │                                                                     │
-│    Session 2 — Behavior Groups / Big Picture                       │
-│      Questions target behavior groups and cross-cutting concerns   │
-│      Gap-finding per group: CIT · Laddering · CI Perspective         │
-│      [new questions from elucidation added in the moment]           │
-│      Level 1: paraphrase each answer                                │
-│      Level 2: synthesis when transitioning between groups        │
-│      [template §2: all groups answered → unlocks Session 3]          │
+│    QUESTION ORDER                                                    │
+│      1. General (5Ws + Success + Failure + Out-of-scope)            │
+│         [first session only, if journal did not exist yet]          │
+│         Gap-finding per answer: CIT · Laddering · CI Perspective    │
+│         Level 1: paraphrase each answer on the spot                 │
+│      2. Cross-cutting (behavior groups, bounded contexts,           │
+│         integration points, lifecycle events)                       │
+│         Level 2: synthesis when transitioning between groups        │
+│      3. Per-feature (one feature at a time)                         │
+│         Extract entities from docs/discovery.md Domain Model        │
+│         Gap-finding: CIT · Laddering · CI Perspective               │
+│         Silent pre-mortem per feature                               │
+│         REAL-TIME SPLIT: if >2 concerns OR >8 candidate Examples    │
+│           → split immediately, record in journal, create stubs,     │
+│             continue questions for both features in this session    │
 │                                                                     │
-│    Session 3 — Synthesis Approval + Feature Derivation              │
-│      PO produces full synthesis across all behavior groups         │
-│      → stakeholder approves or corrects; PO refines until approved  │
-│      [template §3: approval → unlocks domain analysis]              │
-│      Domain analysis: nouns/verbs → subject areas                   │
-│      Name features (FDD "Action object" / Affinity groups)           │
-│      Create backlog/<name>.feature stubs                            │
-│      Status: BASELINED written to discovery.md                      │
+│    AFTER QUESTIONS (PO alone, in this order)                        │
+│      1. Append answered Q&A to journal (in groups; answered only)   │
+│      2. Rewrite .feature description for each touched feature       │
+│         [untouched features stay exactly as-is]                     │
+│      3. Append session synthesis block to discovery.md (LAST)       │
+│         [only after all .feature files are updated]                 │
+│      4. Mark journal session: Status: COMPLETE                      │
+│      commit: feat(discovery): <session summary>                     │
 │                                                                     │
-│  Phase 2 — Feature Discovery (repeats per feature)                  │
-│  [each .feature has its own 3-session discovery template]           │
+│    BASELINING A FEATURE                                             │
+│      When stakeholder approves feature discovery + decomp passes:   │
+│      PO writes Status: BASELINED (YYYY-MM-DD) in the .feature file  │
+│      Gate: feature may only enter Stage 2 when BASELINED            │
 │                                                                     │
-│    Session 1 — Individual Entity Elicitation                        │
-│      Populate Entities table from project discovery                 │
-│      Gap-finding per answer: CIT · Laddering · CI Perspective       │
-│      [new questions from elucidation added in the moment]           │
-│      Level 1: paraphrase each answer                                │
-│      → PO writes synthesis → stakeholder confirms or corrects       │
-│      → PO runs silent pre-mortem on confirmed synthesis             │
-│      [template §1: synthesis confirmed → unlocks Session 2]         │
+│  Stage 2 — Specification (PO alone, per feature)                    │
+│  Only runs on features with Status: BASELINED.                      │
+│  If a gap needs stakeholder input → open a new Stage 1 session.    │
 │                                                                     │
-│    Session 2 — Behavior Groups / Big Picture for this Feature        │
-│      Questions target behavior groups within this feature            │
-│      Gap-finding per group: CIT · Laddering · CI Perspective         │
-│      [new questions from elucidation added in the moment]           │
-│      Level 1: paraphrase · Level 2: group transition summaries      │
-│      [template §2: all groups answered → unlocks Session 3]          │
+│    Step A — Stories                                                  │
+│      Derive one Rule: block per user story from feature description │
+│      INVEST gate: all 6 letters must pass before committing         │
+│      commit: feat(stories): write user stories for <name>           │
 │                                                                     │
-│    Session 3 — Feature Synthesis Approval + Story Derivation       │
-│      PO produces synthesis of feature scope and behavior groups     │
-│      → stakeholder approves or corrects; PO refines until approved │
-│      Story candidates → candidate user stories (Rules)               │
-│      Status: BASELINED written to .feature discovery section         │
-│      [template §3: approval + stories → unlocks decomp check]       │
+│    Step B — Criteria                                                 │
+│      Pre-mortem per Rule (all Rules checked before Examples)        │
+│      Write @id-tagged Examples (Given/When/Then, declarative)       │
+│      MoSCoW triage: Must / Should / Could per Example               │
+│      Review checklist                                               │
+│      commit: feat(criteria): write acceptance criteria for <name>   │
+│      ★ FROZEN — changes require @deprecated + new Example           │
 │                                                                     │
-│    DECOMPOSITION CHECK                                              │
-│      >2 distinct concerns OR >8 candidate Examples?                 │
-│      YES → split into separate .feature files, re-run Phase 2       │
-│      NO  → proceed                                                  │
-│                                                                     │
-│  Phase 3 — Stories (PO alone)                                       │
-│    Story candidates from Phase 2 Session 2 → one Rule: block per story │
-│    INVEST gate: all 6 letters must pass before committing           │
-│    commit: feat(stories): write user stories for <name>             │
-│                                                                     │
-│  Phase 4 — Criteria (PO alone)                                      │
-│    4.1 Pre-mortem per Rule (all Rules checked before Examples)      │
-│    4.2 Write @id-tagged Examples (Given/When/Then, declarative)     │
-│        MoSCoW triage: Must / Should / Could per Example             │
-│    4.3 Review checklist                                             │
-│    commit: feat(criteria): write acceptance criteria for <name>     │
-│    ★ FROZEN — changes require @deprecated + new Example             │
+│  Bug Handling                                                        │
+│    PO adds @bug @id:<hex> Example to relevant Rule: in .feature     │
+│    SE implements @id test in tests/features/<name>/                 │
+│    SE also writes @given Hypothesis test in tests/unit/ (whole class)│
+│    Both tests required · SE follows normal TDD loop (Step 3)        │
 │                                                                     │
 └─────────────────────────────────────────────────────────────────────┘
                               ↓  PO picks feature from backlog — only if Status: BASELINED
@@ -119,16 +110,14 @@ Each step has a designated agent and a specific deliverable. No step is skipped.
 │    [ ] feature has Rule: + Example: + @id tags                      │
 │    [ ] package name confirmed (pyproject.toml → directory exists)   │
 │                                                                     │
-│  mv backlog/<name>.feature → in-progress/<name>.feature             │
-│                                                                     │
 │  READ (all before writing anything)                                 │
-│    docs/features/discovery.md (project-level)                      │
-│    ALL backlog .feature files (discovery + entities sections)       │
+│    docs/discovery.md (project-level synthesis changelog)           │
+│    ALL backlog .feature files (narrative + Rules + Examples)        │
 │    in-progress .feature file (full: Rules + Examples + @id)        │
 │    ALL existing .py files in <package>/  ← know what exists first  │
 │                                                                     │
 │  DOMAIN ANALYSIS                                                    │
-│    From Entities table + Rules (Business) in .feature file:        │
+│    From Domain Model in docs/discovery.md + Rules (Business):      │
 │    Nouns → named classes, value objects, aggregates                 │
 │    Verbs → method names with typed signatures                       │
 │    Datasets → named types (not bare dict/list)                      │
@@ -156,8 +145,9 @@ Each step has a designated agent and a specific deliverable. No step is skipped.
 │      No docstrings — add after GREEN when signatures are stable     │
 │      No inline comments, no TODO, no speculative code              │
 │                                                                     │
-│  WRITE ADR FILES (significant decisions only)                       │
-│    docs/architecture/adr-NNN-<title>.md                            │
+│  RECORD ARCHITECTURAL DECISIONS (significant only)                  │
+│    Append to docs/architecture.md                                  │
+│      ## YYYY-MM-DD — <feature>: <title>                            │
 │      Decision: <what>  Reason: <why>                               │
 │      Alternatives considered: <what was rejected and why>           │
 │                                                                     │
@@ -189,7 +179,7 @@ Each step has a designated agent and a specific deliverable. No step is skipped.
 │                                                                     │
 │  PREREQUISITES (stop if any fail — escalate to PO)                 │
 │    [ ] Architecture stubs present in <package>/ (Step 2 committed) │
-│    [ ] Read all docs/architecture/adr-NNN-*.md files               │
+│    [ ] Read docs/architecture.md — all architectural decisions      │
 │    [ ] All tests written in tests/features/<feature>/              │
 │                                                                     │
 │  Build TODO.md test list                                            │
@@ -223,11 +213,6 @@ Each step has a designated agent and a specific deliverable. No step is skipped.
 │  │  │    Load skill refactor — follow its protocol          │ │   │
 │  │  │    uv run task test-fast after each individual change │ │   │
 │  │  │    EXIT: test-fast passes; no smells remain           │ │   │
-│  │  ├───────────────────────────────────────────────────────┤ │   │
-│  │  │  SELF-DECLARE                                         │ │   │
-│  │  │    Fill Self-Declaration block in TODO.md             │ │   │
-│  │  │    AGREE/DISAGREE per principle with file:line        │ │   │
-│  │  │    DISAGREE requires inline justification             │ │   │
 │  │  └───────────────────────────────────────────────────────┘ │   │
 │  │                                                             │   │
 │  │  Mark @id completed in TODO.md                             │   │
@@ -241,38 +226,14 @@ Each step has a designated agent and a specific deliverable. No step is skipped.
 │    uv run task test           (coverage must be 100%)              │
 │    timeout 10s uv run task run                                     │
 │    coverage < 100%: add test in tests/unit/ for uncovered branch   │
-│      (do NOT add @id tests for coverage — @id tests are AC only)     │
-│    All must pass before Self-Declaration                           │
+│      (do NOT add @id tests for coverage — @id tests are AC only)   │
+│    All must pass before handing off                                │
 │                                                                     │
 │  SELF-DECLARATION (once, after all quality gates pass)             │
-│    As a software-engineer I declare:                               │
-│      * YAGNI: no code without a failing test — AGREE/DISAGREE | file:line │
-│      * YAGNI: no speculative abstractions — AGREE/DISAGREE | file:line   │
-│      * KISS: simplest solution that passes — AGREE/DISAGREE | file:line   │
-│      * KISS: no premature optimization — AGREE/DISAGREE | file:line       │
-│      * DRY: no duplication — AGREE/DISAGREE | file:line                  │
-│      * DRY: no redundant comments — AGREE/DISAGREE | file:line            │
-│      * SOLID-S: one reason to change per class — AGREE/DISAGREE | file:line│
-│      * SOLID-O: open for extension, closed for modification        │
-│                   — AGREE/DISAGREE | file:line                            │
-│      * SOLID-L: subtypes substitutable — AGREE/DISAGREE | file:line       │
-│      * SOLID-I: no forced unused deps — AGREE/DISAGREE | file:line        │
-│      * SOLID-D: depend on abstractions, not concretions            │
-│                   — AGREE/DISAGREE | file:line                            │
-│      * OC-1: one level of indentation per method — AGREE/DISAGREE | file:line│
-│      * OC-2: no else after return — AGREE/DISAGREE | file:line            │
-│      * OC-3: primitive types wrapped — AGREE/DISAGREE | file:line        │
-│      * OC-4: first-class collections — AGREE/DISAGREE | file:line        │
-│      * OC-5: one dot per line — AGREE/DISAGREE | file:line                │
-│      * OC-6: no abbreviations — AGREE/DISAGREE | file:line                │
-│      * OC-7: ≤20 lines per function — AGREE/DISAGREE | file:line          │
-│      * OC-8: ≤2 instance variables per class (behavioural classes only; dataclasses, Pydantic models, value objects, and TypedDicts are exempt) — AGREE/DISAGREE | file:line │
-│      * OC-9: no getters/setters — AGREE/DISAGREE | file:line              │
-│      * Patterns: no creational smell — AGREE/DISAGREE | file:line         │
-│      * Patterns: no structural smell — AGREE/DISAGREE | file:line         │
-│      * Patterns: no behavioral smell — AGREE/DISAGREE | file:line         │
-│      * Semantic: tests operate at same abstraction as AC           │
-│                   — AGREE/DISAGREE | file:line                            │
+│    Communicate verbally to reviewer:                               │
+│      * YAGNI, KISS, DRY, SOLID, OC checklist — AGREE/DISAGREE     │
+│        with file:line evidence for each claim                      │
+│      * DISAGREE requires inline justification                      │
 │                                                                     │
 │  → Hand off to Step 4 (Verify)                                     │
 └─────────────────────────────────────────────────────────────────────┘
@@ -285,7 +246,7 @@ Each step has a designated agent and a specific deliverable. No step is skipped.
 │                                                                     │
 │  4a. READ                                                           │
 │    in-progress .feature file (Rules + Examples + @id)             │
-│    Self-Declaration from software-engineer                         │
+│    Self-Declaration communicated verbally by software-engineer     │
 │                                                                     │
 │  4b. pyproject.toml GATE                                           │
 │    git diff main -- pyproject.toml                                 │
@@ -318,8 +279,8 @@ Each step has a designated agent and a specific deliverable. No step is skipped.
 │    [ ] Docstrings explain why, not what                             │
 │                                                                     │
 │  4g. SELF-DECLARATION AUDIT                                        │
-│    For every YES claim: find the file:line — does it hold?          │
-│    For every NO claim: is the deviation justified?                 │
+│    For every AGREE claim: find the file:line — does it hold?        │
+│    For every DISAGREE claim: is the deviation justified?           │
 │    Undeclared violations → REJECT                                  │
 │                                                                     │
 │  4h. INTERACTIVE (if any doubt remains)                            │
@@ -355,39 +316,20 @@ Each step has a designated agent and a specific deliverable. No step is skipped.
 
 ## Feature File Structure
 
-Each feature is a single `.feature` file. The free-form description before the first `Rule:` contains all discovery content added progressively through the workflow:
+Each feature is a single `.feature` file. The description contains the feature description and Status line. All Q&A lives in `docs/discovery_journal.md`; architectural decisions live in `docs/architecture.md`.
 
 ```
 Feature: <title>
 
-  Discovery:
+  <2–4 sentence description of what this feature does and why it exists.>
 
   Status: ELICITING | BASELINED (YYYY-MM-DD)
-
-  Entities:
-  | Type | Name | Candidate Class/Method | In Scope |
 
   Rules (Business):
   - <business rule>
 
   Constraints:
   - <non-functional requirement>
-
-  Session 1 — Individual Entity Elicitation:
-  | ID | Question | Answer | Status |     ← OPEN / ANSWERED
-  Template §1: PENDING | CONFIRMED
-  Synthesis: <PO synthesis — confirmed by stakeholder>
-  Pre-mortem: <gaps identified; new questions added above>
-
-  Session 2 — Behavior Groups / Big Picture:
-  | ID | Question | Answer | Status |
-  Template §2: PENDING | CONFIRMED
-  Behavior Groups:
-  - <behavior group name>: <one-sentence summary>
-
-  Session 3 — Feature Synthesis:
-  Template §3: PENDING | CONFIRMED — stakeholder approved YYYY-MM-DD
-  Synthesis: <full synthesis across all behavior groups>
 
   Rule: <story title>
     As a <role>
@@ -401,40 +343,27 @@ Feature: <title>
       Then <observable outcome>
 ```
 
-Two discovery sources:
-- `docs/features/discovery.md` — project-level 3-session discovery (once per project; additive for new features)
-- Feature file description — per-feature 3-session discovery, entities, business rules, and acceptance criteria
+Three discovery sources:
+- `docs/discovery_journal.md` — raw Q&A from all scope sessions (PO, append-only)
+- `docs/discovery.md` — synthesis changelog, domain model, feature list (PO, append-only)
+- `docs/architecture.md` — all architectural decisions (software-engineer, append-only)
 
 ---
 
 ## Architecture Artifacts
 
-Architectural decisions made during Step 2 are recorded as ADR files:
-
-```
-docs/architecture/
-  adr-template.md          ← blank template — copy to create a new ADR
-  adr-001-<title>.md       ← one file per significant decision
-  adr-002-<title>.md
-  ...
-```
-
-**ADR format** (copy `adr-template.md` and fill in):
+Architectural decisions made during Step 2 are appended to `docs/architecture.md`:
 
 ```markdown
-# ADR-NNN: <title>
+## YYYY-MM-DD — <feature-name>: <short title>
 
-**Status:** PROPOSED | ACCEPTED | SUPERSEDED by ADR-NNN
-
-**Decision:** <what was decided — one sentence>
-
-**Reason:** <why — one sentence>
-
-**Alternatives considered:**
-- <option>: <why rejected>
+Decision: <what was decided — one sentence>
+Reason: <why — one sentence>
+Alternatives considered: <what was rejected and why>
+Feature: <feature-name>
 ```
 
-Write an ADR only for non-obvious decisions with real trade-offs — module boundaries, external dependency strategy, Protocol vs. concrete class, data model choices. Routine YAGNI choices do not need an ADR.
+Write a block only for non-obvious decisions with real trade-offs — module boundaries, external dependency strategy, Protocol vs. concrete class, data model choices. Routine YAGNI choices do not need a record. The file is append-only; when a decision changes, append a new block that supersedes the old one.
 
 Domain entity and service stubs (signatures, no bodies) live directly in the package under `<package>/domain/`, `<package>/ports/`, and `<package>/adapters/` — written at Step 2, filled in during Step 3.
 
@@ -444,7 +373,6 @@ Domain entity and service stubs (signatures, no bodies) live directly in the pac
 
 | Command | When | Purpose |
 |---|---|---|
-| `uv run task gen-todo` | Every session | Reads in-progress `.feature` → syncs `TODO.md` |
 | `uv run task test-fast` | Step 3 cycle | Fast test run (no coverage) — used during Red-Green-Refactor |
 | `uv run task test` | Handoff, Step 4 | Full suite with coverage — must reach 100% |
 | `uv run task lint` | Handoff, Step 4 | ruff — must exit 0 |
@@ -458,8 +386,8 @@ Domain entity and service stubs (signatures, no bodies) live directly in the pac
 ```
 tests/
   features/<feature-name>/
-    <rule-slug>_test.py     ← software-engineer-written, one per Rule: block
-                              function: test_<rule_slug>_<8char_hex>()
+    <rule_slug>_test.py     ← software-engineer-written, one per Rule: block
+                              function: test_<feature_slug>_<8char_hex>()
   unit/
     <anything>_test.py      ← software-engineer-authored extras, no @id traceability
                               plain pytest or Hypothesis @given (software-engineer choice)
@@ -478,34 +406,7 @@ Source: docs/features/in-progress/<name>.feature
 
 ## Cycle State
 Test: @id:<hex> — <description>
-Phase: RED | GREEN | REFACTOR | SELF-DECLARE
-
-## Self-Declaration
-As a software-engineer I declare:
-* YAGNI: no code without a failing test — AGREE/DISAGREE | file:line
-* YAGNI: no speculative abstractions — AGREE/DISAGREE | file:line
-* KISS: simplest solution that passes — AGREE/DISAGREE | file:line
-* KISS: no premature optimization — AGREE/DISAGREE | file:line
-* DRY: no duplication — AGREE/DISAGREE | file:line
-* DRY: no redundant comments — AGREE/DISAGREE | file:line
-* SOLID-S: one reason to change per class — AGREE/DISAGREE | file:line
-* SOLID-O: open for extension, closed for modification — AGREE/DISAGREE | file:line
-* SOLID-L: subtypes substitutable — AGREE/DISAGREE | file:line
-* SOLID-I: no forced unused deps — AGREE/DISAGREE | file:line
-* SOLID-D: depend on abstractions, not concretions — AGREE/DISAGREE | file:line
-* OC-1: one level of indentation per method — AGREE/DISAGREE | deepest: file:line
-* OC-2: no else after return — AGREE/DISAGREE | file:line
-* OC-3: primitive types wrapped — AGREE/DISAGREE | file:line
-* OC-4: first-class collections — AGREE/DISAGREE | file:line
-* OC-5: one dot per line — AGREE/DISAGREE | file:line
-* OC-6: no abbreviations — AGREE/DISAGREE | file:line
-* OC-7: ≤20 lines per function, ≤50 per class — AGREE/DISAGREE | longest: file:line
-* OC-8: ≤2 instance variables per class (behavioural classes only; dataclasses, Pydantic models, value objects, and TypedDicts are exempt) — AGREE/DISAGREE | file:line
-* OC-9: no getters/setters — AGREE/DISAGREE | file:line
-* Patterns: no creational smell — AGREE/DISAGREE | file:line
-* Patterns: no structural smell — AGREE/DISAGREE | file:line
-* Patterns: no behavioral smell — AGREE/DISAGREE | file:line
-* Semantic: tests operate at same abstraction as AC — AGREE/DISAGREE | file:line
+Phase: RED | GREEN | REFACTOR
 
 ## Progress
 - [x] @id:<hex>: <done>
@@ -516,7 +417,7 @@ As a software-engineer I declare:
 <one actionable sentence>
 ```
 
-`## Cycle State` is updated at every phase transition. `## Self-Declaration` is written once after all quality gates pass in Step 3. Both sections are present only during Step 3; omit when in other steps.
+`## Cycle State` is updated at every phase transition. This section is present only during Step 3; omit when in other steps.
 
 ---
 
