@@ -104,6 +104,40 @@ No feature in progress.
 Next: Run @<product-owner-agent> — load skill feature-selection and pick the next BASELINED feature from backlog.
 ```
 
+## Step 1 (Stage 2 Criteria) Self-Declaration TODO Format
+
+When Stage 2 Step B (criteria) is complete and before the `feat(criteria):` commit, TODO.md **must** include a `## Self-Declaration` block written by the PO:
+
+```markdown
+# Current Work
+
+Feature: <name>
+Step: 1 (SCOPE — Stage 2 Criteria)
+Source: docs/features/backlog/<name>.feature
+
+## Self-Declaration
+As a product-owner I declare:
+* INVEST-I: each Rule is Independent — AGREE/DISAGREE | conflict:
+* INVEST-V: each Rule delivers Value to a named user — AGREE/DISAGREE | Rule:
+* INVEST-S: each Rule is Small enough for one development cycle — AGREE/DISAGREE | Rule:
+* INVEST-T: each Rule is Testable — AGREE/DISAGREE | Rule:
+* Observable: every Then is a single, observable, measurable outcome — AGREE/DISAGREE | file:line
+* No impl details: no Example tests internal state or implementation — AGREE/DISAGREE | file:line
+* Coverage: every entity in the feature description appears in at least one Rule — AGREE/DISAGREE | missing:
+* Distinct: no two Examples test the same observable behavior — AGREE/DISAGREE | file:line
+* Unique IDs: all @id values are unique within this feature — AGREE/DISAGREE
+* Pre-mortem: I ran a pre-mortem on each Rule and found no hidden failure modes — AGREE/DISAGREE | Rule:
+* Scope: no Example introduces behavior outside the feature boundary — AGREE/DISAGREE | file:line
+
+## Progress
+- [x] `@id:<hex>`: <description>
+
+## Next
+Run @<software-engineer-agent> — load skill implementation and begin Step 2 (Architecture) for <feature-name>
+```
+
+Every `DISAGREE` is a hard blocker — fix before committing.
+
 ## Step 3 (TDD Loop) Cycle-Aware TODO Format
 
 During Step 3 (TDD Loop), TODO.md **must** include a `## Cycle State` block to track Red-Green-Refactor progress.
@@ -166,3 +200,4 @@ Run `gen-todo` at session start (after reading TODO.md) and at session end (befo
 6. During Step 3, always update `## Cycle State` when transitioning between RED/GREEN/REFACTOR phases
 7. When a step completes, update TODO.md and commit **before** any further work
 8. During Step 3, write the `## Self-Declaration` block into TODO.md after all quality gates pass — every claim must have AGREE/DISAGREE with `file:line` evidence
+9. During Step 1 Stage 2 Step B (criteria), write the `## Self-Declaration` block into TODO.md before the criteria commit — every DISAGREE is a hard blocker that must be resolved before committing

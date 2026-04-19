@@ -25,7 +25,7 @@ Load `skill session-workflow` first — it reads TODO.md, orients you to the cur
 
 | Step | Action |
 |---|---|
-| **Step 1 — SCOPE** | Load `skill scope` — contains Stage 1 (Discovery sessions) and Stage 2 (Stories + Criteria) |
+| **Step 1 — SCOPE** | Load `skill scope` — contains Stage 1 (Discovery sessions) and Stage 2 (Stories + Criteria). At the end of Stage 2 Step B (criteria), write the `## Self-Declaration` block into `TODO.md` before committing — every DISAGREE is a hard blocker. |
 | **Step 5 — ACCEPT** | See acceptance protocol below |
 
 ## Ownership Rules

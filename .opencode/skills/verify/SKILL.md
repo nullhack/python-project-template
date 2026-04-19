@@ -21,6 +21,8 @@ This skill guides the reviewer through Step 4: independent verification that the
 
 After the software-engineer signals Step 3 is complete and all self-verification checks pass. Do not start verification until the software-engineer has committed all work and written the Self-Declaration.
 
+The reviewer produces one written report (see template below) that includes: all gate results, the SE Self-Declaration Audit, the **Reviewer Stance Declaration**, and the final APPROVED/REJECTED verdict.
+
 ## Step-by-Step
 
 ### 1. Read the Feature Docs
@@ -215,6 +217,20 @@ Undeclared violations → REJECT.
 | Patterns Structural | AGREE/DISAGREE | PASS/FAIL | |
 | Patterns Behavioral | AGREE/DISAGREE | PASS/FAIL | |
 | Semantic | AGREE/DISAGREE | PASS/FAIL | |
+
+### Reviewer Stance Declaration
+
+Write this block **before** the Decision. Every `DISAGREE` must include an inline explanation. A `DISAGREE` with no explanation auto-forces `REJECTED`.
+
+```markdown
+## Reviewer Stance Declaration
+As a reviewer I declare:
+* Adversarial: I actively tried to find a failure mode, not just confirm passing — AGREE/DISAGREE | note:
+* Manual trace: I traced at least one execution path manually beyond automated output — AGREE/DISAGREE | path:
+* Boundary check: I checked the boundary conditions and edge cases of every Rule — AGREE/DISAGREE | gaps:
+* Semantic read: I read each test against its AC and confirmed it tests the right observable behavior — AGREE/DISAGREE | mismatches:
+* Independence: my verdict was not influenced by how much effort has already been spent — AGREE/DISAGREE
+```
 
 ### Decision
 **APPROVED** — all gates passed, no undeclared violations
