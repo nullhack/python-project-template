@@ -106,10 +106,9 @@ Commit: `feat(criteria): write acceptance criteria for <name>`
 ### Bug Handling
 
 When a defect is reported:
-1. **PO** adds `@bug @id:<hex>` Example to the relevant `Rule:` in the `.feature` file
-2. **SE** implements the specific test in `tests/features/<feature-name>/`
-3. **SE** also writes a `@given` Hypothesis property test in `tests/unit/` for the whole class of inputs
-4. Both tests are required. SE follows the normal TDD loop (Step 3).
+1. **PO** adds a `@bug @id:<hex>` Example to the relevant `Rule:` in the `.feature` file and moves (or keeps) the feature in `backlog/` for normal scheduling.
+2. **SE** handles the bug when the feature is selected for development (standard Step 2–3 flow): implements the specific `@bug`-tagged test in `tests/features/<feature-name>/` and also writes a `@given` Hypothesis property test in `tests/unit/` covering the whole class of inputs.
+3. Both tests are required. SE follows the normal TDD loop (Step 3).
 
 ## Filesystem Structure
 
