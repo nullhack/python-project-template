@@ -40,13 +40,12 @@ Every session starts by reading state. Every session ends by writing state. This
    - Mark completed criteria `[x]`
    - Mark in-progress criteria `[~]`
    - Update the "Next" line with one concrete action
-2. Run `uv run task gen-todo` to sync any new @id rows from .feature files into TODO.md.
-3. Commit any uncommitted work (even WIP):
+2. Commit any uncommitted work (even WIP):
    ```bash
    git add -A
    git commit -m "WIP(<feature-name>): <what was done>"
    ```
-4. If a step is fully complete, use the proper commit message instead of WIP.
+3. If a step is fully complete, use the proper commit message instead of WIP.
 
 ## Step Completion Protocol
 
@@ -133,23 +132,6 @@ Phase: RED | GREEN | REFACTOR
 - Move from `RED` → `GREEN` when the test fails with a real assertion
 - Move from `GREEN` → `REFACTOR` when the test passes
 - Move from `REFACTOR` → mark `@id` complete in `## Progress` when test-fast passes
-
-## gen-todo Script
-
-`uv run task gen-todo` keeps TODO.md in sync with `.feature` files:
-
-```bash
-uv run task gen-todo              # merge-write: add missing @id rows, preserve existing status
-uv run task gen-todo -- --check   # dry run — report what would change
-```
-
-**Merge rules:**
-- Adds any `@id` rows from in-progress `.feature` files that are missing in `## Progress`
-- Never removes or downgrades existing `[x]`, `[~]`, `[-]` rows
-- Preserves the `Step:` field and `## Next` line from the current TODO.md
-- If no feature is in-progress, writes the "No feature in progress" format
-
-Run `gen-todo` at session start (after reading TODO.md) and at session end (before committing).
 
 ## Rules
 

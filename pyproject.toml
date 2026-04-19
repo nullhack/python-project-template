@@ -147,8 +147,6 @@ pytest \
 """
 doc-publish = "task doc-build && ghp-import -n -p -f docs"
 static-check = "pyright"
-gen-id = "python -c \"import uuid; [print(uuid.uuid4().hex[:8]) for _ in range(20)]\""
-gen-todo = "python .opencode/skills/session-workflow/scripts/gen_todo.py"
 
 [dependency-groups]
 dev = [

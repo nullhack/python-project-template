@@ -165,8 +165,6 @@ def test_<feature_slug>_<@id>() -> None:
     """
 ```
 
-Run `uv run task gen-todo` after writing stubs to sync `@id` rows into `TODO.md`.
-
 ### Build TODO.md Test List
 
 1. List all `@id` tags from in-progress `.feature` file

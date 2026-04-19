@@ -373,7 +373,6 @@ Domain entity and service stubs (signatures, no bodies) live directly in the pac
 
 | Command | When | Purpose |
 |---|---|---|
-| `uv run task gen-todo` | Every session | Reads in-progress `.feature` → syncs `TODO.md` |
 | `uv run task test-fast` | Step 3 cycle | Fast test run (no coverage) — used during Red-Green-Refactor |
 | `uv run task test` | Handoff, Step 4 | Full suite with coverage — must reach 100% |
 | `uv run task lint` | Handoff, Step 4 | ruff — must exit 0 |
