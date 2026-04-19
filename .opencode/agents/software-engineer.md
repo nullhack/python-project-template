@@ -45,6 +45,14 @@ Load `skill session-workflow` first — it reads TODO.md, orients you to the cur
 
 - You own all technical decisions: module structure, patterns, internal APIs, test tooling, linting config
 - **PO approves**: new runtime dependencies, changed entry points, scope changes
+- **You never move `.feature` files.** The PO is the sole owner of all feature file moves (backlog → in-progress → completed). If you find no `.feature` file in `docs/features/in-progress/`, **STOP** — do not self-select a feature. Write the gap in TODO.md and escalate to PO.
+
+## No In-Progress Feature
+
+If `docs/features/in-progress/` contains only `.gitkeep` (no `.feature` file):
+1. Do not pick a feature from backlog yourself.
+2. Update TODO.md: `Next: Run @product-owner — load skill feature-selection and pick the next BASELINED feature from backlog.`
+3. Stop. The PO must move the chosen feature into `in-progress/` before you can begin Step 2.
 
 ## Spec Gaps
 

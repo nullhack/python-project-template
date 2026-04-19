@@ -19,15 +19,20 @@ Every session starts by reading state. Every session ends by writing state. This
      # Current Work
 
      No feature in progress.
-     Next: PO picks feature from docs/features/backlog/ and moves it to docs/features/in-progress/.
+     Next: Run @product-owner — load skill feature-selection and pick the next BASELINED feature from backlog.
      ```
-2. If a feature is active, read:
-   - `docs/features/in-progress/<name>.feature` — feature file (discovery + architecture + Rules + Examples)
-   - `docs/features/discovery.md` — project-level discovery (for context)
-3. Run `git status` — understand what is committed vs. what is not
-4. Confirm scope: you are working on exactly one step of one feature
+2. **If you are the PO** and Step 1 (SCOPE) is active: check `docs/discovery_journal.md` for the most recent session block.
+   - If the most recent block has `Status: IN-PROGRESS` → the previous session was interrupted. Resume it before starting a new session: finish updating `.feature` files and `docs/discovery.md`, then mark the block `Status: COMPLETE`.
+3. If a feature is active at Step 2–5, read:
+   - `docs/features/in-progress/<name>.feature` — feature file (Rules + Examples + @id)
+   - `docs/discovery.md` — project-level synthesis changelog (for context)
+4. Run `git status` — understand what is committed vs. what is not
+5. Confirm scope: you are working on exactly one step of one feature
 
-If TODO.md says "No feature in progress", load `skill feature-selection` — it guides the PO through scoring and selecting the next BASELINED backlog feature. **The software-engineer never self-selects a feature from the backlog — only the PO picks.** The PO must verify the feature has `Status: BASELINED` in its discovery section before moving it to `in-progress/` — if not baselined, the PO must complete Step 1 first.
+**If TODO.md says "No feature in progress":**
+
+- **PO**: Load `skill feature-selection` — it guides you through scoring and selecting the next BASELINED backlog feature. You must verify the feature has `Status: BASELINED` before moving it to `in-progress/`. Only you may move it.
+- **Software-engineer or reviewer**: Update TODO.md `Next:` line to `Run @product-owner — load skill feature-selection and pick the next BASELINED feature from backlog.` Then **stop**. Never self-select a feature. Never move a `.feature` file.
 
 ## Session End
 

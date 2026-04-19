@@ -28,7 +28,7 @@ Design correctness is far more important than lint/pyright/coverage compliance. 
 
 ### Prerequisites (stop if any fail — escalate to PO)
 
-1. `docs/features/in-progress/` contains only `.gitkeep` (no `.feature` files). If another `.feature` file exists, **STOP** — another feature is already in progress.
+1. `docs/features/in-progress/` contains exactly one `.feature` file (not just `.gitkeep`). If none exists, **STOP** — update TODO.md `Next:` to `Run @product-owner — move the chosen feature to in-progress/` and stop. Never self-select or move a feature yourself.
 2. The feature file's discovery section has `Status: BASELINED`. If not, escalate to PO — Step 1 is incomplete.
 3. The feature file contains `Rule:` blocks with `Example:` blocks and `@id` tags. If not, escalate to PO — criteria have not been written.
 4. Package name confirmed: read `pyproject.toml` → locate `[tool.setuptools]` → confirm directory exists on disk.
@@ -39,24 +39,18 @@ Design correctness is far more important than lint/pyright/coverage compliance. 
 2. Confirm directory exists: `ls <name>/`
 3. All new source files go under `<name>/`
 
-### Move Feature File
-
-```bash
-mv docs/features/backlog/<name>.feature docs/features/in-progress/<name>.feature
-```
-
-Update `TODO.md` Source path from `backlog/` to `in-progress/`.
+**Note on feature file moves**: The PO moves `.feature` files between folders. The software-engineer never moves or edits `.feature` files. Update TODO.md `Source:` path to reflect `in-progress/` once the PO has moved the file.
 
 ### Read Phase (all before writing anything)
 
-1. Read `docs/features/discovery.md` (project-level)
+1. Read `docs/discovery.md` (project-level synthesis changelog) and optionally `docs/discovery_journal.md` (Q&A history for context)
 2. Read **ALL** `.feature` files in `docs/features/backlog/` (discovery + entities sections)
 3. Read in-progress `.feature` file (full: Rules + Examples + @id)
 4. Read **ALL** existing `.py` files in `<package>/` — understand what already exists before adding anything
 
 ### Domain Analysis
 
-From Entities table + Rules (Business) in `.feature` file:
+From the Domain Model table in `docs/discovery.md` + Rules (Business) in the `.feature` file:
 - **Nouns** → named classes, value objects, aggregates
 - **Verbs** → method names with typed signatures
 - **Datasets** → named types (not bare dict/list)
@@ -116,19 +110,20 @@ class UserRepository(Protocol):
 
 Place stubs where responsibility dictates — do not pre-create `ports/` or `adapters/` folders unless a concrete external dependency was identified in scope. Structure follows domain analysis, not a template.
 
-### Write ADR Files (significant decisions only)
+### Record Architectural Decisions
 
-For each significant architectural decision, create or append to `docs/architecture/adr.md`:
+Append a new dated block to `docs/architecture.md` for each significant decision:
 
 ```markdown
-# ADR-NNN: <title>
+## YYYY-MM-DD — <feature-name>: <short title>
 
-**Decision:** <what was decided>
-**Reason:** <why, one sentence>
-**Alternatives considered:** <what was rejected and why>
+Decision: <what was decided>
+Reason: <why, one sentence>
+Alternatives considered: <what was rejected and why>
+Feature: <feature-name>
 ```
 
-Only write an ADR if the decision is non-obvious or has meaningful trade-offs. Routine YAGNI choices do not need an ADR.
+Only write a block for non-obvious decisions with meaningful trade-offs. Routine YAGNI choices do not need a record.
 
 ### Architecture Smell Check (hard gate)
 
@@ -155,7 +150,7 @@ Commit: `feat(<feature-name>): add architecture stubs`
 
 - [ ] Exactly one .feature `in_progress`. If not present, Load `skill feature-selection` 
 - [ ] Architecture stubs present in `<package>/` (committed by Step 2)
-- [ ] Read all `docs/architecture/adr.md` files — understand the architectural decisions before writing any test
+- [ ] Read `docs/architecture.md` — understand all architectural decisions before writing any test
 - [ ] Test stub files exist in `tests/features/<feature-name>/<rule_slug>_test.py` — one file per `Rule:` block, all `@id` stub functions present with `@pytest.mark.skip`; if missing, write them now before entering RED
 
 ### Write Test Stubs (if not present)
@@ -284,10 +279,10 @@ tests/features/<feature-name>/<rule_slug>_test.py
 ### Function Naming
 
 ```python
-def test_<rule_slug>_<@id>() -> None:
+def test_<feature_slug>_<@id>() -> None:
 ```
 
-- `rule_slug` = the `Rule:` title with spaces/hyphens replaced by underscores, lowercase
+- `feature_slug` = the `.feature` file stem with spaces/hyphens replaced by underscores, lowercase
 - `@id` = the `@id` from the `Example:` block
 
 ### Docstring Format (mandatory)
