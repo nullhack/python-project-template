@@ -10,7 +10,7 @@ success/failure conditions, and explicit out-of-scope boundaries.>
 (First session only. Omit this subsection in subsequent sessions.)
 
 ### Feature List
-- `<feature-name>` — <one-sentence description of what changed or was added>
+- `<feature-stem>` — <one-sentence description of what changed or was added>
 (Write "No changes" if no features were added or modified this session.)
 
 ### Domain Model

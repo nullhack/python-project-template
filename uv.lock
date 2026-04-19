@@ -671,6 +671,24 @@ wheels = [
 ]
 
 [[package]]
+name = "pytest-beehave"
+version = "3.0.20260419"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "fire" },
+    { name = "gherkin-official" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/6b/45/a64788db805fc079792d28670846f8320045bd82e67ea2528f842857606b/pytest_beehave-3.0.20260419.tar.gz", hash = "sha256:bc114a0f809e3b437f09f5d42da0a36a105dc8b7b7e311410a7fdcdc915398f0", size = 28685, upload-time = "2026-04-19T19:11:15.811Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/50/24/0bfacd345c1b75497f84d83ee3a4459ec30cc4e54fc4530c376f18346ccc/pytest_beehave-3.0.20260419-py3-none-any.whl", hash = "sha256:be3843af1e8691f6023007de147b4f92a8a4ca505f94439f2df210137e746acd", size = 30323, upload-time = "2026-04-19T19:11:14.168Z" },
+]
+
+[package.optional-dependencies]
+html = [
+    { name = "pytest-html" },
+]
+
+[[package]]
 name = "pytest-cov"
 version = "6.1.1"
 source = { registry = "https://pypi.org/simple" }
@@ -748,6 +766,7 @@ dev = [
     { name = "pdoc" },
     { name = "pyright" },
     { name = "pytest" },
+    { name = "pytest-beehave", extra = ["html"] },
     { name = "pytest-cov" },
     { name = "pytest-html" },
     { name = "pytest-mock" },
@@ -769,6 +788,7 @@ requires-dist = [
     { name = "pdoc", marker = "extra == 'dev'", specifier = ">=14.0" },
     { name = "pyright", marker = "extra == 'dev'", specifier = ">=1.1.407" },
     { name = "pytest", marker = "extra == 'dev'", specifier = ">=9.0.3" },
+    { name = "pytest-beehave", extras = ["html"], marker = "extra == 'dev'", specifier = ">=3.0" },
     { name = "pytest-cov", marker = "extra == 'dev'", specifier = ">=6.1.1" },
     { name = "pytest-html", marker = "extra == 'dev'", specifier = ">=4.1.1" },
     { name = "pytest-mock", marker = "extra == 'dev'", specifier = ">=3.14.0" },

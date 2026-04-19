@@ -162,7 +162,7 @@ Record what input was given and what output was observed.
 ### 9. Write the Report
 
 ```markdown
-## Step 4 Verification Report — <feature-name>
+## Step 4 Verification Report — <feature-stem>
 
 ### pyproject.toml Gate
 | Check | Result | Notes |
