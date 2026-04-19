@@ -2,6 +2,23 @@
 
 All notable changes to this template will be documented in this file.
 
+## [v6.0.20260419] - Declarative Nautilus - 2026-04-19
+
+### Added
+- **PO Self-Declaration**: mandatory 11-claim checklist (INVEST I/V/S/T, observable Then, no impl details, entity coverage, distinct examples, unique IDs, pre-mortem, scope boundary) written into TODO.md at end of Stage 2 Step B before criteria commit; every DISAGREE is a hard blocker (#71)
+- **Reviewer Stance Declaration**: 5-claim block (adversarial mindset, manual trace, boundary check, semantic read, independence) added to verify/SKILL.md report template before APPROVED/REJECTED verdict; DISAGREE allowed with explanation, unexplained DISAGREE = REJECTED (#71)
+- **session-workflow**: Step 1 Stage 2 Criteria TODO format section with full Self-Declaration template and Rule 9 enforcing the declaration before criteria commit (#71)
+- **Three append-only project docs**: `docs/discovery_journal.md` (raw Q&A), `docs/discovery.md` (synthesis changelog), `docs/architecture.md` (architectural decisions) replace the old flat `docs/features/discovery.md` (#70)
+
+### Changed
+- **Discovery model** (breaking): Phase 1 / Phase 2 / Phase 3 / Phase 4 replaced by 2-stage model — Stage 1 Discovery (unified iterative sessions, PO + stakeholder) and Stage 2 Specification (PO alone, per BASELINED feature) (#70)
+- **Feature file moves** (breaking): PO is now the sole owner of all `.feature` file moves (backlog → in-progress and in-progress → completed); SE and reviewer explicitly prohibited from moving files with clear escalation protocol (#70)
+- **Session protocol**: discovery journal sessions use `Status: IN-PROGRESS` / `Status: COMPLETE` markers; real-time split rule (>2 concerns or >8 candidate Examples splits within the same session); journal writes only answered Q&A in groups (#70)
+- **Bug handling**: explicit protocol — PO adds `@bug @id` Example, SE writes both the `@id` test in `tests/features/` and a `@given` Hypothesis property test in `tests/unit/`; both required (#70)
+- **scope/SKILL.md**: full rewrite to 2-stage model with session start checklist, question order (general → cross-cutting → per-feature), after-questions steps, baselining section, and bug handling section (#70)
+- **feature-selection/SKILL.md**: updated "Phase 4 (Criteria)" reference to "Stage 2 Step B (Criteria)" (#70)
+- **All agent files and skills**: updated to reflect new document model, terminology, and chain of responsibility (#70, #71)
+
 ## [v5.2.20260418] - Emergent Colugo - 2026-04-18 (hotfix)
 
 ### Fixed
