@@ -141,5 +141,6 @@ Add the skill name to the agent's "Available Skills" section so the agent knows 
 | `code-quality` | software-engineer | Quick reference — redirects to verify |
 | `pr-management` | software-engineer | Step 5: create PR with squash merge |
 | `git-release` | software-engineer | Step 5: calver versioning and release |
+| `living-docs` | product-owner | Step 5 (after acceptance) + on stakeholder demand: C4 diagrams + glossary |
 | `create-skill` | software-engineer | Create new skills |
 | `create-agent` | human-user | Create new agents with research-backed design |
