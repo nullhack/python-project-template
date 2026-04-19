@@ -15,6 +15,8 @@ This skill guides the reviewer through Step 4: independent verification that the
 
 **Every PASS/FAIL cell must have evidence.** Empty evidence = UNCHECKED = REJECTED.
 
+**You never move `.feature` files.** After producing an APPROVED report: update TODO.md `Next:` to `Run @product-owner — accept feature <name> at Step 5.` then stop. The PO accepts the feature and moves the file.
+
 ## When to Use (Step 4)
 
 After the software-engineer signals Step 3 is complete and all self-verification checks pass. Do not start verification until the software-engineer has committed all work and written the Self-Declaration.
@@ -26,7 +28,7 @@ After the software-engineer signals Step 3 is complete and all self-verification
 Read `docs/features/in-progress/<name>.feature`. Extract:
 - All `@id` tags and their Example titles from `Rule:` blocks
 - The interaction model (if the feature involves user interaction)
-- The Architecture section (module structure, ADRs)
+- The architectural decisions in `docs/architecture.md` relevant to this feature
 - The software-engineer's Self-Declaration from `TODO.md`
 
 ### 2. pyproject.toml Gate
@@ -124,7 +126,7 @@ Read the source files changed in this feature. **Do this before running lint/sta
 | No internal attribute access | Search for `_x` in assertions | None found | `_x`, `isinstance`, `type()` |
 | Every `@id` has a mapped test | Match `@id` to test functions | All mapped | Missing test |
 | No orphaned skipped stubs | Search for `@pytest.mark.skip` in `tests/features/` | None found | Any found — stub was written but never implemented |
-| Function naming | Matches `test_<rule_slug>_<8char_hex>` | All match | Mismatch |
+| Function naming | Matches `test_<feature_slug>_<8char_hex>` | All match | Mismatch |
 | Hypothesis tests have `@slow` | Read every `@given` for `@slow` marker | All present | Any missing |
 
 #### 5g. Code Quality — any FAIL → REJECTED

@@ -87,7 +87,6 @@ addopts = """
 --color=yes \
 --tb=short \
 -q \
---html=docs/tests/report.html \
 """
 testpaths = ["tests"]
 python_files = ["*_test.py"]
@@ -107,21 +106,28 @@ exclude_lines = [
 
 [tool.taskipy.tasks]
 run = "python -m app"
-test-report = """\
+test-coverage = """\
 pytest \
+  --cov-config=pyproject.toml \
+  --cov=app \
+  --cov-fail-under=100 \
+  --tb=no
+"""
+test-build = """\
+pytest \
+  -p no:beehave \
   --doctest-modules \
   --cov-config=pyproject.toml \
   --cov-report html:docs/coverage \
   --cov-report term:skip-covered \
-  --cov=app \
+  --cov=pytest_beehave \
   --cov-fail-under=100 \
   --hypothesis-show-statistics \
+  --html=docs/tests/report.html \
+  --self-contained-html \
 """
-test = """\
-pytest -m "not slow" -q && \
-task test-report\
-"""
-test-fast = "pytest -m \"not slow\" -q"
+test = "pytest --tb=short"
+test-fast = "pytest -m \"not slow\" -q --no-header --tb=no"
 test-slow = "pytest -m slow"
 ruff-check = "ruff check . --fix"
 ruff-format = "ruff format ."

@@ -38,6 +38,10 @@ Read each `.feature` file in `docs/features/backlog/`. Check its discovery secti
 - Non-BASELINED features are not eligible — they need Step 1 (scope) first
 - If no BASELINED features exist: inform the stakeholder; run `@product-owner` with `skill scope` to baseline the most promising backlog item first
 
+**IMPORTANT**
+
+**NEVER move a feature to `in-progress/` unless its discovery section has `Status: BASELINED`**
+
 ### 3. Score Each Candidate
 
 For each BASELINED feature, fill this table:
@@ -96,7 +100,7 @@ Run @<agent-name> — <first concrete action for this feature>
 ```
 
 - If the feature has no `Rule:` blocks yet → Step 1 (SCOPE): `Run @product-owner — load skill scope and write stories`
-- If the feature has `Rule:` blocks but no `@id` Examples → Step 1 Phase 4 (Criteria): `Run @product-owner — load skill scope and write acceptance criteria`
+- If the feature has `Rule:` blocks but no `@id` Examples → Step 1 Stage 2 Step B (Criteria): `Run @product-owner — load skill scope and write acceptance criteria`
 - If the feature has `@id` Examples → Step 2 (ARCH): `Run @software-engineer — load skill implementation and write architecture stubs`
 
 ### 6. Commit

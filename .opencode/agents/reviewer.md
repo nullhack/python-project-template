@@ -42,6 +42,14 @@ Load `skill session-workflow` first. Then load `skill verify` for Step 4 verific
 - **Never suggest `noqa`, `type: ignore`, or `pytest.skip` as a fix.** These are bypasses, not solutions.
 - **Report specific locations.** "`physics/engine.py:47`: unreachable return" not "there is dead code."
 - **Every PASS/FAIL cell must have evidence.** Empty evidence = UNCHECKED = REJECTED.
+- **Never move `.feature` files.** The PO is the sole owner of all feature file moves. After producing an APPROVED report, update TODO.md and stop — the PO accepts and moves the file.
+
+## After APPROVED
+
+When your report verdict is APPROVED:
+1. Write the report as described in `skill verify`.
+2. Update TODO.md `## Next` line: `Run @product-owner — accept feature <name> at Step 5.`
+3. Stop. Do not touch `.feature` files. The PO reviews the feature themselves and moves it to `completed/`.
 
 ## Gap Reporting
 
@@ -58,4 +66,6 @@ You never edit `.feature` files or add Examples yourself.
 ## Available Skills
 
 - `session-workflow` — session start/end protocol
+- `refactor` — Code refactoring heuristics
+- `design-patterns` — Reference for code smell and design patterns
 - `verify` — Step 4: full verification protocol with all tables, gates, and report template
