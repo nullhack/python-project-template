@@ -2,6 +2,29 @@
 
 All notable changes to this template will be documented in this file.
 
+## [v6.1.20260419] - Contextual Ambystoma - 2026-04-19 (hotfix)
+
+### Added
+- **living-docs skill**: new PO skill for generating C4 architecture diagrams (`docs/c4/context.md`, `docs/c4/container.md`) and maintaining the living glossary (`docs/glossary.md`) after each feature acceptance (Step 5) or on stakeholder demand
+- **docs/c4/**: new directory for C4 Level 1 (Context) and Level 2 (Container) Mermaid diagrams; placeholder `.gitkeep` added
+- **docs/glossary.md**: new living glossary file owned by `living-docs` skill (PO); terms sourced from completed feature files, `docs/discovery.md` Domain Model, and `docs/architecture.md` decisions
+- **Scientific research — documentation.md**: new file with 4 entries (#59–62): Ko et al. 2007 (information needs), Winters et al. 2020 (docs-as-code), Procida 2021 (Diátaxis framework), Allspaw 2012 (blameless post-mortems)
+- **Scientific research — domain-modeling.md**: 6 new DDD entries (#63–68): Evans DDD Reference CC-BY, Fowler UbiquitousLanguage bliki, Fowler BoundedContext bliki, Vernon IDDD, Verraes "UL is not a glossary", Evans Whirlpool process
+- **Scientific research — architecture.md**: 4 new entries (#55–58): Nygard ADRs, Kruchten 4+1 View Model, Brown C4 Model, Parnas information hiding
+
+### Changed
+- **discovery.md template**: `### Scope` section renamed to `### Context` — the section is a session-level general-context synthesis, not a complete project scope definition
+- **scope/SKILL.md**: updated `### Scope` references to `### Context` in Step C instructions and template block
+- **living-docs/SKILL.md**: glossary entry format updated — `**Context:**` renamed to `**Bounded context:**` (mandatory for multi-context projects); `Domain Event` added as a distinct Type value; secondary-artifact note added to preamble; source-traceability rule replaces "do not invent" rule; checklist updated accordingly
+- **implementation/SKILL.md**: Step 2 Read Phase now includes `docs/glossary.md` as item 2 — SE reads existing domain terms before naming classes, methods, and modules to avoid inventing synonyms
+- **create-skill/SKILL.md**: `living-docs` added to available skills table
+- **AGENTS.md**: skills table updated with `living-docs`; filesystem structure section updated (`docs/c4/`, `docs/glossary.md` added; `docs/architecture/` subtree removed; TODO.md reference updated)
+
+### Removed
+- **docs/architecture/**: folder deleted; the ADR log lives at `docs/architecture.md` (SE-owned); the old `adr-template.md` inside the folder was redundant
+- **docs/workflow.md**: deleted; canonical workflow reference is `AGENTS.md` and the skills under `.opencode/skills/`
+- **Dockerfile / docker-compose.yml**: removed as unused template artifacts
+
 ## [v6.0.20260419] - Declarative Nautilus - 2026-04-19
 
 ### Added

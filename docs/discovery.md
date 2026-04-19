@@ -4,7 +4,7 @@
 
 ## Session: YYYY-MM-DD
 
-### Scope
+### Context
 <3–5 sentence synthesis: who the users are, what the product does, why it exists,
 success/failure conditions, and explicit out-of-scope boundaries.>
 (First session only. Omit this subsection in subsequent sessions.)

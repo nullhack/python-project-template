@@ -44,9 +44,10 @@ Design correctness is far more important than lint/pyright/coverage compliance. 
 ### Read Phase (all before writing anything)
 
 1. Read `docs/discovery.md` (project-level synthesis changelog) and optionally `docs/discovery_journal.md` (Q&A history for context)
-2. Read **ALL** `.feature` files in `docs/features/backlog/` (discovery + entities sections)
-3. Read in-progress `.feature` file (full: Rules + Examples + @id)
-4. Read **ALL** existing `.py` files in `<package>/` — understand what already exists before adding anything
+2. Read `docs/glossary.md` if it exists — use existing domain terms when naming classes, methods, and modules; do not invent synonyms for terms already defined
+3. Read **ALL** `.feature` files in `docs/features/backlog/` (discovery + entities sections)
+4. Read in-progress `.feature` file (full: Rules + Examples + @id)
+5. Read **ALL** existing `.py` files in `<package>/` — understand what already exists before adding anything
 
 ### Domain Analysis
 
