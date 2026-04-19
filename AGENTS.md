@@ -230,7 +230,7 @@ Use `@software-engineer /skill git-release` for the full release process. When r
 
 Every session: load `skill session-workflow`. Read `TODO.md` first, update it at the end.
 
-`TODO.md` is a session bookmark — not a project journal. See `docs/workflow.md` for the full structure including the Cycle State and Self-Declaration blocks used during Step 3.
+`TODO.md` is a session bookmark — not a project journal. See `docs/workflow.md` for the full structure including the Cycle State block used during Step 3.
 
 ## Setup
 

@@ -281,23 +281,19 @@ All Rules must have their pre-mortems completed before any Examples are written.
 
 **Self-Declaration (mandatory before criteria commit)**
 
-Write the following block into `TODO.md` before committing. Every `DISAGREE` is a **hard blocker** — explain inline and fix before the commit. Do not commit until all items are AGREE or have a documented resolution.
+Communicate verbally to the next agent. Every `DISAGREE` is a **hard blocker** — fix before committing. Do not commit until all items are AGREE or have a documented resolution.
 
-```markdown
-## Self-Declaration
-As a product-owner I declare:
-* INVEST-I: each Rule is Independent (no hidden ordering or dependency between Rules) — AGREE/DISAGREE | conflict:
-* INVEST-V: each Rule delivers Value to a named user — AGREE/DISAGREE | Rule:
-* INVEST-S: each Rule is Small enough for one development cycle — AGREE/DISAGREE | Rule:
-* INVEST-T: each Rule is Testable (I can write a pass/fail Example for it) — AGREE/DISAGREE | Rule:
-* Observable: every Then is a single, observable, measurable outcome — AGREE/DISAGREE | file:line
-* No impl details: no Example tests internal state or implementation — AGREE/DISAGREE | file:line
-* Coverage: every entity in the feature description appears in at least one Rule — AGREE/DISAGREE | missing:
-* Distinct: no two Examples test the same observable behavior — AGREE/DISAGREE | file:line
-* Unique IDs: all @id values are unique within this feature — AGREE/DISAGREE
-* Pre-mortem: I ran a pre-mortem on each Rule and found no hidden failure modes — AGREE/DISAGREE | Rule:
-* Scope: no Example introduces behavior outside the feature boundary — AGREE/DISAGREE | file:line
-```
+- INVEST-I: each Rule is Independent (no hidden ordering or dependency between Rules) — AGREE/DISAGREE | conflict:
+- INVEST-V: each Rule delivers Value to a named user — AGREE/DISAGREE | Rule:
+- INVEST-S: each Rule is Small enough for one development cycle — AGREE/DISAGREE | Rule:
+- INVEST-T: each Rule is Testable (I can write a pass/fail Example for it) — AGREE/DISAGREE | Rule:
+- Observable: every Then is a single, observable, measurable outcome — AGREE/DISAGREE | file:line
+- No impl details: no Example tests internal state or implementation — AGREE/DISAGREE | file:line
+- Coverage: every entity in the feature description appears in at least one Rule — AGREE/DISAGREE | missing:
+- Distinct: no two Examples test the same observable behavior — AGREE/DISAGREE | file:line
+- Unique IDs: all @id values are unique within this feature — AGREE/DISAGREE
+- Pre-mortem: I ran a pre-mortem on each Rule and found no hidden failure modes — AGREE/DISAGREE | Rule:
+- Scope: no Example introduces behavior outside the feature boundary — AGREE/DISAGREE | file:line
 
 Commit: `feat(criteria): write acceptance criteria for <name>`
 

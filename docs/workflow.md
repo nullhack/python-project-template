@@ -213,11 +213,6 @@ Each step has a designated agent and a specific deliverable. No step is skipped.
 │  │  │    Load skill refactor — follow its protocol          │ │   │
 │  │  │    uv run task test-fast after each individual change │ │   │
 │  │  │    EXIT: test-fast passes; no smells remain           │ │   │
-│  │  ├───────────────────────────────────────────────────────┤ │   │
-│  │  │  SELF-DECLARE                                         │ │   │
-│  │  │    Fill Self-Declaration block in TODO.md             │ │   │
-│  │  │    AGREE/DISAGREE per principle with file:line        │ │   │
-│  │  │    DISAGREE requires inline justification             │ │   │
 │  │  └───────────────────────────────────────────────────────┘ │   │
 │  │                                                             │   │
 │  │  Mark @id completed in TODO.md                             │   │
@@ -231,38 +226,14 @@ Each step has a designated agent and a specific deliverable. No step is skipped.
 │    uv run task test           (coverage must be 100%)              │
 │    timeout 10s uv run task run                                     │
 │    coverage < 100%: add test in tests/unit/ for uncovered branch   │
-│      (do NOT add @id tests for coverage — @id tests are AC only)     │
-│    All must pass before Self-Declaration                           │
+│      (do NOT add @id tests for coverage — @id tests are AC only)   │
+│    All must pass before handing off                                │
 │                                                                     │
 │  SELF-DECLARATION (once, after all quality gates pass)             │
-│    As a software-engineer I declare:                               │
-│      * YAGNI: no code without a failing test — AGREE/DISAGREE | file:line │
-│      * YAGNI: no speculative abstractions — AGREE/DISAGREE | file:line   │
-│      * KISS: simplest solution that passes — AGREE/DISAGREE | file:line   │
-│      * KISS: no premature optimization — AGREE/DISAGREE | file:line       │
-│      * DRY: no duplication — AGREE/DISAGREE | file:line                  │
-│      * DRY: no redundant comments — AGREE/DISAGREE | file:line            │
-│      * SOLID-S: one reason to change per class — AGREE/DISAGREE | file:line│
-│      * SOLID-O: open for extension, closed for modification        │
-│                   — AGREE/DISAGREE | file:line                            │
-│      * SOLID-L: subtypes substitutable — AGREE/DISAGREE | file:line       │
-│      * SOLID-I: no forced unused deps — AGREE/DISAGREE | file:line        │
-│      * SOLID-D: depend on abstractions, not concretions            │
-│                   — AGREE/DISAGREE | file:line                            │
-│      * OC-1: one level of indentation per method — AGREE/DISAGREE | file:line│
-│      * OC-2: no else after return — AGREE/DISAGREE | file:line            │
-│      * OC-3: primitive types wrapped — AGREE/DISAGREE | file:line        │
-│      * OC-4: first-class collections — AGREE/DISAGREE | file:line        │
-│      * OC-5: one dot per line — AGREE/DISAGREE | file:line                │
-│      * OC-6: no abbreviations — AGREE/DISAGREE | file:line                │
-│      * OC-7: ≤20 lines per function — AGREE/DISAGREE | file:line          │
-│      * OC-8: ≤2 instance variables per class (behavioural classes only; dataclasses, Pydantic models, value objects, and TypedDicts are exempt) — AGREE/DISAGREE | file:line │
-│      * OC-9: no getters/setters — AGREE/DISAGREE | file:line              │
-│      * Patterns: no creational smell — AGREE/DISAGREE | file:line         │
-│      * Patterns: no structural smell — AGREE/DISAGREE | file:line         │
-│      * Patterns: no behavioral smell — AGREE/DISAGREE | file:line         │
-│      * Semantic: tests operate at same abstraction as AC           │
-│                   — AGREE/DISAGREE | file:line                            │
+│    Communicate verbally to reviewer:                               │
+│      * YAGNI, KISS, DRY, SOLID, OC checklist — AGREE/DISAGREE     │
+│        with file:line evidence for each claim                      │
+│      * DISAGREE requires inline justification                      │
 │                                                                     │
 │  → Hand off to Step 4 (Verify)                                     │
 └─────────────────────────────────────────────────────────────────────┘
@@ -275,7 +246,7 @@ Each step has a designated agent and a specific deliverable. No step is skipped.
 │                                                                     │
 │  4a. READ                                                           │
 │    in-progress .feature file (Rules + Examples + @id)             │
-│    Self-Declaration from software-engineer                         │
+│    Self-Declaration communicated verbally by software-engineer     │
 │                                                                     │
 │  4b. pyproject.toml GATE                                           │
 │    git diff main -- pyproject.toml                                 │
@@ -308,8 +279,8 @@ Each step has a designated agent and a specific deliverable. No step is skipped.
 │    [ ] Docstrings explain why, not what                             │
 │                                                                     │
 │  4g. SELF-DECLARATION AUDIT                                        │
-│    For every YES claim: find the file:line — does it hold?          │
-│    For every NO claim: is the deviation justified?                 │
+│    For every AGREE claim: find the file:line — does it hold?        │
+│    For every DISAGREE claim: is the deviation justified?           │
 │    Undeclared violations → REJECT                                  │
 │                                                                     │
 │  4h. INTERACTIVE (if any doubt remains)                            │
@@ -436,34 +407,7 @@ Source: docs/features/in-progress/<name>.feature
 
 ## Cycle State
 Test: @id:<hex> — <description>
-Phase: RED | GREEN | REFACTOR | SELF-DECLARE
-
-## Self-Declaration
-As a software-engineer I declare:
-* YAGNI: no code without a failing test — AGREE/DISAGREE | file:line
-* YAGNI: no speculative abstractions — AGREE/DISAGREE | file:line
-* KISS: simplest solution that passes — AGREE/DISAGREE | file:line
-* KISS: no premature optimization — AGREE/DISAGREE | file:line
-* DRY: no duplication — AGREE/DISAGREE | file:line
-* DRY: no redundant comments — AGREE/DISAGREE | file:line
-* SOLID-S: one reason to change per class — AGREE/DISAGREE | file:line
-* SOLID-O: open for extension, closed for modification — AGREE/DISAGREE | file:line
-* SOLID-L: subtypes substitutable — AGREE/DISAGREE | file:line
-* SOLID-I: no forced unused deps — AGREE/DISAGREE | file:line
-* SOLID-D: depend on abstractions, not concretions — AGREE/DISAGREE | file:line
-* OC-1: one level of indentation per method — AGREE/DISAGREE | deepest: file:line
-* OC-2: no else after return — AGREE/DISAGREE | file:line
-* OC-3: primitive types wrapped — AGREE/DISAGREE | file:line
-* OC-4: first-class collections — AGREE/DISAGREE | file:line
-* OC-5: one dot per line — AGREE/DISAGREE | file:line
-* OC-6: no abbreviations — AGREE/DISAGREE | file:line
-* OC-7: ≤20 lines per function, ≤50 per class — AGREE/DISAGREE | longest: file:line
-* OC-8: ≤2 instance variables per class (behavioural classes only; dataclasses, Pydantic models, value objects, and TypedDicts are exempt) — AGREE/DISAGREE | file:line
-* OC-9: no getters/setters — AGREE/DISAGREE | file:line
-* Patterns: no creational smell — AGREE/DISAGREE | file:line
-* Patterns: no structural smell — AGREE/DISAGREE | file:line
-* Patterns: no behavioral smell — AGREE/DISAGREE | file:line
-* Semantic: tests operate at same abstraction as AC — AGREE/DISAGREE | file:line
+Phase: RED | GREEN | REFACTOR
 
 ## Progress
 - [x] @id:<hex>: <done>
@@ -474,7 +418,7 @@ As a software-engineer I declare:
 <one actionable sentence>
 ```
 
-`## Cycle State` is updated at every phase transition. `## Self-Declaration` is written once after all quality gates pass in Step 3. Both sections are present only during Step 3; omit when in other steps.
+`## Cycle State` is updated at every phase transition. This section is present only during Step 3; omit when in other steps.
 
 ---
 

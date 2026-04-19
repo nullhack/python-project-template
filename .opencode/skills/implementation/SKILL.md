@@ -222,45 +222,41 @@ All must pass before Self-Declaration.
 
 ### Self-Declaration (once, after all quality gates pass)
 
-Answer honestly the `## Self-Declaration` report:
+Communicate verbally to the reviewer. Answer honestly for each principle:
 
-```markdown
-## Self-Declaration
-As a software-engineer I declare:
-* YAGNI: no code without a failing test — AGREE/DISAGREE | file:line
-* YAGNI: no speculative abstractions — AGREE/DISAGREE | file:line
-* KISS: simplest solution that passes — AGREE/DISAGREE | file:line
-* KISS: no premature optimization — AGREE/DISAGREE | file:line
-* DRY: no duplication — AGREE/DISAGREE | file:line
-* DRY: no redundant comments — AGREE/DISAGREE | file:line
-* SOLID-S: one reason to change per class — AGREE/DISAGREE | file:line
-* SOLID-O: open for extension, closed for modification — AGREE/DISAGREE | file:line
-* SOLID-L: subtypes substitutable — AGREE/DISAGREE | file:line
-* SOLID-I: no forced unused deps — AGREE/DISAGREE | file:line
-* SOLID-D: depend on abstractions, not concretions — AGREE/DISAGREE | file:line
-* OC-1: one level of indentation per method — AGREE/DISAGREE | deepest: file:line
-* OC-2: no else after return — AGREE/DISAGREE | file:line
-* OC-3: primitive types wrapped — AGREE/DISAGREE | file:line
-* OC-4: first-class collections — AGREE/DISAGREE | file:line
-* OC-5: one dot per line — AGREE/DISAGREE | file:line
-* OC-6: no abbreviations — AGREE/DISAGREE | file:line
-* OC-7: ≤20 lines per function, ≤50 per class — AGREE/DISAGREE | longest: file:line
-* OC-8: ≤2 instance variables per class (behavioural classes only; dataclasses, Pydantic models, value objects, and TypedDicts are exempt) — AGREE/DISAGREE | file:line
-* OC-9: no getters/setters — AGREE/DISAGREE | file:line
-* Patterns: I have no good reason to refactor parts of the code using OOP or Design Patterns — AGREE/DISAGREE | file:line
-* Patterns: no creational smell — AGREE/DISAGREE | file:line
-* Patterns: no structural smell — AGREE/DISAGREE | file:line
-* Patterns: no behavioral smell — AGREE/DISAGREE | file:line
-* Semantic: tests operate at same abstraction as AC — AGREE/DISAGREE | file:line
-```
+- YAGNI: no code without a failing test — AGREE/DISAGREE | file:line
+- YAGNI: no speculative abstractions — AGREE/DISAGREE | file:line
+- KISS: simplest solution that passes — AGREE/DISAGREE | file:line
+- KISS: no premature optimization — AGREE/DISAGREE | file:line
+- DRY: no duplication — AGREE/DISAGREE | file:line
+- DRY: no redundant comments — AGREE/DISAGREE | file:line
+- SOLID-S: one reason to change per class — AGREE/DISAGREE | file:line
+- SOLID-O: open for extension, closed for modification — AGREE/DISAGREE | file:line
+- SOLID-L: subtypes substitutable — AGREE/DISAGREE | file:line
+- SOLID-I: no forced unused deps — AGREE/DISAGREE | file:line
+- SOLID-D: depend on abstractions, not concretions — AGREE/DISAGREE | file:line
+- OC-1: one level of indentation per method — AGREE/DISAGREE | deepest: file:line
+- OC-2: no else after return — AGREE/DISAGREE | file:line
+- OC-3: primitive types wrapped — AGREE/DISAGREE | file:line
+- OC-4: first-class collections — AGREE/DISAGREE | file:line
+- OC-5: one dot per line — AGREE/DISAGREE | file:line
+- OC-6: no abbreviations — AGREE/DISAGREE | file:line
+- OC-7: ≤20 lines per function, ≤50 per class — AGREE/DISAGREE | longest: file:line
+- OC-8: ≤2 instance variables per class (behavioural classes only; dataclasses, Pydantic models, value objects, and TypedDicts are exempt) — AGREE/DISAGREE | file:line
+- OC-9: no getters/setters — AGREE/DISAGREE | file:line
+- Patterns: I have no good reason to refactor parts of the code using OOP or Design Patterns — AGREE/DISAGREE | file:line
+- Patterns: no creational smell — AGREE/DISAGREE | file:line
+- Patterns: no structural smell — AGREE/DISAGREE | file:line
+- Patterns: no behavioral smell — AGREE/DISAGREE | file:line
+- Semantic: tests operate at same abstraction as AC — AGREE/DISAGREE | file:line
 
-A `DISAGREE` answer is not automatic rejection — state the reason inline and fix before handing off.
+A `DISAGREE` answer is not automatic rejection — state the reason and fix before handing off.
 
 ### Hand off to Step 4 (Verify)
 
 Signal completion to the reviewer. Provide:
 - Feature file path
-- Self-Declaration report
+- Self-Declaration (communicated verbally, as above)
 - Summary of what was implemented
 
 ---
