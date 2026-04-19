@@ -213,33 +213,35 @@ All must pass before Self-Declaration.
 
 ### Self-Declaration (once, after all quality gates pass)
 
+<!-- This list has exactly 25 items — count before submitting. If your count ≠ 25, you missed one. -->
+
 Communicate verbally to the reviewer. Answer honestly for each principle:
 
-- YAGNI: no code without a failing test — AGREE/DISAGREE | file:line
-- YAGNI: no speculative abstractions — AGREE/DISAGREE | file:line
-- KISS: simplest solution that passes — AGREE/DISAGREE | file:line
-- KISS: no premature optimization — AGREE/DISAGREE | file:line
-- DRY: no duplication — AGREE/DISAGREE | file:line
-- DRY: no redundant comments — AGREE/DISAGREE | file:line
-- SOLID-S: one reason to change per class — AGREE/DISAGREE | file:line
-- SOLID-O: open for extension, closed for modification — AGREE/DISAGREE | file:line
-- SOLID-L: subtypes substitutable — AGREE/DISAGREE | file:line
-- SOLID-I: no forced unused deps — AGREE/DISAGREE | file:line
-- SOLID-D: depend on abstractions, not concretions — AGREE/DISAGREE | file:line
-- OC-1: one level of indentation per method — AGREE/DISAGREE | deepest: file:line
-- OC-2: no else after return — AGREE/DISAGREE | file:line
-- OC-3: primitive types wrapped — AGREE/DISAGREE | file:line
-- OC-4: first-class collections — AGREE/DISAGREE | file:line
-- OC-5: one dot per line — AGREE/DISAGREE | file:line
-- OC-6: no abbreviations — AGREE/DISAGREE | file:line
-- OC-7: ≤20 lines per function, ≤50 per class — AGREE/DISAGREE | longest: file:line
-- OC-8: ≤2 instance variables per class (behavioural classes only; dataclasses, Pydantic models, value objects, and TypedDicts are exempt) — AGREE/DISAGREE | file:line
-- OC-9: no getters/setters — AGREE/DISAGREE | file:line
-- Patterns: I have no good reason to refactor parts of the code using OOP or Design Patterns — AGREE/DISAGREE | file:line
-- Patterns: no creational smell — AGREE/DISAGREE | file:line
-- Patterns: no structural smell — AGREE/DISAGREE | file:line
-- Patterns: no behavioral smell — AGREE/DISAGREE | file:line
-- Semantic: tests operate at same abstraction as AC — AGREE/DISAGREE | file:line
+1. YAGNI: no code without a failing test — AGREE/DISAGREE | file:line
+2. YAGNI: no speculative abstractions — AGREE/DISAGREE | file:line
+3. KISS: simplest solution that passes — AGREE/DISAGREE | file:line
+4. KISS: no premature optimization — AGREE/DISAGREE | file:line
+5. DRY: no duplication — AGREE/DISAGREE | file:line
+6. DRY: no redundant comments — AGREE/DISAGREE | file:line
+7. SOLID-S: one reason to change per class — AGREE/DISAGREE | file:line
+8. SOLID-O: open for extension, closed for modification — AGREE/DISAGREE | file:line
+9. SOLID-L: subtypes substitutable — AGREE/DISAGREE | file:line
+10. SOLID-I: no forced unused deps — AGREE/DISAGREE | file:line
+11. SOLID-D: depend on abstractions, not concretions — AGREE/DISAGREE | file:line
+12. OC-1: one level of indentation per method — AGREE/DISAGREE | deepest: file:line
+13. OC-2: no else after return — AGREE/DISAGREE | file:line
+14. OC-3: primitive types wrapped — AGREE/DISAGREE | file:line
+15. OC-4: first-class collections — AGREE/DISAGREE | file:line
+16. OC-5: one dot per line — AGREE/DISAGREE | file:line
+17. OC-6: no abbreviations — AGREE/DISAGREE | file:line
+18. OC-7: ≤20 lines per function, ≤50 per class — AGREE/DISAGREE | longest: file:line
+19. OC-8: ≤2 instance variables per class (behavioural classes only; dataclasses, Pydantic models, value objects, and TypedDicts are exempt) — AGREE/DISAGREE | file:line
+20. OC-9: no getters/setters — AGREE/DISAGREE | file:line
+21. Patterns: no good reason remains to refactor using OOP or Design Patterns — AGREE/DISAGREE | file:line
+22. Patterns: no creational smell — AGREE/DISAGREE | file:line
+23. Patterns: no structural smell — AGREE/DISAGREE | file:line
+24. Patterns: no behavioral smell — AGREE/DISAGREE | file:line
+25. Semantic: tests operate at same abstraction as AC — AGREE/DISAGREE | file:line
 
 A `DISAGREE` answer is not automatic rejection — state the reason and fix before handing off.
 
