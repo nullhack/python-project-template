@@ -1,5 +1,5 @@
 ---
-name: pr-management
+name: create-pr
 description: Create pull requests with conventional commits, proper formatting, and branch workflow
 version: "1.0"
 author: software-engineer
@@ -7,11 +7,15 @@ audience: software-engineer
 workflow: git-management
 ---
 
-# PR Management
+# Create PR
 
-Create and manage pull requests after the reviewer approves the feature (Step 5).
+## When to Use
 
-## Branch Naming
+Load this skill after the reviewer approves the feature (Step 4 APPROVED) and the PO has accepted it (Step 5). Use it to create and merge the feature pull request.
+
+## Step-by-Step
+
+### Branch Naming
 
 ```
 feature/<feature-stem>    # new feature

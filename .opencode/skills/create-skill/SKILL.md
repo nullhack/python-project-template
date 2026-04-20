@@ -132,15 +132,17 @@ Add the skill name to the agent's "Available Skills" section so the agent knows 
 
 | Skill | Used By | Purpose |
 |---|---|---|
-| `session-workflow` | all agents | Session start/end protocol |
-| `feature-selection` | product-owner | Score and select next backlog feature (WSJF) |
-| `scope` | product-owner | Step 1: define acceptance criteria |
-| `implementation` | software-engineer | Steps 2-3: architecture + TDD loop |
-| `design-patterns` | software-engineer | Steps 2, 3: refactor when smell detected |
+| `run-session` | all agents | Session start/end protocol |
+| `select-feature` | product-owner | Score and select next backlog feature (WSJF) |
+| `define-scope` | product-owner | Step 1: define acceptance criteria |
+| `implement` | software-engineer | Steps 2-3: architecture + TDD loop |
+| `apply-patterns` | software-engineer | Steps 2, 3: refactor when smell detected |
 | `verify` | reviewer | Step 4: adversarial verification |
-| `code-quality` | software-engineer | Quick reference — redirects to verify |
-| `pr-management` | software-engineer | Step 5: create PR with squash merge |
+| `check-quality` | software-engineer | Quick reference — redirects to verify |
+| `create-pr` | software-engineer | Step 5: create PR with squash merge |
 | `git-release` | software-engineer | Step 5: calver versioning and release |
-| `living-docs` | product-owner | Step 5 (after acceptance) + on stakeholder demand: C4 diagrams + glossary |
+| `update-docs` | product-owner | Step 5 (after acceptance) + on stakeholder demand: C4 diagrams + glossary |
+| `design-colors` | designer | Color palette selection and WCAG validation |
+| `design-assets` | designer | SVG visual asset creation and updates |
 | `create-skill` | software-engineer | Create new skills |
 | `create-agent` | human-user | Create new agents with research-backed design |

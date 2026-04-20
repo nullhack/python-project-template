@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="docs/images/banner.svg" alt="Python Project Template" width="100%"/>
+<img src="docs/assets/banner.svg" alt="Python Project Template" width="100%"/>
 
 <br/><br/>
 
@@ -13,7 +13,7 @@
 [![CI](https://img.shields.io/github/actions/workflow/status/nullhack/python-project-template/ci.yml?style=for-the-badge&label=CI)](https://github.com/nullhack/python-project-template/actions/workflows/ci.yml)
 [![Python](https://img.shields.io/badge/python-3.13-blue?style=for-the-badge)](https://www.python.org/downloads/)
 
-**Production-ready Python scaffolding with a structured AI-agent workflow — from idea to shipped feature.**
+**From zero to hero — production-ready Python, without the ceremony.**
 
 </div>
 
@@ -34,19 +34,21 @@ uv run task test && uv run task lint && uv run task static-check
 
 ## Why this template?
 
-Most Python templates give you a folder structure and a `Makefile`. This one gives you a **complete delivery system**:
+Most Python templates give you a folder structure and a `Makefile`. This one gives you a **complete delivery system**: five AI agents, a structured five-step workflow, and quality gates that cannot be silenced by convention.
+
+The goal is to give every project — from its first commit — the same rigour that mature teams take years to establish.
 
 - **No feature starts without written acceptance criteria** — Gherkin `Example:` blocks traced to tests
 - **No feature ships without adversarial review** — the reviewer's default hypothesis is "broken"
-- **No guesswork on test stubs** — they are generated automatically from your `.feature` files
+- **No guesswork on test stubs** — generated automatically from `.feature` files
 - **No manual `@id` tags** — assigned automatically when you run tests
-- **AI agents for every role** — PO, SE, and reviewer each have scoped instructions; none can exceed their authority
+- **AI agents for every role** — each agent has scoped instructions and cannot exceed its authority
 
 ---
 
 ## How it works
 
-### 5-step delivery cycle
+### The delivery cycle
 
 ```
 SCOPE → ARCH → TDD LOOP → VERIFY → ACCEPT
@@ -75,6 +77,7 @@ docs/features/completed/    ← shipped
 | `@product-owner` | Scope, stories, acceptance criteria, delivery acceptance |
 | `@software-engineer` | Architecture, TDD loop, git, releases |
 | `@reviewer` | Adversarial verification — default position: broken |
+| `@designer` | Visual identity, colour palette, SVG assets |
 | `@setup-project` | One-time project initialisation |
 
 ### Quality tooling, pre-configured
@@ -141,13 +144,21 @@ def test_display_version_a3f2b1c4() -> None:
     """
 ```
 
-Each test is traced to exactly one acceptance criterion. No orphan tests. No untested criteria.
+Each test traces to exactly one acceptance criterion. No orphan tests. No untested criteria.
+
+---
+
+## Branding
+
+When you run `@setup-project`, the agent collects your project's identity — name, tagline, mission, colour palette, and release naming convention — and writes `docs/branding.md`. All agents read this file. Release names, C4 diagram colours, and generated copy all reflect your project's identity without you touching `.opencode/`.
+
+Absent or blank fields fall back to defaults: adjective-animal release names, Mermaid default colours, no wording constraints.
 
 ---
 
 ## Versioning
 
-`v{major}.{minor}.{YYYYMMDD}` — each release gets a unique adjective-animal name.
+`v{major}.{minor}.{YYYYMMDD}` — each release gets a unique name derived from your branding convention. By default: an adjective paired with an animal (scientific name). Configure your own theme in `docs/branding.md`.
 
 ---
 
