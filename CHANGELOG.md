@@ -2,6 +2,22 @@
 
 All notable changes to this template will be documented in this file.
 
+## [v6.4.20260420] - Minimal Prometheus - 2026-04-20
+
+### Added
+- **Branding system**: `docs/branding.md` — project identity, colour palette, release naming convention, and wording guidelines; agents read this file to personalise release names, C4 diagram colours, and docs without touching `.opencode/` (#89)
+- **Designer agent** (`designer.md`): owns `docs/branding.md` and `docs/assets/`; uses `design-colors` and `design-assets` skills (#89)
+- **`design-colors` skill**: step-by-step colour palette selection with WCAG 2.1 AA 4.5:1 contrast validation; Itten/Albers colour theory embedded inline (#89)
+- **`design-assets` skill**: SVG banner and logo creation workflow; W3C SVG 2 spec and WCAG 1.1.1 `aria-label` requirements embedded (#89)
+- **`setup-project` Step 6 Branding**: collects tagline, mission, vision, tone, theme, and colours; suggests WCAG-validated palettes when user provides a theme but no colours; writes `docs/branding.md` (#89)
+- **Output Style + Rule #8** in `run-session` skill: minimalist output discipline — signal only, no tool narration, session ends with `Next:` line (#89)
+
+### Changed
+- **Skill renames to verb-noun convention**: `session-workflow → run-session`, `scope → define-scope`, `implementation → implement`, `feature-selection → select-feature`, `living-docs → update-docs`, `pr-management → create-pr`, `design-patterns → apply-patterns`, `code-quality → check-quality` — all references updated across agents, skills, and `AGENTS.md` (#89)
+- **`docs/images/` → `docs/assets/`**: asset directory renamed; `README.md` path updated (#89)
+- **`git-release` v1.1**: reads `docs/branding.md` for optional release naming and theme; release name omitted from commit/release title if convention is absent (#89)
+- **`update-docs` skill**: reads `docs/branding.md` primary/accent colours to apply `%%{init:...}%%` theming to Mermaid C4 diagrams (#89)
+
 ## [v6.2.20260419] - Autonomous Stenella - 2026-04-19
 
 ### Added

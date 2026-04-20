@@ -1,6 +1,6 @@
 [project]
 name = "python-project-template"
-version = "6.3.20260419"
+version = "6.4.20260420"
 description = "Python template with some awesome tools to quickstart any Python project"
 readme = "README.md"
 requires-python = ">=3.13"
