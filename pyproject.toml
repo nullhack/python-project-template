@@ -21,7 +21,7 @@ Documentation = "https://github.com/nullhack/python-project-template/tree/main/d
 
 [project.optional-dependencies]
 dev = [
-    "pdoc>=14.0",
+    "pdoc>=16.0.0",
     "pytest>=9.0.3",
     "pytest-beehave[html]>=3.3,<4",
     "pytest-cov>=6.1.1",
