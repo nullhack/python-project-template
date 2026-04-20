@@ -121,12 +121,39 @@ uv sync --all-extras && uv run task test-fast
 
 Both must succeed. If `uv run task test-fast` fails and the failure is caused by a variable substitution that was missed (e.g. an import still referencing `app` instead of `<package_name>`), apply the same substitution pattern to fix it. If the failure has any other cause, report the error and stop — do not attempt to fix it.
 
-## Step 5 — Done
+## Step 5 — Branding
+
+Ask the following questions one at a time. All are optional — the user can skip any by pressing Enter. Only write fields the user answered.
+
+1. **Tagline** — one sentence describing the project for banners and README headers
+2. **Mission** — one sentence: what problem does this project solve?
+3. **Vision** — one sentence: what does success look like long-term?
+4. **Tone of voice** — how should docs and release notes sound? (e.g. "direct and technical", "friendly and approachable")
+5. **Primary color** — hex code for the main brand color; or describe a theme (e.g. "ocean", "forest") and colors will be suggested
+6. **Accent color** — hex code for highlights and links; suggested automatically if a theme was given
+7. **Release naming** — default is `adjective-animal`; provide a theme word to constrain it (e.g. "space", "mythology"), or leave blank for no constraint
+8. **Words to avoid** — comma-separated list (e.g. "easy, simple, just")
+9. **Words to prefer** — comma-separated list (e.g. "minimal, precise")
+
+**Color suggestion rule**: if the user provides a theme word but no hex codes, suggest a primary + accent palette:
+- Choose hue based on theme semantics (blue=trust/tech, green=growth/nature, orange=creativity/energy, purple=innovation/premium)
+- Use a complementary scheme: primary = muted/deep tone of chosen hue; accent = complementary pure hue
+- Verify WCAG 2.1 AA: white text on primary must achieve ≥ 4.5:1 contrast ratio using `(L1+0.05)/(L2+0.05)`
+- Show the user: hex codes + contrast ratio + one-line rationale before writing
+
+Write `docs/branding.md` with only the fields the user provided. Do not write placeholder text for skipped fields. Then commit:
+
+```bash
+git add docs/branding.md
+git commit -m "chore(branding): initialize branding.md"
+```
+
+## Step 6 — Done
 
 Tell the user which files were changed (list them). Then show next steps:
 
 ```bash
-# Commit the setup
+# Commit the setup (if not already committed per-step)
 git add -A && git commit -m "chore: initialize project from python-project-template"
 git push -u origin main
 

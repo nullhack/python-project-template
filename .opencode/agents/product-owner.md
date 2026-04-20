@@ -19,13 +19,13 @@ You interview the human stakeholder to discover what to build, write Gherkin spe
 
 ## Session Start
 
-Load `skill session-workflow` first — it reads TODO.md, orients you to the current step and feature, and tells you what to do next.
+Load `skill run-session` first — it reads TODO.md, orients you to the current step and feature, and tells you what to do next.
 
 ## Step Routing
 
 | Step | Action |
 |---|---|
-| **Step 1 — SCOPE** | Load `skill scope` — contains Stage 1 (Discovery sessions) and Stage 2 (Stories + Criteria). At the end of Stage 2 Step B (criteria), write the `## Self-Declaration` block into `TODO.md` before committing — every DISAGREE is a hard blocker. |
+| **Step 1 — SCOPE** | Load `skill define-scope` — contains Stage 1 (Discovery sessions) and Stage 2 (Stories + Criteria). At the end of Stage 2 Step B (criteria), write the `## Self-Declaration` block into `TODO.md` before committing — every DISAGREE is a hard blocker. |
 | **Step 5 — ACCEPT** | See acceptance protocol below |
 
 ## Ownership Rules
@@ -66,6 +66,6 @@ When a defect is reported against any feature:
 
 ## Available Skills
 
-- `session-workflow` — session start/end protocol
-- `feature-selection` — when TODO.md is idle: score and select next backlog feature using WSJF
-- `scope` — Step 1: Stage 1 (Discovery sessions with stakeholder) and Stage 2 (Stories + Criteria, PO alone)
+- `run-session` — session start/end protocol
+- `select-feature` — when TODO.md is idle: score and select next backlog feature using WSJF
+- `define-scope` — Step 1: Stage 1 (Discovery sessions with stakeholder) and Stage 2 (Stories + Criteria, PO alone)

@@ -1,5 +1,5 @@
 ---
-name: session-workflow
+name: run-session
 description: Session start and end protocol — read TODO.md, continue from checkpoint, update and commit
 version: "3.0"
 author: software-engineer
@@ -19,7 +19,7 @@ Every session starts by reading state. Every session ends by writing state. This
      # Current Work
 
      No feature in progress.
-     Next: Run @product-owner — load skill feature-selection and pick the next BASELINED feature from backlog.
+     Next: Run @product-owner — load skill select-feature and pick the next BASELINED feature from backlog.
      ```
 2. **If you are the PO** and Step 1 (SCOPE) is active: check `docs/discovery_journal.md` for the most recent session block.
    - If the most recent block has `Status: IN-PROGRESS` → the previous session was interrupted. Resume it before starting a new session: finish updating `.feature` files and `docs/discovery.md`, then mark the block `Status: COMPLETE`.
@@ -31,8 +31,8 @@ Every session starts by reading state. Every session ends by writing state. This
 
 **If TODO.md says "No feature in progress":**
 
-- **PO**: Load `skill feature-selection` — it guides you through scoring and selecting the next BASELINED backlog feature. You must verify the feature has `Status: BASELINED` before moving it to `in-progress/`. Only you may move it.
-- **Software-engineer or reviewer**: Update TODO.md `Next:` line to `Run @product-owner — load skill feature-selection and pick the next BASELINED feature from backlog.` Then **stop**. Never self-select a feature. Never move a `.feature` file.
+- **PO**: Load `skill select-feature` — it guides you through scoring and selecting the next BASELINED backlog feature. You must verify the feature has `Status: BASELINED` before moving it to `in-progress/`. Only you may move it.
+- **Software-engineer or reviewer**: Update TODO.md `Next:` line to `Run @product-owner — load skill select-feature and pick the next BASELINED feature from backlog.` Then **stop**. Never self-select a feature. Never move a `.feature` file.
 
 ## Session End
 
@@ -79,7 +79,7 @@ Run @<agent-name> — <one concrete action>
 
 **"Next" line format**: Always prefix with `Run @<agent-name>` so the human knows exactly which agent to invoke. Agent names are defined in `AGENTS.md` — use the name exactly as listed there. Examples:
 - `Run @<software-engineer-agent> — implement @id:a1b2c3d4 (Step 3 RED)`
-- `Run @<software-engineer-agent> — load skill implementation and begin Step 2 (Architecture) for <feature-stem>`
+- `Run @<software-engineer-agent> — load skill implement and begin Step 2 (Architecture) for <feature-stem>`
 - `Run @<reviewer-agent> — verify feature <feature-stem> at Step 4`
 - `Run @<product-owner-agent> — pick next BASELINED feature from backlog`
 - `Run @<product-owner-agent> — accept feature <feature-stem> at Step 5`
@@ -100,7 +100,7 @@ When no feature is active:
 # Current Work
 
 No feature in progress.
-Next: Run @<product-owner-agent> — load skill feature-selection and pick the next BASELINED feature from backlog.
+Next: Run @<product-owner-agent> — load skill select-feature and pick the next BASELINED feature from backlog.
 ```
 
 ## Step 3 (TDD Loop) Cycle-Aware TODO Format
@@ -142,3 +142,15 @@ Phase: RED | GREEN | REFACTOR
 5. The "Next" line must be actionable enough that a fresh AI can execute it without asking questions
 6. During Step 3, always update `## Cycle State` when transitioning between RED/GREEN/REFACTOR phases
 7. When a step completes, update TODO.md and commit **before** any further work
+8. Output is minimal-signal: findings, status, decisions, blockers, Next: line only. Use the fewest, least verbose tool calls necessary. Report results, not process. No redundant prose.
+
+## Output Style
+
+Use minimal output. Every message must contain only what the next agent or stakeholder needs to continue — findings, status, decisions, blockers, and the Next: line.
+
+- Use the fewest, least verbose tool calls necessary to achieve the step's goal
+- Report results, not process ("3 files changed" not "I ran git status and it showed...")
+- No narration before or after tool calls
+- No restating tool output in prose
+- No summaries of what was just done
+- Always close with Next:

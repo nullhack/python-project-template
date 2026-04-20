@@ -1,5 +1,5 @@
 ---
-name: scope
+name: define-scope
 description: Step 1 — discover requirements through stakeholder interviews and write Gherkin acceptance criteria
 version: "5.0"
 author: product-owner
@@ -471,5 +471,5 @@ Relative paths in this skill (e.g., scripts/, reference/) are relative to this b
 Note: file list is sampled.
 
 <skill_files>
-<file>/home/user/Documents/projects/python-project-template/.opencode/skills/scope/discovery-template.md</file>
+<file>/home/user/Documents/projects/python-project-template/.opencode/skills/define-scope/discovery-template.md</file>
 </skill_files>

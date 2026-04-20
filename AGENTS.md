@@ -44,27 +44,32 @@ STEP 5: ACCEPT         (product-owner)  → demo, validate, move .feature to com
 - **product-owner** — defines scope (Stage 1 Discovery + Stage 2 Specification), picks features, accepts deliveries
 - **software-engineer** — architecture, tests, code, git, releases (Steps 2-3 + release)
 - **reviewer** — runs commands and reviews code at Step 4, produces APPROVED/REJECTED report
+- **designer** — creates and updates visual assets (SVG banners, logos) and maintains `docs/branding.md`
 - **setup-project** — one-time setup to initialize a new project from this template
 
 ## Skills
 
 | Skill | Used By | Step |
 |---|---|---|
-| `session-workflow` | all agents | every session |
-| `feature-selection` | product-owner | between features (idle state) |
-| `scope` | product-owner | 1 |
-| `implementation` | software-engineer | 2, 3 |
-| `design-patterns` | software-engineer | 2, 3 (on-demand, when GoF pattern needed) |
+| `run-session` | all agents | every session |
+| `select-feature` | product-owner | between features (idle state) |
+| `define-scope` | product-owner | 1 |
+| `implement` | software-engineer | 2, 3 |
+| `apply-patterns` | software-engineer | 2, 3 (on-demand, when GoF pattern needed) |
 | `refactor` | software-engineer | 3 (REFACTOR phase + preparatory refactoring) |
 | `verify` | reviewer | 4 |
-| `code-quality` | software-engineer | pre-handoff (redirects to `verify`) |
-| `pr-management` | software-engineer | 5 |
-| `git-release` | software-engineer | 5 |
-| `living-docs` | product-owner | 5 (after acceptance) + on stakeholder demand |
+| `check-quality` | software-engineer | pre-handoff (redirects to `verify`) |
+| `create-pr` | software-engineer | 5 |
+| `git-release` | software-engineer | 5 (after acceptance) |
+| `update-docs` | product-owner | 5 (after acceptance) + on stakeholder demand |
+| `design-colors` | designer | branding, color, WCAG compliance |
+| `design-assets` | designer | SVG asset creation and updates |
 | `create-skill` | software-engineer | meta |
 | `create-agent` | human-user | meta |
 
-**Session protocol**: Every agent loads `skill session-workflow` at session start. Load additional skills as needed for the current step.
+**Branding**: Agents that generate docs, diagrams, release names, or visual assets read `docs/branding.md` if present. Absent or blank fields fall back to defaults (adjective-animal release names, Mermaid default colors, no wording constraints). `docs/branding.md` and `docs/assets/` are owned by the designer agent.
+
+**Session protocol**: Every agent loads `skill run-session` at session start. Load additional skills as needed for the current step.
 
 ## Step 1 — SCOPE
 
@@ -118,10 +123,12 @@ docs/
   discovery_journal.md                ← raw Q&A, PO appends after every session
   discovery.md                        ← synthesis changelog, PO appends after every session
   architecture.md                     ← all architectural decisions, SE appends after Step 2
-  glossary.md                         ← living glossary, PO updates via living-docs skill
+  glossary.md                         ← living glossary, PO updates via update-docs skill
+  branding.md                         ← project identity, colors, release naming, wording (designer owns)
+  assets/                             ← logo.svg, banner.svg, and other visual assets (designer owns)
   c4/
-    context.md                        ← C4 Level 1 diagram, PO updates via living-docs skill
-    container.md                      ← C4 Level 2 diagram, PO updates via living-docs skill
+    context.md                        ← C4 Level 1 diagram, PO updates via update-docs skill
+    container.md                      ← C4 Level 2 diagram, PO updates via update-docs skill
   features/
     backlog/<feature-stem>.feature    ← narrative + Rules + Examples
     in-progress/<feature-stem>.feature
@@ -229,15 +236,15 @@ Version format: `v{major}.{minor}.{YYYYMMDD}`
 
 - Minor bump for new features; major bump for breaking changes
 - Same-day second release: increment minor, keep same date
-- Each release gets a unique adjective-animal name
+- Release name: defined by `docs/branding.md > Release Naming > Convention`; absent or blank defaults to version string only (no name)
 
 Use `@software-engineer /skill git-release` for the full release process. When requested by the stakeholder
 
 ## Session Management
 
-Every session: load `skill session-workflow`. Read `TODO.md` first, update it at the end.
+Every session: load `skill run-session`. Read `TODO.md` first, update it at the end.
 
-`TODO.md` is a session bookmark — not a project journal. See `.opencode/skills/session-workflow/SKILL.md` for the full structure including the Cycle State block used during Step 3.
+`TODO.md` is a session bookmark — not a project journal. See `.opencode/skills/run-session/SKILL.md` for the full structure including the Cycle State block used during Step 3.
 
 ## Setup
 

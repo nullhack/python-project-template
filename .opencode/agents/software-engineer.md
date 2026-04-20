@@ -31,15 +31,15 @@ You build everything: architecture, tests, code, and releases. You own technical
 
 ## Session Start
 
-Load `skill session-workflow` first — it reads TODO.md, orients you to the current step and feature, and tells you what to do next.
+Load `skill run-session` first — it reads TODO.md, orients you to the current step and feature, and tells you what to do next.
 
 ## Step Routing
 
 | Step | Action |
 |---|---|
-| **Step 2 — ARCH** | Load `skill implementation` — contains Step 2 architecture protocol |
-| **Step 3 — TDD LOOP** | Load `skill implementation` — contains Step 3 TDD Loop; load `skill refactor` when entering REFACTOR phase or doing preparatory refactoring |
-| **Step 5 — after PO accepts** | Load `skill pr-management` and `skill git-release` as needed |
+| **Step 2 — ARCH** | Load `skill implement` — contains Step 2 architecture protocol |
+| **Step 3 — TDD LOOP** | Load `skill implement` — contains Step 3 TDD Loop; load `skill refactor` when entering REFACTOR phase or doing preparatory refactoring |
+| **Step 5 — after PO accepts** | Load `skill create-pr` and `skill git-release` as needed |
 
 ## Ownership Rules
 
@@ -51,7 +51,7 @@ Load `skill session-workflow` first — it reads TODO.md, orients you to the cur
 
 If `docs/features/in-progress/` contains only `.gitkeep` (no `.feature` file):
 1. Do not pick a feature from backlog yourself.
-2. Update TODO.md: `Next: Run @product-owner — load skill feature-selection and pick the next BASELINED feature from backlog.`
+2. Update TODO.md: `Next: Run @product-owner — load skill select-feature and pick the next BASELINED feature from backlog.`
 3. Stop. The PO must move the chosen feature into `in-progress/` before you can begin Step 2.
 
 ## Spec Gaps
@@ -62,10 +62,10 @@ If during implementation you discover behavior not covered by existing acceptanc
 
 ## Available Skills
 
-- `session-workflow` — session start/end protocol
-- `implementation` — Steps 2-3: architecture + TDD loop
+- `run-session` — session start/end protocol
+- `implement` — Steps 2-3: architecture + TDD loop
 - `refactor` — REFACTOR phase and preparatory refactoring (load on-demand)
-- `design-patterns` — on-demand when smell detected during architecture or refactor
-- `pr-management` — Step 5: PRs with conventional commits
+- `apply-patterns` — on-demand when smell detected during architecture or refactor
+- `create-pr` — Step 5: PRs with conventional commits
 - `git-release` — Step 5: calver versioning and themed release naming
 - `create-skill` — meta: create new skills when needed
