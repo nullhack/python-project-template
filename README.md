@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="docs/images/banner.svg" alt="Python Project Template" width="100%"/>
+<img src="docs/assets/banner.svg" alt="Python Project Template" width="100%"/>
 
 <br/><br/>
 

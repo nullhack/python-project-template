@@ -65,7 +65,7 @@ steps: <step numbers this agent owns, e.g., "2, 3">
 
 | Skill | When to Load | Purpose |
 |---|---|---|
-| `session-workflow` | Every session | Session start/end protocol |
+| `run-session` | Every session | Session start/end protocol |
 | `<skill-name>` | When needed | <What the skill provides> |
 
 ## Instructions
@@ -152,7 +152,7 @@ steps: <owned steps, e.g., "2-3">
 
 ## Available Skills
 
-- `session-workflow` — always
+- `run-session` — always
 - `<skill>` — when <trigger>
 
 ## Instructions

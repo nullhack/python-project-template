@@ -1,7 +1,7 @@
 ---
 name: git-release
-description: Create releases with hybrid major.minor.calver versioning and AI-generated adjective-animal naming
-version: "1.0"
+description: Create releases with hybrid major.minor.calver versioning and optional custom release naming
+version: "1.1"
 author: software-engineer
 audience: software-engineer
 workflow: release-management
@@ -28,12 +28,9 @@ v1.2.20260415  →  v1.3.20260415   (same-day second release)
 
 ## Release Naming
 
-Each release gets a unique adjective-animal name. Analyze the commits and PRs since the last release, identify the theme, and choose a name that reflects it.
+**Default**: no release name — the version tag alone is the release identifier. This is the industry-standard baseline (git tag, GitHub release title = version string).
 
-Choose any adjective and any animal (use scientific name, not common name). The only constraints:
-
-1. **Thematic fit**: the name should reflect what this release does
-2. **No repetition**: neither the adjective nor the animal may appear in a previous release
+**Custom naming**: if `docs/branding.md` exists and `Release Naming > Convention` is set, apply it. The convention field specifies the pattern (e.g. `adjective-greek-figure`, `adjective-animal`, `codename`).
 
 Check previous names to avoid repetition:
 ```bash
@@ -41,6 +38,15 @@ gh release list --limit 20
 ```
 
 ## Release Process
+
+### 0. Read branding
+
+Read `docs/branding.md` if it exists:
+
+- If `Release Naming > Convention` is set: use that convention for the release name. Analyze commits and PRs to choose a name that reflects the release theme.
+- If `Release Naming > Theme` is set: constrain the name to that thematic domain.
+- If `Release Naming > Excluded words` is set: omit those words.
+- If the file is absent or `Release Naming > Convention` is blank: skip naming — use version string only.
 
 ### 1. Analyze changes since last release
 
@@ -68,9 +74,9 @@ Both must match:
 
 ### 4. Update CHANGELOG.md
 
-Add at the top:
+Add at the top. If a release name was generated in Step 0, include it; otherwise omit it:
 ```markdown
-## [v{version}] - {Adjective Animal} - {YYYY-MM-DD}
+## [v{version}] - {YYYY-MM-DD}[ - {Release Name}]
 
 ### Added
 - description (#PR-number)
@@ -84,9 +90,9 @@ Add at the top:
 
 ### 5. Update living docs
 
-Run the `living-docs` skill to reflect the newly accepted feature in C4 diagrams and the glossary. This step runs inline — do not commit separately.
+Run the `update-docs` skill to reflect the newly accepted feature in C4 diagrams and the glossary. This step runs inline — do not commit separately.
 
-Load and execute the full `living-docs` skill now:
+Load and execute the full `update-docs` skill now:
 - Update `docs/c4/context.md` (C4 Level 1)
 - Update `docs/c4/container.md` (C4 Level 2, if multi-container)
 - Update `docs/glossary.md` (living glossary)
@@ -101,7 +107,8 @@ After updating `pyproject.toml`, regenerate the lockfile — CI runs `uv sync --
 uv lock
 git add pyproject.toml <package>/__init__.py CHANGELOG.md uv.lock \
   docs/c4/context.md docs/c4/container.md docs/glossary.md
-git commit -m "chore(release): bump version to v{version} - {Adjective Animal}"
+git commit -m "chore(release): bump version to v{version}[ - {Release Name}]"
+# Include " - {Release Name}" only if a release name was generated in Step 0; omit otherwise.
 ```
 
 ### 7. Create GitHub release
@@ -111,10 +118,10 @@ Assign the SHA first so it expands correctly inside the notes string:
 ```bash
 SHA=$(git rev-parse --short HEAD)
 gh release create "v{version}" \
-  --title "v{version} - {Adjective Animal}" \
-  --notes "# v{version} - {Adjective Animal}
+  --title "v{version}[ - {Release Name}]" \
+  --notes "# v{version}[ - {Release Name}]
 
-> *\"{one-line tagline matching the release theme}\"*
+> *\"{one-line tagline matching the release theme}\"*   ← include only if a release name was generated
 
 ## Changelog
 
@@ -129,10 +136,11 @@ gh release create "v{version}" \
 
 ## Summary
 
-2-3 sentences describing what this release accomplishes and why the name fits.
+2-3 sentences describing what this release accomplishes[ and why the name fits — omit if no name].
 
 ---
 **SHA**: \`${SHA}\`"
+# Replace [ - {Release Name}] with the actual name, or omit the bracketed portion entirely if Step 0 produced no name.
 ```
 
 ### 8. If a hotfix commit follows the release tag
@@ -163,7 +171,7 @@ The release notes and title do not need to change — only the target commit mov
 - [ ] `uv lock` run after version bump — lockfile must be up to date
 - [ ] `<package>/__version__` matches `pyproject.toml` version
 - [ ] CHANGELOG.md updated
-- [ ] `living-docs` skill run — C4 diagrams and glossary reflect the new feature
+- [ ] `update-docs` skill run — C4 diagrams and glossary reflect the new feature
 - [ ] Release name not used before
 - [ ] Release notes follow the template format
 - [ ] If a hotfix was pushed after the tag: tag reassigned to hotfix commit

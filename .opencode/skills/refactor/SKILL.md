@@ -42,7 +42,7 @@ Wear one hat at a time:
 
 ---
 
-## When to Load This Skill
+## When to Use
 
 ### 1. REFACTOR phase (opportunistic)
 
@@ -60,7 +60,7 @@ Beck: *"For each desired change, make the change easy (warning: this may be hard
 
 ---
 
-## Refactoring Protocol
+## Step-by-Step
 
 ### Step 1 — Identify the smell
 
@@ -81,7 +81,7 @@ Run the smell checklist from your Self-Declaration or from the Architecture Smel
 | Scattered notification or state transition | Observer / State |
 | Type-switching across callers | Strategy / Visitor |
 
-If pattern smell detected: load `skill design-patterns` for before/after examples.
+If pattern smell detected: load `skill apply-patterns` for before/after examples.
 
 ### Step 2 — Apply one catalogue entry at a time
 

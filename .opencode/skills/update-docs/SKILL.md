@@ -1,5 +1,5 @@
 ---
-name: living-docs
+name: update-docs
 description: Generate and update C4 architecture diagrams and the living glossary from existing project docs
 version: "1.0"
 author: product-owner
@@ -22,9 +22,9 @@ The glossary is a secondary artifact derived from the code, the domain model, an
 
 | Document | Created/Updated by | Inputs read |
 |---|---|---|
-| `docs/c4/context.md` | `living-docs` skill (PO) | `docs/discovery.md`, `docs/features/completed/` |
-| `docs/c4/container.md` | `living-docs` skill (PO) | `docs/architecture.md`, `docs/features/completed/` |
-| `docs/glossary.md` | `living-docs` skill (PO) | `docs/discovery.md`, `docs/glossary.md` (existing), `docs/architecture.md`, `docs/features/completed/` |
+| `docs/c4/context.md` | `update-docs` skill (PO) | `docs/discovery.md`, `docs/features/completed/` |
+| `docs/c4/container.md` | `update-docs` skill (PO) | `docs/architecture.md`, `docs/features/completed/` |
+| `docs/glossary.md` | `update-docs` skill (PO) | `docs/discovery.md`, `docs/glossary.md` (existing), `docs/architecture.md`, `docs/features/completed/` |
 | `docs/architecture.md` | SE only (Step 2) | — |
 | `docs/discovery.md` | PO only (Step 1) | — |
 
@@ -41,6 +41,7 @@ Read in this order:
 3. `docs/architecture.md` — all architectural decisions (containers, modules, protocols, external deps)
 4. `docs/c4/` — existing C4 diagrams if they exist (update, do not replace from scratch)
 5. `docs/glossary.md` — existing glossary if it exists (extend, never remove existing entries)
+6. `docs/branding.md` — if present, read `Visual > Primary color` and `Accent color`. Apply to C4 Mermaid diagrams via `%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '<primary-hex>', 'lineColor': '<accent-hex>'}}}%%`. If absent or fields blank, use Mermaid defaults.
 
 Identify from the read phase:
 
@@ -142,7 +143,7 @@ The glossary answers: **what does each domain term mean in this project's contex
 ```markdown
 # Glossary — <project-name>
 
-> Living document. Updated after each completed feature by the `living-docs` skill.
+> Living document. Updated after each completed feature by the `update-docs` skill.
 > Source: docs/discovery.md (Domain Model), docs/features/completed/, docs/architecture.md
 
 ---
@@ -188,20 +189,20 @@ If `docs/glossary.md` already exists:
 **When run standalone** (stakeholder on demand): commit after all diagrams and glossary are updated:
 
 ```
-docs(living-docs): update C4 and glossary after <feature-stem>
+docs(update-docs): update C4 and glossary after <feature-stem>
 ```
 
 If triggered without a specific feature (general refresh):
 
 ```
-docs(living-docs): refresh C4 diagrams and glossary
+docs(update-docs): refresh C4 diagrams and glossary
 ```
 
 ---
 
 ## Checklist
 
-- [ ] Read all five source files before writing anything
+- [ ] Read all source files before writing anything (including `docs/branding.md` if present)
 - [ ] Context diagram reflects all actors from completed feature files
 - [ ] Context diagram reflects all external systems from `docs/architecture.md`
 - [ ] Container diagram present only if multi-container architecture confirmed in `docs/architecture.md`
@@ -209,5 +210,5 @@ docs(living-docs): refresh C4 diagrams and glossary
 - [ ] No existing glossary entry removed
 - [ ] Every new term has a traceable source in completed feature files or `docs/architecture.md`; no term is invented
 - [ ] No edits made to `docs/architecture.md` or `docs/discovery.md`
-- [ ] If standalone: committed with `docs(living-docs): ...` message
+- [ ] If standalone: committed with `docs(update-docs): ...` message
 - [ ] If called from release: files staged but not committed (release process commits)

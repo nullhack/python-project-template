@@ -19,6 +19,10 @@ This skill guides the reviewer through Step 4: independent verification that the
 
 The reviewer produces one written report (see template below) that includes: all gate results, the SE Self-Declaration Audit, the **Reviewer Stance Declaration**, and the final APPROVED/REJECTED verdict. Do not start until the software-engineer has committed all work and communicated the Self-Declaration verbally in the handoff message.
 
+## When to Use
+
+Load this skill when the software-engineer signals Step 3 complete and hands off for review (Step 4). Do not load it earlier.
+
 ## Step-by-Step
 
 ### 1. Read the Feature Docs
@@ -60,7 +64,7 @@ Run before code review. If any row is FAIL, stop immediately with REJECTED.
 
 ### 5. Self-Declaration Audit
 
-**Completeness check (hard gate — REJECT if failed)**: Count the numbered items in the SE's Self-Declaration. The template in `implementation/SKILL.md` has exactly 25 items numbered 1–25. If the count is not 25, or any number in the sequence 1–25 is missing, REJECT immediately — do not proceed to item-level audit.
+**Completeness check (hard gate — REJECT if failed)**: Count the numbered items in the SE's Self-Declaration. The template in `implement/SKILL.md` has exactly 25 items numbered 1–25. If the count is not 25, or any number in the sequence 1–25 is missing, REJECT immediately — do not proceed to item-level audit.
 
 Read the software-engineer's Self-Declaration from the handoff message.
 
@@ -110,7 +114,7 @@ Read the source files changed in this feature. **Do this before running lint/sta
 
 #### 6d. Object Calisthenics — any FAIL → REJECTED
 
-Load `skill design-patterns` and apply the full OC checklist (9 rules). Record a PASS/FAIL with `file:line` evidence for each rule. Rules 1 and 7 (nesting and entity size) share thresholds with 6b above.
+Load `skill apply-patterns` and apply the full OC checklist (9 rules). Record a PASS/FAIL with `file:line` evidence for each rule. Rules 1 and 7 (nesting and entity size) share thresholds with 6b above.
 
 #### 6e. Design Patterns — any FAIL → REJECTED
 

@@ -1,5 +1,5 @@
 ---
-name: feature-selection
+name: select-feature
 description: Score and select the next backlog feature by value, effort, and dependencies
 version: "1.0"
 author: product-owner
@@ -36,7 +36,7 @@ ls docs/features/in-progress/
 Read each `.feature` file in `docs/features/backlog/`. Check its discovery section for `Status: BASELINED`.
 
 - Non-BASELINED features are not eligible — they need Step 1 (scope) first
-- If no BASELINED features exist: inform the stakeholder; run `@product-owner` with `skill scope` to baseline the most promising backlog item first
+- If no BASELINED features exist: inform the stakeholder; run `@product-owner` with `skill define-scope` to baseline the most promising backlog item first
 
 **IMPORTANT**
 
@@ -99,9 +99,9 @@ Source: docs/features/in-progress/<name>.feature
 Run @<agent-name> — <first concrete action for this feature>
 ```
 
-- If the feature has no `Rule:` blocks yet → Step 1 (SCOPE): `Run @product-owner — load skill scope and write stories`
-- If the feature has `Rule:` blocks but no `@id` Examples → Step 1 Stage 2 Step B (Criteria): `Run @product-owner — load skill scope and write acceptance criteria`
-- If the feature has `@id` Examples → Step 2 (ARCH): `Run @software-engineer — load skill implementation and write architecture stubs`
+- If the feature has no `Rule:` blocks yet → Step 1 (SCOPE): `Run @product-owner — load skill define-scope and write stories`
+- If the feature has `Rule:` blocks but no `@id` Examples → Step 1 Stage 2 Step B (Criteria): `Run @product-owner — load skill define-scope and write acceptance criteria`
+- If the feature has `@id` Examples → Step 2 (ARCH): `Run @software-engineer — load skill implement and write architecture stubs`
 
 ### 6. Commit
 

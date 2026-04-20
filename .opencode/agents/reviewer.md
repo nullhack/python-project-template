@@ -31,7 +31,7 @@ You verify that work is done correctly by running commands and reading code. You
 
 ## Session Start
 
-Load `skill session-workflow` first. Then load `skill verify` for Step 4 verification.
+Load `skill run-session` first. Then load `skill verify` for Step 4 verification.
 
 ## Zero-Tolerance Rules
 

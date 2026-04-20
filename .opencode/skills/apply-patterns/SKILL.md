@@ -1,7 +1,7 @@
 ---
-name: design-patterns
+name: apply-patterns
 description: GoF design pattern catalogue — smell triggers and Python before/after examples
-version: "2.0"
+version: "2.1"
 author: software-engineer
 audience: software-engineer
 workflow: feature-lifecycle
@@ -15,7 +15,11 @@ Sources: Gamma, Helm, Johnson, Vlissides. *Design Patterns: Elements of Reusable
 
 ---
 
-## How to Use This Skill
+## When to Use
+
+Load this skill when the `refactor` skill's smell table points to a GoF pattern, or when the `implement` skill's Silent Pre-mortem detects a pattern smell in architecture stubs.
+
+## Step-by-Step
 
 1. **Identify the smell** from the refactor skill's lookup table
 2. **Find the smell category** below (Creational / Structural / Behavioral)
