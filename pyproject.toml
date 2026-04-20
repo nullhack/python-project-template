@@ -1,6 +1,6 @@
 [project]
 name = "python-project-template"
-version = "6.2.20260419"
+version = "6.3.20260419"
 description = "Python template with some awesome tools to quickstart any Python project"
 readme = "README.md"
 requires-python = ">=3.13"
@@ -23,9 +23,8 @@ Documentation = "https://github.com/nullhack/python-project-template/tree/main/d
 dev = [
     "pdoc>=14.0",
     "pytest>=9.0.3",
-    "pytest-beehave[html]>=3.0",
+    "pytest-beehave[html]>=3.3,<4",
     "pytest-cov>=6.1.1",
-    "pytest-html>=4.1.1",
     "pytest-mock>=3.14.0",
     "ruff>=0.11.5",
     "taskipy>=1.14.1",
