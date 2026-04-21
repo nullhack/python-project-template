@@ -10,23 +10,25 @@ Features flow through 5 steps with a WIP limit of 1 feature at a time. The files
 - `docs/features/completed/<feature-stem>.feature` — accepted and shipped features
 
 ```
-STEP 1: SCOPE          (product-owner)  → discovery + Gherkin stories + criteria
-STEP 2: ARCH           (software-engineer)      → read system.md + glossary.md + in-progress feature + targeted package files; write domain stubs; create/update domain-model.md; significant decisions as docs/adr/ADR-YYYY-MM-DD-<slug>.md; system.md rewritten
-STEP 3: TDD LOOP       (software-engineer)      → RED → GREEN → REFACTOR, one @id at a time
-STEP 4: VERIFY         (reviewer)       → run all commands, review code
-STEP 5: ACCEPT         (product-owner)  → demo, validate, move .feature to completed/ (PO only)
+STEP 1: SCOPE          (product-owner)     → discovery + Gherkin stories + criteria
+STEP 2: ARCH           (system-architect)  → read system.md + glossary.md + in-progress feature + targeted package files; write domain stubs; create/update domain-model.md; significant decisions as docs/adr/ADR-YYYY-MM-DD-<slug>.md; system.md rewritten
+STEP 3: TDD LOOP       (software-engineer) → RED → GREEN → REFACTOR, one @id at a time
+STEP 4: VERIFY         (system-architect)  → run all commands, review code against architecture
+STEP 5: ACCEPT         (product-owner)     → demo, validate, move .feature to completed/ (PO only)
 ```
 
-**PO picks the next feature from backlog. Software-engineer never self-selects.**
+**Closed loop**: SA designs → SE builds → SA reviews. The same mind that designed the architecture verifies it. No context loss.
 
-**Verification is adversarial.** The reviewer's job is to try to break the feature, not to confirm it works. The default hypothesis is "it might be broken despite green checks; prove otherwise."
+**PO picks the next feature from backlog. No agent self-selects.**
+
+**Verification is adversarial.** The system-architect's job is to try to break the feature, not to confirm it works. The default hypothesis is "it might be broken despite green checks; prove otherwise."
 
 ## Roles
 
 - **Product Owner (PO)** — AI agent. Interviews the stakeholder, writes discovery docs, Gherkin features, and acceptance criteria. Accepts or rejects deliveries. **Sole owner of all `.feature` file moves** (backlog → in-progress before Step 2; in-progress → completed after Step 5 acceptance).
 - **Stakeholder** — Human. Answers PO's questions, provides domain knowledge, approves PO syntheses to confirm discovery is complete.
-- **Software Engineer** — AI agent. Architecture, test bodies, implementation, git. Never edits or moves `.feature` files. Escalates spec gaps to PO. If no `.feature` file is in `in-progress/`, stops and escalates to PO.
-- **Reviewer** — AI agent. Adversarial verification. Reports spec gaps to PO. Never moves `.feature` files. After APPROVED report, stops and escalates to PO for Step 5.
+- **System Architect (SA)** — AI agent. Designs architecture, writes domain stubs, records decisions in ADRs, and verifies implementation respects those decisions. Owns `docs/domain-model.md`, `docs/system.md`, and `docs/adr/ADR-*.md`. Never edits or moves `.feature` files. Escalates spec gaps to PO.
+- **Software Engineer (SE)** — AI agent. Implements everything: test bodies, production code, releases. Owns all `.py` files under the package. Never edits or moves `.feature` files. Escalates spec gaps to PO. If no `.feature` file is in `in-progress/`, stops and escalates to PO.
 
 ## Feature File Chain of Responsibility
 
@@ -37,13 +39,13 @@ STEP 5: ACCEPT         (product-owner)  → demo, validate, move .feature to com
 | `backlog/` → `in-progress/` | PO only | Before Step 2 begins; only if `Status: BASELINED` |
 | `in-progress/` → `completed/` | PO only | After Step 5 acceptance |
 
-**If an agent (SE or reviewer) finds no `.feature` in `in-progress/`**: update TODO.md with the correct `Next:` escalation line and stop. Never self-select a backlog feature.
+**If an agent (SE or SA) finds no `.feature` in `in-progress/`**: update TODO.md with the correct `Next:` escalation line and stop. Never self-select a backlog feature.
 
 ## Agents
 
 - **product-owner** — defines scope (Stage 1 Discovery + Stage 2 Specification), picks features, accepts deliveries
-- **software-engineer** — architecture, tests, code, git, releases (Steps 2-3 + release)
-- **reviewer** — runs commands and reviews code at Step 4, produces APPROVED/REJECTED report
+- **system-architect** — architecture and domain design (Step 2), adversarial technical review (Step 4)
+- **software-engineer** — TDD loop, implementation, tests, code, git, releases (Step 3 + release)
 - **designer** — creates and updates visual assets (SVG banners, logos) and maintains `docs/branding.md`
 - **setup-project** — one-time setup to initialize a new project from this template
 
@@ -54,10 +56,11 @@ STEP 5: ACCEPT         (product-owner)  → demo, validate, move .feature to com
 | `run-session` | all agents | every session |
 | `select-feature` | product-owner | between features (idle state) |
 | `define-scope` | product-owner | 1 |
-| `implement` | software-engineer | 2, 3 |
-| `apply-patterns` | software-engineer | 2, 3 (on-demand, when GoF pattern needed) |
+| `architect` | system-architect | 2 |
+| `implement` | software-engineer | 3 |
+| `apply-patterns` | system-architect, software-engineer | 2, 3 (on-demand, when GoF pattern needed) |
 | `refactor` | software-engineer | 3 (REFACTOR phase + preparatory refactoring) |
-| `verify` | reviewer | 4 |
+| `verify` | system-architect | 4 |
 | `check-quality` | software-engineer | pre-handoff (redirects to `verify`) |
 | `create-pr` | software-engineer | 5 |
 | `git-release` | software-engineer | 5 (after acceptance) |
@@ -113,7 +116,7 @@ Commit: `feat(criteria): write acceptance criteria for <name>`
 
 When a defect is reported:
 1. **PO** adds a `@bug` Example to the relevant `Rule:` in the `.feature` file and moves (or keeps) the feature in `backlog/` for normal scheduling.
-2. **SE** handles the bug when the feature is selected for development (standard Step 2–3 flow): implements the specific `@bug`-tagged test in `tests/features/<feature_slug>/` and also writes a `@given` Hypothesis property test in `tests/unit/` covering the whole class of inputs.
+2. **SA** handles Step 2 (architecture) and **SE** handles Step 3 (TDD loop) when the feature is selected for development. The SE implements the specific `@bug`-tagged test in `tests/features/<feature_slug>/` and also writes a `@given` Hypothesis property test in `tests/unit/` covering the whole class of inputs.
 3. Both tests are required. SE follows the normal TDD loop (Step 3).
 
 ## Filesystem Structure
@@ -122,9 +125,9 @@ When a defect is reported:
 docs/
   scope_journal.md                    ← raw Q&A, PO appends after every session
   discovery.md                        ← session synthesis changelog, PO appends after every session
-  domain-model.md                     ← living domain model, SE creates/updates at Step 2, PO reads only
-  adr/                                ← one file per decision: ADR-YYYY-MM-DD-<slug>.md, SE creates at Step 2
-  system.md                           ← current-state overview (completed features only), SE rewrites at Step 2, PO reviews at Step 5
+  domain-model.md                     ← living domain model, SA creates/updates at Step 2, PO reads only
+  adr/                                ← one file per decision: ADR-YYYY-MM-DD-<slug>.md, SA creates at Step 2
+  system.md                           ← current-state overview (completed features only), SA rewrites at Step 2, PO reviews at Step 5
   glossary.md                         ← living glossary, PO updates after each session
   branding.md                         ← project identity, colors, release naming, wording (designer owns)
   assets/                             ← logo.svg, banner.svg, and other visual assets (designer owns)
@@ -156,7 +159,7 @@ tests/features/<feature_slug>/<rule_slug>_test.py
 
 ### Stub Format
 
-Stubs are auto-generated by pytest-beehave. The SE triggers generation at Step 2 end by running `uv run task test-fast`. pytest-beehave reads the in-progress `.feature` file and creates one skipped function per `@id`:
+Stubs are auto-generated by pytest-beehave. The SA triggers generation at Step 2 end by running `uv run task test-fast`. pytest-beehave reads the in-progress `.feature` file and creates one skipped function per `@id`:
 
 ```python
 @pytest.mark.skip(reason="not yet implemented")
@@ -219,7 +222,7 @@ During Step 3 (TDD Loop), correctness priorities are:
 
 1. **Design correctness** — YAGNI > KISS > DRY > SOLID > Object Calisthenics > appropriated design patterns > complex code > complicated code > failing code > no code
 2. **One test green** — the specific test under work passes, plus `test-fast` still passes
-3. **Reviewer code-design check** — reviewer verifies design + semantic alignment (no lint/pyright/coverage yet)
+3. **Architect code-design check** — system-architect verifies design + semantic alignment (no lint/pyright/coverage yet)
 5. **Quality tooling** — `lint`, `static-check`, full `test` with coverage run only at software-engineer handoff (before Step 4)
 
 Design correctness is far more important than lint/pyright/coverage compliance. A well-designed codebase with minor lint issues is better than a lint-clean codebase with poor design.
@@ -229,7 +232,7 @@ Design correctness is far more important than lint/pyright/coverage compliance. 
 - **Automated checks** (lint, typecheck, coverage) verify **syntax-level** correctness — the code is well-formed.
 - **Human review** (semantic alignment, code review, manual testing) verifies **semantic-level** correctness — the code does what the user needs.
 - Both are required. All-green automated checks are necessary but not sufficient for APPROVED.
-- Reviewer defaults to REJECTED unless correctness is proven.
+- System-architect defaults to REJECTED unless correctness is proven.
 
 ## Release Management
 

@@ -18,8 +18,9 @@ Each agent reads only what is operationally necessary for their current step. Do
 | Agent | Reads |
 |---|---|
 | PO (Step 1) | `TODO.md`, `scope_journal.md` (resume check), `system.md`, `glossary.md`, `domain-model.md` (read-only, entity check), in-progress `.feature` |
-| SE (Step 2–3) | `TODO.md`, `system.md`, `glossary.md`, in-progress `.feature`, targeted `.py` files |
-| Reviewer (Step 4) | `TODO.md`, `system.md`, `glossary.md`, `domain-model.md`, in-progress `.feature`, ADR files referenced in `system.md` |
+| SA (Step 2) | `TODO.md`, `system.md`, `glossary.md`, in-progress `.feature`, targeted `.py` files |
+| SE (Step 3) | `TODO.md`, `system.md`, `glossary.md`, in-progress `.feature`, targeted `.py` files |
+| SA (Step 4) | `TODO.md`, `system.md`, `glossary.md`, `domain-model.md`, in-progress `.feature`, ADR files referenced in `system.md` |
 
 ## Session Start
 
@@ -42,7 +43,7 @@ Each agent reads only what is operationally necessary for their current step. Do
 **If TODO.md says "No feature in progress":**
 
 - **PO**: Load `skill select-feature` — it guides you through scoring and selecting the next BASELINED backlog feature. You must verify the feature has `Status: BASELINED` before moving it to `in-progress/`. Only you may move it.
-- **Software-engineer or reviewer**: Update TODO.md `Next:` line to `Run @product-owner — load skill select-feature and pick the next BASELINED feature from backlog.` Then **stop**. Never self-select a feature. Never create, edit, or move a `.feature` file.
+- **Software-engineer or system-architect**: Update TODO.md `Next:` line to `Run @product-owner — load skill select-feature and pick the next BASELINED feature from backlog.` Then **stop**. Never self-select a feature. Never create, edit, or move a `.feature` file.
 
 ## Session End
 
@@ -90,7 +91,7 @@ Run @<agent-name> — <one concrete action>
 **"Next" line format**: Always prefix with `Run @<agent-name>` so the human knows exactly which agent to invoke. Agent names are defined in `AGENTS.md` — use the name exactly as listed there. Examples:
 - `Run @<software-engineer-agent> — implement @id:a1b2c3d4 (Step 3 RED)`
 - `Run @<software-engineer-agent> — load skill implement and begin Step 2 (Architecture) for <feature-stem>`
-- `Run @<reviewer-agent> — verify feature <feature-stem> at Step 4`
+- `Run @system-architect — verify feature <feature-stem> at Step 4`
 - `Run @<product-owner-agent> — pick next BASELINED feature from backlog`
 - `Run @<product-owner-agent> — accept feature <feature-stem> at Step 5`
 

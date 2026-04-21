@@ -1,7 +1,7 @@
 ---
 name: implement
-description: Steps 2-3 — Architecture + TDD Loop, one @id at a time
-version: "4.0"
+description: Step 3 — TDD Loop, one @id at a time
+version: "5.0"
 author: software-engineer
 audience: software-engineer
 workflow: feature-lifecycle
@@ -9,11 +9,11 @@ workflow: feature-lifecycle
 
 # Implement
 
-Steps 2 (Architecture) and 3 (TDD Loop) combined into a single skill. The software-engineer owns both.
+Step 3: RED → GREEN → REFACTOR, one @id at a time. The software-engineer owns this step entirely.
 
 ## When to Use
 
-Load this skill when starting Step 2 (Architecture) after the PO has moved a BASELINED feature to `in-progress/`, or when continuing Step 3 (TDD Loop) for an in-progress feature.
+Load this skill when continuing Step 3 (TDD Loop) for an in-progress feature. Architecture stubs must already exist (created by the system-architect at Step 2).
 
 ## Software-Engineer Quality Gate Priority Order
 
@@ -25,139 +25,6 @@ During implementation, correctness priorities are (in order):
 4. **Quality tooling** — `lint`, `static-check`, full `test` with coverage run at end-of-feature handoff
 
 Design correctness is far more important than lint/pyright/coverage compliance. Never run lint (ruff check, ruff format), static-check (pyright), or coverage during the TDD loop — those are handoff-only checks.
-
----
-
-## Step 2 — Architecture
-
-### Prerequisites (stop if any fail — escalate to PO)
-
-1. `docs/features/in-progress/` contains exactly one `.feature` file (not just `.gitkeep`). If none exists, **STOP** — update TODO.md `Next:` to `Run @product-owner — move the chosen feature to in-progress/` and stop. Never self-select or move a feature yourself.
-2. The feature file's discovery section has `Status: BASELINED`. If not, escalate to PO — Step 1 is incomplete.
-3. The feature file contains `Rule:` blocks with `Example:` blocks and `@id` tags. If not, escalate to PO — criteria have not been written.
-4. Package name confirmed: read `pyproject.toml` → locate `[tool.setuptools]` → confirm directory exists on disk.
-
-### Package Verification (mandatory — before writing any code)
-
-1. Read `pyproject.toml` → locate `[tool.setuptools]` → record `packages = ["<name>"]`
-2. Confirm directory exists: `ls <name>/`
-3. All new source files go under `<name>/`
-
-**Note on feature file moves**: The PO moves `.feature` files between folders. The software-engineer never moves, creates, or edits `.feature` files. Update TODO.md `Source:` path to reflect `in-progress/` once the PO has moved the file.
-
-### Read Phase (targeted reads only — before writing anything)
-
-1. Read `docs/system.md` — understand current system structure and constraints
-2. Read `docs/glossary.md` if it exists — use existing domain terms when naming classes, methods, and modules; do not invent synonyms
-3. Read `docs/discovery.md` — check entity suggestions from recent sessions (optional, for context)
-4. Read in-progress `.feature` file (full: Rules + Examples + @id)
-5. Run `tree <package>/` — understand package structure without reading every file
-6. Read **specific `.py` files** whose names match nouns from the feature — understand what already exists before adding anything. Do not read the entire package.
-
-### Domain Analysis
-
-From `docs/glossary.md` + entity suggestions in `docs/discovery.md` + Rules (Business) in the `.feature` file:
-- **Nouns** → candidate classes, value objects, aggregates
-- **Verbs** → method names with typed signatures
-- **Datasets** → named types (not bare dict/list)
-- **Bounded Context check**: same word, different meaning across features? → module boundary
-- **Cross-feature entities** → candidate shared domain layer
-
-### Create / Update Domain Model
-
-**If `docs/domain-model.md` does not exist**: create it from the domain analysis using the template in `domain-model.md.template` in this skill's directory.
-
-**If `docs/domain-model.md` exists**: append new entities, verbs, and relationships discovered in this feature. Deprecate old entries if they are superseded. Never edit existing live entries — code depends on them.
-
-This file is SE-owned. The PO reads it but never writes to it.
-
-### Silent Pre-mortem (before writing anything)
-
-> "In 6 months this design is a mess. What mistakes did we make?"
-
-For each candidate class:
-- >2 ivars? → split
-- >1 reason to change? → isolate
-
-For each external dep:
-- Is it behind a Protocol? → if not, add
-
-For each noun:
-- Serving double duty across modules? → isolate
-
-If pattern smell detected, load `skill apply-patterns`.
-
-### Write Stubs into Package
-
-From the domain analysis, write or extend `.py` files in `<package>/`. For each entity:
-
-- **If the file already exists**: add the new class or method signature — do not remove or alter existing code.
-- **If the file does not exist**: create it with the new signatures only.
-
-**Stub rules (strictly enforced):**
-- Method bodies must be `...` — no logic, no conditionals, no imports beyond `typing` and domain types
-- No docstrings — signatures will change; add docstrings after GREEN (lint enforces this at quality gate)
-- No inline comments, no TODO comments, no speculative code
-
-**Example — correct stub style:**
-
-```python
-from dataclasses import dataclass
-from typing import Protocol
-
-
-@dataclass(frozen=True, slots=True)
-class EmailAddress:
-    value: str
-
-    def validate(self) -> None: ...
-
-
-class UserRepository(Protocol):
-    def save(self, user: "User") -> None: ...
-    def find_by_email(self, email: EmailAddress) -> "User | None": ...
-```
-
-**File placement (common patterns, not required names):**
-- `<package>/domain/<noun>.py` — entities, value objects
-- `<package>/domain/service.py` — cross-entity operations
-
-Place stubs where responsibility dictates — do not pre-create `ports/` or `adapters/` folders unless a concrete external dependency was identified in scope. Structure follows domain analysis, not a template.
-
-### Record Architectural Decisions
-
-For each significant decision, create a new file:
-
-```bash
-docs/adr/ADR-YYYY-MM-DD-<slug>.md
-```
-
-Use the template in `adr.md.template` in this skill's directory. Fill in Decision, Reason, Alternatives Considered, and Consequences.
-
-Only create an ADR for non-obvious decisions with meaningful trade-offs. Routine YAGNI choices do not need a record.
-
-Reference relevant ADRs from `docs/system.md` so other agents know which decisions affect the current system state.
-
-### Architecture Smell Check (hard gate)
-
-Apply to the stub files just written:
-
-- [ ] No class with >2 responsibilities (SOLID-S)
-- [ ] No behavioural class with >2 instance variables (OC-8; dataclasses, Pydantic models, value objects, and TypedDicts are exempt)
-- [ ] All external deps assigned a Protocol (SOLID-D + Hexagonal) — N/A if no external dependencies identified in scope
-- [ ] No noun with different meaning across modules (DDD Bounded Context)
-- [ ] No missing Creational pattern: repeated construction without Factory/Builder
-- [ ] No missing Structural pattern: type-switching without Strategy/Visitor
-- [ ] No missing Behavioral pattern: state machine or scattered notification without State/Observer
-- [ ] Each ADR consistent with each @id AC — no contradictions
-
-If any check fails: fix the stub files before committing.
-
-### Generate Test Stubs
-
-Run `uv run task test-fast` once. It reads the in-progress `.feature` file, assigns `@id` tags to any untagged `Example:` blocks (writing them back to the `.feature` file), and generates `tests/features/<feature_slug>/<rule_slug>_test.py` — one file per `Rule:` block, one skipped function per `@id`. Verify the files were created, then stage all changes (including any `@id` write-backs to the `.feature` file).
-
-Commit: `feat(<feature-stem>): add architecture and test stubs`
 
 ---
 
@@ -228,7 +95,7 @@ All must pass before Self-Declaration.
 
 <!-- This list has exactly 25 items — count before submitting. If your count ≠ 25, you missed one. -->
 
-Communicate verbally to the reviewer. Answer honestly for each principle:
+Communicate verbally to the system-architect. Answer honestly for each principle:
 
 As a software-engineer I declare that:
 * 1. YAGNI: no code without a failing test — AGREE/DISAGREE | file:line
@@ -261,7 +128,7 @@ A `DISAGREE` answer is not automatic rejection — state the reason and fix befo
 
 ### Hand off to Step 4 (Verify)
 
-Signal completion to the reviewer. Provide:
+Signal completion to the system-architect. Provide:
 - Feature file path
 - Self-Declaration (communicated verbally, as above)
 - Summary of what was implemented
@@ -387,7 +254,7 @@ Extra tests in `tests/unit/` are allowed freely (coverage, edge cases, etc.) —
 
 ## Signature Design
 
-<package> signatures are written during Step 2 (Architecture) and refined during Step 3 (RED). They live directly in the package `.py` files — never in the `.feature` file.
+<package> signatures are written during Step 2 (Architecture) by the system-architect and refined during Step 3 (RED) by the software-engineer. They live directly in the package `.py` files — never in the `.feature` file.
 
 Key rules:
 - Bodies are always `...` in the architecture stub
@@ -417,7 +284,7 @@ class UserRepository(Protocol):
 
 ## Templates
 
-All templates for files written by this skill live in this skill's directory:
+Templates for architecture files live in the `architect` skill's directory:
 
 - `domain-model.md.template` — `docs/domain-model.md` structure
 - `system.md.template` — `docs/system.md` structure
@@ -426,9 +293,3 @@ All templates for files written by this skill live in this skill's directory:
 Base directory for this skill: file:///home/user/Documents/projects/python-project-template/.opencode/skills/implement
 Relative paths in this skill (e.g., scripts/, reference/) are relative to this base directory.
 Note: file list is sampled.
-
-<skill_files>
-<file>/home/user/Documents/projects/python-project-template/.opencode/skills/implement/adr.md.template</file>
-<file>/home/user/Documents/projects/python-project-template/.opencode/skills/implement/domain-model.md.template</file>
-<file>/home/user/Documents/projects/python-project-template/.opencode/skills/implement/system.md.template</file>
-</skill_files>

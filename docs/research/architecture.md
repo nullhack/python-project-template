@@ -74,10 +74,80 @@ Foundations for the architectural decisions and patterns used in this template.
 
 ---
 
+---
+
+### 59. Architecture Tradeoff Analysis Method (ATAM)
+
+| | |
+|---|---|
+| **Source** | Kazman, R., Klein, M., & Clements, P. (2000). "ATAM: Method for Architecture Evaluation" (CMU/SEI-2000-TR-004). Software Engineering Institute, Carnegie Mellon University. https://resources.sei.cmu.edu/asset_files/TechnicalReport/2000_005_001_13706.pdf |
+| **Date** | 2000 (updated 2018) |
+| **Alternative** | Bass, L., Clements, P., & Kazman, R. (2021). *Software Architecture in Practice* (4th ed.). Addison-Wesley. (Chapters 21–23) |
+| **Status** | Confirmed — SEI standard; used by NASA, DoD, and Fortune 500 organizations |
+| **Core finding** | Architecture should be evaluated early through structured scenario analysis. ATAM discovers **trade-offs** and **sensitivity points** before implementation begins, when change cost is minimal. The method produces a risk-mitigation roadmap rather than a pass/fail verdict. |
+| **Mechanism** | Nine-step process: (1) present ATAM, (2) present business drivers, (3) present architecture, (4) identify architectural approaches, (5) generate quality-attribute utility tree, (6) analyze architectural approaches, (7) brainstorm and prioritize scenarios, (8) re-analyze with broader stakeholder input, (9) present results. Key output: a ranked list of **risk themes** with sensitivity points (architectural decisions that most affect quality attributes). |
+| **Where used** | Step 4 (Verify): the system-architect applies ATAM-style adversarial review — testing the implemented architecture against the quality-attribute scenarios identified in Step 2. The SA who designed the architecture reviews it, eliminating the context-loss problem of external reviewers. |
+
+---
+
+### 60. Conway's Law and the Inverse Conway Maneuver
+
+| | |
+|---|---|
+| **Source** | Conway, M. E. (1968). "How Do Committees Invent?" *Datamation*, 14(4), 28–31. https://www.melconway.com/Home/Committees_Paper.html |
+| **Date** | 1968 (dubbed "Conway's Law" by Brooks, 1975) |
+| **Alternative** | Fowler, M. (2022). "Conway's Law." *martinfowler.com*. https://martinfowler.com/bliki/ConwaysLaw.html |
+| **Status** | Confirmed — universally accepted; Brooks called it "the most important law in software engineering" |
+| **Core finding** | Any organization that designs a system will produce a design whose structure is a copy of the organization's communication structure. The **Inverse Conway Maneuver** deliberately alters team organization to encourage the desired software architecture — aligning Conway's Law with architectural intent rather than fighting it. |
+| **Mechanism** | Three responses to Conway's Law: (1) **Ignore** — architecture clashes with team structure, producing friction; (2) **Accept** — ensure architecture does not conflict with existing communication patterns; (3) **Inverse Conway** — restructure teams (and agent roles) to match the desired architecture. In AI-assisted development, this means the agent who designs a module should be the same agent who reviews it, preserving architectural intent through the build-and-review cycle. |
+| **Where used** | AGENTS.md role design: the system-architect → software-engineer → system-architect loop implements a closed communication path. The SA designs the module boundary; the SE builds within it; the SA verifies the boundary was respected. No external reviewer introduces misaligned mental models. |
+
+---
+
+### 61. The Architect as Decision-Maker
+
+| | |
+|---|---|
+| **Source** | Fowler, M. (2003). "Who Needs an Architect?" *IEEE Software*, 20(5), 11–13. https://martinfowler.com/ieeeSoftware/whoNeedsArchitect.pdf |
+| **Date** | 2003 |
+| **Alternative** | Martin, R. C. (2017). *Clean Architecture: A Craftsman's Guide to Software Structure and Design*. Prentice Hall. (Chapters 1–3) |
+| **Status** | Confirmed — IEEE standard reference; Martin's "Clean Architecture" extends to policy/detail separation |
+| **Core finding** | The architect's job is not to draw diagrams — it is to make **significant decisions** that are hard to change later. The architect is a facilitator who builds consensus around technical direction, not a dictator who issues edicts. The best architects are also programmers who understand implementation constraints firsthand. |
+| **Mechanism** | Fowler distinguishes four architect archetypes: (1) **Architect as decision-maker** — owns the hard-to-change choices; (2) **Architect as expert** — provides technical depth the team lacks; (3) **Architect as facilitator** — brings stakeholders to consensus; (4) **Architect as gatekeeper** — enforces standards. The template's system-architect role combines (1) and (4): making architectural decisions (ADRs) and enforcing them through adversarial review. Martin adds the **policy/detail** separation: the architect owns policy (business rules, interfaces); the developer owns detail (algorithms, data structures). |
+| **Where used** | `system-architect.md` agent definition: the SA owns `docs/domain-model.md`, `docs/system.md`, and `docs/adr/ADR-*.md` (policy layer). The SE owns the implementation code (detail layer). The SA reviews to ensure policy was not violated by detail decisions. |
+
+---
+
+### 62. Team Topologies and Cognitive Load
+
+| | |
+|---|---|
+| **Source** | Skelton, M., & Pais, M. (2019). *Team Topologies: Organizing Business and Technology Teams for Fast Flow*. IT Revolution Press. |
+| **Date** | 2019 |
+| **Alternative** | Narayan, S. (2015). *Agile IT Organization Design*. Addison-Wesley. |
+| **Status** | Confirmed — widely adopted in DevOps and platform engineering; 4.5+ star ratings across retailers |
+| **Core finding** | Team structure should minimize **cognitive load** — the total mental effort required to operate within a system. Cognitive load has three types: (1) **intrinsic** (fundamental complexity of the problem), (2) **extraneous** (unnecessary complexity from poor tooling/process), (3) **germane** (effort to build reusable abstractions). The goal is to maximize germane load (learning) while minimizing extraneous load (friction). |
+| **Mechanism** | Four team types: **Stream-aligned** (delivers customer value end-to-end), **Platform** (provides internal services), **Enabling** (helps stream teams adopt new capabilities), **Complicated-subsystem** (owns complex domain expertise). Three interaction modes: **Collaboration** (joint discovery), **X-as-a-Service** (clean handoff), **Facilitating** (temporary assistance). The SA→SE→SA loop is a **Collaboration** interaction between policy owner (SA) and detail owner (SE), with the SA providing **X-as-a-Service** interfaces (stubs, ADRs) that the SE consumes. |
+| **Where used** | AGENTS.md workflow design: the SA is a **complicated-subsystem** team (architectural expertise) and the SE is **stream-aligned** (feature delivery). The verify step is a **Collaboration** interaction where the SA reviews whether the SE respected the X-as-a-Service boundaries (stubs, protocols, ADRs). |
+
+---
+
 ## Bibliography
 
 1. Bass, L., Clements, P., & Kazman, R. (2021). *Software Architecture in Practice* (4th ed.). Addison-Wesley.
 2. Brown, S. (2018). *The C4 Model for Software Architecture*. Leanpub. https://c4model.com
+3. Cockburn, A. (2005). Hexagonal Architecture. *alistair.cockburn.us*. https://alistair.cockburn.us/hexagonal-architecture/
+4. Conway, M. E. (1968). "How Do Committees Invent?" *Datamation*, 14(4), 28–31.
+5. Fowler, M. (2003). "Who Needs an Architect?" *IEEE Software*, 20(5), 11–13.
+6. Fowler, M. (2022). "Conway's Law." *martinfowler.com*. https://martinfowler.com/bliki/ConwaysLaw.html
+7. Freeman, S., & Pryce, N. (2009). *Growing Object-Oriented Software, Guided by Tests*. Addison-Wesley.
+8. Kazman, R., Klein, M., & Clements, P. (2000). "ATAM: Method for Architecture Evaluation" (CMU/SEI-2000-TR-004). SEI, CMU.
+9. Keeling, M. (2017). *Design It!: From Programmer to Software Architect*. Pragmatic Bookshelf.
+10. Kruchten, P. B. (1995). The 4+1 View Model of Architecture. *IEEE Software*, 12(6), 42–50.
+11. Martin, R. C. (2017). *Clean Architecture: A Craftsman's Guide to Software Structure and Design*. Prentice Hall.
+12. Nygard, M. T. (2011). Documenting Architecture Decisions. *cognitect.com*.
+13. Parnas, D. L. (1972). On the criteria to be used in decomposing systems into modules. *CACM*, 15(12), 1053–1058.
+14. Skelton, M., & Pais, M. (2019). *Team Topologies*. IT Revolution Press.
 3. Cockburn, A. (2005). Hexagonal Architecture. *alistair.cockburn.us*. https://alistair.cockburn.us/hexagonal-architecture/
 4. Freeman, S., & Pryce, N. (2009). *Growing Object-Oriented Software, Guided by Tests*. Addison-Wesley.
 5. Keeling, M. (2017). *Design It!: From Programmer to Software Architect*. Pragmatic Bookshelf.

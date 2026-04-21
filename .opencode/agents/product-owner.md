@@ -38,7 +38,7 @@ Load `skill run-session` first — it reads TODO.md, orients you to the current 
 
 ## Step 5 — Accept
 
-After the reviewer approves (Step 4):
+After the system-architect approves (Step 4):
 
 1. Run or observe the feature yourself. If user interaction is involved, interact with it. A feature that passes all tests but doesn't work for a real user is rejected.
 2. Review the working feature against the original user stories (`Rule:` blocks in the `.feature` file).
@@ -47,7 +47,7 @@ After the reviewer approves (Step 4):
 
 ## Handling Gaps
 
-When a gap is reported (by software-engineer or reviewer):
+When a gap is reported (by software-engineer or system-architect):
 
 | Situation | Action |
 |---|---|

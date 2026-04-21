@@ -11,7 +11,7 @@ workflow: git-management
 
 ## When to Use
 
-Load this skill after the reviewer approves the feature (Step 4 APPROVED) and the PO has accepted it (Step 5). Use it to create and merge the feature pull request.
+Load this skill after the system-architect approves the feature (Step 4 APPROVED) and the PO has accepted it (Step 5). Use it to create and merge the feature pull request.
 
 ## Step-by-Step
 

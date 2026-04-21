@@ -1,23 +1,23 @@
 ---
 name: verify
 description: Step 4 — run all verification commands, review code quality, and produce a written report
-version: "5.0"
-author: reviewer
-audience: reviewer
+version: "6.0"
+author: system-architect
+audience: system-architect
 workflow: feature-lifecycle
 ---
 
 # Verify
 
-This skill guides the reviewer through Step 4: independent verification that the feature works correctly and meets quality standards. The output is a written report with a clear APPROVED or REJECTED decision.
+This skill guides the system-architect through Step 4: adversarial verification that the feature works correctly and respects the architecture designed in Step 2. The output is a written report with a clear APPROVED or REJECTED decision.
 
-**Your default hypothesis is that the code is broken despite passing automated checks. Your job is to find the failure mode. If you cannot find one after thorough investigation, APPROVE. If you find one, REJECTED.**
+**Your default hypothesis is that the code is broken despite passing automated checks. You designed the architecture; you know what should have been preserved. Your job is to find the failure mode. If you cannot find one after thorough investigation, APPROVE. If you find one, REJECTED.**
 
 **Every PASS/FAIL cell must have evidence.** Empty evidence = UNCHECKED = REJECTED.
 
 **You never move, create, or edit `.feature` files.** After producing an APPROVED report: update TODO.md `Next:` to `Run @product-owner — accept feature <name> at Step 5.` then stop. The PO accepts the feature and moves the file.
 
-The reviewer produces one written report (see template below) that includes: all gate results, the SE Self-Declaration Audit, the **Reviewer Stance Declaration**, and the final APPROVED/REJECTED verdict. Do not start until the software-engineer has committed all work and communicated the Self-Declaration verbally in the handoff message.
+The system-architect produces one written report (see template below) that includes: all gate results, the SE Self-Declaration Audit, the **Architect Review Stance Declaration**, and the final APPROVED/REJECTED verdict. Do not start until the software-engineer has committed all work and communicated the Self-Declaration verbally in the handoff message.
 
 ## When to Use
 
@@ -238,12 +238,13 @@ Record what input was given and what output was observed.
 | 24 | Patterns: no behavioral smell | AGREE/DISAGREE | PASS/FAIL | |
 | 25 | Semantic: tests operate at same abstraction as AC | AGREE/DISAGREE | PASS/FAIL | |
 
-### Reviewer Stance Declaration
+### Architect Review Stance Declaration
 
 Write this block **before** the Decision. Every `DISAGREE` must include an inline explanation. A `DISAGREE` with no explanation auto-forces `REJECTED`.
 
-As a reviewer I declare:
+As a system-architect I declare:
 * Adversarial: I actively tried to find a failure mode, not just confirm passing — AGREE/DISAGREE | note:
+* Architecture preservation: I verified that stubs, Protocols, and ADR decisions from Step 2 were respected — AGREE/DISAGREE | violations:
 * Manual trace: I traced at least one execution path manually beyond automated output — AGREE/DISAGREE | path:
 * Boundary check: I checked the boundary conditions and edge cases of every Rule — AGREE/DISAGREE | gaps:
 * Semantic read: I read each test against its AC and confirmed it tests the right observable behavior — AGREE/DISAGREE | mismatches:

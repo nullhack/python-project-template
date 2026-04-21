@@ -137,7 +137,7 @@ Add the skill name to the agent's "Available Skills" section so the agent knows 
 | `define-scope` | product-owner | Step 1: define acceptance criteria |
 | `implement` | software-engineer | Steps 2-3: architecture + TDD loop |
 | `apply-patterns` | software-engineer | Steps 2, 3: refactor when smell detected |
-| `verify` | reviewer | Step 4: adversarial verification |
+| `verify` | system-architect | Step 4: adversarial verification |
 | `check-quality` | software-engineer | Quick reference — redirects to verify |
 | `create-pr` | software-engineer | Step 5: create PR with squash merge |
 | `git-release` | software-engineer | Step 5: calver versioning and release |
