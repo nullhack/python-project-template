@@ -83,13 +83,15 @@ EOF
 
 ## Merging
 
-Use squash merge for feature branches to keep main history clean:
+Use `--no-ff` merge to preserve feature boundary in history. This makes the feature revertible as a single unit:
 ```bash
-gh pr merge <number> --squash --delete-branch
+gh pr merge <number> --merge --delete-branch
 ```
 
-After merge, update local main:
+**After merge**:
 ```bash
 git checkout main
 git pull origin main
 ```
+
+**Why not squash**: Squash merge erases the individual commit history of the feature. With `--no-ff`, the merge commit groups all feature commits together while preserving each commit's message and authorship.

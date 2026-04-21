@@ -33,6 +33,7 @@ Design correctness is far more important than lint/pyright/coverage compliance. 
 ### Prerequisites
 
 - [ ] Exactly one .feature `in_progress`. If not present, load `skill select-feature`
+- [ ] On `feat/<stem>` or `fix/<stem>` branch (`git branch --show-current`). If on `main`, load `skill version-control` and create/switch to the branch first
 - [ ] Architecture stubs present in `<package>/` (committed by Step 2)
 - [ ] Read `docs/system.md` — understand current system structure and constraints
 - [ ] Read in-progress `.feature` file — understand acceptance criteria
@@ -125,6 +126,14 @@ As a software-engineer I declare that:
 * 25. Semantic: tests operate at same abstraction as AC — AGREE/DISAGREE | file:line
 
 A `DISAGREE` answer is not automatic rejection — state the reason and fix before handing off.
+
+### Branch Hygiene (before handoff)
+
+Before signalling completion:
+1. `git status` — working tree must be clean. Commit any remaining changes.
+2. `git branch --show-current` — must be `feat/<stem>` or `fix/<stem>`, never `main`.
+3. `git log main..HEAD --oneline` — must show 1+ commits. If empty, nothing was committed on this branch.
+4. `git push origin $(git branch --show-current)` — all commits must be on origin.
 
 ### Hand off to Step 4 (Verify)
 

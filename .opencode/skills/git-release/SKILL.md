@@ -39,6 +39,16 @@ gh release list --limit 20
 
 ## Release Process
 
+**Guard**: `git branch --show-current` must output `main`. If not, stop — releases happen from `main` only.
+
+```bash
+git checkout main
+git fetch origin main
+git merge --ff-only origin/main   # fast-forward only; if this fails, main has diverged — resolve first
+```
+
+
+
 ### 0. Read branding
 
 Read `docs/branding.md` if it exists:

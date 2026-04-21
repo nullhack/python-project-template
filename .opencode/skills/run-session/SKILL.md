@@ -38,7 +38,10 @@ Each agent reads only what is operationally necessary for their current step. Do
    - `docs/features/in-progress/<feature-stem>.feature` — feature file (Rules + Examples + @id)
    - `docs/system.md` — current system overview and constraints
 4. Run `git status` — understand what is committed vs. what is not
-5. Confirm scope: you are working on exactly one step of one feature
+5. **If Step 2–5 is active**: run `git branch --show-current` and verify:
+   - **SA at Step 2 or Step 4**: must be on `feat/<stem>` or `fix/<stem>`. If on `main`, stop — load `skill version-control` and create the branch first.
+   - **SE at Step 3**: must be on `feat/<stem>` or `fix/<stem>`. If on `main`, stop — load `skill version-control` and create/switch to the branch first.
+6. Confirm scope: you are working on exactly one step of one feature
 
 **If TODO.md says "No feature in progress":**
 

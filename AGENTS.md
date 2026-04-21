@@ -11,11 +11,33 @@ Features flow through 5 steps with a WIP limit of 1 feature at a time. The files
 
 ```
 STEP 1: SCOPE          (product-owner)     → discovery + Gherkin stories + criteria
-STEP 2: ARCH           (system-architect)  → read system.md + glossary.md + in-progress feature + targeted package files; write domain stubs; create/update domain-model.md; significant decisions as docs/adr/ADR-YYYY-MM-DD-<slug>.md; system.md rewritten
+STEP 2: ARCH           (system-architect)  → branch from main; read system.md + glossary.md + in-progress feature + targeted package files; write domain stubs; create/update domain-model.md; significant decisions as docs/adr/ADR-YYYY-MM-DD-<slug>.md; system.md rewritten
 STEP 3: TDD LOOP       (software-engineer) → RED → GREEN → REFACTOR, one @id at a time
 STEP 4: VERIFY         (system-architect)  → run all commands, review code against architecture
-STEP 5: ACCEPT         (product-owner)     → demo, validate, move .feature to completed/ (PO only)
+STEP 5: ACCEPT         (product-owner)     → demo, validate, SE merges branch to main with --no-ff, move .feature to completed/ (PO only)
 ```
+
+### Branch Model
+
+All feature work happens on branches. `main` is the single source of truth and receives code only via `--no-ff` merge from an approved feature branch.
+
+**Normal flow**:
+1. SE creates `feat/<stem>` from latest `main` at Step 2 start
+2. All commits live on `feat/<stem>` through Steps 2–4
+3. After PO acceptance (Step 5), SE merges `feat/<stem>` to `main` with `--no-ff`
+4. SE deletes the feature branch
+
+**Post-mortem flow** (failed feature restart):
+1. Find the feature's original start commit
+2. SE creates `fix/<stem>` from that commit
+3. Post-mortem is committed as the first commit on `fix/<stem>`
+4. Steps 2–5 rerun on `fix/<stem>`, then merge to `main` with `--no-ff`
+
+**Git Safety Protocol** (absolute — never violate):
+- No force push (`git push --force` forbidden)
+- No history rewrite on pushed branches (no `rebase -i`, `commit --amend`, `reset --hard` after push)
+- Use `git revert` to undo changes on shared history
+- No commits directly to `main`
 
 **Closed loop**: SA designs → SE builds → SA reviews. The same mind that designed the architecture verifies it. No context loss.
 
@@ -62,6 +84,7 @@ STEP 5: ACCEPT         (product-owner)     → demo, validate, move .feature to 
 | `refactor` | software-engineer | 3 (REFACTOR phase + preparatory refactoring) |
 | `verify` | system-architect | 4 |
 | `check-quality` | software-engineer | pre-handoff (redirects to `verify`) |
+| `version-control` | software-engineer | Step 2 (branch creation), Step 5 (merge to main), post-mortem branches |
 | `create-pr` | software-engineer | post-acceptance |
 | `git-release` | software-engineer | post-acceptance |
 | `update-docs` | product-owner | post-acceptance + on stakeholder demand |
@@ -124,9 +147,11 @@ When a defect is reported:
 If the stakeholder reports failure **after the PO has attempted Step 5 acceptance**:
 1. **PO does not move the `.feature` file to `completed/`**. Ensure it remains in `in-progress/`.
 2. **Team compiles a compact post-mortem** (`docs/post-mortem/YYYY-MM-DD-<feature-stem>-<keyword>.md`, max 15 lines, process-level root cause).
-3. **PO scans `docs/post-mortem/`** and selects relevant files by matching `<feature-stem>` or `<failure-keyword>`.
-4. **PO reads selected post-mortems**, then resets TODO.md to Step 2 with context.
-5. **SA restarts Step 2**, reading relevant post-mortems as input. The same feature re-enters the ARCH step.
+3. **SE creates a fix branch** from the feature's original start commit: `git checkout -b fix/<stem> <start-sha>`. The post-mortem is committed as the first commit on this branch.
+4. **PO scans `docs/post-mortem/`** and selects relevant files by matching `<feature-stem>` or `<failure-keyword>`.
+5. **PO reads selected post-mortems**, then resets TODO.md to Step 2 with context.
+6. **SA restarts Step 2** on `fix/<stem>`, reading relevant post-mortems as input. The same feature re-enters the ARCH step.
+7. After acceptance, SE merges `fix/<stem>` to `main` with `--no-ff`.
 
 Post-mortems are append-only, never edited. If a failure mode recurs, write a new file referencing the old one.
 
@@ -252,6 +277,8 @@ Version format: `v{major}.{minor}.{YYYYMMDD}`
 - Minor bump for new features; major bump for breaking changes
 - Same-day second release: increment minor, keep same date
 - Release name: defined by `docs/branding.md > Release Naming > Convention`; absent or blank defaults to version string only (no name)
+
+**Releases happen from `main` only.** The SE ensures `main` is up to date with `origin/main` before creating a release. No releases from feature branches.
 
 Use `@software-engineer /skill git-release` for the full release process. When requested by the stakeholder
 

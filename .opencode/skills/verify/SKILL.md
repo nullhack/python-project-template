@@ -45,7 +45,27 @@ git diff main -- pyproject.toml
 
 Any change → REJECT immediately. The software-engineer must revert and get stakeholder approval.
 
-### 3. Check Commit History
+### 3. Branch Gate
+
+```bash
+git branch --show-current
+```
+
+- Must output `feat/<stem>` or `fix/<stem>`. If `main` → REJECT immediately — the SE is working on the wrong branch.
+
+```bash
+git log main..HEAD --oneline
+```
+
+- Must show 1+ commits. If empty → REJECT — nothing was committed on this branch.
+
+```bash
+git merge-tree $(git merge-base HEAD main) HEAD main
+```
+
+- Empty output = clean merge possible. Non-empty output = conflicts exist → REJECT — the SE must resolve conflicts on the feature branch before handoff.
+
+### 4. Check Commit History
 
 ```bash
 git log --oneline -20
@@ -57,7 +77,7 @@ Verify:
 - No "fix tests", "wip", "temp" commits
 - No uncommitted changes: `git status` should be clean
 
-### 4. Production-Grade Gate
+### 5. Production-Grade Gate
 
 Run before semantic review. If any row is FAIL, stop immediately with REJECTED.
 
@@ -66,7 +86,7 @@ Run before semantic review. If any row is FAIL, stop immediately with REJECTED.
 | App exits cleanly | `timeout 10s uv run task run` | Exit 0 or non-124 | Exit 124 (timeout/hang) | Fix the hang |
 | Output changes when input changes | Run app, change an input or condition, observe output | Output changes accordingly | Output is static | Implement real logic |
 
-### 5. Self-Declaration Audit
+### 6. Self-Declaration Audit
 
 **Completeness check (hard gate — REJECT if failed)**: Count the numbered items in the SE's Self-Declaration. The template in `implement/SKILL.md` has exactly 25 items numbered 1–25. If the count is not 25, or any number in the sequence 1–25 is missing, REJECT immediately — do not proceed to item-level audit.
 
@@ -83,7 +103,7 @@ For every **DISAGREE** claim:
 
 Undeclared violations found during semantic review → REJECT.
 
-### 6. Code Review
+### 7. Code Review
 
 Read the source files changed in this feature. **Do this before running lint/static-check/test** — if semantic review finds a design problem, commands will need to re-run after the fix anyway.
 
@@ -161,7 +181,7 @@ Load `skill apply-patterns` and apply the full OC checklist (9 rules). Record a 
 | Public functions have type hints | Read signatures | All annotated | Missing |
 | Public functions have docstrings | Read source | Google-style | Missing |
 
-### 7. Run Verification Commands
+### 8. Run Verification Commands
 
 ```bash
 uv run task lint
@@ -173,13 +193,13 @@ Expected for each: exit 0, no errors. Record exact output on failure.
 
 If a command fails, stop and REJECT immediately. Do not run subsequent commands.
 
-### 8. Interactive Verification
+### 9. Interactive Verification
 
 If the feature involves user interaction: run the app, provide real input, verify output changes.
 
 Record what input was given and what output was observed.
 
-### 9. Write the Report
+### 10. Write the Report
 
 ```markdown
 ## Step 4 Verification Report — <feature-stem>
@@ -188,6 +208,13 @@ Record what input was given and what output was observed.
 | Check | Result | Notes |
 |---|---|---|
 | No changes from main | PASS / FAIL | |
+
+### Branch Gate
+| Check | Result | Notes |
+|---|---|---|
+| On feat/<stem> or fix/<stem> | PASS / FAIL | |
+| Commits ahead of main | PASS / FAIL | |
+| No merge conflicts with main | PASS / FAIL | |
 
 ### Production-Grade Gate
 | Check | Result | Notes |

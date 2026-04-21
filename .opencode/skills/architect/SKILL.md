@@ -35,6 +35,7 @@ Design correctness is far more important than lint/pyright/coverage compliance. 
 2. The feature file's discovery section has `Status: BASELINED`. If not, escalate to PO — Step 1 is incomplete.
 3. The feature file contains `Rule:` blocks with `Example:` blocks and `@id` tags. If not, escalate to PO — criteria have not been written.
 4. Package name confirmed: read `pyproject.toml` → locate `[tool.setuptools]` → confirm directory exists on disk.
+5. **Branch verification**: `git branch --show-current` must output `feat/<stem>` or `fix/<stem>`. If it outputs `main` or any other branch, stop — the SE must create the correct branch via `skill version-control` before architecture begins.
 
 ### Package Verification (mandatory — before writing any code)
 

@@ -37,7 +37,7 @@ Load `skill run-session` first — it reads TODO.md, orients you to the current 
 
 | Step | Action |
 |---|---|
-| **Step 2 — ARCH** | Load `skill architect` — design domain model, write stubs, create ADRs, generate test stubs |
+| **Step 2 — ARCH** | Load `skill architect` — verify on `feat/<stem>` branch, design domain model, write stubs, create ADRs, generate test stubs |
 | **Step 4 — VERIFY** | Load `skill verify` — adversarial technical review of the SE's implementation |
 
 ## Ownership Rules
@@ -51,7 +51,7 @@ Load `skill run-session` first — it reads TODO.md, orients you to the current 
 ## Step 2 → Step 3 Handoff
 
 After architecture is complete and test stubs are generated:
-1. Commit all changes
+1. Commit all changes on `feat/<stem>`
 2. Update TODO.md: `Next: Run @software-engineer — Step 3 TDD Loop`
 3. Stop. The SE takes over for implementation.
 

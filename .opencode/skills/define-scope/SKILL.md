@@ -409,10 +409,27 @@ Stakeholder reports a feature is wrong after PO acceptance attempt.
 ### Workflow
 1. **PO ensures feature is in `in-progress/`** (move back if already shifted).
 2. **Team compiles post-mortem** — max 15 lines, root cause at process level.
-3. **PO scans `docs/post-mortem/`**, selects relevant files by `<feature-stem>` or `<failure-keyword>` in filename.
-4. **PO reads selected post-mortems** for context before handoff.
-5. **PO resets TODO.md**: Step 2, `Run @system-architect — restart Step 2 for <feature-stem> with post-mortem context`.
-6. **SA begins Step 2**, reading relevant post-mortems as input.
+3. **SE creates fix branch** from the feature's original start commit:
+   ```bash
+   # Find the feature's original start commit
+   git log --all --grep="feat(<feature-stem>)" --oneline
+   # Or, if the old branch still exists:
+   git log --reverse main..feat/<feature-stem> --oneline   # first line = start commit
+   
+   # Create fix branch from start commit
+   git checkout -b fix/<feature-stem> <start-commit-sha>
+   
+   # Commit post-mortem as first commit on the new branch
+   git add docs/post-mortem/YYYY-MM-DD-<feature-stem>-<keyword>.md
+   git commit -m "docs(post-mortem): root cause for <feature-stem> <keyword>"
+   
+   # Push the fix branch
+   git push -u origin fix/<feature-stem>
+   ```
+4. **PO scans `docs/post-mortem/`**, selects relevant files by `<feature-stem>` or `<failure-keyword>` in filename.
+5. **PO reads selected post-mortems** for context before handoff.
+6. **PO resets TODO.md**: Step 2, `Run @system-architect — restart Step 2 for <feature-stem> on fix/<feature-stem> with post-mortem context`.
+7. **SA begins Step 2** on `fix/<feature-stem>`, reading relevant post-mortems as input.
 
 ### Document Format
 
