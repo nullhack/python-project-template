@@ -399,6 +399,34 @@ What is **not** in `.feature` files:
 
 ---
 
+## Post-Mortem Protocol
+
+When a stakeholder reports failure after the PO has attempted Step 5 acceptance, the feature does **not** move to `completed/`. Instead, the team compiles a compact post-mortem and the feature restarts at Step 2.
+
+### Trigger
+Stakeholder reports a feature is wrong after PO acceptance attempt.
+
+### Workflow
+1. **PO ensures feature is in `in-progress/`** (move back if already shifted).
+2. **Team compiles post-mortem** — max 15 lines, root cause at process level.
+3. **PO scans `docs/post-mortem/`**, selects relevant files by `<feature-stem>` or `<failure-keyword>` in filename.
+4. **PO reads selected post-mortems** for context before handoff.
+5. **PO resets TODO.md**: Step 2, `Run @system-architect — restart Step 2 for <feature-stem> with post-mortem context`.
+6. **SA begins Step 2**, reading relevant post-mortems as input.
+
+### Document Format
+
+File: `docs/post-mortem/YYYY-MM-DD-<feature-stem>-<failure-keyword>.md`
+
+Use the template `post-mortem.md.template` in this skill's directory.
+
+### Rules
+- One file per incident. Never edit an existing post-mortem.
+- If the same failure mode recurs, write a new post-mortem referencing the old one by filename.
+- PO reads post-mortems selectively; never require reading all of them.
+
+---
+
 ## Templates
 
 All templates for files written by this skill live in this skill's directory:
@@ -406,6 +434,7 @@ All templates for files written by this skill live in this skill's directory:
 - `scope-journal.md.template` — `docs/scope_journal.md` structure
 - `discovery.md.template` — `docs/discovery.md` per-session block
 - `feature.md.template` — `.feature` file structure
+- `post-mortem.md.template` — `docs/post-mortem/YYYY-MM-DD-<feature-stem>-<keyword>.md` structure
 
 Base directory for this skill: file:///home/user/Documents/projects/python-project-template/.opencode/skills/define-scope
 Relative paths in this skill (e.g., scripts/, reference/) are relative to this base directory.

@@ -17,7 +17,7 @@ Each agent reads only what is operationally necessary for their current step. Do
 
 | Agent | Reads |
 |---|---|
-| PO (Step 1) | `TODO.md`, `scope_journal.md` (resume check), `system.md`, `glossary.md`, `domain-model.md` (read-only, entity check), in-progress `.feature` |
+| PO (Step 1) | `TODO.md`, `scope_journal.md` (resume check), `system.md`, `glossary.md`, `domain-model.md` (read-only, entity check), `docs/post-mortem/` (selective scan), in-progress `.feature` |
 | SA (Step 2) | `TODO.md`, `system.md`, `glossary.md`, in-progress `.feature`, targeted `.py` files |
 | SE (Step 3) | `TODO.md`, `system.md`, `glossary.md`, in-progress `.feature`, targeted `.py` files |
 | SA (Step 4) | `TODO.md`, `system.md`, `glossary.md`, `domain-model.md`, in-progress `.feature`, ADR files referenced in `system.md` |

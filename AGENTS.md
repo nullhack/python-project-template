@@ -119,6 +119,17 @@ When a defect is reported:
 2. **SA** handles Step 2 (architecture) and **SE** handles Step 3 (TDD loop) when the feature is selected for development. The SE implements the specific `@bug`-tagged test in `tests/features/<feature_slug>/` and also writes a `@given` Hypothesis property test in `tests/unit/` covering the whole class of inputs.
 3. Both tests are required. SE follows the normal TDD loop (Step 3).
 
+### Acceptance Failure & Restart
+
+If the stakeholder reports failure **after the PO has attempted Step 5 acceptance**:
+1. **PO does not move the `.feature` file to `completed/`**. Ensure it remains in `in-progress/`.
+2. **Team compiles a compact post-mortem** (`docs/post-mortem/YYYY-MM-DD-<feature-stem>-<keyword>.md`, max 15 lines, process-level root cause).
+3. **PO scans `docs/post-mortem/`** and selects relevant files by matching `<feature-stem>` or `<failure-keyword>`.
+4. **PO reads selected post-mortems**, then resets TODO.md to Step 2 with context.
+5. **SA restarts Step 2**, reading relevant post-mortems as input. The same feature re-enters the ARCH step.
+
+Post-mortems are append-only, never edited. If a failure mode recurs, write a new file referencing the old one.
+
 ## Filesystem Structure
 
 ```
@@ -133,6 +144,7 @@ docs/
   assets/                             ← logo.svg, banner.svg, and other visual assets (designer owns)
   context.md                          ← C4 Level 1 diagram, PO updates via update-docs skill
   container.md                        ← C4 Level 2 diagram, PO updates via update-docs skill (if multi-container)
+  post-mortem/                         ← compact post-mortems, PO-owned, append-only
   features/
     backlog/<feature-stem>.feature    ← narrative + Rules + Examples
     in-progress/<feature-stem>.feature
