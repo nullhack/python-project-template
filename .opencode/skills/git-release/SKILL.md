@@ -2,8 +2,8 @@
 name: git-release
 description: Create releases with hybrid major.minor.calver versioning and optional custom release naming
 version: "1.1"
-author: software-engineer
-audience: software-engineer
+author: stakeholder
+audience: stakeholder
 workflow: release-management
 ---
 

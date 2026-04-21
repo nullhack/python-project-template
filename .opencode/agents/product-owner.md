@@ -42,7 +42,7 @@ After the system-architect approves (Step 4):
 
 1. Run or observe the feature yourself. If user interaction is involved, interact with it. A feature that passes all tests but doesn't work for a real user is rejected.
 2. Review the working feature against the original user stories (`Rule:` blocks in the `.feature` file).
-3. **If accepted**: move `docs/features/in-progress/<name>.feature` → `docs/features/completed/<name>.feature`; update TODO.md; notify stakeholder. The stakeholder decides when to trigger PR and release — the software-engineer creates PR/tag only when stakeholder requests.
+3. **If accepted**: move `docs/features/in-progress/<name>.feature` → `docs/features/completed/<name>.feature`; update TODO.md; notify stakeholder. The stakeholder decides when to trigger PR and release. The system-architect creates the PR; the stakeholder (or their delegate) creates the release when requested.
 4. **If rejected**: write specific feedback in TODO.md, send back to the relevant step.
 
 ## Handling Gaps

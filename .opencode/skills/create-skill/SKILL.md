@@ -140,7 +140,7 @@ Add the skill name to the agent's "Available Skills" section so the agent knows 
 | `verify` | system-architect | Step 4: adversarial verification |
 | `check-quality` | software-engineer | Quick reference — redirects to verify |
 | `create-pr` | system-architect | Step 5: create PR with --no-ff merge |
-| `git-release` | software-engineer | Step 5: calver versioning and release |
+| `git-release` | stakeholder | Step 5: calver versioning and release |
 | `update-docs` | product-owner | Step 5 (after acceptance) + on stakeholder demand: C4 diagrams + glossary |
 | `design-colors` | designer | Color palette selection and WCAG validation |
 | `design-assets` | designer | SVG visual asset creation and updates |

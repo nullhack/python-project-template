@@ -86,7 +86,7 @@ All feature work happens on branches. `main` is the single source of truth and r
 | `check-quality` | software-engineer | pre-handoff (redirects to `verify`) |
 | `version-control` | software-engineer | Step 2 (branch creation), Step 5 (merge to main), post-mortem branches |
 | `create-pr` | system-architect | post-acceptance |
-| `git-release` | software-engineer | post-acceptance |
+| `git-release` | stakeholder | post-acceptance |
 | `update-docs` | product-owner | post-acceptance + on stakeholder demand |
 | `design-colors` | designer | branding, color, WCAG compliance |
 | `design-assets` | designer | SVG asset creation and updates |
@@ -280,7 +280,7 @@ Version format: `v{major}.{minor}.{YYYYMMDD}`
 
 **Releases happen from `main` only.** The SE ensures `main` is up to date with `origin/main` before creating a release. No releases from feature branches.
 
-Use `@software-engineer /skill git-release` for the full release process. When requested by the stakeholder
+The stakeholder initiates the release process. When the stakeholder requests a release, the system-architect or software-engineer loads `skill git-release` to execute it.
 
 ## Session Management
 

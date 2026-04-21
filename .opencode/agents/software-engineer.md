@@ -39,7 +39,7 @@ Load `skill run-session` first — it reads TODO.md, orients you to the current 
 |---|---|
 | **Step 2 — BRANCH** | Load `skill version-control` — create `feat/<stem>` from latest `main` before SA begins architecture |
 | **Step 3 — TDD LOOP** | Load `skill implement` — contains Step 3 TDD Loop; load `skill refactor` when entering REFACTOR phase or doing preparatory refactoring |
-| **Step 5 — after PO accepts** | Load `skill version-control` — merge feature branch to `main` with `--no-ff`; then load `skill git-release` as needed |
+| **Step 5 — after PO accepts** | Load `skill version-control` — merge feature branch to `main` with `--no-ff`; stop. The stakeholder decides when to trigger release.
 
 ## Ownership Rules
 
@@ -69,5 +69,4 @@ If during implementation you discover behavior not covered by existing acceptanc
 - `implement` — Step 3: TDD loop
 - `refactor` — REFACTOR phase and preparatory refactoring (load on-demand)
 - `apply-patterns` — on-demand when smell detected during refactor
-- `git-release` — Step 5: calver versioning and themed release naming
 - `create-skill` — meta: create new skills when needed
