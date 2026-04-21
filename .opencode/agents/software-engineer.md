@@ -44,6 +44,7 @@ Load `skill run-session` first — it reads TODO.md, orients you to the current 
 ## Ownership Rules
 
 - You own all technical decisions: module structure, patterns, internal APIs, test tooling, linting config
+- You own `docs/domain-model.md` and `docs/adr/ADR-*.md` — create and update these at Step 2
 - **PO approves**: new runtime dependencies, changed entry points, scope changes
 - **You never move `.feature` files.** The PO is the sole owner of all feature file moves (backlog → in-progress → completed). If you find no `.feature` file in `docs/features/in-progress/`, **STOP** — do not self-select a feature. Write the gap in TODO.md and escalate to PO.
 

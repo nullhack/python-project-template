@@ -1,7 +1,7 @@
 ---
 name: run-session
 description: Session start and end protocol — read TODO.md, continue from checkpoint, update and commit
-version: "3.0"
+version: "4.0"
 author: software-engineer
 audience: all-agents
 workflow: session-management
@@ -10,6 +10,16 @@ workflow: session-management
 # Session Workflow
 
 Every session starts by reading state. Every session ends by writing state. This makes any agent able to continue from where the last session stopped.
+
+## Read Policy
+
+Each agent reads only what is operationally necessary for their current step. Do not read files "for context" unless the step explicitly requires it.
+
+| Agent | Reads |
+|---|---|
+| PO (Step 1) | `TODO.md`, `scope_journal.md` (resume check), `system.md`, `glossary.md`, `domain-model.md` (read-only, entity check), in-progress `.feature` |
+| SE (Step 2–3) | `TODO.md`, `system.md`, `glossary.md`, in-progress `.feature`, targeted `.py` files |
+| Reviewer (Step 4) | `TODO.md`, `system.md`, `glossary.md`, `domain-model.md`, in-progress `.feature`, ADR files referenced in `system.md` |
 
 ## Session Start
 
@@ -21,18 +31,18 @@ Every session starts by reading state. Every session ends by writing state. This
      No feature in progress.
      Next: Run @product-owner — load skill select-feature and pick the next BASELINED feature from backlog.
      ```
-2. **If you are the PO** and Step 1 (SCOPE) is active: check `docs/discovery_journal.md` for the most recent session block.
+2. **If you are the PO** and Step 1 (SCOPE) is active: check `docs/scope_journal.md` for the most recent session block.
    - If the most recent block has `Status: IN-PROGRESS` → the previous session was interrupted. Resume it before starting a new session: finish updating `.feature` files and `docs/discovery.md`, then mark the block `Status: COMPLETE`.
 3. If a feature is active at Step 2–5, read:
    - `docs/features/in-progress/<feature-stem>.feature` — feature file (Rules + Examples + @id)
-   - `docs/discovery.md` — project-level synthesis changelog (for context)
+   - `docs/system.md` — current system overview and constraints
 4. Run `git status` — understand what is committed vs. what is not
 5. Confirm scope: you are working on exactly one step of one feature
 
 **If TODO.md says "No feature in progress":**
 
 - **PO**: Load `skill select-feature` — it guides you through scoring and selecting the next BASELINED backlog feature. You must verify the feature has `Status: BASELINED` before moving it to `in-progress/`. Only you may move it.
-- **Software-engineer or reviewer**: Update TODO.md `Next:` line to `Run @product-owner — load skill select-feature and pick the next BASELINED feature from backlog.` Then **stop**. Never self-select a feature. Never move a `.feature` file.
+- **Software-engineer or reviewer**: Update TODO.md `Next:` line to `Run @product-owner — load skill select-feature and pick the next BASELINED feature from backlog.` Then **stop**. Never self-select a feature. Never create, edit, or move a `.feature` file.
 
 ## Session End
 

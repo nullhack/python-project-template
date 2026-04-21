@@ -11,7 +11,7 @@ Features flow through 5 steps with a WIP limit of 1 feature at a time. The files
 
 ```
 STEP 1: SCOPE          (product-owner)  → discovery + Gherkin stories + criteria
-STEP 2: ARCH           (software-engineer)      → read all features + existing package files, write domain stubs (signatures only, no bodies); decisions appended to docs/architecture.md
+STEP 2: ARCH           (software-engineer)      → read system.md + glossary.md + in-progress feature + targeted package files; write domain stubs; create/update domain-model.md; significant decisions as docs/adr/ADR-YYYY-MM-DD-<slug>.md; system.md rewritten
 STEP 3: TDD LOOP       (software-engineer)      → RED → GREEN → REFACTOR, one @id at a time
 STEP 4: VERIFY         (reviewer)       → run all commands, review code
 STEP 5: ACCEPT         (product-owner)  → demo, validate, move .feature to completed/ (PO only)
@@ -30,7 +30,7 @@ STEP 5: ACCEPT         (product-owner)  → demo, validate, move .feature to com
 
 ## Feature File Chain of Responsibility
 
-`.feature` files are owned exclusively by the PO. **No other agent ever moves or edits them.**
+`.feature` files are owned exclusively by the PO. **No other agent ever moves, creates, or edits them.**
 
 | Transition | Who | When |
 |---|---|---|
@@ -77,21 +77,21 @@ Step 1 has two stages:
 
 ### Stage 1 — Discovery (PO + stakeholder, iterative)
 
-Discovery is a continuous process. Sessions happen whenever scope needs to be established or refined — for a new project, new features, or new information. Every session follows the same structure:
+Discovery follows a block structure per session. See `skill define-scope` for the full protocol.
 
-**Session question order:**
-1. **General** (5Ws + Success + Failure + Out-of-scope) — first session only, if the journal doesn't exist yet
-2. **Cross-cutting** — behavior groups, bounded contexts, integration points, lifecycle events
-3. **Per-feature** — one feature at a time; extract entities from `docs/discovery.md` Domain Model; gap-finding with CIT, Laddering, CI Perspective Change
+**Block A — Session Start**: Resume check (if `IN-PROGRESS`), read `domain-model.md` (existing entities), declare scope.
 
-**Real-time split rule**: if the PO detects >2 concerns or >8 candidate Examples for a feature during per-feature questions, split immediately — record the split in the journal, create stub `.feature` files, continue questions for both in the same session.
+**Block B — General & Cross-cutting**: 5Ws, behavioral groups, bounded contexts. Active listening + reconciliation against `glossary.md` and `domain-model.md`.
 
-**After questions (PO alone, in order):**
-1. Append answered Q&A (in groups) to `docs/discovery_journal.md` — only answered questions
-2. Rewrite `.feature` description for each feature touched — others stay unchanged
-3. Append session synthesis block to `docs/discovery.md` — LAST, after all `.feature` updates
+**Block C — Feature Discovery (per feature)**: Detailed questions, pre-mortem, create/update `.feature` files.
 
-**Session status**: the journal session header begins with `Status: IN-PROGRESS` (written before questions). Updated to `Status: COMPLETE` after all writes. If a session is interrupted, the next agent detects `IN-PROGRESS` and resumes the pending writes before starting a new session.
+**Block D — Session Close**: Append Q&A to `scope_journal.md`, update `glossary.md`, append synthesis to `discovery.md`, regression check on completed features, mark `COMPLETE`.
+
+**Key rules**:
+- PO owns `scope_journal.md`, `discovery.md`, `glossary.md`, and `.feature` files
+- PO reads `domain-model.md` but never writes to it — entity suggestions go in `discovery.md` for SE formalization at Step 2
+- Real-time split rule: >2 concerns or >8 candidate Examples → split immediately
+- Completed feature touched and changed → move to `backlog/`
 
 **Baselining**: PO writes `Status: BASELINED (YYYY-MM-DD)` in the `.feature` file when the stakeholder approves that feature's discovery and the decomposition check passes.
 
@@ -120,15 +120,16 @@ When a defect is reported:
 
 ```
 docs/
-  discovery_journal.md                ← raw Q&A, PO appends after every session
-  discovery.md                        ← synthesis changelog, PO appends after every session
-  architecture.md                     ← all architectural decisions, SE appends after Step 2
-  glossary.md                         ← living glossary, PO updates via update-docs skill
+  scope_journal.md                    ← raw Q&A, PO appends after every session
+  discovery.md                        ← session synthesis changelog, PO appends after every session
+  domain-model.md                     ← living domain model, SE creates/updates at Step 2, PO reads only
+  adr/                                ← one file per decision: ADR-YYYY-MM-DD-<slug>.md, SE creates at Step 2
+  system.md                           ← current-state overview (completed features only), SE rewrites at Step 2, PO reviews at Step 5
+  glossary.md                         ← living glossary, PO updates after each session
   branding.md                         ← project identity, colors, release naming, wording (designer owns)
   assets/                             ← logo.svg, banner.svg, and other visual assets (designer owns)
-  c4/
-    context.md                        ← C4 Level 1 diagram, PO updates via update-docs skill
-    container.md                      ← C4 Level 2 diagram, PO updates via update-docs skill
+  context.md                          ← C4 Level 1 diagram, PO updates via update-docs skill
+  container.md                        ← C4 Level 2 diagram, PO updates via update-docs skill (if multi-container)
   features/
     backlog/<feature-stem>.feature    ← narrative + Rules + Examples
     in-progress/<feature-stem>.feature

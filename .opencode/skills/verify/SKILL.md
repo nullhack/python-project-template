@@ -1,7 +1,7 @@
 ---
 name: verify
 description: Step 4 — run all verification commands, review code quality, and produce a written report
-version: "4.0"
+version: "5.0"
 author: reviewer
 audience: reviewer
 workflow: feature-lifecycle
@@ -15,7 +15,7 @@ This skill guides the reviewer through Step 4: independent verification that the
 
 **Every PASS/FAIL cell must have evidence.** Empty evidence = UNCHECKED = REJECTED.
 
-**You never move `.feature` files.** After producing an APPROVED report: update TODO.md `Next:` to `Run @product-owner — accept feature <name> at Step 5.` then stop. The PO accepts the feature and moves the file.
+**You never move, create, or edit `.feature` files.** After producing an APPROVED report: update TODO.md `Next:` to `Run @product-owner — accept feature <name> at Step 5.` then stop. The PO accepts the feature and moves the file.
 
 The reviewer produces one written report (see template below) that includes: all gate results, the SE Self-Declaration Audit, the **Reviewer Stance Declaration**, and the final APPROVED/REJECTED verdict. Do not start until the software-engineer has committed all work and communicated the Self-Declaration verbally in the handoff message.
 
@@ -30,8 +30,12 @@ Load this skill when the software-engineer signals Step 3 complete and hands off
 Read `docs/features/in-progress/<name>.feature`. Extract:
 - All `@id` tags and their Example titles from `Rule:` blocks
 - The interaction model (if the feature involves user interaction)
-- The architectural decisions in `docs/architecture.md` relevant to this feature
+- The current-state overview in `docs/system.md`
+- `docs/domain-model.md` — verify naming consistency of new classes/methods against existing entities
+- `docs/glossary.md` — verify domain terms are used correctly
 - The software-engineer's Self-Declaration (communicated verbally in the handoff message)
+
+Only read specific ADR files if `docs/system.md` references them as relevant to this feature.
 
 ### 2. pyproject.toml Gate
 
@@ -102,7 +106,17 @@ Read the source files changed in this feature. **Do this before running lint/sta
 | Functions ≤ 20 lines | Count lines | ≤ 20 | > 20 | Extract helper |
 | Classes ≤ 50 lines | Count lines | ≤ 50 | > 50 | Split class |
 
-#### 6c. SOLID — any FAIL → REJECTED
+#### 6c. Naming Consistency — any FAIL → REJECTED
+
+| Check | How to check | PASS | FAIL |
+|---|---|---|---|
+| Classes match domain model | New class names appear in `docs/domain-model.md` or are justified | Yes | No |
+| Methods match glossary | New method names use terms from `docs/glossary.md` | Yes | No |
+| No invented synonyms | Same concept uses same name everywhere | Yes | No |
+
+If a new name is genuinely needed (not in domain model or glossary), the SE should have noted it in the handoff summary or in `docs/discovery.md`. If no justification exists, REJECT.
+
+#### 6d. SOLID — any FAIL → REJECTED
 
 | Principle | Why it matters | What to check | How to check |
 |---|---|---|---|
@@ -112,11 +126,11 @@ Read the source files changed in this feature. **Do this before running lint/sta
 | ISP | Fat interfaces force unused methods | No Protocol forces stub implementations | Check for NotImplementedError |
 | DIP | Concrete I/O makes unit testing impossible | High-level depends on abstractions | Check domain imports no I/O/DB |
 
-#### 6d. Object Calisthenics — any FAIL → REJECTED
+#### 6e. Object Calisthenics — any FAIL → REJECTED
 
 Load `skill apply-patterns` and apply the full OC checklist (9 rules). Record a PASS/FAIL with `file:line` evidence for each rule. Rules 1 and 7 (nesting and entity size) share thresholds with 6b above.
 
-#### 6e. Design Patterns — any FAIL → REJECTED
+#### 6f. Design Patterns — any FAIL → REJECTED
 
 | Code smell | Pattern missed | How to check |
 |---|---|---|
@@ -126,7 +140,7 @@ Load `skill apply-patterns` and apply the full OC checklist (9 rules). Record a 
 | External dep without Protocol | Repository/Adapter | Check dep injection |
 | 0 domain classes, many functions | Missing domain model | Count classes vs functions |
 
-#### 6f. Tests — any FAIL → REJECTED
+#### 6g. Tests — any FAIL → REJECTED
 
 | Check | How to check | PASS | FAIL |
 |---|---|---|---|
@@ -138,7 +152,7 @@ Load `skill apply-patterns` and apply the full OC checklist (9 rules). Record a 
 | Function naming | Matches `test_<feature_slug>_<8char_hex>` | All match | Mismatch |
 | Hypothesis tests have `@slow` | Read every `@given` for `@slow` marker | All present | Any missing |
 
-#### 6g. Code Quality — any FAIL → REJECTED
+#### 6h. Code Quality — any FAIL → REJECTED
 
 | Check | How to check | PASS | FAIL |
 |---|---|---|---|
@@ -188,6 +202,13 @@ Record what input was given and what output was observed.
 | uv run task static-check | PASS / FAIL | |
 | uv run task test | PASS / FAIL | |
 
+### Naming Consistency
+| Check | Result | Notes |
+|---|---|---|
+| Classes match domain model | PASS / FAIL | |
+| Methods match glossary | PASS / FAIL | |
+| No invented synonyms | PASS / FAIL | |
+
 ### Self-Declaration Audit
 | # | Claim | SE Claims | Reviewer Verdict | Evidence |
 |---|-------|-----------|------------------|----------|
@@ -221,15 +242,12 @@ Record what input was given and what output was observed.
 
 Write this block **before** the Decision. Every `DISAGREE` must include an inline explanation. A `DISAGREE` with no explanation auto-forces `REJECTED`.
 
-```markdown
-## Reviewer Stance Declaration
 As a reviewer I declare:
 * Adversarial: I actively tried to find a failure mode, not just confirm passing — AGREE/DISAGREE | note:
 * Manual trace: I traced at least one execution path manually beyond automated output — AGREE/DISAGREE | path:
 * Boundary check: I checked the boundary conditions and edge cases of every Rule — AGREE/DISAGREE | gaps:
 * Semantic read: I read each test against its AC and confirmed it tests the right observable behavior — AGREE/DISAGREE | mismatches:
 * Independence: my verdict was not influenced by how much effort has already been spent — AGREE/DISAGREE
-```
 
 ### Decision
 **APPROVED** — all gates passed, no undeclared violations
@@ -241,5 +259,3 @@ OR
 **If APPROVED**: Run `@product-owner` — accept the feature at Step 5.
 **If REJECTED**: Run `@software-engineer` — apply the fixes listed above, re-run quality gate, update Self-Declaration, then signal Step 4 again.
 ```
-
-

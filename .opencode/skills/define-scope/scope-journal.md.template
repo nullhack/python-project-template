@@ -1,8 +1,12 @@
-# Discovery Journal: <project-name>
+# Scope Journal: <project-name>
+
+> Append-only record of all discovery session Q&A.
+> Written by the product-owner. Read by the product-owner for resume checks.
+> Never edit past entries — append new session blocks only.
 
 ---
 
-## YYYY-MM-DD — Session 1
+## YYYY-MM-DD — Session N
 Status: IN-PROGRESS
 
 ### General

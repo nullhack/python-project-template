@@ -28,7 +28,7 @@ Foundations for the architectural decisions and patterns used in this template.
 | **Status** | Confirmed — widely adopted industry standard; tooled by adr-tools, ADR Manager, Log4Brains |
 | **Core finding** | Architectural decisions should be recorded as short, immutable documents capturing: what was decided, why, and what alternatives were rejected. Without this record, decisions get re-litigated by every new developer (or AI agent) who encounters the codebase, producing rework and re-divergence. |
 | **Mechanism** | An ADR is written at decision time, never edited afterward. If the decision changes, a new ADR is written that supersedes the old one. The append-only record becomes a reliable audit trail. The constraint "one sentence per field" forces clarity — if you can't state the reason in one sentence, the decision is not yet understood. |
-| **Where used** | `docs/architecture/architecture.md` (ADR template). SE appends one block per non-obvious decision after Step 2. The `living-docs` skill reads ADRs as input for C4 diagram annotations. |
+| **Where used** | `docs/adr/ADR-YYYY-MM-DD-<slug>.md` (one file per decision). SE creates one file per non-obvious decision after Step 2. The `update-docs` skill reads ADRs as input for C4 diagram annotations. |
 
 ---
 
@@ -42,7 +42,7 @@ Foundations for the architectural decisions and patterns used in this template.
 | **Status** | Confirmed — 3,000+ citations; foundational IEEE reference for architectural documentation |
 | **Core finding** | A single architectural diagram cannot communicate all relevant aspects of a system. Four distinct views are required: **Logical** (domain objects and relationships), **Process** (runtime behavior and concurrency), **Development** (module organisation and dependencies), **Physical** (deployment topology). A fifth **Scenarios** view (use cases) ties the four together by showing how each scenario exercises each view. |
 | **Mechanism** | Different stakeholders need different views: a developer needs the Development view; an operator needs the Physical view; a domain expert needs the Logical view. Conflating views into one diagram produces a cluttered diagram that satisfies nobody. The 4+1 model assigns each concern to its appropriate view and cross-validates them through scenarios. |
-| **Where used** | Theoretical foundation for the C4 model (entry 57). The `living-docs` skill generates C4 diagrams that map to: Context diagram (Scenarios view), Container diagram (Physical + Development views), Component diagram (Logical + Development views). |
+| **Where used** | Theoretical foundation for the C4 model (entry 57). The `update-docs` skill generates C4 diagrams that map to: Context diagram (Scenarios view), Container diagram (Physical + Development views), Component diagram (Logical + Development views). |
 
 ---
 
@@ -56,7 +56,7 @@ Foundations for the architectural decisions and patterns used in this template.
 | **Status** | Confirmed — widely adopted; tooled by Structurizr, PlantUML C4, Mermaid C4 |
 | **Core finding** | Software architecture can be communicated at four zoom levels: **Level 1 — System Context** (who uses the system and what external systems it talks to), **Level 2 — Container** (major runnable/deployable units), **Level 3 — Component** (major structural building blocks within a container), **Level 4 — Code** (classes, interfaces; usually auto-generated). Each level answers a specific question; mixing levels in one diagram creates confusion. |
 | **Mechanism** | C4 operationalises the 4+1 View Model (entry 56) into a lightweight notation that can be expressed in text (PlantUML, Mermaid) and version-controlled alongside code. The notation is deliberately constrained: boxes (people, systems, containers, components) and unidirectional arrows with labels. No UML formalism required. Context + Container diagrams cover >90% of communication needs for most teams. |
-| **Where used** | The `living-docs` skill generates and updates C4 diagrams in `docs/c4/`. Context diagram (L1) always generated; Container (L2) generated when multiple containers are identified; Component (L3) generated on demand. Source files are Mermaid so they render in GitHub and are version-controlled. |
+| **Where used** | The `update-docs` skill generates and updates C4 diagrams in `docs/context.md` and `docs/container.md`. Context diagram (L1) always generated; Container (L2) generated when multiple containers are identified; Component (L3) generated on demand. Source files are Mermaid so they render in GitHub and are version-controlled. |
 
 ---
 
@@ -70,7 +70,7 @@ Foundations for the architectural decisions and patterns used in this template.
 | **Status** | Confirmed — 4,000+ citations; foundational criterion for all modular decomposition in software engineering |
 | **Core finding** | The correct criterion for decomposing a system into modules is **information hiding**: each module hides a design decision that is likely to change. A module's interface reveals only what callers need; its implementation hides how. Decomposing by execution steps (procedure-based) creates tight coupling to implementation order; decomposing by change-prone decisions (information-hiding) allows each decision to be changed independently. |
 | **Mechanism** | Identify which decisions are most likely to change (data structures, algorithms, I/O formats, external service protocols). Each such decision becomes a module boundary. The module's public interface is defined to be change-stable; the implementation is change-free from the caller's perspective. This is the theoretical basis for SOLID-D (depend on abstractions), Hexagonal Architecture (hide external decisions behind ports), and DDD bounded contexts (hide language decisions behind context boundaries). |
-| **Where used** | Step 2 Architecture: bounded context check ("same word, different meaning across features? → module boundary") and external dep Protocol assignment both apply the information-hiding criterion. The `living-docs` skill uses module boundaries as container/component boundaries in `docs/c4/` diagrams. |
+| **Where used** | Step 2 Architecture: bounded context check ("same word, different meaning across features? → module boundary") and external dep Protocol assignment both apply the information-hiding criterion. The `update-docs` skill uses module boundaries as container/component boundaries in `docs/container.md`. |
 
 ---
 

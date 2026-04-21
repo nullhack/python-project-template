@@ -11,7 +11,7 @@ workflow: feature-lifecycle
 
 Load this skill when entering the REFACTOR phase of a TDD cycle, or before starting RED on a new `@id` when preparatory refactoring is needed.
 
-Sources: Fowler *Refactoring* 2nd ed. (2018); Beck *Canon TDD* (2023); Beck *Tidy First?* (2023); Martin *SOLID* (2000); Bay *Object Calisthenics* (2005). See `docs/scientific-research/oop-design.md` and `docs/scientific-research/refactoring-empirical.md`.
+Sources: Fowler *Refactoring* 2nd ed. (2018); Beck *Canon TDD* (2023); Beck *Tidy First?* (2023); Martin *SOLID* (2000); Bay *Object Calisthenics* (2005). See `docs/research/oop-design.md` and `docs/research/refactoring-empirical.md`.
 
 ---
 

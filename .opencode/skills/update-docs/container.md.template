@@ -1,0 +1,24 @@
+# C4 — Container Diagram
+
+> Last updated: YYYY-MM-DD
+> Source: docs/adr/ADR-*.md
+
+```mermaid
+C4Container
+  title Container Diagram — <project-name>
+
+  Person(actor1, "<role>", "")
+
+  System_Boundary(sys, "<project-name>") {
+    Container(container1, "<name>", "<technology>", "<responsibility from ADR>")
+    Container(container2, "<name>", "<technology>", "<responsibility>")
+  }
+
+  System_Ext(ext1, "<external system>", "")
+
+  Rel(actor1, container1, "<action>")
+  Rel(container1, container2, "<protocol or method>")
+  Rel(container1, ext1, "<protocol>")
+```
+
+> Note: Only generate this diagram if `docs/adr/` contains at least one decision identifying a distinct container boundary. If the project is a single-container system, state that here and skip the diagram body.

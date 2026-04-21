@@ -1,0 +1,37 @@
+# Domain Model: <project-name>
+
+> Living reference of code-facing domain entities.
+> Owned by the software-engineer. Created and updated at Step 2.
+> The product-owner reads this file to check existing entities during discovery, but never writes to it.
+> Append-only: add new entries at the bottom. Deprecate old entries by moving them to the Deprecated section.
+> Never edit existing live entries — code depends on them.
+
+---
+
+## Entities
+
+| Name | Type | Description | Bounded Context | First Appeared |
+|------|------|-------------|-----------------|----------------|
+| <name> | Entity | <description> | <context> | <feature-stem> |
+| <name> | Value Object | <description> | <context> | <feature-stem> |
+| <name> | Aggregate | <description> | <context> | <feature-stem> |
+
+## Verbs
+
+| Name | Actor | Object | Description | First Appeared |
+|------|-------|--------|-------------|----------------|
+| <verb> | <who> | <what> | <description> | <feature-stem> |
+
+## Relationships
+
+| Subject | Relation | Object | Cardinality | Notes |
+|---------|----------|--------|-------------|-------|
+| <A> | <has / uses / emits> | <B> | <1:1 / 1:N / M:N> | <notes> |
+
+---
+
+## Deprecated
+
+| Name | Type | Deprecated Date | Replaced By | Reason |
+|------|------|-----------------|-------------|--------|
+| <name> | Entity | YYYY-MM-DD | <new name> | <reason> |

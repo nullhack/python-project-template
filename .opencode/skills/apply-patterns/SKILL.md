@@ -11,7 +11,7 @@ workflow: feature-lifecycle
 
 Load this skill when the refactor skill's smell table points to a GoF pattern and you need the Python before/after example.
 
-Sources: Gamma, Helm, Johnson, Vlissides. *Design Patterns: Elements of Reusable Object-Oriented Software*. Addison-Wesley, 1995. See `docs/scientific-research/oop-design.md` entry 34.
+Sources: Gamma, Helm, Johnson, Vlissides. *Design Patterns: Elements of Reusable Object-Oriented Software*. Addison-Wesley, 1995. See `docs/research/oop-design.md` entry 34.
 
 ---
 

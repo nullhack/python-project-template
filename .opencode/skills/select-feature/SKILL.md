@@ -11,7 +11,7 @@ workflow: feature-lifecycle
 
 Select the next most valuable, unblocked feature from the backlog using a lightweight scoring model grounded in flow economics and dependency analysis.
 
-**Research basis**: Weighted Shortest Job First (WSJF) — Reinertsen *Principles of Product Development Flow* (2009); INVEST criteria — Wake (2003); Kano model — Kano (1984); Dependency analysis — PMBOK Critical Path Method. See `docs/scientific-research/requirements-elicitation.md`.
+**Research basis**: Weighted Shortest Job First (WSJF) — Reinertsen *Principles of Product Development Flow* (2009); INVEST criteria — Wake (2003); Kano model — Kano (1984); Dependency analysis — PMBOK Critical Path Method. See `docs/research/requirements-elicitation.md`.
 
 **Core principle**: Cost of Delay ÷ Duration. Features with high user value and low implementation effort should start first. Features blocked by unfinished work should wait regardless of value.
 
@@ -40,7 +40,7 @@ Read each `.feature` file in `docs/features/backlog/`. Check its discovery secti
 
 **IMPORTANT**
 
-**NEVER move a feature to `in-progress/` unless its discovery section has `Status: BASELINED`**
+**NEVER move a feature to `in-progress/` unless its discovery section has `Status: BASELINED`. Only the PO may move `.feature` files — no other agent ever creates, edits, or moves them.**
 
 ### 3. Score Each Candidate
 

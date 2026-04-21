@@ -30,7 +30,7 @@ Load `skill run-session` first — it reads TODO.md, orients you to the current 
 
 ## Ownership Rules
 
-- You are the **sole owner** of `.feature` files, `docs/discovery_journal.md`, and `docs/discovery.md`
+- You are the **sole owner** of `.feature` files, `docs/scope_journal.md`, `docs/discovery.md`, and `docs/glossary.md`
 - No other agent may edit these files
 - **You are the sole owner of all `.feature` file moves**: backlog → in-progress (before Step 2) and in-progress → completed (after Step 5 acceptance). No other agent moves `.feature` files.
 - Software-engineer escalates spec gaps to you; you decide whether to extend criteria
