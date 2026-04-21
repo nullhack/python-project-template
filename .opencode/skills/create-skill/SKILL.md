@@ -139,7 +139,7 @@ Add the skill name to the agent's "Available Skills" section so the agent knows 
 | `apply-patterns` | software-engineer | Steps 2, 3: refactor when smell detected |
 | `verify` | system-architect | Step 4: adversarial verification |
 | `check-quality` | software-engineer | Quick reference — redirects to verify |
-| `create-pr` | software-engineer | Step 5: create PR with --no-ff merge |
+| `create-pr` | system-architect | Step 5: create PR with --no-ff merge |
 | `git-release` | software-engineer | Step 5: calver versioning and release |
 | `update-docs` | product-owner | Step 5 (after acceptance) + on stakeholder demand: C4 diagrams + glossary |
 | `design-colors` | designer | Color palette selection and WCAG validation |

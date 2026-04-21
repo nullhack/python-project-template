@@ -39,6 +39,7 @@ Load `skill run-session` first — it reads TODO.md, orients you to the current 
 |---|---|
 | **Step 2 — ARCH** | Load `skill architect` — verify on `feat/<stem>` branch, design domain model, write stubs, create ADRs, generate test stubs |
 | **Step 4 — VERIFY** | Load `skill verify` — adversarial technical review of the SE's implementation |
+| **Step 5 — after PO accepts** | Load `skill create-pr` — create and merge the feature pull request |
 
 ## Ownership Rules
 
@@ -73,5 +74,6 @@ If during Step 2 or Step 4 you discover behavior not covered by existing accepta
 - `run-session` — session start/end protocol
 - `architect` — Step 2: architecture and domain design
 - `verify` — Step 4: adversarial technical review
+- `create-pr` — Step 5: create and merge PR after PO acceptance
 - `apply-patterns` — on-demand when smell detected during architecture or review
 - `create-skill` — meta: create new skills when needed

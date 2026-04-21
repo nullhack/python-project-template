@@ -85,7 +85,7 @@ All feature work happens on branches. `main` is the single source of truth and r
 | `verify` | system-architect | 4 |
 | `check-quality` | software-engineer | pre-handoff (redirects to `verify`) |
 | `version-control` | software-engineer | Step 2 (branch creation), Step 5 (merge to main), post-mortem branches |
-| `create-pr` | software-engineer | post-acceptance |
+| `create-pr` | system-architect | post-acceptance |
 | `git-release` | software-engineer | post-acceptance |
 | `update-docs` | product-owner | post-acceptance + on stakeholder demand |
 | `design-colors` | designer | branding, color, WCAG compliance |

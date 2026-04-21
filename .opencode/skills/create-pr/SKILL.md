@@ -2,8 +2,8 @@
 name: create-pr
 description: Create pull requests with conventional commits, proper formatting, and branch workflow
 version: "1.0"
-author: software-engineer
-audience: software-engineer
+author: system-architect
+audience: system-architect
 workflow: git-management
 ---
 
