@@ -1,7 +1,7 @@
 ---
 name: refactor
-description: Safe refactoring protocol for TDD — green bar rule, two-hats discipline, preparatory refactoring, and Fowler catalogue
-version: "1.0"
+description: Safe refactoring protocol for TDD — green bar rule, two-hats discipline, preparatory refactoring, and smell catalogue
+version: "2.0"
 author: software-engineer
 audience: software-engineer
 workflow: feature-lifecycle
@@ -11,7 +11,7 @@ workflow: feature-lifecycle
 
 Load this skill when entering the REFACTOR phase of a TDD cycle, or before starting RED on a new `@id` when preparatory refactoring is needed.
 
-Sources: Fowler *Refactoring* 2nd ed. (2018); Beck *Canon TDD* (2023); Beck *Tidy First?* (2023); Martin *SOLID* (2000); Bay *Object Calisthenics* (2005). See `docs/research/oop-design.md` and `docs/research/refactoring-empirical.md`.
+Sources: Fowler *Refactoring* 2nd ed. (2018); Beck *Canon TDD* (2023); Beck *Tidy First?* (2023); Martin *SOLID* (2000); Bay *Object Calisthenics* (2005); Shvets *Refactoring.Guru* (2014–present). See `docs/research/oop-design.md` entries 33–36 and `docs/research/refactoring-empirical.md`.
 
 ---
 
@@ -64,24 +64,59 @@ Beck: *"For each desired change, make the change easy (warning: this may be hard
 
 ### Step 1 — Identify the smell
 
-Run the smell checklist from your Self-Declaration or from the Architecture Smell Check:
+Run the smell checklist from your Self-Declaration or from the Architecture Smell Check.
 
-| Smell | Likely catalogue entry |
-|---|---|
-| Function needs a comment to explain it | Extract Function |
-| Class does two jobs | Extract Class |
-| Method uses another class's data more than its own | Move Function |
-| Same parameter group in multiple signatures | Introduce Parameter Object |
-| Primitive with behaviour (money, email, range) | Replace Primitive with Object |
-| Local variable holds a computed result | Replace Temp with Query |
-| `isinstance` / type-flag conditionals | Replace Conditional with Polymorphism |
-| Multiple functions share a data cluster | Combine Functions into Class |
-| Nested conditions beyond 2 levels | Decompose Conditional / Guard Clauses |
-| Object construction scattered without pattern | Factory Method / Builder |
-| Scattered notification or state transition | Observer / State |
-| Type-switching across callers | Strategy / Visitor |
+Smell categories from Shvets *Refactoring.Guru* (2014–present); each smell links to its Fowler catalogue entry.
 
-If pattern smell detected: load `skill apply-patterns` for before/after examples.
+#### Bloaters — structures grown too large
+
+| Smell | Signal | Likely catalogue entry |
+|---|---|---|
+| Long Method | Method body needs a comment to understand any section | Extract Function, Decompose Conditional |
+| Large Class | Class has too many responsibilities or instance variables | Extract Class, Extract Subclass |
+| Primitive Obsession | Domain concept represented as a raw primitive | Replace Primitive with Object, Introduce Parameter Object |
+| Long Parameter List | Function takes 3+ parameters, or parameter group repeats across signatures | Introduce Parameter Object, Replace Parameter with Query |
+| Data Clumps | Same 2–3 data items always appear together across signatures or fields | Introduce Parameter Object, Extract Class |
+
+#### OO Abusers — misapplied OOP
+
+| Smell | Signal | Likely catalogue entry |
+|---|---|---|
+| Switch Statements | Repeated `if/elif` or match on a type flag across callers | Replace Conditional with Polymorphism, Strategy, State |
+| Temporary Field | Instance variable set only in some code paths; `None` in others | Extract Class, Introduce Null Object |
+| Refused Bequest | Subclass inherits methods/data it does not use or overrides to do nothing | Push Down Method/Field, Replace Inheritance with Delegation |
+| Alternative Classes with Different Interfaces | Two classes do the same thing under different names/signatures | Rename Method, Extract Superclass, unify via Protocol |
+
+#### Change Preventers — changes ripple unexpectedly
+
+| Smell | Signal | Likely catalogue entry |
+|---|---|---|
+| Divergent Change | One class must change for multiple unrelated reasons | Extract Class (split by axis of change) |
+| Shotgun Surgery | One concept change touches many classes | Move Function/Field, Inline Class, combine scattered behavior |
+| Parallel Inheritance Hierarchies | Adding a subclass to one hierarchy forces a new subclass in another | Move Function/Field to flatten or unify hierarchies |
+
+#### Dispensables — dead weight
+
+| Smell | Signal | Likely catalogue entry |
+|---|---|---|
+| Comments | Comment explains *what* or *why* when the code could be self-explanatory | Extract Function, Rename Variable/Function |
+| Duplicate Code | Same logic copied in 2+ places | Extract Function, Pull Up Method, Form Template Method |
+| Lazy Class | Class does too little to justify its existence | Inline Class, Collapse Hierarchy |
+| Data Class | Class holds only fields with getters/setters; no behavior | Move Function into class, Encapsulate Field |
+| Dead Code | Unreachable code, unused variable, never-called function | Delete it |
+| Speculative Generality | Abstractions added "for future use" with no current caller | Inline Class/Function, Remove unused parameters |
+
+#### Couplers — excessive inter-object dependency
+
+| Smell | Signal | Likely catalogue entry |
+|---|---|---|
+| Feature Envy | Method uses another class's data more than its own | Move Function, Extract Function |
+| Inappropriate Intimacy | Class accesses another's private fields or implementation details | Move Function/Field, Extract Class, Replace Inheritance with Delegation |
+| Message Chains | `a.b().c().d()` — navigating a chain of objects | Hide Delegate, Extract Function to encapsulate the chain |
+| Middle Man | Class delegates most of its methods to another class | Inline Class, Remove Middle Man |
+| Incomplete Library Class | External class lacks a needed method | Introduce Foreign Method, Introduce Extension Object |
+
+If pattern smell detected: load `skill apply-patterns` for pattern selection guidance.
 
 ### Step 2 — Apply one catalogue entry at a time
 
@@ -113,119 +148,34 @@ Commit (see Commit Discipline below).
 ## Key Catalogue Entries
 
 ### Extract Function
-Pull a cohesive fragment into a named function. Trigger: the fragment needs a comment to explain it.
+Pull a cohesive fragment into a named function.
 
-```python
-# Before
-def process(order):
-    # apply 10% discount
-    order.total = order.total * Decimal("0.9")
-    send_confirmation(order)
-
-# After
-def apply_discount(order: Order) -> None:
-    """Apply the standard 10% discount."""
-    order.total = order.total * Decimal("0.9")
-
-def process(order: Order) -> None:
-    """Process an order."""
-    apply_discount(order)
-    send_confirmation(order)
-```
+**Trigger**: a fragment needs a comment to explain what it does.
+**Outcome**: the extracted function's name makes the comment unnecessary; the caller reads as a sequence of named steps.
 
 ### Extract Class
-Split a class doing two jobs. Trigger: data cluster + related behaviours that travel together.
+Split a class that is doing two jobs.
 
-```python
-# Before
-@dataclass
-class Order:
-    id: str
-    street: str
-    city: str
-    total: Decimal
-
-# After
-@dataclass(frozen=True, slots=True)
-class Address:
-    """A delivery address."""
-    street: str
-    city: str
-
-@dataclass
-class Order:
-    """An order placed by a customer."""
-    id: str
-    address: Address
-    total: Decimal
-```
+**Trigger**: a data cluster (2–3 fields that always travel together) with related behaviour that could be named independently.
+**Outcome**: each class has one reason to change; the new class becomes a value object or a collaborator.
 
 ### Introduce Parameter Object
-Replace a recurring parameter group with a value object. Trigger: same 2+ params appear together across multiple signatures.
+Replace a recurring parameter group with a dedicated object.
 
-```python
-# Before
-def summarise(start_date: date, end_date: date) -> Report: ...
-def filter_events(start_date: date, end_date: date) -> list[Event]: ...
-
-# After
-@dataclass(frozen=True, slots=True)
-class DateRange:
-    """An inclusive date range."""
-    start: date
-    end: date
-
-def summarise(period: DateRange) -> Report: ...
-def filter_events(period: DateRange) -> list[Event]: ...
-```
+**Trigger**: the same 2+ parameters appear together across multiple function signatures.
+**Outcome**: a named type captures the concept; callers are simplified; the object can later carry behaviour.
 
 ### Replace Primitive with Object
-Elevate a domain primitive to a class with behaviour. Trigger: primitive has validation rules or operations.
+Elevate a domain concept represented as a raw primitive to its own type.
 
-```python
-# Before
-def send_invoice(email: str) -> None: ...
-
-# After
-@dataclass(frozen=True, slots=True)
-class EmailAddress:
-    """A validated email address."""
-    value: str
-
-    def validate(self) -> None:
-        """Validate the email format.
-
-        Raises:
-            ValueError: if the address has no '@' character.
-        """
-        if "@" not in self.value:
-            raise ValueError(f"Invalid email: {self.value!r}")
-
-def send_invoice(email: EmailAddress) -> None: ...
-```
+**Trigger**: a primitive has validation rules, formatting logic, or operations that are repeated at every call site.
+**Outcome**: behaviour moves into the type; callers are protected from invalid states; the type can be named and tested independently.
 
 ### Decompose Conditional / Guard Clauses
-Flatten nested logic to ≤2 levels. Trigger: OC-1 violation or deeply nested `if` chains.
+Flatten nested conditional logic to ≤2 levels.
 
-```python
-# Before
-def process(order):
-    if order is not None:
-        if order.total > 0:
-            if order.is_confirmed:
-                ship(order)
-
-# After
-def process(order: Order | None) -> None:
-    """Ship a confirmed order."""
-    if order is None:
-        return
-    if order.total <= 0:
-        return
-    if not order.is_confirmed:
-        return
-    ship(order)
-```
+**Trigger**: OC-1 violation (nesting beyond one indent level per method), or multi-level nested `if` chains.
+**Outcome**: each exit condition is expressed as an early return (guard clause); the happy path is at the left margin; no `else` after `return`.
 
 ---
 
@@ -295,123 +245,36 @@ Before marking the `@id` complete, verify all of the following. Each failed item
 | OC-9 | No getters/setters | `def get_name(self)` / `def set_name(self, v)` |
 
 ### SOLID (Martin 2000)
-| Principle | Check |
-|---|---|
-| **S** — Single Responsibility | Does this class have exactly one reason to change? |
-| **O** — Open/Closed | Can new behavior be added without editing this class? |
-| **L** — Liskov Substitution | Do all subtypes honor the full contract of their base type? |
-| **I** — Interface Segregation | Does every implementor use every method in the Protocol? |
-| **D** — Dependency Inversion | Does domain code depend only on Protocols, not concrete I/O? |
-
-#### SOLID Python signals
-
-**S — Single Responsibility**
-```python
-# WRONG — Report handles both data and formatting
-class Report:
-    def generate(self) -> dict: ...
-    def to_pdf(self) -> bytes: ...    # separate concern
-    def to_csv(self) -> str: ...      # separate concern
-
-# RIGHT
-class Report:
-    def generate(self) -> ReportData: ...
-
-class PdfRenderer:
-    def render(self, data: ReportData) -> bytes: ...
-```
-
-**O — Open/Closed**
-```python
-# WRONG — must edit this function to add a new format
-def export(data: ReportData, fmt: str) -> bytes:
-    if fmt == "pdf": ...
-    elif fmt == "csv": ...
-
-# RIGHT — new formats extend without touching existing code
-class Exporter(Protocol):
-    def export(self, data: ReportData) -> bytes: ...
-```
-
-**L — Liskov Substitution**
-```python
-# WRONG — ReadOnlyFile narrows the contract of File
-class ReadOnlyFile(File):
-    def write(self, content: str) -> None:
-        raise PermissionError  # LSP violation
-
-# RIGHT — separate interfaces
-class ReadableFile(Protocol):
-    def read(self) -> str: ...
-
-class WritableFile(Protocol):
-    def write(self, content: str) -> None: ...
-```
-
-**I — Interface Segregation**
-```python
-# WRONG — Printer forced to implement scan() and fax()
-class Machine(Protocol):
-    def print(self, doc: Document) -> None: ...
-    def scan(self, doc: Document) -> None: ...
-    def fax(self, doc: Document) -> None: ...
-
-# RIGHT
-class Printer(Protocol):
-    def print(self, doc: Document) -> None: ...
-
-class Scanner(Protocol):
-    def scan(self, doc: Document) -> None: ...
-```
-
-**D — Dependency Inversion**
-```python
-# WRONG — domain imports infrastructure directly
-from app.db import PostgresConnection
-
-class OrderRepository:
-    def __init__(self) -> None:
-        self.db = PostgresConnection()
-
-# RIGHT — domain defines the Protocol; infra implements it
-class OrderRepository(Protocol):
-    def find(self, order_id: OrderId) -> Order: ...
-    def save(self, order: Order) -> None: ...
-
-class PostgresOrderRepository:      # in adapters/
-    def find(self, order_id: OrderId) -> Order: ...
-    def save(self, order: Order) -> None: ...
-```
+| Principle | Check | Violation signal |
+|---|---|---|
+| **S** — Single Responsibility | Does this class have exactly one reason to change? | Class handles data + formatting, or business logic + persistence |
+| **O** — Open/Closed | Can new behavior be added without editing this class? | Adding a case requires editing an `if/elif` chain inside the class |
+| **L** — Liskov Substitution | Do all subtypes honor the full contract of their base type? | Subclass raises on an inherited method, or narrows a precondition |
+| **I** — Interface Segregation | Does every implementor use every method in the interface? | Implementors stub out methods they don't need |
+| **D** — Dependency Inversion | Does domain code depend only on abstractions, not concrete I/O? | Domain class directly imports a database, file, or network class |
 
 ### Law of Demeter / Tell, Don't Ask / CQS
 
-**Law of Demeter** — a method should only call methods on: `self`, parameters, objects it creates, direct components (`self.x`).
-- Violation signal: `a.b.c()` — two dots. Ask `a` to do the thing instead: `a.do_thing()`.
+**Law of Demeter** — a method should only call methods on: `self`, its parameters, objects it creates, and its direct components.
+- Violation signal: chaining through two or more intermediaries (`a.b().c()`). Ask `a` to do the thing instead of navigating through it.
 
-**Tell, Don't Ask** — tell objects what to do; don't query state and decide externally.
-```python
-# WRONG
-if order.status == OrderStatus.PENDING:
-    order.status = OrderStatus.CONFIRMED
-
-# RIGHT
-order.confirm()
-```
+**Tell, Don't Ask** — tell objects what to do; don't query their state and decide externally.
+- Violation signal: querying an object's status field, then setting it based on that query from outside the object. Move the decision into the object itself.
 
 **Command-Query Separation** — a method either changes state (command) or returns a value (query), never both.
-- Apply to domain objects. Do not fight stdlib (`list.pop()` is a known violation).
+- Apply to domain objects. Standard library collections are a known exception (e.g., pop-style methods).
 
-### Python Zen (PEP 20) signals
+### Design Clarity Signals
 
-| Zen item | Code implication |
+| Principle | Signal |
 |---|---|
-| Explicit is better than implicit | Explicit return types; explicit Protocol dependencies; no magic |
-| Simple is better than complex | One function, one job; prefer a plain function over a class |
-| Flat is better than nested | OC-1 — one indent level; early returns |
-| Readability counts | OC-6 — no abbreviations; docstrings on every public item |
-| Errors should never pass silently | No bare `except:`; no `except Exception: pass` |
-| In the face of ambiguity, refuse to guess | Raise on invalid input; never silently return a default |
+| Explicit over implicit | Dependencies stated at construction; no hidden side effects or magic initialization |
+| Simple over complex | One function, one job; prefer a plain function over a class when no state is needed |
+| Flat over nested | OC-1 — one indent level per method; early returns over deep nesting |
+| Readability | OC-6 — no abbreviations; public items documented |
+| Errors surface explicitly | Raise on invalid input; never silently swallow errors or return a default that hides failure |
+| No ambiguous defaults | Invalid input raises; callers are never surprised by silent fallbacks |
 
-### Type and docstring hygiene
-- [ ] Type hints present on all public signatures
-- [ ] Docstrings present on all public classes and methods
+### Type and documentation hygiene
+- [ ] Type annotations present on all public signatures
+- [ ] Documentation present on all public classes and methods
