@@ -62,9 +62,9 @@ STEP 5: ACCEPT         (product-owner)     → demo, validate, move .feature to 
 | `refactor` | software-engineer | 3 (REFACTOR phase + preparatory refactoring) |
 | `verify` | system-architect | 4 |
 | `check-quality` | software-engineer | pre-handoff (redirects to `verify`) |
-| `create-pr` | software-engineer | 5 |
-| `git-release` | software-engineer | 5 (after acceptance) |
-| `update-docs` | product-owner | 5 (after acceptance) + on stakeholder demand |
+| `create-pr` | software-engineer | post-acceptance |
+| `git-release` | software-engineer | post-acceptance |
+| `update-docs` | product-owner | post-acceptance + on stakeholder demand |
 | `design-colors` | designer | branding, color, WCAG compliance |
 | `design-assets` | designer | SVG asset creation and updates |
 | `create-skill` | software-engineer | meta |
@@ -92,7 +92,7 @@ Discovery follows a block structure per session. See `skill define-scope` for th
 
 **Key rules**:
 - PO owns `scope_journal.md`, `discovery.md`, `glossary.md`, and `.feature` files
-- PO reads `domain-model.md` but never writes to it — entity suggestions go in `discovery.md` for SE formalization at Step 2
+- PO reads `domain-model.md` but never writes to it — entity suggestions go in `discovery.md` for SA formalization at Step 2
 - Real-time split rule: >2 concerns or >8 candidate Examples → split immediately
 - Completed feature touched and changed → move to `backlog/`
 
@@ -218,12 +218,11 @@ uv run task doc-build
 
 ### Software-Engineer Quality Gate Priority Order
 
-During Step 3 (TDD Loop), correctness priorities are:
+During Step 3 (TDD Loop) and before handoff to Step 4:
 
-1. **Design correctness** — YAGNI > KISS > DRY > SOLID > Object Calisthenics > appropriated design patterns > complex code > complicated code > failing code > no code
+1. **Design correctness** — YAGNI > KISS > DRY > SOLID > Object Calisthenics > appropriate design patterns > complex code > complicated code > failing code > no code
 2. **One test green** — the specific test under work passes, plus `test-fast` still passes
-3. **Architect code-design check** — system-architect verifies design + semantic alignment (no lint/pyright/coverage yet)
-5. **Quality tooling** — `lint`, `static-check`, full `test` with coverage run only at software-engineer handoff (before Step 4)
+3. **Quality tooling** — `lint`, `static-check`, full `test` with coverage run at handoff to SA
 
 Design correctness is far more important than lint/pyright/coverage compliance. A well-designed codebase with minor lint issues is better than a lint-clean codebase with poor design.
 
