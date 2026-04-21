@@ -1,7 +1,7 @@
 ---
 name: define-scope
 description: Step 1 — discover requirements through stakeholder interviews and write Gherkin acceptance criteria
-version: "5.0"
+version: "6.0"
 author: product-owner
 audience: product-owner
 workflow: feature-lifecycle
@@ -21,7 +21,7 @@ Step 1 has two stages:
 
 | Stage | Who | Output |
 |---|---|---|
-| **Stage 1 — Discovery** | PO + stakeholder | `docs/discovery_journal.md` (Q&A) + `docs/discovery.md` (synthesis) + `.feature` descriptions |
+| **Stage 1 — Discovery** | PO + stakeholder | `docs/scope_journal.md` (Q&A) + `docs/discovery.md` (synthesis) + `.feature` descriptions |
 | **Stage 2 — Specification** | PO alone | `Rule:` blocks + `Example:` blocks with `@id` tags in `.feature` files |
 
 Stage 1 is iterative and ongoing — sessions happen whenever the PO or stakeholder needs to discover or refine scope. Stage 2 runs per feature, only after that feature has `Status: BASELINED`.
@@ -76,15 +76,44 @@ Discovery is a continuous, iterative process. Sessions happen whenever scope nee
 
 **Before asking any questions:**
 
-1. Check `docs/discovery_journal.md` for the most recent session block.
+1. Check `docs/scope_journal.md` for the most recent session block.
    - If the most recent block has `Status: IN-PROGRESS` → the previous session was interrupted. Resume it: check which `.feature` files need updating (compare journal Q&A against current `.feature` descriptions), write the `discovery.md` synthesis block if missing, then mark the block `Status: COMPLETE`. Only then begin a new session.
-   - If `docs/discovery_journal.md` does not exist → this is the first session. Create both `docs/discovery_journal.md` and `docs/discovery.md` using the templates at the end of this skill.
-2. Open `docs/discovery_journal.md` and append a new session header:
+   - If `docs/scope_journal.md` does not exist → this is the first session. Create both `docs/scope_journal.md` and `docs/discovery.md` using the templates in `scope-journal.md.template` and `discovery.md.template` in this skill's directory.
+2. Read `docs/domain-model.md` (if it exists) to check existing entities. The PO reads this file but never writes to it. If it does not exist yet, the SA will create it at Step 2.
+3. Declare session scope to the stakeholder: announce the total groups and estimated question count (e.g., "3 groups: General (7 Q), Cross-cutting, Feature: login").
+4. Open `docs/scope_journal.md` and append a new session header:
    ```markdown
    ## YYYY-MM-DD — Session N
    Status: IN-PROGRESS
    ```
-   Write this header **before** asking any questions. This is the durability marker — if the session is interrupted, the next agent sees `IN-PROGRESS` and knows writes are pending.
+    Write this header **before** asking any questions. This is the durability marker — if the session is interrupted, the next agent sees `IN-PROGRESS` and knows writes are pending.
+
+### Interview Protocol
+
+**Progress declaration (first message):**
+State the session structure upfront:
+> "This discovery session has 3 question groups:
+> 1. General (7 questions) — about users, goals, success/failure
+> 2. Cross-cutting — about behavior groups, integrations, lifecycle events
+> 3. Feature: <name> — about specific functionality
+>
+> I will ask one group at a time and summarize before moving on."
+
+**Question grouping:**
+- One `question` tool call per question group
+- Each question within the group uses a clear `header` showing progress, e.g.:
+  - `General — Q1/7`
+  - `General — Q2/7`
+  - `Feature: login — Q3/5`
+
+**Input types:**
+- **Checkbox (`multiple: true`)**: for multi-select answers (e.g., "Which platforms?" "Which user roles?")
+- **Options**: for single-select with known choices (e.g., "Priority: High / Medium / Low")
+- **Fill-up field (free text)**: for open-ended responses that cannot be pre-listed
+
+**Defaults:**
+- Offer "Other" or pre-fill with most common answer when context permits
+- Never force a stakeholder into a false dichotomy; always include "Something else / Not sure"
 
 ### Question Order (within every session)
 
@@ -111,7 +140,7 @@ Target behavior groups, bounded contexts, integration points, lifecycle events, 
 **3. Feature questions** (one feature at a time)
 
 For each feature the session touches:
-- Extract relevant nouns and verbs from `docs/discovery.md` Domain Model (if it exists)
+- Extract relevant nouns and verbs from `docs/glossary.md` and `docs/domain-model.md` (if they exist)
 - Generate questions from entity gaps: boundaries, edge cases, interactions, failure modes
 - Run a silent pre-mortem: "Imagine the developer builds this feature exactly as described, all tests pass, but the feature doesn't work for the user. What would be missing?"
 - Apply CIT, Laddering, and CI Perspective Change per question
@@ -121,33 +150,64 @@ For each feature the session touches:
 2. Create stub `.feature` files for both parts (if they don't already exist)
 3. Continue feature questions for both new features in sequence within the same session
 
+### Write Confirmation Gate
+
+**Before writing ANY file:** `docs/scope_journal.md`, `.feature` files, or `docs/discovery.md`.
+
+1. State exactly what will be written:
+   > "I will now append the Q&A from this session to `docs/scope_journal.md`."
+
+2. State exactly which file(s):
+   > "I will create `docs/features/backlog/<feature-stem>.feature`."
+
+3. **Ask for explicit confirmation** using the `question` tool:
+   - `header: "Ready to write"`
+   - Question text: "Confirm: write to `<path>`?"
+   - Options: `["Yes, write it", "Show me a preview first", "No, I need changes"]`
+
+4. Only proceed with `write`/`edit` if the answer is confirmation.
+
+**This applies to all write operations in this skill**, including:
+- `docs/scope_journal.md` (session header and Q&A)
+- `docs/features/backlog/<feature-stem>.feature` (initial description or update)
+- `docs/discovery.md` (synthesis block)
+
 ### After Questions (PO alone, same session)
 
 **Step A — Write answered Q&A to journal**
 
-Append all answered Q&A to `docs/discovery_journal.md`, in groups (general, cross-cutting, then per-feature). Write only answered questions. Unanswered questions are discarded.
+Append all answered Q&A to `docs/scope_journal.md`, in groups (general, cross-cutting, then per-feature). Write only answered questions. Unanswered questions are discarded.
 
 Group headers use this format:
 - General group: `### General`
 - Cross-cutting group: `### <Group Name>`
 - Feature group: `### Feature: <feature-stem>`
 
-**Step B — Update .feature descriptions**
+**Step B — Update glossary and discovery.md**
+
+1. Update `docs/glossary.md` (new or corrected definitions; edits allowed).
+2. Append to `docs/discovery.md` (use the template in `discovery.md.template`):
+   - 3-line session summary (general/behavioral focus)
+   - Entities **added or deprecated** this session (suggestions for the SE; not a formal model)
+   - Features **touched** this session + 1-line reason why
+
+The PO does **not** write `docs/domain-model.md`. Entity suggestions live in `discovery.md` for the SA to formalize at Step 2.
+
+**Step C — Update .feature descriptions**
 
 For each feature touched in this session: rewrite the `.feature` file description to reflect the current state of understanding. Only touched features are updated; all others remain exactly as-is.
 
-If a feature is new (just created as a stub): write its initial description now.
+If a feature is new (just created as a stub): write its initial description now. Use the template in `feature.md.template`.
 
-**Step C — Append session synthesis to discovery.md (LAST)**
+**Step D — Completed feature regression check**
 
-After all `.feature` files are updated, append one `## Session: YYYY-MM-DD` block to `docs/discovery.md`. The block contains:
-- `### Feature List` — which features were added or changed (0–N entries); if nothing changed, write "No changes"
-- `### Domain Model` — new or updated domain entities and verbs; if nothing changed, write "No changes"
-- `### Context` (first session only) — 3–5 sentence synthesis of who the users are, what the product does, why it exists, success/failure conditions, and explicit out-of-scope
+If a `completed/` feature was touched and its description/rules changed:
+- **Move it to `backlog/`**. Description changes always imply behavior changes; cosmetic rewrites are never performed.
+- Record the move in `discovery.md`: "Moved `<feature-stem>` from completed to backlog due to changed requirements."
 
-**Step D — Mark session complete**
+**Step E — Mark session complete**
 
-Update the session header in `docs/discovery_journal.md`:
+Update the session header in `docs/scope_journal.md`:
 ```markdown
 ## YYYY-MM-DD — Session N
 Status: COMPLETE
@@ -281,16 +341,17 @@ All Rules must have their pre-mortems completed before any Examples are written.
 
 Communicate verbally to the next agent. Every `DISAGREE` is a **hard blocker** — fix before committing. Do not commit until all items are AGREE or have a documented resolution.
 
-- INVEST-I: each Rule is Independent (no hidden ordering or dependency between Rules) — AGREE/DISAGREE | conflict:
-- INVEST-V: each Rule delivers Value to a named user — AGREE/DISAGREE | Rule:
-- INVEST-S: each Rule is Small enough for one development cycle — AGREE/DISAGREE | Rule:
-- INVEST-T: each Rule is Testable (I can write a pass/fail Example for it) — AGREE/DISAGREE | Rule:
-- Observable: every Then is a single, observable, measurable outcome — AGREE/DISAGREE | file:line
-- No impl details: no Example tests internal state or implementation — AGREE/DISAGREE | file:line
-- Coverage: every entity in the feature description appears in at least one Rule — AGREE/DISAGREE | missing:
-- Distinct: no two Examples test the same observable behavior — AGREE/DISAGREE | file:line
-- Pre-mortem: I ran a pre-mortem on each Rule and found no hidden failure modes — AGREE/DISAGREE | Rule:
-- Scope: no Example introduces behavior outside the feature boundary — AGREE/DISAGREE | file:line
+As a product-owner I declare that:
+* INVEST-I: each Rule is Independent (no hidden ordering or dependency between Rules) — AGREE/DISAGREE | conflict:
+* INVEST-V: each Rule delivers Value to a named user — AGREE/DISAGREE | Rule:
+* INVEST-S: each Rule is Small enough for one development cycle — AGREE/DISAGREE | Rule:
+* INVEST-T: each Rule is Testable (I can write a pass/fail Example for it) — AGREE/DISAGREE | Rule:
+* Observable: every Then is a single, observable, measurable outcome — AGREE/DISAGREE | file:line
+* No impl details: no Example tests internal state or implementation — AGREE/DISAGREE | file:line
+* Coverage: every entity in the feature description appears in at least one Rule — AGREE/DISAGREE | missing:
+* Distinct: no two Examples test the same observable behavior — AGREE/DISAGREE | file:line
+* Pre-mortem: I ran a pre-mortem on each Rule and found no hidden failure modes — AGREE/DISAGREE | Rule:
+* Scope: no Example introduces behavior outside the feature boundary — AGREE/DISAGREE | file:line
 
 Commit: `feat(criteria): write acceptance criteria for <feature-stem>`
 
@@ -323,153 +384,81 @@ When a defect is reported against a completed or in-progress feature:
 
 ## Feature File Format
 
-Each feature is a single `.feature` file. The description block contains the feature description and Status. All Q&A belongs in `docs/discovery_journal.md`; all architectural decisions belong in `docs/architecture.md`.
+Each feature is a single `.feature` file. The description block contains the feature description and Status. All Q&A belongs in `docs/scope_journal.md`; all architectural decisions belong in `docs/adr/ADR-YYYY-MM-DD-<slug>.md`.
 
-```gherkin
-Feature: <Feature title>
-
-  <2–4 sentence description of what this feature does and why it exists.
-  Written in plain language, always kept current by the PO.>
-
-  Status: ELICITING | BASELINED (YYYY-MM-DD)
-
-  Rules (Business):
-  - <Business rule that applies across multiple Examples>
-
-  Constraints:
-  - <Non-functional requirement specific to this feature>
-
-  Rule: <User story title>
-    As a <role>
-    I want <goal>
-    So that <benefit>
-
-    @id:a3f2b1c4
-    Example: <Concrete scenario title>
-      Given <initial context>
-      When <event or action>
-      Then <observable outcome>
-
-    @deprecated @id:b5c6d7e8
-    Example: <Superseded scenario>
-      Given ...
-      When ...
-      Then ...
-```
+See `feature.md.template` in this skill's directory for the full template.
 
 The **Rules (Business)** section captures business rules that hold across multiple Examples. Identifying rules first prevents redundant or contradictory Examples.
 
 The **Constraints** section captures non-functional requirements. Testable constraints should become `Example:` blocks with `@id` tags.
 
 What is **not** in `.feature` files:
-- Entities table — domain model lives in `docs/discovery.md`
-- Session Q&A blocks — live in `docs/discovery_journal.md`
-- Template §N markers — live in `docs/discovery_journal.md` session blocks
-- Architecture section — lives in `docs/architecture.md`
+- Entities table — domain model lives in `docs/domain-model.md` (SE-owned)
+- Session Q&A blocks — live in `docs/scope_journal.md`
+- Architecture section — lives in `docs/adr/ADR-*.md`
 
 ---
 
-## Project-Level Discovery Templates
+## Post-Mortem Protocol
 
-Three files hold project-level discovery content. Use these templates when creating them for the first time.
+When a stakeholder reports failure after the PO has attempted Step 5 acceptance, the feature does **not** move to `completed/`. Instead, the team compiles a compact post-mortem and the feature restarts at Step 2.
 
-### `docs/discovery_journal.md` — Raw Q&A (append-only)
+### Trigger
+Stakeholder reports a feature is wrong after PO acceptance attempt.
 
-```markdown
-# Discovery Journal: <project-name>
+### Workflow
+1. **PO ensures feature is in `in-progress/`** (move back if already shifted).
+2. **Team compiles post-mortem** — max 15 lines, root cause at process level.
+3. **SE creates fix branch** from the feature's original start commit:
+   ```bash
+   # Find the feature's original start commit
+   git log --all --grep="feat(<feature-stem>)" --oneline
+   # Or, if the old branch still exists:
+   git log --reverse main..feat/<feature-stem> --oneline   # first line = start commit
+   
+   # Create fix branch from start commit
+   git checkout -b fix/<feature-stem> <start-commit-sha>
+   
+   # Commit post-mortem as first commit on the new branch
+   git add docs/post-mortem/YYYY-MM-DD-<feature-stem>-<keyword>.md
+   git commit -m "docs(post-mortem): root cause for <feature-stem> <keyword>"
+   
+   # Push the fix branch
+   git push -u origin fix/<feature-stem>
+   ```
+4. **PO scans `docs/post-mortem/`**, selects relevant files by `<feature-stem>` or `<failure-keyword>` in filename.
+5. **PO reads selected post-mortems** for context before handoff.
+6. **PO resets FLOW.md**: Status to [STEP-2-ARCH], `Next: Run @system-architect — restart Step 2 for <feature-stem> on fix/<feature-stem> with post-mortem context`.
+7. **SA begins Step 2** on `fix/<feature-stem>`, reading relevant post-mortems as input.
 
----
+### Document Format
 
-## YYYY-MM-DD — Session 1
-Status: IN-PROGRESS
+File: `docs/post-mortem/YYYY-MM-DD-<feature-stem>-<failure-keyword>.md`
 
-### General
+Use the template `post-mortem.md.template` in this skill's directory.
 
-| ID | Question | Answer |
-|----|----------|--------|
-| Q1 | Who are the users? | ... |
-| Q2 | What does the product do at a high level? | ... |
-| Q3 | Why does it exist — what problem does it solve? | ... |
-| Q4 | When and where is it used? | ... |
-| Q5 | Success — what does "done" look like? | ... |
-| Q6 | Failure — what must never happen? | ... |
-| Q7 | Out-of-scope — what are we explicitly not building? | ... |
-
-### <Group Name>
-
-| ID | Question | Answer |
-|----|----------|--------|
-| Q8 | ... | ... |
-
-### Feature: <feature-stem>
-
-| ID | Question | Answer |
-|----|----------|--------|
-| Q9 | ... | ... |
-
-Status: COMPLETE
-```
-
-Rules:
-- Session header written first with `Status: IN-PROGRESS` before any Q&A
-- Only answered questions are written; unanswered questions are discarded
-- Questions grouped by topic (general, cross-cutting groups, per-feature)
-- `Status: COMPLETE` written at the end of the session block, after all writes are done
-- Never edit past entries — only append new session blocks
-
-### `docs/discovery.md` — Synthesis Changelog (append-only)
-
-```markdown
-# Discovery: <project-name>
+### Rules
+- One file per incident. Never edit an existing post-mortem.
+- If the same failure mode recurs, write a new post-mortem referencing the old one by filename.
+- PO reads post-mortems selectively; never require reading all of them.
 
 ---
 
-## Session: YYYY-MM-DD
+## Templates
 
-### Context
-<3–5 sentence synthesis of who the users are, what the product does, why it exists,
-success/failure conditions, and out-of-scope boundaries.>
-(First session only. Omit this subsection in subsequent sessions.)
+All templates for files written by this skill live in this skill's directory:
 
-### Feature List
-- `<feature-stem>` — <one-sentence description of what changed or was added>
-(Write "No changes" if no features were added or modified this session.)
+- `scope-journal.md.template` — `docs/scope_journal.md` structure
+- `discovery.md.template` — `docs/discovery.md` per-session block
+- `feature.md.template` — `.feature` file structure
+- `post-mortem.md.template` — `docs/post-mortem/YYYY-MM-DD-<feature-stem>-<keyword>.md` structure
 
-### Domain Model
-| Type | Name | Description | In Scope |
-|------|------|-------------|----------|
-| Noun | <name> | <description> | Yes |
-| Verb | <name> | <description> | Yes |
-(Write "No changes" if domain model was not updated this session.)
-```
-
-Rules:
-- Each session appends one `## Session: YYYY-MM-DD` block
-- Synthesis block is written LAST — only after all `.feature` file descriptions are updated
-- No project-level `Status: BASELINED` — feature-level BASELINED in `.feature` files is the gate
-- Never edit past blocks — append only; later blocks extend or supersede earlier ones
-
-### `docs/architecture.md` — Architectural Decisions (append-only, software-engineer)
-
-```markdown
-# Architecture: <project-name>
-
----
-
-## YYYY-MM-DD — <feature-stem>: <short title>
-
-Decision: <what was decided — one sentence>
-Reason: <why — one sentence>
-Alternatives considered: <what was rejected and why>
-Feature: <feature-stem>
-```
-
-Rules: Append-only. When a decision changes, append a new block that supersedes the old one. Cross-feature decisions use `Cross-feature:` in the header. Only write a block for non-obvious decisions with meaningful trade-offs.
-
-Base directory for this skill: file:///home/user/Documents/projects/python-project-template/.opencode/skills/scope
+Base directory for this skill: file:///home/user/Documents/projects/python-project-template/.opencode/skills/define-scope
 Relative paths in this skill (e.g., scripts/, reference/) are relative to this base directory.
 Note: file list is sampled.
 
 <skill_files>
-<file>/home/user/Documents/projects/python-project-template/.opencode/skills/define-scope/discovery-template.md</file>
+<file>/home/user/Documents/projects/python-project-template/.opencode/skills/define-scope/discovery.md.template</file>
+<file>/home/user/Documents/projects/python-project-template/.opencode/skills/define-scope/feature.md.template</file>
+<file>/home/user/Documents/projects/python-project-template/.opencode/skills/define-scope/scope-journal.md.template</file>
 </skill_files>

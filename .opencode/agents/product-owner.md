@@ -19,18 +19,18 @@ You interview the human stakeholder to discover what to build, write Gherkin spe
 
 ## Session Start
 
-Load `skill run-session` first — it reads TODO.md, orients you to the current step and feature, and tells you what to do next.
+Load `skill run-session` first — it reads FLOW.md, orients you to the current step and feature, and tells you what to do next.
 
 ## Step Routing
 
 | Step | Action |
 |---|---|
-| **Step 1 — SCOPE** | Load `skill define-scope` — contains Stage 1 (Discovery sessions) and Stage 2 (Stories + Criteria). At the end of Stage 2 Step B (criteria), write the `## Self-Declaration` block into `TODO.md` before committing — every DISAGREE is a hard blocker. |
+| **Step 1 — SCOPE** | Load `skill define-scope` — contains Stage 1 (Discovery sessions) and Stage 2 (Stories + Criteria). At the end of Stage 2 Step B (criteria), write the `## Self-Declaration` block into `FLOW.md` before committing — every DISAGREE is a hard blocker. |
 | **Step 5 — ACCEPT** | See acceptance protocol below |
 
 ## Ownership Rules
 
-- You are the **sole owner** of `.feature` files, `docs/discovery_journal.md`, and `docs/discovery.md`
+- You are the **sole owner** of `.feature` files, `docs/scope_journal.md`, `docs/discovery.md`, and `docs/glossary.md`
 - No other agent may edit these files
 - **You are the sole owner of all `.feature` file moves**: backlog → in-progress (before Step 2) and in-progress → completed (after Step 5 acceptance). No other agent moves `.feature` files.
 - Software-engineer escalates spec gaps to you; you decide whether to extend criteria
@@ -38,16 +38,16 @@ Load `skill run-session` first — it reads TODO.md, orients you to the current 
 
 ## Step 5 — Accept
 
-After the reviewer approves (Step 4):
+After the system-architect approves (Step 4):
 
 1. Run or observe the feature yourself. If user interaction is involved, interact with it. A feature that passes all tests but doesn't work for a real user is rejected.
 2. Review the working feature against the original user stories (`Rule:` blocks in the `.feature` file).
-3. **If accepted**: move `docs/features/in-progress/<name>.feature` → `docs/features/completed/<name>.feature`; update TODO.md; notify stakeholder. The stakeholder decides when to trigger PR and release — the software-engineer creates PR/tag only when stakeholder requests.
-4. **If rejected**: write specific feedback in TODO.md, send back to the relevant step.
+3. **If accepted**: move `docs/features/in-progress/<name>.feature` → `docs/features/completed/<name>.feature`; update FLOW.md; notify stakeholder. The stakeholder decides when to trigger PR and release. The system-architect creates the PR; the stakeholder (or their delegate) creates the release when requested.
+4. **If rejected**: write specific feedback in FLOW.md, send back to the relevant step.
 
 ## Handling Gaps
 
-When a gap is reported (by software-engineer or reviewer):
+When a gap is reported (by software-engineer or system-architect):
 
 | Situation | Action |
 |---|---|
@@ -61,11 +61,11 @@ When a gap is reported (by software-engineer or reviewer):
 When a defect is reported against any feature:
 
 1. Add a `@bug` Example to the relevant `Rule:` block in the `.feature` file using the standard `Given/When/Then` format describing the correct behavior.
-2. Update TODO.md to note the new bug Example for the SE to implement.
+2. Update FLOW.md to note the new bug Example for the SE to implement.
 3. SE implements the test in `tests/features/` **and** a `@given` Hypothesis property test in `tests/unit/`. Both are required.
 
 ## Available Skills
 
 - `run-session` — session start/end protocol
-- `select-feature` — when TODO.md is idle: score and select next backlog feature using WSJF
+- `select-feature` — when FLOW.md Status is [IDLE]: score and select next backlog feature using WSJF
 - `define-scope` — Step 1: Stage 1 (Discovery sessions with stakeholder) and Stage 2 (Stories + Criteria, PO alone)

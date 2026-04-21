@@ -56,9 +56,25 @@ Foundations for object-oriented design principles used in this template.
 
 ---
 
+### 36. refactoring.guru — Code Smells, Refactoring Techniques, and Design Patterns
+
+| | |
+|---|---|
+| **Source** | Shvets, A. (2014–present). *Refactoring.Guru*. https://refactoring.guru |
+| **Date** | 2014–present (continuously updated) |
+| **Status** | Practitioner synthesis — widely used reference |
+| **Core finding** | Three interconnected catalogs: (1) **22 code smells** in 5 categories (Bloaters, OO Abusers, Change Preventers, Dispensables, Couplers); (2) **~70 refactoring techniques** in 6 categories (Composing Methods, Moving Features, Organizing Data, Simplifying Conditionals, Simplifying Method Calls, Dealing with Generalization); (3) **22 GoF design patterns** with visual diagrams and multi-language examples. The unique value is the **interconnected navigation**: each smell links to the techniques that address it, and techniques link to patterns they lead toward. |
+| **Mechanism** | Navigation chain: smell → techniques → patterns. Smell categories group related structural problems (e.g., Bloaters = classes/methods grown too large; Dispensables = code that can safely be removed; Couplers = excessive dependency between classes). Each technique has a before/after structure, prerequisites, and trade-offs. |
+| **Smell categories** | **Bloaters** (Long Method, Large Class, Primitive Obsession, Long Parameter List, Data Clumps); **OO Abusers** (Switch Statements, Temporary Field, Refused Bequest, Alternative Classes with Different Interfaces); **Change Preventers** (Divergent Change, Shotgun Surgery, Parallel Inheritance Hierarchies); **Dispensables** (Comments, Duplicate Code, Lazy Class, Data Class, Dead Code, Speculative Generality); **Couplers** (Feature Envy, Inappropriate Intimacy, Message Chains, Middle Man, Incomplete Library Class) |
+| **Technique categories** | Composing Methods, Moving Features Between Objects, Organizing Data, Simplifying Conditional Expressions, Simplifying Method Calls, Dealing with Generalization |
+| **Where used** | `refactor/SKILL.md`: expanded smell table with all 5 categories. `apply-patterns/SKILL.md`: cross-reference for GoF pattern selection. |
+
+---
+
 ## Bibliography
 
 1. Bay, J. (~2005). "Object Calisthenics." *IEEE Software/DevX*. https://www.bennadel.com/resources/uploads/2012/objectcalisthenics.pdf
 2. Fowler, M. (1999/2018). *Refactoring: Improving the Design of Existing Code* (2nd ed.). Addison-Wesley. https://martinfowler.com/books/refactoring.html
 3. Gamma, E., Helm, R., Johnson, R., & Vlissides, J. (1995). *Design Patterns: Elements of Reusable Object-Oriented Software*. Addison-Wesley.
 4. Martin, R. C. (2000). "Principles of OOD." *ButUncleBob.com*. https://blog.interface-solv.com/wp-content/uploads/2020/07/Principles-Of-OOD.pdf
+5. Shvets, A. (2014–present). *Refactoring.Guru*. https://refactoring.guru

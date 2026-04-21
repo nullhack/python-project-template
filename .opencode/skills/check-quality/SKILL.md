@@ -3,19 +3,19 @@ name: check-quality
 description: Enforce code quality using ruff, pytest coverage, and static type checking
 version: "2.1"
 author: software-engineer
-audience: software-engineer, reviewer
+audience: software-engineer, system-architect
 workflow: feature-lifecycle
 ---
 
 # Check Quality
 
-Quick reference for the software-engineer quality gate before handing off to the reviewer (Step 4).
+Quick reference for the software-engineer quality gate before handing off to the system-architect (Step 4).
 
-**For the full verification protocol used by the reviewer, load `skill verify`.**
+**For the full verification protocol used by the system-architect, load `skill verify`.**
 
 ## When to Use
 
-Load this skill when completing Step 3 and preparing to hand off to the reviewer. Run all four commands; all must pass before signalling handoff.
+Load this skill when completing Step 3 and preparing to hand off to the system-architect. Run all four commands; all must pass before signalling handoff.
 
 ## Step-by-Step
 

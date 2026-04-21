@@ -1,0 +1,24 @@
+# Discovery: <project-name>
+
+> Append-only session synthesis log.
+> Written by the product-owner at the end of each discovery session.
+> Each block summarizes one session: what was learned, what entities were suggested, and which features were touched.
+> Never edit past blocks — later blocks extend or supersede earlier ones.
+
+---
+
+## Session: YYYY-MM-DD
+
+### Summary
+<3-line synthesis of the session: what was discussed, what decisions were made, what new information emerged.>
+
+### Entities Added or Deprecated
+| Action | Type | Name | Notes |
+|--------|------|------|-------|
+| Added | Noun | <name> | <brief note> |
+| Deprecated | Verb | <name> | <reason> |
+(Write "No changes" if no entities were added or deprecated this session.)
+
+### Features Touched
+- `<feature-stem>` — <one-line reason why this feature was touched>
+(Write "No changes" if no features were added or modified this session.)

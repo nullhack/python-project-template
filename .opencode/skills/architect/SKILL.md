@@ -1,0 +1,192 @@
+---
+name: architect
+description: Step 2 — Architecture and domain design, one feature at a time
+version: "1.0"
+author: system-architect
+audience: system-architect
+workflow: feature-lifecycle
+---
+
+# Architect
+
+Step 2: design the domain model, write architecture stubs, record decisions, and generate test stubs. The system-architect owns this step entirely.
+
+## When to Use
+
+Load this skill when starting Step 2 (Architecture) after the PO has moved a BASELINED feature to `in-progress/`.
+
+## System-Architect Quality Gate Priority Order
+
+During architecture, correctness priorities are (in order):
+
+1. **Design correctness** — YAGNI > KISS > DRY > SOLID > Object Calisthenics > appropriate design patterns > complex code > complicated code > failing code > no code
+2. **One test green** — `uv run task test-fast` passes after stub generation
+3. **Commit** — when stubs and ADRs are complete
+
+Design correctness is far more important than lint/pyright/coverage compliance. Never run lint or static-check during architecture — those are handoff-only checks.
+
+---
+
+## Step 2 — Architecture
+
+### Prerequisites (stop if any fail — escalate to PO)
+
+1. `docs/features/in-progress/` contains exactly one `.feature` file (not just `.gitkeep`). If none exists, **STOP** — update FLOW.md `Next:` to `Run @product-owner — move the chosen feature to in-progress/` and stop. Never self-select or move a feature yourself.
+2. The feature file's discovery section has `Status: BASELINED`. If not, escalate to PO — Step 1 is incomplete.
+3. The feature file contains `Rule:` blocks with `Example:` blocks and `@id` tags. If not, escalate to PO — criteria have not been written.
+4. Package name confirmed: read `pyproject.toml` → locate `[tool.setuptools]` → confirm directory exists on disk.
+5. **Branch verification**: `git branch --show-current` must output `feat/<stem>` or `fix/<stem>`. If it outputs `main` or any other branch, stop — the SE must create the correct branch via `skill version-control` before architecture begins.
+
+### Package Verification (mandatory — before writing any code)
+
+1. Read `pyproject.toml` → locate `[tool.setuptools]` → record `packages = ["<name>"]`
+2. Confirm directory exists: `ls <name>/`
+3. All new source files go under `<name>/`
+
+**Note on feature file moves**: The PO moves `.feature` files between folders. The system-architect never moves, creates, or edits `.feature` files. Update FLOW.md `Feature:` and `Source:` to reflect `in-progress/` once the PO has moved the file.
+
+### Read Phase (targeted reads only — before writing anything)
+
+1. Read `docs/system.md` — understand current system structure and constraints
+2. Read `docs/glossary.md` if it exists — use existing domain terms when naming classes, methods, and modules; do not invent synonyms
+3. Read in-progress `.feature` file (full: Rules + Examples + @id)
+4. Run `tree <package>/` — understand package structure without reading every file
+5. Read **specific `.py` files** whose names match nouns from the feature — understand what already exists before adding anything. Do not read the entire package.
+
+### Domain Analysis
+
+From `docs/glossary.md` + Rules (Business) in the `.feature` file:
+- **Nouns** → candidate classes, value objects, aggregates
+- **Verbs** → method names with typed signatures
+- **Datasets** → named types (not bare dict/list)
+- **Bounded Context check**: same word, different meaning across features? → module boundary
+- **Cross-feature entities** → candidate shared domain layer
+
+### Create / Update Domain Model
+
+**If `docs/domain-model.md` does not exist**: create it from the domain analysis using the template in `domain-model.md.template` in the `implement` skill's directory.
+
+**If `docs/domain-model.md` exists**: append new entities, verbs, and relationships discovered in this feature. Deprecate old entries if they are superseded. Never edit existing live entries — code depends on them.
+
+This file is system-architect-owned. The PO reads it but never writes to it.
+
+### Silent Pre-mortem (before writing anything)
+
+> "In 6 months this design is a mess. What mistakes did we make?"
+
+For each candidate class:
+- >2 ivars? → split
+- >1 reason to change? → isolate
+
+For each external dep:
+- Is it behind a Protocol? → if not, add
+
+For each noun:
+- Serving double duty across modules? → isolate
+
+If pattern smell detected, load `skill apply-patterns`.
+
+### Write Stubs into Package
+
+From the domain analysis, write or extend `.py` files in `<package>/`. For each entity:
+
+- **If the file already exists**: add the new class or method signature — do not remove or alter existing code.
+- **If the file does not exist**: create it with the new signatures only.
+
+**Stub rules (strictly enforced):**
+- Method bodies must be `...` — no logic, no conditionals, no imports beyond `typing` and domain types
+- No docstrings — signatures will change; add docstrings after GREEN (lint enforces this at quality gate)
+- No inline comments, no TODO comments, no speculative code
+
+**Example — correct stub style:**
+
+```python
+from dataclasses import dataclass
+from typing import Protocol
+
+
+@dataclass(frozen=True, slots=True)
+class EmailAddress:
+    value: str
+
+    def validate(self) -> None: ...
+
+
+class UserRepository(Protocol):
+    def save(self, user: "User") -> None: ...
+    def find_by_email(self, email: EmailAddress) -> "User | None": ...
+```
+
+**File placement (common patterns, not required names):**
+- `<package>/domain/<noun>.py` — entities, value objects
+- `<package>/domain/service.py` — cross-entity operations
+
+Place stubs where responsibility dictates — do not pre-create `ports/` or `adapters/` folders unless a concrete external dependency was identified in scope. Structure follows domain analysis, not a template.
+
+### Record Architectural Decisions
+
+For each significant decision, create a new file:
+
+```bash
+docs/adr/ADR-YYYY-MM-DD-<slug>.md
+```
+
+Use the template in `adr.md.template` in the `implement` skill's directory. Fill in Decision, Reason, Alternatives Considered, and Consequences.
+
+Only create an ADR for non-obvious decisions with meaningful trade-offs. Routine YAGNI choices do not need a record.
+
+Reference relevant ADRs from `docs/system.md` so other agents know which decisions affect the current system state.
+
+### Architecture Smell Check (hard gate)
+
+Apply to the stub files just written:
+
+- [ ] No class with >2 responsibilities (SOLID-S)
+- [ ] No behavioural class with >2 instance variables (OC-8; dataclasses, Pydantic models, value objects, and TypedDicts are exempt)
+- [ ] All external deps assigned a Protocol (SOLID-D + Hexagonal) — N/A if no external dependencies identified in scope
+- [ ] No noun with different meaning across modules (DDD Bounded Context)
+- [ ] No missing Creational pattern: repeated construction without Factory/Builder
+- [ ] No missing Structural pattern: type-switching without Strategy/Visitor
+- [ ] No missing Behavioral pattern: state machine or scattered notification without State/Observer
+- [ ] Each ADR consistent with each @id AC — no contradictions
+
+If any check fails: fix the stub files before committing.
+
+### Generate Test Stubs
+
+Run `uv run task test-fast` once. It reads the in-progress `.feature` file, assigns `@id` tags to any untagged `Example:` blocks (writing them back to the `.feature` file), and generates `tests/features/<feature_slug>/<rule_slug>_test.py` — one file per `Rule:` block, one skipped function per `@id`. Verify the files were created, then stage all changes (including any `@id` write-backs to the `.feature` file).
+
+Commit: `feat(<feature-stem>): add architecture and test stubs`
+
+### Hand off to Step 3 (TDD Loop)
+
+1. Update FLOW.md: `Next: Run @software-engineer — Step 3 TDD Loop`
+2. Provide the SE with:
+   - Feature file path
+   - Summary of stubs created
+   - Any ADRs that constrain implementation
+   - Any domain-model changes
+3. Stop. The SE takes over.
+
+---
+
+## Handling Spec Gaps
+
+If during architecture you discover behavior not covered by existing acceptance criteria:
+- **Do not extend criteria yourself** — escalate to PO
+- Note the gap in FLOW.md under `## Next`
+- The PO will decide whether to add a new Example to the `.feature` file
+
+---
+
+## Templates
+
+Templates for files written by this skill live in the `implement` skill's directory:
+
+- `domain-model.md.template` — `docs/domain-model.md` structure
+- `system.md.template` — `docs/system.md` structure
+- `adr.md.template` — individual ADR file structure
+
+Base directory for this skill: file:///home/user/Documents/projects/python-project-template/.opencode/skills/architect
+Relative paths in this skill (e.g., scripts/, reference/) are relative to this base directory.
+Note: file list is sampled.
