@@ -15,7 +15,7 @@ This skill guides the system-architect through Step 4: adversarial verification 
 
 **Every PASS/FAIL cell must have evidence.** Empty evidence = UNCHECKED = REJECTED.
 
-**You never move, create, or edit `.feature` files.** After producing an APPROVED report: update TODO.md `Next:` to `Run @product-owner — accept feature <name> at Step 5.` then stop. The PO accepts the feature and moves the file.
+**You never move, create, or edit `.feature` files.** After producing an APPROVED report: update FLOW.md `Next:` to `Run @product-owner — accept feature <name> at Step 5.` then stop. The PO accepts the feature and moves the file.
 
 The system-architect produces one written report (see template below) that includes: all gate results, the SE Self-Declaration Audit, the **Architect Review Stance Declaration**, and the final APPROVED/REJECTED verdict. Do not start until the software-engineer has committed all work and communicated the Self-Declaration verbally in the handoff message.
 

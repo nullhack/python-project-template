@@ -428,7 +428,7 @@ Stakeholder reports a feature is wrong after PO acceptance attempt.
    ```
 4. **PO scans `docs/post-mortem/`**, selects relevant files by `<feature-stem>` or `<failure-keyword>` in filename.
 5. **PO reads selected post-mortems** for context before handoff.
-6. **PO resets TODO.md**: Step 2, `Run @system-architect — restart Step 2 for <feature-stem> on fix/<feature-stem> with post-mortem context`.
+6. **PO resets FLOW.md**: Status to [STEP-2-ARCH], `Next: Run @system-architect — restart Step 2 for <feature-stem> on fix/<feature-stem> with post-mortem context`.
 7. **SA begins Step 2** on `fix/<feature-stem>`, reading relevant post-mortems as input.
 
 ### Document Format

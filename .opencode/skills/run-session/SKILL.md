@@ -1,7 +1,7 @@
 ---
 name: run-session
-description: Session start and end protocol — read TODO.md, continue from checkpoint, update and commit
-version: "4.0"
+version: "5.0"
+description: Session start and end protocol — read FLOW.md, auto-detect state, resume from checkpoint, update and commit
 author: software-engineer
 audience: all-agents
 workflow: session-management
@@ -11,48 +11,48 @@ workflow: session-management
 
 Every session starts by reading state. Every session ends by writing state. This makes any agent able to continue from where the last session stopped.
 
+The single source of state is `FLOW.md` in the project root. It tracks the current feature, branch, detected workflow state, and next action.
+
 ## Read Policy
 
 Each agent reads only what is operationally necessary for their current step. Do not read files "for context" unless the step explicitly requires it.
 
 | Agent | Reads |
 |---|---|
-| PO (Step 1) | `TODO.md`, `scope_journal.md` (resume check), `system.md`, `glossary.md`, `domain-model.md` (read-only, entity check), `docs/post-mortem/` (selective scan), in-progress `.feature` |
-| SA (Step 2) | `TODO.md`, `system.md`, `glossary.md`, in-progress `.feature`, targeted `.py` files |
-| SE (Step 3) | `TODO.md`, `system.md`, `glossary.md`, in-progress `.feature`, targeted `.py` files |
-| SA (Step 4) | `TODO.md`, `system.md`, `glossary.md`, `domain-model.md`, in-progress `.feature`, ADR files referenced in `system.md` |
+| PO (Step 1) | `FLOW.md`, `scope_journal.md` (resume check), `system.md`, `glossary.md`, `domain-model.md` (read-only, entity check), `docs/post-mortem/` (selective scan), in-progress `.feature` |
+| SA (Step 2) | `FLOW.md`, `system.md`, `glossary.md`, in-progress `.feature`, targeted `.py` files |
+| SE (Step 3) | `FLOW.md`, `system.md`, `glossary.md`, in-progress `.feature`, targeted `.py` files |
+| SA (Step 4) | `FLOW.md`, `system.md`, `glossary.md`, `domain-model.md`, in-progress `.feature`, ADR files referenced in `system.md` |
 
 ## Session Start
 
-1. Read `TODO.md` — find current feature, current step, and the "Next" line.
-   - If `TODO.md` does not exist, create a basic one:
-     ```markdown
-     # Current Work
-
-     No feature in progress.
-     Next: Run @product-owner — load skill select-feature and pick the next BASELINED feature from backlog.
-     ```
-2. **If you are the PO** and Step 1 (SCOPE) is active: check `docs/scope_journal.md` for the most recent session block.
+1. **Read `FLOW.md`** — find current feature, current branch, detected status, and the "Next" line.
+   - If `FLOW.md` does not exist, create it from `.opencode/skills/flow/flow.md.template`
+   - If `FLOW.md` exists but is empty or malformed, recreate from template
+2. **Run `detect-state`** — execute the auto-detection rules from `skill flow` to determine the actual workflow state from filesystem and git state.
+   - If detected state differs from `FLOW.md` Status, update `FLOW.md` to match reality
+3. **Check prerequisites** — verify the Prerequisites table in `FLOW.md`. If any are unchecked, stop and report.
+4. **If you are the PO** and Step 1 (SCOPE) is active: check `docs/scope_journal.md` for the most recent session block.
    - If the most recent block has `Status: IN-PROGRESS` → the previous session was interrupted. Resume it before starting a new session: finish updating `.feature` files and `docs/discovery.md`, then mark the block `Status: COMPLETE`.
-3. If a feature is active at Step 2–5, read:
+5. If a feature is active at Step 2–5, read:
    - `docs/features/in-progress/<feature-stem>.feature` — feature file (Rules + Examples + @id)
    - `docs/system.md` — current system overview and constraints
-4. Run `git status` — understand what is committed vs. what is not
-5. **If Step 2–5 is active**: run `git branch --show-current` and verify:
+6. Run `git status` — understand what is committed vs. what is not
+7. **If Step 2–5 is active**: run `git branch --show-current` and verify:
    - **SA at Step 2 or Step 4**: must be on `feat/<stem>` or `fix/<stem>`. If on `main`, stop — load `skill version-control` and create the branch first.
    - **SE at Step 3**: must be on `feat/<stem>` or `fix/<stem>`. If on `main`, stop — load `skill version-control` and create/switch to the branch first.
-6. Confirm scope: you are working on exactly one step of one feature
+8. Confirm scope: you are working on exactly one step of one feature
 
-**If TODO.md says "No feature in progress":**
+**If FLOW.md Status is [IDLE] or says "No feature in progress":**
 
 - **PO**: Load `skill select-feature` — it guides you through scoring and selecting the next BASELINED backlog feature. You must verify the feature has `Status: BASELINED` before moving it to `in-progress/`. Only you may move it.
-- **Software-engineer or system-architect**: Update TODO.md `Next:` line to `Run @product-owner — load skill select-feature and pick the next BASELINED feature from backlog.` Then **stop**. Never self-select a feature. Never create, edit, or move a `.feature` file.
+- **Software-engineer or system-architect**: Update `FLOW.md` `Next:` line to `Run @product-owner — load skill select-feature and pick the next BASELINED feature from backlog.` Then **stop**. Never self-select a feature. Never create, edit, or move a `.feature` file.
 
 ## Session End
 
-1. Update TODO.md:
-   - Mark completed criteria `[x]`
-   - Mark in-progress criteria `[~]`
+1. Update `FLOW.md`:
+   - Set Status to the detected state
+   - Append to Session Log with timestamp, agent, state, and action
    - Update the "Next" line with one concrete action
 2. Commit any uncommitted work (even WIP):
    ```bash
@@ -65,98 +65,56 @@ Each agent reads only what is operationally necessary for their current step. Do
 
 When a step completes within a session:
 
-1. Update TODO.md to reflect the completed step before doing any other work.
-2. Commit the TODO.md update:
+1. Update `FLOW.md` to reflect the completed step before doing any other work.
+2. Commit the `FLOW.md` update:
    ```bash
-   git add TODO.md
+   git add FLOW.md
    git commit -m "chore: complete step <N> for <feature-stem>"
    ```
 3. Only then begin the next step (in a new session where possible — see Rule 4).
 
-## TODO.md Format
+## FLOW.md Format
 
 ```markdown
-# Current Work
+# FLOW Protocol
 
-Feature: <feature-stem>
-Step: <1-5> (<step name>)
-Source: docs/features/in-progress/<feature-stem>.feature
+## Current Feature
+**Feature**: <feature-stem> | [NONE]
+**Branch**: <branch-name> | [NONE]
+**Status**: <state>
 
-## Progress
-- [x] `@id:<hex>`: <description>
-- [~] `@id:<hex>`: <description>  ← IN PROGRESS
-- [ ] `@id:<hex>`: <description>
+## Prerequisites
+- [x] Agents: product-owner, system-architect, software-engineer
+- [x] Skills: run-session, define-scope, architect, implement, verify, version-control
+- [x] Tools: uv, git
+- [x] Directories: docs/features/, docs/adr/
+
+## Session Log
+**YYYY-MM-DD HH:MM** — <agent> — <state> — <action>
 
 ## Next
 Run @<agent-name> — <one concrete action>
 ```
 
 **"Next" line format**: Always prefix with `Run @<agent-name>` so the human knows exactly which agent to invoke. Agent names are defined in `AGENTS.md` — use the name exactly as listed there. Examples:
-- `Run @<software-engineer-agent> — implement @id:a1b2c3d4 (Step 3 RED)`
+- `Run @software-engineer — implement @id:a1b2c3d4 (Step 3 RED)`
 - `Run @system-architect — load skill architect and begin Step 2 (Architecture) for <feature-stem>`
 - `Run @system-architect — verify feature <feature-stem> at Step 4`
-- `Run @<product-owner-agent> — pick next BASELINED feature from backlog`
-- `Run @<product-owner-agent> — accept feature <feature-stem> at Step 5`
-
-**Source path by step:**
-- Step 1: `Source: docs/features/backlog/<feature-stem>.feature`
-- Steps 2–4: `Source: docs/features/in-progress/<feature-stem>.feature`
-- Step 5: `Source: docs/features/completed/<feature-stem>.feature`
-
-Status markers:
-- `[ ]` — not started
-- `[~]` — in progress
-- `[x]` — complete
-- `[-]` — cancelled/skipped
-
-When no feature is active:
-```markdown
-# Current Work
-
-No feature in progress.
-Next: Run @<product-owner-agent> — load skill select-feature and pick the next BASELINED feature from backlog.
-```
-
-## Step 3 (TDD Loop) Cycle-Aware TODO Format
-
-During Step 3 (TDD Loop), TODO.md **must** include a `## Cycle State` block to track Red-Green-Refactor progress.
-
-```markdown
-# Current Work
-
-Feature: <feature-stem>
-Step: 3 (TDD Loop)
-Source: docs/features/in-progress/<feature-stem>.feature
-
-## Cycle State
-Test: `@id:<hex>` — <description>
-Phase: RED | GREEN | REFACTOR
-
-## Progress
-- [x] `@id:<hex>`: <description>
-- [~] `@id:<hex>`: <description>          ← in progress (see Cycle State)
-- [ ] `@id:<hex>`: <description>          ← next
-
-## Next
-<One actionable sentence>
-```
-
-### Phase Transitions
-
-- Move from `RED` → `GREEN` when the test fails with a real assertion
-- Move from `GREEN` → `REFACTOR` when the test passes
-- Move from `REFACTOR` → mark `@id` complete in `## Progress` when test-fast passes
+- `Run @product-owner — pick next BASELINED feature from backlog`
+- `Run @product-owner — accept feature <feature-stem> at Step 5`
 
 ## Rules
 
-1. Never skip reading TODO.md at session start
-2. Never end a session without updating TODO.md
+1. Never skip reading `FLOW.md` at session start
+2. Never end a session without updating `FLOW.md`
 3. Never leave uncommitted changes — commit as WIP if needed
 4. One step per session where possible; do not start Step N+1 in the same session as Step N
 5. The "Next" line must be actionable enough that a fresh AI can execute it without asking questions
-6. During Step 3, always update `## Cycle State` when transitioning between RED/GREEN/REFACTOR phases
-7. When a step completes, update TODO.md and commit **before** any further work
-8. Output is minimal-signal: findings, status, decisions, blockers, Next: line only. Use the fewest, least verbose tool calls necessary. Report results, not process. No redundant prose.
+6. When a step completes, update `FLOW.md` and commit **before** any further work
+7. The Session Log is append-only — never delete old entries
+8. If `FLOW.md` is missing, create it from `.opencode/skills/flow/flow.md.template` before doing any other work
+9. If detected state differs from `FLOW.md` Status, trust the detected state and update `FLOW.md`
+10. Output is minimal-signal: findings, status, decisions, blockers, Next: line only. Use the fewest, least verbose tool calls necessary. Report results, not process. No redundant prose.
 
 ## Output Style
 

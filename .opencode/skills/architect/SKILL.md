@@ -31,7 +31,7 @@ Design correctness is far more important than lint/pyright/coverage compliance. 
 
 ### Prerequisites (stop if any fail — escalate to PO)
 
-1. `docs/features/in-progress/` contains exactly one `.feature` file (not just `.gitkeep`). If none exists, **STOP** — update TODO.md `Next:` to `Run @product-owner — move the chosen feature to in-progress/` and stop. Never self-select or move a feature yourself.
+1. `docs/features/in-progress/` contains exactly one `.feature` file (not just `.gitkeep`). If none exists, **STOP** — update FLOW.md `Next:` to `Run @product-owner — move the chosen feature to in-progress/` and stop. Never self-select or move a feature yourself.
 2. The feature file's discovery section has `Status: BASELINED`. If not, escalate to PO — Step 1 is incomplete.
 3. The feature file contains `Rule:` blocks with `Example:` blocks and `@id` tags. If not, escalate to PO — criteria have not been written.
 4. Package name confirmed: read `pyproject.toml` → locate `[tool.setuptools]` → confirm directory exists on disk.
@@ -43,7 +43,7 @@ Design correctness is far more important than lint/pyright/coverage compliance. 
 2. Confirm directory exists: `ls <name>/`
 3. All new source files go under `<name>/`
 
-**Note on feature file moves**: The PO moves `.feature` files between folders. The system-architect never moves, creates, or edits `.feature` files. Update TODO.md `Source:` path to reflect `in-progress/` once the PO has moved the file.
+**Note on feature file moves**: The PO moves `.feature` files between folders. The system-architect never moves, creates, or edits `.feature` files. Update FLOW.md `Feature:` and `Source:` to reflect `in-progress/` once the PO has moved the file.
 
 ### Read Phase (targeted reads only — before writing anything)
 
@@ -160,7 +160,7 @@ Commit: `feat(<feature-stem>): add architecture and test stubs`
 
 ### Hand off to Step 3 (TDD Loop)
 
-1. Update TODO.md: `Next: Run @software-engineer — Step 3 TDD Loop`
+1. Update FLOW.md: `Next: Run @software-engineer — Step 3 TDD Loop`
 2. Provide the SE with:
    - Feature file path
    - Summary of stubs created
@@ -174,7 +174,7 @@ Commit: `feat(<feature-stem>): add architecture and test stubs`
 
 If during architecture you discover behavior not covered by existing acceptance criteria:
 - **Do not extend criteria yourself** — escalate to PO
-- Note the gap in TODO.md under `## Next`
+- Note the gap in FLOW.md under `## Next`
 - The PO will decide whether to add a new Example to the `.feature` file
 
 ---

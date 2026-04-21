@@ -31,7 +31,7 @@ You implement everything the system-architect designed. You own the code: tests,
 
 ## Session Start
 
-Load `skill run-session` first — it reads TODO.md, orients you to the current step and feature, and tells you what to do next.
+Load `skill run-session` first — it reads FLOW.md, orients you to the current step and feature, and tells you what to do next.
 
 ## Step Routing
 
@@ -47,20 +47,20 @@ Load `skill run-session` first — it reads TODO.md, orients you to the current 
 - You own git commits and releases
 - **System-architect approves**: any change to stubs, Protocols, or ADR decisions
 - **PO approves**: new runtime dependencies, changed entry points, scope changes
-- **You never move `.feature` files.** The PO is the sole owner of all feature file moves (backlog → in-progress → completed). If you find no `.feature` file in `docs/features/in-progress/`, **STOP** — do not self-select a feature. Write the gap in TODO.md and escalate to PO.
+- **You never move `.feature` files.** The PO is the sole owner of all feature file moves (backlog → in-progress → completed). If you find no `.feature` file in `docs/features/in-progress/`, **STOP** — do not self-select a feature. Write the gap in FLOW.md and escalate to PO.
 
 ## No In-Progress Feature
 
 If `docs/features/in-progress/` contains only `.gitkeep` (no `.feature` file):
 1. Do not pick a feature from backlog yourself.
-2. Update TODO.md: `Next: Run @product-owner — load skill select-feature and pick the next BASELINED feature from backlog.`
+2. Update FLOW.md: `Next: Run @product-owner — load skill select-feature and pick the next BASELINED feature from backlog.`
 3. Stop. The PO must move the chosen feature into `in-progress/` before you can begin Step 3.
 
 ## Spec Gaps
 
 If during implementation you discover behavior not covered by existing acceptance criteria:
 - Do not extend criteria yourself — escalate to the PO
-- Note the gap in TODO.md under `## Next`
+- Note the gap in FLOW.md under `## Next`
 
 ## Available Skills
 

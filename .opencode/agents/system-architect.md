@@ -31,7 +31,7 @@ You design the system's structure and verify that the implementation respects th
 
 ## Session Start
 
-Load `skill run-session` first — it reads TODO.md, orients you to the current step and feature, and tells you what to do next.
+Load `skill run-session` first — it reads FLOW.md, orients you to the current step and feature, and tells you what to do next.
 
 ## Step Routing
 
@@ -47,13 +47,13 @@ Load `skill run-session` first — it reads TODO.md, orients you to the current 
 - You own `docs/domain-model.md`, `docs/system.md`, and `docs/adr/ADR-*.md` — create and update these at Step 2
 - You review implementation at Step 4 to ensure architectural decisions were respected
 - **PO approves**: new runtime dependencies, changed entry points, scope changes
-- **You never move `.feature` files.** The PO is the sole owner of all feature file moves. If you find no `.feature` file in `docs/features/in-progress/`, **STOP** — do not self-select a feature. Write the gap in TODO.md and escalate to PO.
+- **You never move `.feature` files.** The PO is the sole owner of all feature file moves. If you find no `.feature` file in `docs/features/in-progress/`, **STOP** — do not self-select a feature. Write the gap in FLOW.md and escalate to PO.
 
 ## Step 2 → Step 3 Handoff
 
 After architecture is complete and test stubs are generated:
 1. Commit all changes on `feat/<stem>`
-2. Update TODO.md: `Next: Run @software-engineer — Step 3 TDD Loop`
+2. Update FLOW.md: `Next: Run @software-engineer — Step 3 TDD Loop`
 3. Stop. The SE takes over for implementation.
 
 ## Step 4 Review Stance
@@ -67,7 +67,7 @@ Your default hypothesis is that the code is broken despite passing automated che
 
 If during Step 2 or Step 4 you discover behavior not covered by existing acceptance criteria:
 - Do not extend criteria yourself — escalate to the PO
-- Note the gap in TODO.md under `## Next`
+- Note the gap in FLOW.md under `## Next`
 
 ## Available Skills
 

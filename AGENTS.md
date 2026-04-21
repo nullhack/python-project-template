@@ -61,7 +61,7 @@ All feature work happens on branches. `main` is the single source of truth and r
 | `backlog/` → `in-progress/` | PO only | Before Step 2 begins; only if `Status: BASELINED` |
 | `in-progress/` → `completed/` | PO only | After Step 5 acceptance |
 
-**If an agent (SE or SA) finds no `.feature` in `in-progress/`**: update TODO.md with the correct `Next:` escalation line and stop. Never self-select a backlog feature.
+**If an agent (SE or SA) finds no `.feature` in `in-progress/`**: update FLOW.md with the correct `Next:` escalation line and stop. Never self-select a backlog feature.
 
 ## Agents
 
@@ -149,7 +149,7 @@ If the stakeholder reports failure **after the PO has attempted Step 5 acceptanc
 2. **Team compiles a compact post-mortem** (`docs/post-mortem/YYYY-MM-DD-<feature-stem>-<keyword>.md`, max 15 lines, process-level root cause).
 3. **SE creates a fix branch** from the feature's original start commit: `git checkout -b fix/<stem> <start-sha>`. The post-mortem is committed as the first commit on this branch.
 4. **PO scans `docs/post-mortem/`** and selects relevant files by matching `<feature-stem>` or `<failure-keyword>`.
-5. **PO reads selected post-mortems**, then resets TODO.md to Step 2 with context.
+5. **PO reads selected post-mortems**, then resets FLOW.md Status to [STEP-2-ARCH] with context.
 6. **SA restarts Step 2** on `fix/<stem>`, reading relevant post-mortems as input. The same feature re-enters the ARCH step.
 7. After acceptance, SE merges `fix/<stem>` to `main` with `--no-ff`.
 
@@ -284,9 +284,9 @@ The stakeholder initiates the release process. When the stakeholder requests a r
 
 ## Session Management
 
-Every session: load `skill run-session`. Read `TODO.md` first, update it at the end.
+Every session: load `skill run-session`. Read `FLOW.md` first, update it at the end.
 
-`TODO.md` is a session bookmark — not a project journal. See `.opencode/skills/run-session/SKILL.md` for the full structure including the Cycle State block used during Step 3.
+`FLOW.md` is the workflow state tracker — it records the current feature, branch, detected state, and next action. It is append-only in the Session Log section. See `.opencode/skills/flow/SKILL.md` for the full state machine and auto-detection rules.
 
 ## Setup
 
