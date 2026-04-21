@@ -59,7 +59,7 @@ Verify:
 
 ### 4. Production-Grade Gate
 
-Run before code review. If any row is FAIL, stop immediately with REJECTED.
+Run before semantic review. If any row is FAIL, stop immediately with REJECTED.
 
 | Check | How to check | PASS | FAIL | Fix |
 |---|---|---|---|---|
@@ -81,11 +81,11 @@ For every **DISAGREE** claim:
 - If the justification is weak, incomplete, or a best-practice alternative exists that the SE did not consider: REJECT with the specific alternative stated.
 - If there is no justification: REJECT.
 
-Undeclared violations found during code review → REJECT.
+Undeclared violations found during semantic review → REJECT.
 
 ### 6. Code Review
 
-Read the source files changed in this feature. **Do this before running lint/static-check/test** — if code review finds a design problem, commands will need to re-run after the fix anyway.
+Read the source files changed in this feature. **Do this before running lint/static-check/test** — if semantic review finds a design problem, commands will need to re-run after the fix anyway.
 
 **Stop on first failure category — do not accumulate issues.**
 

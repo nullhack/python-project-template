@@ -66,7 +66,7 @@ gh pr create \
 - Application runs: `timeout 10s task run` (exit 124 = hung = fix it)
 
 ## Reviewer Notes
-<Any context the reviewer needs>
+<Any context the system-architect needs>
 EOF
 )"
 ```

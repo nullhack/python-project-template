@@ -79,7 +79,7 @@ Discovery is a continuous, iterative process. Sessions happen whenever scope nee
 1. Check `docs/scope_journal.md` for the most recent session block.
    - If the most recent block has `Status: IN-PROGRESS` → the previous session was interrupted. Resume it: check which `.feature` files need updating (compare journal Q&A against current `.feature` descriptions), write the `discovery.md` synthesis block if missing, then mark the block `Status: COMPLETE`. Only then begin a new session.
    - If `docs/scope_journal.md` does not exist → this is the first session. Create both `docs/scope_journal.md` and `docs/discovery.md` using the templates in `scope-journal.md.template` and `discovery.md.template` in this skill's directory.
-2. Read `docs/domain-model.md` (if it exists) to check existing entities. The PO reads this file but never writes to it. If it does not exist yet, the SE will create it at Step 2.
+2. Read `docs/domain-model.md` (if it exists) to check existing entities. The PO reads this file but never writes to it. If it does not exist yet, the SA will create it at Step 2.
 3. Declare session scope to the stakeholder: announce the total groups and estimated question count (e.g., "3 groups: General (7 Q), Cross-cutting, Feature: login").
 4. Open `docs/scope_journal.md` and append a new session header:
    ```markdown
@@ -191,7 +191,7 @@ Group headers use this format:
    - Entities **added or deprecated** this session (suggestions for the SE; not a formal model)
    - Features **touched** this session + 1-line reason why
 
-The PO does **not** write `docs/domain-model.md`. Entity suggestions live in `discovery.md` for the SE to formalize at Step 2.
+The PO does **not** write `docs/domain-model.md`. Entity suggestions live in `discovery.md` for the SA to formalize at Step 2.
 
 **Step C — Update .feature descriptions**
 

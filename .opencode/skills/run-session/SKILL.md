@@ -90,7 +90,7 @@ Run @<agent-name> — <one concrete action>
 
 **"Next" line format**: Always prefix with `Run @<agent-name>` so the human knows exactly which agent to invoke. Agent names are defined in `AGENTS.md` — use the name exactly as listed there. Examples:
 - `Run @<software-engineer-agent> — implement @id:a1b2c3d4 (Step 3 RED)`
-- `Run @<software-engineer-agent> — load skill implement and begin Step 2 (Architecture) for <feature-stem>`
+- `Run @system-architect — load skill architect and begin Step 2 (Architecture) for <feature-stem>`
 - `Run @system-architect — verify feature <feature-stem> at Step 4`
 - `Run @<product-owner-agent> — pick next BASELINED feature from backlog`
 - `Run @<product-owner-agent> — accept feature <feature-stem> at Step 5`

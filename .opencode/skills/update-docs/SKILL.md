@@ -25,9 +25,9 @@ The glossary is a secondary artifact derived from the code, the domain model, an
 | `docs/context.md` | `update-docs` skill (PO) | `docs/discovery.md`, `docs/features/completed/` |
 | `docs/container.md` | `update-docs` skill (PO) | `docs/adr/ADR-*.md`, `docs/features/completed/` |
 | `docs/glossary.md` | `update-docs` skill (PO) | `docs/domain-model.md`, `docs/glossary.md` (existing), `docs/adr/ADR-*.md`, `docs/features/completed/` |
-| `docs/system.md` | SE (Step 2), PO reviews (Step 5) | `docs/discovery.md`, `docs/adr/ADR-*.md`, `docs/features/completed/` |
+| `docs/system.md` | SA (Step 2), PO reviews (Step 5) | `docs/discovery.md`, `docs/adr/ADR-*.md`, `docs/features/completed/` |
 | `docs/discovery.md` | PO only (Step 1) | — |
-| `docs/domain-model.md` | SE only (Step 2) | — |
+| `docs/domain-model.md` | SA only (Step 2) | — |
 
 **Never edit `docs/adr/ADR-*.md`, `docs/discovery.md`, or `docs/domain-model.md` in this skill.** Those files are owned by their respective agents. This skill reads them; it never writes to them.
 

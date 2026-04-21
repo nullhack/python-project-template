@@ -39,7 +39,7 @@ Most Python templates give you a folder structure and a `Makefile`. This one giv
 The goal is to give every project — from its first commit — the same rigour that mature teams take years to establish.
 
 - **No feature starts without written acceptance criteria** — Gherkin `Example:` blocks traced to tests
-- **No feature ships without adversarial review** — the reviewer's default hypothesis is "broken"
+- **No feature ships without adversarial review** — the system-architect's default hypothesis is "broken"
 - **No guesswork on test stubs** — generated automatically from `.feature` files
 - **No manual `@id` tags** — assigned automatically when you run tests
 - **AI agents for every role** — each agent has scoped instructions and cannot exceed its authority
@@ -57,9 +57,9 @@ SCOPE → ARCH → TDD LOOP → VERIFY → ACCEPT
 | Step | Role | Output |
 |------|------|--------|
 | **1 · SCOPE** | Product Owner | Discovery interviews + Gherkin stories + acceptance criteria |
-| **2 · ARCH** | Software Engineer | Module stubs, ADRs, auto-generated test stubs |
+| **2 · ARCH** | System Architect | Module stubs, ADRs, auto-generated test stubs |
 | **3 · TDD LOOP** | Software Engineer | RED → GREEN → REFACTOR, one criterion at a time |
-| **4 · VERIFY** | Reviewer | Adversarial check — lint, types, coverage, semantic review |
+| **4 · VERIFY** | System Architect | Adversarial check — lint, types, coverage, semantic review |
 | **5 · ACCEPT** | Product Owner | Demo, validate, ship |
 
 **WIP limit: 1 feature at a time.** Features are `.feature` files that move through folders:
@@ -75,8 +75,8 @@ docs/features/completed/    ← shipped
 | Agent | Responsibility |
 |-------|---------------|
 | `@product-owner` | Scope, stories, acceptance criteria, delivery acceptance |
-| `@software-engineer` | Architecture, TDD loop, git, releases |
-| `@reviewer` | Adversarial verification — default position: broken |
+| `@software-engineer` | TDD loop, implementation, git, releases |
+| `@system-architect` | Adversarial verification — default position: broken |
 | `@designer` | Visual identity, colour palette, SVG assets |
 | `@setup-project` | One-time project initialisation |
 
