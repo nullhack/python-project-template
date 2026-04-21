@@ -1,4 +1,4 @@
-# Branding — Python Project Template
+# Branding — temple8
 
 > *From zero to hero — production-ready Python, without the ceremony.*
 
@@ -8,7 +8,7 @@ Agents read this file before generating release names, C4 diagrams, README banne
 
 ## Identity
 
-- **Project name:** Python Project Template
+- **Project name:** temple8
 - **Tagline:** From zero to hero — production-ready Python, without the ceremony.
 - **Mission:** Eliminate boilerplate so engineers ship features, not setup.
 - **Vision:** The standard starting point for any serious Python project — the bedrock every Python engineer reaches for first.
@@ -23,6 +23,7 @@ The palette is drawn from classical marble, parchment, and gold — materials th
 - **Accent/gold:** `#c9a84c` → `#e8c96a`            — antique gold, used for borders and structural lines only — never body text
 - **Secondary/blue:** `#7baabf` → `#4a7a96`         — Aegean steel blue, for labels and secondary hierarchy
 - **Stone/marble:** `#f0ece4` → `#c8c0b8`           — the load-bearing colour; columns, shapes, structural chrome
+- **Dark stone:** `#2a2a2a` → `#1a1a1a`            — dark charcoal, for banner backgrounds
 - **Logo:** `docs/assets/logo.svg`
 - **Banner:** `docs/assets/banner.svg`
 
@@ -49,3 +50,5 @@ Ships with quality tooling (ruff, pyright, pytest, hypothesis), Gherkin-driven
 acceptance criteria, and five specialised AI agents covering scope through release.
 Built on the premise that rigorous method, applied from the beginning, produces
 something worth building on. Use this summary in banners, release notes, and document headers.
+
+(End of file - total 59 lines)

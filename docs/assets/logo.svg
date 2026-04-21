@@ -1,61 +1,44 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200" role="img" aria-label="python-project-template">
-  <defs>
-    <!-- Marble warm white to cool grey -->
-    <linearGradient id="g-marble" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%"   stop-color="#f0ece4"/>
-      <stop offset="100%" stop-color="#c8c0b8"/>
-    </linearGradient>
-    <!-- Slightly darker for base/shadow faces -->
-    <linearGradient id="g-stone" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%"   stop-color="#d6cfc6"/>
-      <stop offset="100%" stop-color="#a89f96"/>
-    </linearGradient>
-    <!-- Deep warm shadow -->
-    <linearGradient id="g-shadow" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%"   stop-color="#9c9189"/>
-      <stop offset="100%" stop-color="#7a6f67"/>
-    </linearGradient>
-    <!-- Badge background: warm off-white parchment -->
-    <linearGradient id="g-bg" x1="0%" y1="0%" x2="60%" y2="100%">
-      <stop offset="0%"   stop-color="#faf7f2"/>
-      <stop offset="100%" stop-color="#ede8e0"/>
-    </linearGradient>
-    <!-- Ring: warm taupe -->
-    <linearGradient id="g-ring" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%"   stop-color="#b5a99e"/>
-      <stop offset="100%" stop-color="#7a6f67"/>
-    </linearGradient>
-  </defs>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-label="temple8 logo">
+  <style>
+    :root {
+      --color-primary: #f0ece4;
+      --color-stone: #c8c0b8;
+      --color-shadow: #9c9189;
+      --color-bg: #faf7f2;
+      --color-gold: #c9a84c;
+    }
+  </style>
 
   <!-- Badge background — parchment -->
-  <circle cx="100" cy="100" r="92" fill="url(#g-bg)"/>
-  <circle cx="100" cy="100" r="92" fill="none" stroke="url(#g-ring)" stroke-width="2.5"/>
+  <circle cx="100" cy="100" r="92" fill="var(--color-bg)"/>
+  <circle cx="100" cy="100" r="92" fill="none" stroke="var(--color-gold)" stroke-width="2.5"/>
 
-  <!-- Temple group — scaled to fit inside circle with margin -->
-  <!-- Width: 136px (x 32..168), Height: ~138px (y 34..172) — all within r=92 circle -->
+  <!-- Temple group -->
+  <!-- Pediment with infinity symbol -->
+  <polygon points="100,34 168,62 32,62" fill="var(--color-primary)"/>
+  <line x1="100" y1="34" x2="168" y2="62" stroke="var(--color-stone)" stroke-width="2" stroke-linecap="round"/>
+  <line x1="100" y1="34" x2="32"  y2="62" stroke="var(--color-stone)" stroke-width="2" stroke-linecap="round"/>
 
-  <!-- Pediment -->
-  <polygon points="100,34  168,62  32,62" fill="url(#g-marble)"/>
-  <line x1="100" y1="34" x2="168" y2="62" stroke="url(#g-stone)" stroke-width="2" stroke-linecap="round"/>
-  <line x1="100" y1="34" x2="32"  y2="62" stroke="url(#g-stone)" stroke-width="2" stroke-linecap="round"/>
+  <!-- Infinity loop in pediment -->
+  <path d="M100,48 C85,48 78,42 78,38 C78,34 85,28 100,28 C115,28 122,34 122,38 C122,42 115,48 100,48 M100,48 C115,48 122,54 122,58 C122,62 115,68 100,68 C85,68 78,62 78,58 C78,54 85,48 100,48"
+        fill="none" stroke="var(--color-gold)" stroke-width="3" stroke-linecap="round"/>
 
   <!-- Entablature -->
-  <rect x="32" y="62" width="136" height="11" rx="0" fill="url(#g-marble)"/>
-  <rect x="32" y="71" width="136" height="2"  fill="url(#g-shadow)" opacity="0.25"/>
+  <rect x="32" y="62" width="136" height="11" rx="0" fill="var(--color-primary)"/>
+  <rect x="32" y="71" width="136" height="2" fill="var(--color-shadow)" opacity="0.25"/>
 
-  <!-- 3 columns — centers at 59, 100, 141 — shaft 17px wide, gaps ~25px -->
-  <rect x="50"  y="73" width="17" height="64" fill="url(#g-marble)"/>
-  <rect x="91"  y="73" width="17" height="64" fill="url(#g-marble)"/>
-  <rect x="133" y="73" width="17" height="64" fill="url(#g-marble)"/>
+  <!-- 3 columns -->
+  <rect x="50"  y="73" width="17" height="64" fill="var(--color-primary)"/>
+  <rect x="91"  y="73" width="17" height="64" fill="var(--color-primary)"/>
+  <rect x="133" y="73" width="17" height="64" fill="var(--color-primary)"/>
 
-  <!-- Column right-edge shadows -->
-  <rect x="64"  y="73" width="3" height="64" fill="url(#g-shadow)" opacity="0.22"/>
-  <rect x="105" y="73" width="3" height="64" fill="url(#g-shadow)" opacity="0.22"/>
-  <rect x="147" y="73" width="3" height="64" fill="url(#g-shadow)" opacity="0.22"/>
+  <!-- Column shadows -->
+  <rect x="64"  y="73" width="3" height="64" fill="var(--color-shadow)" opacity="0.22"/>
+  <rect x="105" y="73" width="3" height="64" fill="var(--color-shadow)" opacity="0.22"/>
+  <rect x="147" y="73" width="3" height="64" fill="var(--color-shadow)" opacity="0.22"/>
 
   <!-- Stylobate / base steps -->
-  <rect x="32" y="137" width="136" height="10" fill="url(#g-marble)"/>
-  <rect x="38" y="147" width="124" height="8"  fill="url(#g-stone)"/>
-  <rect x="44" y="155" width="112" height="7"  fill="url(#g-shadow)" opacity="0.45"/>
-
+  <rect x="32" y="137" width="136" height="10" fill="var(--color-primary)"/>
+  <rect x="38" y="147" width="124" height="8"  fill="var(--color-stone)"/>
+  <rect x="44" y="155" width="112" height="7"  fill="var(--color-shadow)" opacity="0.45"/>
 </svg>
