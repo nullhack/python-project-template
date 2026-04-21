@@ -42,6 +42,7 @@ The goal is to give every project — from its first commit — the same rigour 
 - **No feature ships without adversarial review** — the system-architect's default hypothesis is "broken"
 - **No guesswork on test stubs** — generated automatically from `.feature` files
 - **No manual `@id` tags** — assigned automatically when you run tests
+- **No ambiguity on workflow state** — `FLOW.md` auto-detects current step from filesystem and git state
 - **AI agents for every role** — each agent has scoped instructions and cannot exceed its authority
 
 ---

@@ -90,6 +90,7 @@ All feature work happens on branches. `main` is the single source of truth and r
 | `update-docs` | product-owner | post-acceptance + on stakeholder demand |
 | `design-colors` | designer | branding, color, WCAG compliance |
 | `design-assets` | designer | SVG asset creation and updates |
+| `flow` | all agents | every session — workflow state machine, auto-detection, prerequisites |
 | `create-skill` | software-engineer | meta |
 | `create-agent` | human-user | meta |
 
@@ -180,6 +181,8 @@ tests/
     <rule_slug>_test.py               ← one per Rule: block, software-engineer-written
   unit/
     <anything>_test.py                ← software-engineer-authored extras (no @id traceability)
+
+FLOW.md                               ← workflow state tracker (feature, branch, status, session log, next action)
 ```
 
 Tests in `tests/unit/` are software-engineer-authored extras not covered by any `@id` criterion. Any test style is valid — plain `assert` or Hypothesis `@given`. Use Hypothesis when the test covers a **property** that holds across many inputs (mathematical invariants, parsing contracts, value object constraints). Use plain pytest for specific behaviors or single edge cases discovered during refactoring.
