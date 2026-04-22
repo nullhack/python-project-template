@@ -21,7 +21,7 @@
   <rect x="0" y="295" width="1200" height="5" fill="#c8c0b8" opacity="0.5"/>
 
   <!-- ── Left zone background: dark stone panel so parchment temple reads clearly ── -->
-  <rect x="0" y="0" width="248" height="300" fill="#4a7a96"/>
+  <rect x="0" y="0" width="248" height="300" fill="#d4e8f0"/>
 
   <!-- ── Left zone (0–260px): temple mark centred at (130,150) ── -->
   <g transform="translate(130,150)">
