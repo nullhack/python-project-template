@@ -1,5 +1,5 @@
 [project]
-name = "python-project-template"
+name = "temple8"
 version = "6.4.20260420"
 description = "Python template with some awesome tools to quickstart any Python project"
 readme = "README.md"
@@ -16,8 +16,8 @@ dependencies = [
 ]
 
 [project.urls]
-Repository = "https://github.com/nullhack/python-project-template"
-Documentation = "https://github.com/nullhack/python-project-template/tree/main/docs/api/"
+Repository = "https://github.com/nullhack/temple8"
+Documentation = "https://github.com/nullhack/temple8/tree/main/docs/api/"
 
 [project.optional-dependencies]
 dev = [
