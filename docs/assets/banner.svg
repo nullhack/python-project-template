@@ -14,14 +14,11 @@
   <rect width="1200" height="300" fill="#faf7f2"/>
 
   <!-- Subtle horizontal texture band across middle third -->
-  <rect x="0" y="100" width="1200" height="100" fill="#ede8e0" opacity="0.45"/>
+  <rect x="250" y="100" width="950" height="100" fill="#ede8e0" opacity="0.45"/>
 
   <!-- Top and bottom stone-course borders -->
-  <rect x="0" y="0"   width="1200" height="5" fill="#c8c0b8" opacity="0.5"/>
-  <rect x="0" y="295" width="1200" height="5" fill="#c8c0b8" opacity="0.5"/>
-
-  <!-- ── Left zone background: dark stone panel so parchment temple reads clearly ── -->
-  <rect x="0" y="0" width="248" height="300" fill="#ede8e0"/>
+  <rect x="0" y="0"   width="1200" height="5" fill="#c9a84c" opacity="0.8"/>
+  <rect x="0" y="295" width="1200" height="5" fill="#c9a84c" opacity="0.8"/>
 
   <!-- ── Left zone (0–260px): temple mark centred at (130,150) ── -->
   <g transform="translate(130,150)">
@@ -85,17 +82,27 @@
   <!-- ── Centre: gold rule above title ── -->
   <line x1="280" y1="108" x2="1140" y2="108" stroke="#c9a84c" stroke-width="0.8" opacity="0.6"/>
 
-  <!-- ── Title: TEMPLE·VIII — engraved, wide-spaced, thin weight ── -->
-  <!-- Split into tspans so the · gets gold; TEMPLE and VIII in deep brown -->
+  <!-- ── Title: TEMPLE·VIII — engraved two-layer effect ── -->
+  <!-- Layer 1: deep shadow — offset +3,+4, dark brown, high opacity -->
   <text
-    x="710"
-    y="178"
+    x="713" y="182"
     text-anchor="middle"
     font-family="system-ui, -apple-system, sans-serif"
     font-size="72"
     font-weight="300"
     letter-spacing="18"
-  ><tspan fill="#3b2410">TEMPLE</tspan><tspan fill="#c9a84c" letter-spacing="0">·</tspan><tspan fill="#3b2410" letter-spacing="18">VIII</tspan></text>
+    fill="#3b2410"
+    opacity="0.55"
+  ><tspan>TEMPLE</tspan><tspan letter-spacing="0">·</tspan><tspan letter-spacing="18">VIII</tspan></text>
+  <!-- Layer 2: carved face — true position, warm stone + gold dot -->
+  <text
+    x="710" y="178"
+    text-anchor="middle"
+    font-family="system-ui, -apple-system, sans-serif"
+    font-size="72"
+    font-weight="300"
+    letter-spacing="18"
+  ><tspan fill="#f0ece4">TEMPLE</tspan><tspan fill="#c9a84c" letter-spacing="0">·</tspan><tspan fill="#f0ece4" letter-spacing="18">VIII</tspan></text>
 
   <!-- ── Gold rule below title ── -->
   <line x1="280" y1="200" x2="1140" y2="200" stroke="#c9a84c" stroke-width="0.8" opacity="0.6"/>

@@ -23,11 +23,18 @@ The palette is drawn from classical marble, parchment, and gold — materials th
 - **Accent/gold:** `#c9a84c` → `#e8c96a`            — antique gold, used for borders and structural lines only — never body text
 - **Secondary/blue:** `#7baabf` → `#4a7a96`         — Aegean steel blue, for labels and secondary hierarchy
 - **Stone/marble:** `#f0ece4` → `#c8c0b8`           — the load-bearing colour; columns, shapes, structural chrome
-- **Dark stone:** `#2a2a2a` → `#1a1a1a`            — dark charcoal, for banner backgrounds
 - **Logo:** `docs/assets/logo.svg`
 - **Banner:** `docs/assets/banner.svg`
 
 > Deep brown `#3b2410` on parchment `#faf7f2` achieves >10:1 contrast (WCAG AAA). Gold is decorative; it never carries meaning that must be read.
+
+### Logo
+
+Greek temple façade — pediment, four columns, three-step stylobate. A gold lemniscate (∞) sits in the centre of the pediment; it reads as ∞ or 8 depending on size. Transparent background. Stone-light `#f0ece4` / `#c8c0b8` fill, `#5c3d1e` brown outlines, gold `#c9a84c` ∞ glyph.
+
+### Banner
+
+Warm parchment `#faf7f2` background. Left zone: temple mark (same geometry as logo, scaled). Right zone: `TEMPLE·VIII` typeset with engraved two-layer effect — front layer `#f0ece4` (stone-light), shadow layer `#3b2410` (deep brown) offset +3px right / +4px down. Middle dot `·` in gold `#c9a84c`. Gold accent rules above and below the title. Gold top and bottom border bands. Vertical gold divider separating temple from title zone. No subtitle.
 
 ## Release Naming
 

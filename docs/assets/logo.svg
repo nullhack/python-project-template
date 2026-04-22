@@ -1,63 +1,72 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" role="img" aria-label="temple8 logo — Greek temple façade with infinity symbol in pediment">
   <!--
+    Geometry mirrors the banner temple exactly, scaled to fit 100×100.
+    Banner temple: translate(130,150), spans ±80 wide, apex at -90, stylobate base at +52.
+    Total height = 142, total width = 180. Scale = 90/142 ≈ 0.634 (height-driven).
+    Centred at (50, 50) with slight upward offset so stylobate sits near bottom.
+
     Colors:
-      stone-light  #f0ece4
-      stone        #c8c0b8
-      stone-dark   #a09890
-      gold         #c9a84c
+      parchment-mid  #ede8e0   structure fill
+      stone          #c8c0b8   stylobate mid step, column outlines
+      stone-dark     #a09890   shadows
+      brown-mid      #5c3d1e   pediment/entablature/stylobate outlines
+      gold           #c9a84c   ∞ glyph
   -->
 
-  <!-- Pediment (triangle) -->
-  <polygon
-    points="50,12 88,34 12,34"
-    fill="#f0ece4"
-    stroke="#c8c0b8"
-    stroke-width="1"
-    stroke-linejoin="round"
-  />
-  <!-- Right-rake shadow -->
-  <line x1="50" y1="12" x2="88" y2="34"
-        stroke="#a09890" stroke-width="0.8" opacity="0.5"/>
+  <!-- Temple mark: same group as banner, scaled 0.55 and centred at (50,52) -->
+  <g transform="translate(50,52) scale(0.55)">
 
-  <!-- Infinity / 8 glyph — gold, centred at (50, 25) in the pediment.
-       Total width ~16px (lobes ±4px from centre, rx≈3.5, ry≈2.5).
-       Sits neatly inside the upper third of the pediment. -->
-  <path
-    d="M50,27
-       C50,24.5 47.5,23 45.5,23
-       C43.5,23 41,24.5 41,27
-       C41,29.5 43.5,31 45.5,31
-       C47.5,31 50,29.5 50,27
-       C50,24.5 52.5,23 54.5,23
-       C56.5,23 59,24.5 59,27
-       C59,29.5 56.5,31 54.5,31
-       C52.5,31 50,29.5 50,27 Z"
-    fill="none"
-    stroke="#c9a84c"
-    stroke-width="1.5"
-    stroke-linecap="round"
-    stroke-linejoin="round"
-  />
+    <!-- Pediment -->
+    <polygon
+      points="0,-90 80,-54 -80,-54"
+      fill="#ede8e0"
+      stroke="#5c3d1e"
+      stroke-width="1.4"
+      stroke-linejoin="round"
+    />
+    <!-- Right-rake shadow -->
+    <line x1="0" y1="-90" x2="80" y2="-54"
+          stroke="#a09890" stroke-width="1" opacity="0.4"/>
 
-  <!-- Entablature -->
-  <rect x="12" y="34" width="76" height="7" fill="#f0ece4" stroke="#c8c0b8" stroke-width="0.6"/>
-  <rect x="12" y="40" width="76" height="1.2" fill="#a09890" opacity="0.35"/>
+    <!-- Infinity glyph in pediment, centred at (0,-70) -->
+    <path
+      d="M0,-70
+         C0,-73.9 -3.9,-76 -6.3,-76
+         C-8.7,-76 -12,-73.9 -12,-70
+         C-12,-66.1 -8.7,-64 -6.3,-64
+         C-3.9,-64 0,-66.1 0,-70
+         C0,-73.9 3.9,-76 6.3,-76
+         C8.7,-76 12,-73.9 12,-70
+         C12,-66.1 8.7,-64 6.3,-64
+         C3.9,-64 0,-66.1 0,-70 Z"
+      fill="none"
+      stroke="#c9a84c"
+      stroke-width="2.2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
 
-  <!-- Column 1 -->
-  <rect x="16" y="41" width="8" height="38" fill="#f0ece4"/>
-  <rect x="22" y="41" width="2" height="38" fill="#a09890" opacity="0.25"/>
-  <!-- Column 2 -->
-  <rect x="34" y="41" width="8" height="38" fill="#f0ece4"/>
-  <rect x="40" y="41" width="2" height="38" fill="#a09890" opacity="0.25"/>
-  <!-- Column 3 -->
-  <rect x="58" y="41" width="8" height="38" fill="#f0ece4"/>
-  <rect x="64" y="41" width="2" height="38" fill="#a09890" opacity="0.25"/>
-  <!-- Column 4 -->
-  <rect x="76" y="41" width="8" height="38" fill="#f0ece4"/>
-  <rect x="82" y="41" width="2" height="38" fill="#a09890" opacity="0.25"/>
+    <!-- Entablature -->
+    <rect x="-80" y="-54" width="160" height="12" fill="#ede8e0" stroke="#5c3d1e" stroke-width="0.9"/>
+    <rect x="-80" y="-43" width="160" height="2"  fill="#a09890" opacity="0.3"/>
 
-  <!-- Stylobate — three stepped courses -->
-  <rect x="12" y="79" width="76" height="5" fill="#f0ece4" stroke="#c8c0b8" stroke-width="0.5"/>
-  <rect x="9"  y="84" width="82" height="5" fill="#c8c0b8"/>
-  <rect x="6"  y="89" width="88" height="5" fill="#a09890" opacity="0.7"/>
+    <!-- Column 1 -->
+    <rect x="-68" y="-42" width="15" height="70" fill="#ede8e0" stroke="#c8c0b8" stroke-width="0.4"/>
+    <rect x="-55" y="-42" width="3"  height="70" fill="#a09890" opacity="0.2"/>
+    <!-- Column 2 -->
+    <rect x="-28" y="-42" width="15" height="70" fill="#ede8e0" stroke="#c8c0b8" stroke-width="0.4"/>
+    <rect x="-15" y="-42" width="3"  height="70" fill="#a09890" opacity="0.2"/>
+    <!-- Column 3 -->
+    <rect x="13"  y="-42" width="15" height="70" fill="#ede8e0" stroke="#c8c0b8" stroke-width="0.4"/>
+    <rect x="26"  y="-42" width="3"  height="70" fill="#a09890" opacity="0.2"/>
+    <!-- Column 4 -->
+    <rect x="53"  y="-42" width="15" height="70" fill="#ede8e0" stroke="#c8c0b8" stroke-width="0.4"/>
+    <rect x="66"  y="-42" width="3"  height="70" fill="#a09890" opacity="0.2"/>
+
+    <!-- Stylobate — three stepped courses -->
+    <rect x="-80" y="28"  width="160" height="9" fill="#ede8e0" stroke="#5c3d1e" stroke-width="0.7"/>
+    <rect x="-85" y="37"  width="170" height="8" fill="#c8c0b8"/>
+    <rect x="-90" y="45"  width="180" height="7" fill="#a09890" opacity="0.6"/>
+
+  </g>
 </svg>
