@@ -86,8 +86,12 @@
 
 ### Module Dependency Graph
 
-```
-<module> ──► <module> ──► (<external>)
+```mermaid
+graph LR
+  <module>["<module>"]
+  <dep>["<dep> (stdlib|external)"]
+
+  <module> --> <dep>
 ```
 
 ---

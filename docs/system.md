@@ -97,9 +97,14 @@ package (`app`) with no runtime dependencies beyond the Python stdlib.
 
 ### Module Dependency Graph
 
-```
-app/__main__.py ──► argparse (stdlib)
-                ──► importlib.metadata (stdlib)
+```mermaid
+graph LR
+  main["app/__main__.py"]
+  argparse["argparse (stdlib)"]
+  metadata["importlib.metadata (stdlib)"]
+
+  main --> argparse
+  main --> metadata
 ```
 
 ---
