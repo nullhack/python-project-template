@@ -29,7 +29,7 @@ Foundations for bounded context identification, ubiquitous language, and feature
 | **Core finding** | The open-access pattern summary of all DDD patterns from the 2003 book. More precisely citable than the book for specific pattern definitions. Key patterns: Ubiquitous Language ("Use the model as the backbone of a language. Commit the team to exercising that language relentlessly in all communication within the team and in the code."), Bounded Context, Context Map, Domain Events, Aggregates, Repositories. |
 | **Mechanism** | Each pattern is described with: intent, prescription, and "therefore" consequences. The Ubiquitous Language pattern prescribes: use the same terms in diagrams, writing, and especially speech. Refactor the code when the language changes. Resolve confusion over terms in conversation, the way confusion over ordinary words is resolved — by agreement and precision. |
 | **Where used** | Primary reference for `docs/domain-model.md` structure and the ubiquitous language practice. `update-docs` skill glossary entries derive from this: terms must match code identifiers (Evans' "use the same language in code" prescription). `docs/research/domain-modeling.md`. `define-scope/glossary.md.template` — the living glossary format and entry structure. |
-| **Note** | Supersedes entry #31 as the citable source for specific pattern quotes. Entry #31 remains as the book reference. Use this entry when citing a specific Evans pattern definition. |
+| **Note** | Replaces entry #31 as the citable source for specific pattern quotes. Entry #31 remains as the book reference. Use this entry when citing a specific Evans pattern definition. |
 
 ---
 

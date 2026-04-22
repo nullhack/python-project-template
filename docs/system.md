@@ -19,7 +19,6 @@ package (`app`) with no runtime dependencies beyond the Python stdlib.
 ## Context
 
 ```mermaid
-%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#f0ece4', 'lineColor': '#c9a84c'}}}%%
 C4Context
   title System Context — temple8
 
@@ -28,6 +27,10 @@ C4Context
   System(temple8, "temple8", "Production-ready Python project template with CLI entrypoint")
 
   Rel(dev, temple8, "Runs `python -m app --help` / `--version`", "CLI / subprocess")
+
+  UpdateElementStyle(dev, $bgColor="#f0ece4", $fontColor="#3b2410", $borderColor="#c9a84c")
+  UpdateElementStyle(temple8, $bgColor="#f0ece4", $fontColor="#3b2410", $borderColor="#c9a84c")
+  UpdateRelStyle(dev, temple8, $textColor="#3b2410", $lineColor="#c9a84c")
 ```
 
 ---
@@ -43,7 +46,6 @@ C4Context
 ## Container
 
 ```mermaid
-%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#f0ece4', 'lineColor': '#c9a84c'}}}%%
 C4Container
   title Container Diagram — temple8
 
@@ -54,6 +56,11 @@ C4Container
   }
 
   Rel(dev, cli, "Invokes via `python -m app`")
+
+  UpdateElementStyle(dev, $bgColor="#f0ece4", $fontColor="#3b2410", $borderColor="#c9a84c")
+  UpdateElementStyle(cli, $bgColor="#f0ece4", $fontColor="#3b2410", $borderColor="#c9a84c")
+  UpdateElementStyle(app_boundary, $bgColor="#faf7f2", $fontColor="#3b2410", $borderColor="#c9a84c")
+  UpdateRelStyle(dev, cli, $textColor="#3b2410", $lineColor="#c9a84c")
 ```
 
 ---
@@ -98,6 +105,7 @@ C4Container
 ### Module Dependency Graph
 
 ```mermaid
+%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#f0ece4', 'primaryTextColor': '#3b2410', 'primaryBorderColor': '#c9a84c', 'lineColor': '#c9a84c', 'edgeLabelBackground': '#faf7f2'}}}%%
 graph LR
   main["app/__main__.py"]
   argparse["argparse (stdlib)"]

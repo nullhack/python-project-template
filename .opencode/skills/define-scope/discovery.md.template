@@ -5,7 +5,7 @@
 > Each block records one session: a summary paragraph and a table of features whose behavior changed.
 > A row appears only when a `.feature` file would be updated as a result of the session.
 > Confirmations of existing behavior are not recorded here — see `docs/scope_journal.md` for the full Q&A.
-> Never edit past blocks — later blocks extend or supersede earlier ones.
+> Never edit past blocks — later blocks extend or replace earlier ones.
 
 ---
 

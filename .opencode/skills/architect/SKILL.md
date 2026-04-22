@@ -127,7 +127,7 @@ From `docs/glossary.md` + Rules (Business) in the `.feature` file:
 Update the `## Domain Model` section of `docs/system.md`:
 
 - **New feature, first entities**: add bounded contexts, entities, actions, and relationships to the Domain Model section.
-- **Existing feature**: append new entities and actions. Deprecate old entries if superseded — move them to a `### Deprecated` subsection. Never edit existing live entries — code depends on them.
+- **Existing feature**: append new entities and actions. Deprecate old entries if replaced — move them to a `### Deprecated` subsection. Never edit existing live entries — code depends on them.
 - Update the `## Context` and `## Container` sections if new actors, external systems, or containers are identified.
 
 The PO reads `docs/system.md` but never writes to it.
