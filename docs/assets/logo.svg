@@ -20,7 +20,7 @@
     <polygon
       points="0,-90 80,-54 -80,-54"
       fill="#ede8e0"
-      stroke="#5c3d1e"
+      stroke="#c8c0b8"
       stroke-width="1.4"
       stroke-linejoin="round"
     />
@@ -28,17 +28,27 @@
     <line x1="0" y1="-90" x2="80" y2="-54"
           stroke="#a09890" stroke-width="1" opacity="0.4"/>
 
+    <!-- Ceiling shadow over inner gap -->
+    <rect x="-13" y="-42" width="26" height="3"
+          fill="#5c3d1e" opacity="0.28"/>
+    <!-- Floor shadow under inner gap -->
+    <rect x="-13" y="25" width="26" height="3"
+          fill="#5c3d1e" opacity="0.28"/>
     <!-- Horizontal crossbeam between the two central columns — mirrors banner.
          Spans x=-13 to x=13, centred at y=-7. The entablature above,
          this lintel, and the stylobate below create two rectangular voids
          between the inner columns — a ghosted 8, implicit in the structure. -->
     <rect x="-13" y="-9.5" width="26" height="5"
           fill="#ede8e0" stroke="#5c3d1e" stroke-width="0.9"/>
-    <rect x="-13" y="-4.5" width="26" height="1.5"
-          fill="#a09890" opacity="0.35"/>
+    <!-- Underside shadow -->
+    <rect x="-13" y="-4.5" width="26" height="2"
+          fill="#5c3d1e" opacity="0.38"/>
+    <!-- Topside shadow on lintel -->
+    <rect x="-13" y="-9.5" width="26" height="1.5"
+          fill="#5c3d1e" opacity="0.38"/>
 
     <!-- Entablature -->
-    <rect x="-80" y="-54" width="160" height="12" fill="#ede8e0" stroke="#5c3d1e" stroke-width="0.9"/>
+    <rect x="-80" y="-54" width="160" height="12" fill="#ede8e0" stroke="#c8c0b8" stroke-width="0.9"/>
     <rect x="-80" y="-43" width="160" height="2"  fill="#a09890" opacity="0.3"/>
 
     <!-- Column 1 -->
@@ -47,16 +57,20 @@
     <!-- Column 2 -->
     <rect x="-28" y="-42" width="15" height="70" fill="#ede8e0" stroke="#c8c0b8" stroke-width="0.4"/>
     <rect x="-15" y="-42" width="3"  height="70" fill="#a09890" opacity="0.2"/>
+    <!-- Inner-wall shadow: right face of col 2, frames the 8 void -->
+    <rect x="-15" y="-42" width="2"  height="70" fill="#5c3d1e" opacity="0.50"/>
     <!-- Column 3 -->
     <rect x="13"  y="-42" width="15" height="70" fill="#ede8e0" stroke="#c8c0b8" stroke-width="0.4"/>
     <rect x="26"  y="-42" width="3"  height="70" fill="#a09890" opacity="0.2"/>
+    <!-- Inner-wall shadow: left face of col 3, frames the 8 void -->
+    <rect x="13"  y="-42" width="2"  height="70" fill="#5c3d1e" opacity="0.50"/>
     <!-- Column 4 -->
     <rect x="53"  y="-42" width="15" height="70" fill="#ede8e0" stroke="#c8c0b8" stroke-width="0.4"/>
     <rect x="66"  y="-42" width="3"  height="70" fill="#a09890" opacity="0.2"/>
 
     <!-- Stylobate — three stepped courses -->
-    <rect x="-80" y="28"  width="160" height="9" fill="#ede8e0" stroke="#5c3d1e" stroke-width="0.7"/>
-    <rect x="-85" y="37"  width="170" height="8" fill="#c8c0b8"/>
+    <rect x="-80" y="28"  width="160" height="9" fill="#ede8e0" stroke="#c8c0b8" stroke-width="0.7"/>
+    <rect x="-85" y="37"  width="170" height="8" fill="#d8d4cc"/>
     <rect x="-90" y="45"  width="180" height="7" fill="#a09890" opacity="0.6"/>
 
   </g>
