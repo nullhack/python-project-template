@@ -100,11 +100,11 @@ Add at the top. If a release name was generated in Step 0, include it; otherwise
 
 ### 5. Update living docs
 
-Run the `update-docs` skill to reflect the newly accepted feature in C4 diagrams and the glossary. This step runs inline — do not commit separately.
+Run the `update-docs` skill to reflect the newly accepted feature in the Context and Container sections and the glossary. This step runs inline — do not commit separately.
 
 Load and execute the full `update-docs` skill now:
-- Update `docs/context.md` (C4 Level 1)
-- Update `docs/container.md` (C4 Level 2, if multi-container)
+- Update `## Context` section in `docs/system.md`
+- Update `## Container` section in `docs/system.md` (if multi-container)
 - Update `docs/glossary.md` (living glossary)
 
 The `update-docs` commit step is **skipped** here — all changed files are staged together with the version bump in step 6.
@@ -116,7 +116,7 @@ After updating `pyproject.toml`, regenerate the lockfile — CI runs `uv sync --
 ```bash
 uv lock
 git add pyproject.toml <package>/__init__.py CHANGELOG.md uv.lock \
-  docs/context.md docs/container.md docs/glossary.md
+  docs/system.md docs/glossary.md
 git commit -m "chore(release): bump version to v{version}[ - {Release Name}]"
 # Include " - {Release Name}" only if a release name was generated in Step 0; omit otherwise.
 ```
@@ -181,7 +181,7 @@ The release notes and title do not need to change — only the target commit mov
 - [ ] `uv lock` run after version bump — lockfile must be up to date
 - [ ] `<package>/__version__` matches `pyproject.toml` version
 - [ ] CHANGELOG.md updated
-- [ ] `update-docs` skill run — C4 diagrams and glossary reflect the new feature
+- [ ] `update-docs` skill run — Context, Container sections, and glossary reflect the new feature
 - [ ] Release name not used before
 - [ ] Release notes follow the template format
 - [ ] If a hotfix was pushed after the tag: tag reassigned to hotfix commit

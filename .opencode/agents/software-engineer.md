@@ -53,14 +53,14 @@ Load `skill run-session` first — it reads FLOW.md, orients you to the current 
 
 If `docs/features/in-progress/` contains only `.gitkeep` (no `.feature` file):
 1. Do not pick a feature from backlog yourself.
-2. Update FLOW.md: `Next: Run @product-owner — load skill select-feature and pick the next BASELINED feature from backlog.`
+2. Update `WORK.md` `Next:` line: `Run @product-owner — load skill select-feature and pick the next BASELINED feature from backlog.`
 3. Stop. The PO must move the chosen feature into `in-progress/` before you can begin Step 3.
 
 ## Spec Gaps
 
 If during implementation you discover behavior not covered by existing acceptance criteria:
 - Do not extend criteria yourself — escalate to the PO
-- Note the gap in FLOW.md under `## Next`
+- Note the gap in `WORK.md` `Next:` line and Session Log
 
 ## Available Skills
 

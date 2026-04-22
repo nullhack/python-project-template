@@ -31,7 +31,7 @@ Read `docs/features/in-progress/<name>.feature`. Extract:
 - All `@id` tags and their Example titles from `Rule:` blocks
 - The interaction model (if the feature involves user interaction)
 - The current-state overview in `docs/system.md`
-- `docs/domain-model.md` — verify naming consistency of new classes/methods against existing entities
+- `docs/system.md` `## Domain Model` section — verify naming consistency of new classes/methods against existing entities
 - `docs/glossary.md` — verify domain terms are used correctly
 - The software-engineer's Self-Declaration (communicated verbally in the handoff message)
 
@@ -130,7 +130,7 @@ Read the source files changed in this feature. **Do this before running lint/sta
 
 | Check | How to check | PASS | FAIL |
 |---|---|---|---|
-| Classes match domain model | New class names appear in `docs/domain-model.md` or are justified | Yes | No |
+| Classes match domain model | New class names appear in the `## Domain Model` section of `docs/system.md` or are justified | Yes | No |
 | Methods match glossary | New method names use terms from `docs/glossary.md` | Yes | No |
 | No invented synonyms | Same concept uses same name everywhere | Yes | No |
 
