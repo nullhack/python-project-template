@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" role="img" aria-label="temple8 logo — Greek temple façade with 8 glyph between pillars">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" role="img" aria-label="temple8 logo — Greek temple façade with central lintel between inner columns">
   <!--
     Geometry mirrors the banner temple exactly, scaled to fit 100×100.
     Banner temple: translate(130,150), spans ±80 wide, apex at -90, stylobate base at +52.
@@ -10,7 +10,7 @@
       stone          #c8c0b8   stylobate mid step, column outlines
       stone-dark     #a09890   shadows
       brown-mid      #5c3d1e   pediment/entablature/stylobate outlines
-      gold           #c9a84c   ∞ glyph
+      gold           #c9a84c   (reserved — accent use)
   -->
 
   <!-- Temple mark: same group as banner, scaled 0.55 and centred at (50,52) -->
@@ -28,24 +28,14 @@
     <line x1="0" y1="-90" x2="80" y2="-54"
           stroke="#a09890" stroke-width="1" opacity="0.4"/>
 
-    <!-- 8 glyph between pillars, centred at (0,-7) — mirrors banner -->
-    <path
-      d="M0,-7
-         C0,-15.6 -9.1,-20 -14.7,-20
-         C-20.3,-20 -28,-15.6 -28,-7
-         C-28,1.6 -20.3,6 -14.7,6
-         C-9.1,6 0,1.6 0,-7
-         C0,-15.6 9.1,-20 14.7,-20
-         C20.3,-20 28,-15.6 28,-7
-         C28,1.6 20.3,6 14.7,6
-         C9.1,6 0,1.6 0,-7 Z"
-      fill="none"
-      stroke="#c9a84c"
-      stroke-width="2.2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      transform="rotate(90, 0, -7)"
-    />
+    <!-- Horizontal crossbeam between the two central columns — mirrors banner.
+         Spans x=-13 to x=13, centred at y=-7. The entablature above,
+         this lintel, and the stylobate below create two rectangular voids
+         between the inner columns — a ghosted 8, implicit in the structure. -->
+    <rect x="-13" y="-9.5" width="26" height="5"
+          fill="#ede8e0" stroke="#5c3d1e" stroke-width="0.9"/>
+    <rect x="-13" y="-4.5" width="26" height="1.5"
+          fill="#a09890" opacity="0.35"/>
 
     <!-- Entablature -->
     <rect x="-80" y="-54" width="160" height="12" fill="#ede8e0" stroke="#5c3d1e" stroke-width="0.9"/>

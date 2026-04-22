@@ -30,7 +30,7 @@ The palette is drawn from classical marble, parchment, and gold — materials th
 
 ### Logo
 
-Greek temple façade — pediment, four columns, three-step stylobate. A gold lemniscate (∞) sits in the centre of the pediment; it reads as ∞ or 8 depending on size. Transparent background. Stone-light `#f0ece4` / `#c8c0b8` fill, `#5c3d1e` brown outlines, gold `#c9a84c` ∞ glyph.
+Greek temple façade — pediment, four columns, three-step stylobate. A horizontal lintel (crossbeam) spans between the two central columns at mid-height. The void above the lintel and the void below it, framed by the entablature and stylobate, together imply an 8 — structural, not decorative. Transparent background. Stone-light `#f0ece4` / `#c8c0b8` fill, `#5c3d1e` brown outlines.
 
 ### Banner
 
