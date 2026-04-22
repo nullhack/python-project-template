@@ -1,271 +1,221 @@
 ---
 name: flow
-version: "1.0"
-description: Feature workflow protocol — read FLOW.md, auto-detect state, resume from checkpoint, update state
+version: "2.0"
+description: Flow protocol — design and operate state machine workflows with FLOW.md + WORK.md
 author: software-engineer
 audience: all-agents
 workflow: session-management
 ---
 
-# Feature Workflow Protocol
+# Flow Protocol
 
-This skill defines the single-feature-at-a-time workflow state machine. Every feature flows through 5 steps. Only ONE feature is in progress at any time. The filesystem enforces this.
+This skill defines how to **design**, **create**, and **operate** a state machine workflow using two files:
 
-## Prerequisites
+- **`FLOW.md`** — the static state machine definition (never changes during execution)
+- **`WORK.md`** — the dynamic work tracker (updated by agents at every state transition)
 
-Before starting any flow, verify these exist. If any are missing, stop and alert the human.
+The project's current workflow is defined in the root `FLOW.md`. Load this skill when:
+- Starting any session (to understand the operating protocol)
+- Creating a new workflow from scratch
+- Modifying an existing workflow
 
-| Requirement | Verification Command | Missing Action |
-|---|---|---|
-| Agent: product-owner | `test -f .opencode/agents/product-owner.md` | Create agent file |
-| Agent: system-architect | `test -f .opencode/agents/system-architect.md` | Create agent file |
-| Agent: software-engineer | `test -f .opencode/agents/software-engineer.md` | Create agent file |
-| Skill: run-session | `test -f .opencode/skills/run-session/SKILL.md` | Install skill |
-| Skill: define-scope | `test -f .opencode/skills/define-scope/SKILL.md` | Install skill |
-| Skill: architect | `test -f .opencode/skills/architect/SKILL.md` | Install skill |
-| Skill: implement | `test -f .opencode/skills/implement/SKILL.md` | Install skill |
-| Skill: verify | `test -f .opencode/skills/verify/SKILL.md` | Install skill |
-| Skill: version-control | `test -f .opencode/skills/version-control/SKILL.md` | Install skill |
-| Tool: uv | `command -v uv` | Install uv |
-| Tool: git | `command -v git` | Install git |
-| Directory: docs/features/ | `test -d docs/features/backlog` | Run setup-project |
-| Directory: docs/adr/ | `test -d docs/adr` | Create directory |
-| FLOW.md | `test -f FLOW.md` | Create from template |
+---
 
-## State Machine
+## Core Concepts
 
-States are checked IN ORDER. The first matching state is the current state.
+### State Machine Fundamentals
 
-### Detection Rules
+A finite state machine (FSM) consists of:
 
-1. **No file in `docs/features/in-progress/`** → [IDLE]
-2. **Feature in in-progress, no `Status: BASELINED`** → [STEP-1-DISCOVERY]
-3. **Feature has `Status: BASELINED`, no `Rule:` blocks** → [STEP-1-STORIES]
-4. **Feature has `Rule:` blocks, no `Example:` with @id** → [STEP-1-CRITERIA]
-5. **Feature has @id tags, no feat/ or fix/ branch exists** → [STEP-2-READY]
-6. **On feature branch, no test stubs in `tests/features/<stem>/`** → [STEP-2-ARCH]
-7. **Test stubs exist, any have `@pytest.mark.skip`** → [STEP-3-READY]
-8. **Unskipped test exists that fails** → [STEP-3-RED]
-9. **All unskipped tests pass, skipped tests remain** → [STEP-3-GREEN]
-10. **All tests pass, no skipped tests** → [STEP-4-READY]
-11. **Manual state set by SA after Step 4 approval** → [STEP-5-READY]
-12. **On main branch, feature still in in-progress/** → [STEP-5-MERGE]
-13. **Post-mortem file exists for current feature** → [POST-MORTEM]
+1. **States** — discrete stages a work item can be in (exactly one at a time)
+2. **Transitions** — rules for moving from one state to another
+3. **Guards** — conditions that must be true for a transition to fire
+4. **Actions** — work performed while in a state or during a transition
+5. **Owners** — the role responsible for executing a state
 
-### State Details
+**Design principles** (from FSM theory and workflow management best practices):
 
-#### [IDLE] → Waiting for feature selection
-**Owner**: product-owner
-**Detect**: No file in `docs/features/in-progress/`
-**Action**: Select feature from backlog/ and move to in-progress/
-**Next**: [STEP-1-DISCOVERY]
+- **Determinism**: given a state and a guard, exactly one transition fires — no ambiguity
+- **Reachability**: every state must be reachable from the initial state
+- **Termination**: every path must lead to a terminal state (or a defined cycle)
+- **Single responsibility**: each state does one thing; transitions are cheap
+- **WIP limits**: constrain how many items occupy a state simultaneously
+- **Observable**: state must be detectable from the filesystem without reading WORK.md (self-healing)
+- **Minimal variables**: track only what cannot be derived from other sources
 
-#### [STEP-1-DISCOVERY] → Requirements discovery
-**Owner**: product-owner
-**Detect**: Feature in in-progress/, no `Status: BASELINED` in file
-**Action**: Interview stakeholder, update scope_journal.md, discovery.md, glossary.md
-**Success**: Feature baselined → [STEP-1-STORIES]
-**Failure**: More discovery needed → Stay in [STEP-1-DISCOVERY]
+### The Two-File Pattern
 
-#### [STEP-1-STORIES] → Write user stories
-**Owner**: product-owner
-**Detect**: Feature has `Status: BASELINED`, no `Rule:` blocks
-**Action**: Write Rule: blocks with INVEST criteria
-**Success**: Stories complete → [STEP-1-CRITERIA]
-
-#### [STEP-1-CRITERIA] → Write acceptance criteria
-**Owner**: product-owner
-**Detect**: Feature has `Rule:` blocks, no `Example:` blocks with @id
-**Action**: Write Example: blocks with @id tags
-**Success**: Criteria complete → [STEP-2-READY]
-**Commit**: `feat(criteria): write acceptance criteria for <name>`
-
-#### [STEP-2-READY] → Ready for architecture
-**Owner**: system-architect
-**Detect**: Feature has @id tags, no feat/<stem> branch exists
-**Action**: Create branch feat/<stem> from main
-**Success**: Branch created → [STEP-2-ARCH]
-
-#### [STEP-2-ARCH] → Design architecture
-**Owner**: system-architect
-**Detect**: On feat/<stem> branch, no test stubs in tests/features/<stem>/
-**Action**: Read feature, design stubs, write ADRs, update domain-model.md
-**Success**: Run `uv run task test-fast` generates stubs → [STEP-3-READY]
-**Failure**: Spec unclear → [STEP-1-DISCOVERY] (escalate to PO)
-**Commit**: `feat(arch): design <feature> architecture`
-
-#### [STEP-3-READY] → Ready for TDD
-**Owner**: software-engineer
-**Detect**: Test stubs exist, some have @pytest.mark.skip
-**Action**: Pick first skipped @id, remove skip, write test
-**Success**: Test written and fails → [STEP-3-RED]
-
-#### [STEP-3-RED] → Test failing
-**Owner**: software-engineer
-**Detect**: Unskipped test exists that fails
-**Action**: Write minimal code to pass
-**Success**: Test passes → [STEP-3-GREEN]
-
-#### [STEP-3-GREEN] → Test passing
-**Owner**: software-engineer
-**Detect**: All unskipped tests pass, more skipped tests remain
-**Action**: Refactor if needed, then pick next @id
-**Success**: More @ids → [STEP-3-READY]
-**Success**: All @ids done → [STEP-4-READY]
-**Commit**: After each @id or logical group
-
-#### [STEP-4-READY] → Ready for verification
-**Owner**: system-architect
-**Detect**: All tests implemented (no @skip) and passing
-**Action**: Run all quality checks, semantic review
-**Success**: All checks pass → [STEP-5-READY]
-**Failure**: Issues found → [STEP-3-READY] (document issues)
-
-#### [STEP-5-READY] → Ready for acceptance
-**Owner**: product-owner
-**Detect**: Manual state (set after Step 4 approval)
-**Action**: Demo and validate against criteria
-**Success**: Feature accepted → [STEP-5-MERGE]
-**Failure**: Not accepted → [POST-MORTEM]
-
-#### [STEP-5-MERGE] → Merge to main
-**Owner**: software-engineer
-**Detect**: Feature accepted, still on feature branch
-**Action**: Merge feat/<stem> to main with --no-ff
-**Success**: Merged → [STEP-5-COMPLETE]
-
-#### [STEP-5-COMPLETE] → Feature complete
-**Owner**: product-owner
-**Detect**: On main branch, feature still in in-progress/
-**Action**: Move feature from in-progress/ to completed/
-**Success**: Feature moved → [IDLE]
-
-#### [POST-MORTEM] → Failed feature analysis
-**Owner**: product-owner
-**Detect**: Post-mortem file exists for current feature
-**Action**: Write post-mortem, create fix/<stem> branch
-**Success**: Post-mortem complete → [STEP-2-ARCH]
-
-## Session Protocol
-
-### Session Start
-
-1. Read `FLOW.md` — find current feature, branch, status.
-2. Run `detect-state` (see below) to verify the state is correct.
-3. If the detected state differs from `FLOW.md` Status, update `FLOW.md` to match reality.
-4. Check prerequisites table (above). If any are missing, stop and report.
-5. If a feature is active, read the in-progress `.feature` file.
-6. Run `git status` and `git branch --show-current` to understand workspace state.
-7. Confirm scope: you are working on exactly one step of one feature.
-
-### Session End
-
-1. Update `FLOW.md`:
-   - Set Status to the detected state
-   - Update Session Log with what was done
-   - Update `Next:` line with one concrete action
-2. Commit any uncommitted work (even WIP):
-   ```bash
-   git add -A
-   git commit -m "WIP(<feature-stem>): <what was done>"
-   ```
-3. If a step is fully complete, use the proper commit message instead of WIP.
-
-### Step Completion Protocol
-
-When a step completes within a session:
-
-1. Update `FLOW.md` to reflect the completed step before doing any other work.
-2. Commit the `FLOW.md` update:
-   ```bash
-   git add FLOW.md
-   git commit -m "chore: complete step <N> for <feature-stem>"
-   ```
-3. Only then begin the next step (in a new session where possible).
-
-## Auto-Detection
-
-To detect the current state automatically, run these checks in order:
-
-```bash
-# 1. Check for in-progress feature
-ls docs/features/in-progress/*.feature 2>/dev/null | grep -v ".gitkeep"
-# If empty → [IDLE]
-
-# 2. Check feature baselined
-grep -q "Status: BASELINED" docs/features/in-progress/*.feature
-# If no match → [STEP-1-DISCOVERY]
-
-# 3. Check for Rule blocks
-grep -q "^Rule:" docs/features/in-progress/*.feature
-# If no match → [STEP-1-STORIES]
-
-# 4. Check for Example blocks with @id
-grep -q "@id:" docs/features/in-progress/*.feature
-# If no match → [STEP-1-CRITERIA]
-
-# 5. Check for feature branch
-git branch --show-current | grep -E "^feat/|^fix/"
-# If no match → [STEP-2-READY]
-
-# 6. Check for test stubs
-ls tests/features/*/ 2>/dev/null | head -1
-# If empty → [STEP-2-ARCH]
-
-# 7. Check for skipped tests
-grep -r "@pytest.mark.skip" tests/features/*/ 2>/dev/null
-# If found → [STEP-3-READY] or [STEP-3-GREEN]
-# If not found → [STEP-4-READY]
-
-# 8. Check test failures
-uv run task test-fast 2>&1 | grep -E "FAILED|ERROR"
-# If found → [STEP-3-RED]
-# If not found and on main → [STEP-5-MERGE]
+```
+FLOW.md  ──  "What are the rules?"   (static, versioned with the project)
+WORK.md  ──  "What is happening now?" (dynamic, updated by agents)
 ```
 
-## FLOW.md Format
+Agents read `FLOW.md` to know **what to do**. They read `WORK.md` to know **what is active and where it is**. They write only to `WORK.md` during normal operation.
+
+### Work Variables
+
+`FLOW.md` defines the minimal set of variables each work item must carry in `WORK.md`. Variables should satisfy:
+
+- **Necessary**: removing it would make it impossible to resume work
+- **Non-derivable**: cannot be computed from another variable or the filesystem
+- **Role-agnostic**: not a property of a role (roles are derived from `@state` via FLOW.md)
+
+Common variables (adapt to your workflow):
+
+| Variable  | Type           | Description                                      |
+|-----------|----------------|--------------------------------------------------|
+| `@id`     | identifier     | Unique name of the work item                     |
+| `@state`  | state name     | Current state in the workflow                    |
+| `@branch` | git ref        | Where the work lives in version control          |
+
+Add variables only when they cannot be derived. Example: `@owner` is unnecessary if each state in FLOW.md already declares its owner.
+
+---
+
+## Designing a Workflow
+
+Follow these steps when creating a new `FLOW.md` from scratch or modifying an existing one.
+
+### Step 1 — Identify the work item lifecycle
+
+Answer these questions:
+1. What is the unit of work? (feature, bug, PR, ticket…)
+2. What are the discrete phases it passes through?
+3. Who is responsible for each phase?
+4. What signals the end of a phase? (filesystem artifact, test result, human approval…)
+5. What can go wrong, and where does failure route?
+
+### Step 2 — Define states
+
+For each phase, write a state entry:
+```
+State name    — short, uppercase, unambiguous (e.g. STEP-3-RED)
+Owner         — the role that executes this state
+Entry guard   — detectable condition that confirms we are in this state
+Action        — what the owner does
+Exit          — what triggers the transition out
+Failure route — where to go if the action cannot complete
+```
+
+**Smell check**:
+- More than ~12 states → consider splitting into sub-workflows
+- Any state with no exit → add a failure route
+- Two states with the same entry guard → merge or sharpen guards
+
+### Step 3 — Order the detection rules
+
+States are detected **in order**. Write detection rules as an ordered list where:
+- Earlier rules eliminate more states quickly (terminal/error states first)
+- Each rule is a single, fast filesystem or git command
+- No rule requires running tests (reserve that for later rules only)
+
+This ordering is the FSM's auto-detection mechanism and makes WORK.md self-healing.
+
+### Step 4 — Define work variables
+
+List only the variables agents cannot derive. Reference them as `@variable` throughout FLOW.md. WORK.md entries must carry every variable in this list.
+
+### Step 5 — Define roles
+
+List each role with its agent file path. Every state owner must appear in this table. These are the prerequisites for running the workflow.
+
+### Step 6 — Draw the transition diagram
+
+Include an ASCII or Mermaid diagram. It must show every state and every valid transition including failure routes. This is the primary human-readable artifact.
+
+---
+
+## Operating Protocol
+
+### Session Start (all agents)
+
+1. Read `FLOW.md` — understand the workflow rules
+2. Read `WORK.md` — find the active item; note `@id`, `@state`, `@branch`
+3. Run auto-detection commands from `FLOW.md` to verify `@state`
+4. If detected state differs from `WORK.md`, update `WORK.md` to match reality (filesystem wins)
+5. Check prerequisites from `FLOW.md` — if any missing, stop and report
+6. Read the work item artifact (e.g. `.feature` file) for context
+7. Verify git workspace matches `@branch`
+
+### Session End (all agents)
+
+1. Update `WORK.md`:
+   - Set `@state` to the new state
+   - Append to Session Log
+2. Commit WORK.md update before any further work:
+   ```bash
+   git add WORK.md && git commit -m "chore: @id transition to @state"
+   ```
+3. Commit any remaining work as WIP if not fully complete:
+   ```bash
+   git add -A && git commit -m "WIP(@id): <what was done>"
+   ```
+
+### State Transition Rule
+
+The agent who **completes** a state is responsible for updating `WORK.md` to the next state **before** doing any other work. Transitions are atomic: update WORK.md, commit, then proceed.
+
+### Self-Healing Rule
+
+If `WORK.md` and auto-detection disagree, the filesystem is the source of truth. Update `WORK.md` to match. Never "correct" the filesystem to match WORK.md.
+
+---
+
+## WORK.md Format
 
 ```markdown
-# FLOW Protocol
+# WORK — Active Work Tracking
 
-## Current Feature
-**Feature**: <feature-stem> | [NONE]
-**Branch**: <branch-name> | [NONE]
-**Status**: <state>
+This file tracks live work items. The workflow rules live in `FLOW.md`.
 
-## Prerequisites
-- [x] Agents: product-owner, system-architect, software-engineer
-- [x] Skills: run-session, define-scope, architect, implement, verify, version-control
-- [x] Tools: uv, git
-- [x] Directories: docs/features/, docs/adr/
+Each item carries exactly the variables defined by `FLOW.md`:
+- @id — <description>
+- @state — <description>
+- @branch — <description>
+
+---
+
+## Active Items
+
+- @id: <value>
+  @state: <value>
+  @branch: <value>
+
+---
 
 ## Session Log
-<!-- Append new entries, never delete old ones -->
-**YYYY-MM-DD HH:MM** — <agent> — <state> — <action>
 
-## Next
-Run @<agent-name> — <one concrete action>
+<!-- Append only. Never delete. Format: YYYY-MM-DD HH:MM | @role | @id | @state | action -->
 ```
+
+Multiple active items are allowed when the workflow permits parallel work. Each is a separate bullet entry under `## Active Items`.
+
+---
+
+## Creating a New Workflow
+
+Use the templates bundled with this skill as starting points:
+
+- `flow.md.template` — empty FLOW.md skeleton
+- `work.md.template` — empty WORK.md skeleton
+
+Steps:
+1. Copy `flow.md.template` to your project root as `FLOW.md`
+2. Copy `work.md.template` to your project root as `WORK.md`
+3. Follow the design steps above to fill in `FLOW.md`
+4. Define work variables and update the variable list in `WORK.md`
+5. Verify the detection rules are ordered correctly
+6. Verify all roles have agent files
+
+---
 
 ## Rules
 
-1. Never skip reading `FLOW.md` at session start
-2. Never end a session without updating `FLOW.md`
-3. Never leave uncommitted changes — commit as WIP if needed
-4. One step per session where possible; do not start Step N+1 in the same session as Step N
-5. The "Next" line must be actionable enough that a fresh AI can execute it without asking questions
-6. When a step completes, update `FLOW.md` and commit **before** any further work
-7. The Session Log is append-only — never delete old entries
-8. If `FLOW.md` is missing, create it from the template before doing any other work
-9. If detected state differs from `FLOW.md` Status, trust the detected state and update `FLOW.md`
-
-## Output Style
-
-Use minimal output. Every message must contain only what the next agent or stakeholder needs to continue — findings, status, decisions, blockers, and the Next: line.
-
-- Use the fewest, least verbose tool calls necessary to achieve the step's goal
-- Report results, not process
-- No narration before or after tool calls
-- No restating tool output in prose
-- No summaries of what was just done
-- Always close with Next:
+1. Never skip reading `FLOW.md` and `WORK.md` at session start
+2. Never end a session without updating `WORK.md` and committing
+3. Never commit directly to `main`
+4. The `Next:` line in every session output must be actionable for a fresh agent
+5. `WORK.md` Session Log is append-only — never delete entries
+6. If `WORK.md` is missing, create it from `work.md.template` before any other work
+7. If detected state differs from `WORK.md`, trust the filesystem and update `WORK.md`
+8. One step per session where possible; do not start Step N+1 in the same session as Step N
