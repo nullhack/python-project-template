@@ -13,6 +13,23 @@
 
 ---
 
+## Context
+
+```mermaid
+C4Context
+  title System Context — <project-name>
+
+  Person(<id>, "<Name>", "<description>")
+
+  System(<id>, "<Name>", "<description>")
+
+  System_Ext(<id>, "<Name>", "<description>")
+
+  Rel(<from>, <to>, "<label>", "<technology>")
+```
+
+---
+
 ## Actors
 
 | Actor | Needs |
@@ -21,39 +38,30 @@
 
 ---
 
+## Container
+
+```mermaid
+C4Container
+  title Container Diagram — <project-name>
+
+  Person(<id>, "<Name>", "")
+
+  System_Boundary(<id>, "<Name>") {
+    Container(<id>, "<Name>", "<technology>", "<description>")
+  }
+
+  System_Ext(<id>, "<Name>", "<description>")
+
+  Rel(<from>, <to>, "<label>")
+```
+
+---
+
 ## Structure
 
 | Module | Responsibility |
 |--------|----------------|
 | `<module>` | <responsibility> |
-
----
-
-## Key Decisions
-
-- <system-wide decision from ADRs — one bullet per decision>
-
----
-
-## Configuration Keys
-
-| Key | Type | Default | Description |
-|-----|------|---------|-------------|
-| `<key>` | string | `"<default>"` | <description> |
-
----
-
-## External Dependencies
-
-| Dependency | What it provides | Why not replaced |
-|------------|------------------|-----------------|
-| `<dep>` | <purpose> | <reason> |
-
----
-
-## Active Constraints
-
-- <system-wide constraint from ADRs or completed features>
 
 ---
 
@@ -96,39 +104,31 @@ graph LR
 
 ---
 
-## Context
+## Active Constraints
 
-```mermaid
-C4Context
-  title System Context — <project-name>
-
-  Person(<id>, "<Name>", "<description>")
-
-  System(<id>, "<Name>", "<description>")
-
-  System_Ext(<id>, "<Name>", "<description>")
-
-  Rel(<from>, <to>, "<label>", "<technology>")
-```
+- <system-wide constraint from ADRs or completed features>
 
 ---
 
-## Container
+## Key Decisions
 
-```mermaid
-C4Container
-  title Container Diagram — <project-name>
+- <system-wide decision from ADRs — one bullet per decision>
 
-  Person(<id>, "<Name>", "")
+---
 
-  System_Boundary(<id>, "<Name>") {
-    Container(<id>, "<Name>", "<technology>", "<description>")
-  }
+## Configuration Keys
 
-  System_Ext(<id>, "<Name>", "<description>")
+| Key | Type | Default | Description |
+|-----|------|---------|-------------|
+| `<key>` | string | `"<default>"` | <description> |
 
-  Rel(<from>, <to>, "<label>")
-```
+---
+
+## External Dependencies
+
+| Dependency | What it provides | Why not replaced |
+|------------|------------------|-----------------|
+| `<dep>` | <purpose> | <reason> |
 
 ---
 
