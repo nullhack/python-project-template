@@ -2,6 +2,24 @@
 
 All notable changes to this template will be documented in this file.
 
+## [v7.2.20260422] - Resolute Hermes - 2026-04-22
+
+### Added
+
+- **`app/__main__.py`**: CLI entrypoint — `python -m app --help` and `python -m app --version`; zero new dependencies (argparse + importlib.metadata are stdlib) (#cli-entrypoint)
+- **`docs/adr/ADR-2026-04-22-cli-parser-library.md`**: decision record for choosing `argparse` over click/typer (#cli-entrypoint)
+- **`docs/adr/ADR-2026-04-22-version-source.md`**: decision record for reading version from `importlib.metadata` at runtime (#cli-entrypoint)
+- **`tests/features/cli_entrypoint/`**: 3 test files covering 6 acceptance criteria via subprocess (#cli-entrypoint)
+- **`tests/unit/main_test.py`**: 5 in-process unit tests for 100% coverage (#cli-entrypoint)
+- **`docs/index.html`**: redesigned documentation portal — branding palette, inline logo SVG, doc cards, tabbed features, ADR list, research library
+
+### Changed
+
+- **`docs/system.md`**: C4 diagrams with branding colors (stone `#f0ece4`, gold `#c9a84c`); Completed Features table added; section order follows zoom-in narrative
+- **Workflow skills**: `architect/SKILL.md`, `update-docs/SKILL.md`, `architect/system.md.template` — domain model terminology updated (Verbs → Actions, Nouns → Entities); WORK.md format simplified (Session Log and Next: removed from format spec)
+
+---
+
 ## [v7.1.20260422] - Precise Hypatia - 2026-04-22
 
 ### Added
