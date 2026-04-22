@@ -75,7 +75,7 @@ INNER LOOP
     ├── uv run task test-fast after each individual change
     └── EXIT: test-fast passes; no smells remain
 
-Mark @id completed in FLOW.md Session Log
+Mark @id completed in WORK.md Session Log
 Commit when a meaningful increment is green
 ```
 
@@ -84,7 +84,7 @@ Commit when a meaningful increment is green
 ```bash
 uv run task lint
 uv run task static-check
-uv run task test-coverage          # coverage must be 100%
+uv run task test                    # coverage must be 100%
 timeout 10s uv run task run
 ```
 
@@ -295,9 +295,8 @@ class UserRepository(Protocol):
 
 Templates for architecture files live in the `architect` skill's directory:
 
-- `domain-model.md.template` — `docs/domain-model.md` structure
-- `system.md.template` — `docs/system.md` structure
-- `adr.md.template` — individual ADR file structure
+- `system.md.template` — `docs/system.md` structure (includes `## Domain Model`, `## Context`, `## Container` sections)
+- `adr.md.template` — individual ADR file structure (includes `## Context` section)
 
 Base directory for this skill: file:///home/user/Documents/projects/python-project-template/.opencode/skills/implement
 Relative paths in this skill (e.g., scripts/, reference/) are relative to this base directory.

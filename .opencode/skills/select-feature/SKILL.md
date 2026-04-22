@@ -17,7 +17,7 @@ Select the next most valuable, unblocked feature from the backlog using a lightw
 
 ## When to Use
 
-Load this skill when `FLOW.md` Status is [IDLE] — before moving any feature to `in-progress/`.
+Load this skill when `WORK.md` `@state` is [IDLE] (or no active item) — before moving any feature to `in-progress/`.
 
 ## Step-by-Step
 
@@ -80,27 +80,20 @@ Ties: prefer higher Value (user impact matters more than effort optimization).
 
 If all BASELINED features have Dependency=1: stop and resolve the blocking dependency first — select and complete the depended-upon feature.
 
-### 5. Move and Update FLOW.md
+### 5. Move Feature and Update WORK.md
 
 ```bash
 mv docs/features/backlog/<name>.feature docs/features/in-progress/<name>.feature
 ```
 
-Update `FLOW.md`:
+Update `WORK.md` — add (or replace) the active item block and append to Session Log:
 
 ```markdown
-# FLOW Protocol
+## Active Items
 
-## Current Feature
-**Feature**: <name>
-**Branch**: [NONE]
-**Status**: [STEP-1-DISCOVERY] or [STEP-2-READY] — whichever is next
-
-## Prerequisites
-- [x] Agents: product-owner, system-architect, software-engineer
-- [x] Skills: run-session, define-scope, architect, implement, verify, version-control
-- [x] Tools: uv, git
-- [x] Directories: docs/features/, docs/adr/
+@id: <name>
+@state: [STEP-1-DISCOVERY] or [STEP-2-READY] — whichever is next
+@branch: [NONE]
 
 ## Session Log
 **YYYY-MM-DD HH:MM** — product-owner — [IDLE] → [<next-state>] — selected <name> from backlog
@@ -109,14 +102,14 @@ Update `FLOW.md`:
 Run @<agent-name> — <first concrete action for this feature>
 ```
 
-- If the feature has no `Rule:` blocks yet → Step 1 (SCOPE): `Run @product-owner — load skill define-scope and write stories`
-- If the feature has `Rule:` blocks but no `@id` Examples → Step 1 Stage 2 Step B (Criteria): `Run @product-owner — load skill define-scope and write acceptance criteria`
-- If the feature has `@id` Examples → Step 2 (ARCH): `Run @system-architect — load skill architect and write architecture stubs`
+- If the feature has no `Rule:` blocks yet → `@state: STEP-1-DISCOVERY`; `Run @product-owner — load skill define-scope and write stories`
+- If the feature has `Rule:` blocks but no `@id` Examples → `@state: STEP-1-CRITERIA`; `Run @product-owner — load skill define-scope and write acceptance criteria`
+- If the feature has `@id` Examples → `@state: STEP-2-READY`; `Run @software-engineer — load skill version-control and create feat/<name> branch`
 
 ### 6. Commit
 
 ```bash
-git add docs/features/in-progress/<name>.feature FLOW.md
+git add docs/features/in-progress/<name>.feature WORK.md
 git commit -m "chore: select <name> as next feature"
 ```
 
@@ -128,5 +121,5 @@ git commit -m "chore: select <name> as next feature"
 - [ ] WSJF scores filled for all candidates
 - [ ] Selected feature has highest WSJF among Dependency=0 candidates
 - [ ] Feature moved to `in-progress/`
-- [ ] `FLOW.md` updated with correct Status and `Next` line
+- [ ] `WORK.md` updated with correct `@state` and `Next:` line
 - [ ] Changes committed

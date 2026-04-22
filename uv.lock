@@ -1050,7 +1050,7 @@ wheels = [
 
 [[package]]
 name = "temple8"
-version = "7.0.20260422"
+version = "7.1.20260422"
 source = { virtual = "." }
 dependencies = [
     { name = "fire" },

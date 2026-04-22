@@ -2,6 +2,27 @@
 
 All notable changes to this template will be documented in this file.
 
+## [v7.1.20260422] - Precise Hypatia - 2026-04-22
+
+### Added
+
+- **`docs/glossary.md`**: living glossary with five domain terms from `display-version`; append-only with supersession protocol (#107)
+- **`docs/adr/`**: two concrete ADRs (`version-source`, `verbosity-validation`) cross-referenced in `system.md` (#107)
+
+### Changed
+
+- **`docs/system.md`**: full rewrite — Summary, Actors, Structure, Key Decisions, External Dependencies, Active Constraints, Domain Model (Entities, Actions, Relationships), C4 Context Mermaid, C4 Container Mermaid, ADR Index, Completed Features; domain actions renamed from "Verbs" to "Actions" (#107)
+- **`docs/discovery.md`**, **`docs/scope_journal.md`**: concrete session entries replacing placeholder text; grounded in `display-version` feature (#107)
+- **`docs/index.html`**: "Context Diagram" card → "C4 Diagrams" linking `system.md#context` (#107)
+- **Workflow and skill improvements**: AGENTS.md, FLOW.md, agent files, and multiple skills updated (architect, define-scope, implement, run-session, select-feature, update-docs, verify, git-release, create-skill) (#107)
+
+### Removed
+
+- **`docs/context.md`**, **`docs/container.md`**: deleted — C4 Context and Container diagrams are now `## Context` and `## Container` sections inside `system.md`, owned by SA (#107)
+- **`domain-model.md.template`** (implement skill): removed — domain model is a section of `system.md`, not a separate file (#107)
+
+---
+
 ## [v7.0.20260422] - Mighty Titan - 2026-04-22
 
 ### Added
