@@ -1,0 +1,19 @@
+# Glossary: <project-name>
+
+> Living glossary of domain terms.
+> Written and maintained by the product-owner.
+> Terms are added after each discovery session, updated when meaning changes.
+> If code or tests diverge from a term here, refactor the code — not the glossary.
+
+---
+
+## <Term>
+
+<One to three sentences defining the canonical meaning of this term as used in this project.
+Include usage context, related terms, and any important distinctions from common usage.>
+
+---
+
+## <Term>
+
+<Definition.>

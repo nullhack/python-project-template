@@ -79,7 +79,7 @@ Discovery is a continuous, iterative process. Sessions happen whenever scope nee
 1. Check `docs/scope_journal.md` for the most recent session block.
    - If the most recent block has `Status: IN-PROGRESS` → the previous session was interrupted. Resume it: check which `.feature` files need updating (compare journal Q&A against current `.feature` descriptions), write the `discovery.md` synthesis block if missing, then mark the block `Status: COMPLETE`. Only then begin a new session.
    - If `docs/scope_journal.md` does not exist → this is the first session. Create both `docs/scope_journal.md` and `docs/discovery.md` using the templates in `scope-journal.md.template` and `discovery.md.template` in this skill's directory.
-2. Read `docs/domain-model.md` (if it exists) to check existing entities. The PO reads this file but never writes to it. If it does not exist yet, the SA will create it at Step 2.
+2. Read the `## Domain Model` section of `docs/system.md` (if the file exists) to check existing entities. The PO reads this section but never writes to `system.md` — it is SA-owned. If `system.md` does not yet have a Domain Model section, the SA will add it at Step 2.
 3. Declare session scope to the stakeholder: announce the total groups and estimated question count (e.g., "3 groups: General (7 Q), Cross-cutting, Feature: login").
 4. Open `docs/scope_journal.md` and append a new session header:
    ```markdown
@@ -140,7 +140,7 @@ Target behavior groups, bounded contexts, integration points, lifecycle events, 
 **3. Feature questions** (one feature at a time)
 
 For each feature the session touches:
-- Extract relevant nouns and verbs from `docs/glossary.md` and `docs/domain-model.md` (if they exist)
+- Extract relevant nouns and verbs from `docs/glossary.md` and the `## Domain Model` section of `docs/system.md` (if it exists)
 - Generate questions from entity gaps: boundaries, edge cases, interactions, failure modes
 - Run a silent pre-mortem: "Imagine the developer builds this feature exactly as described, all tests pass, but the feature doesn't work for the user. What would be missing?"
 - Apply CIT, Laddering, and CI Perspective Change per question
@@ -185,13 +185,13 @@ Group headers use this format:
 
 **Step B — Update glossary and discovery.md**
 
-1. Update `docs/glossary.md` (new or corrected definitions; edits allowed).
+1. Update `docs/glossary.md` **after** the session closes — batch update, not real-time during the interview. Read `glossary.md` before the session starts to anchor interview language; update it after all Q&A is complete. New or corrected definitions; edits allowed.
 2. Append to `docs/discovery.md` (use the template in `discovery.md.template`):
-   - 3-line session summary (general/behavioral focus)
-   - Entities **added or deprecated** this session (suggestions for the SE; not a formal model)
-   - Features **touched** this session + 1-line reason why
+   - One `## Session YYYY-MM-DD` block per session
+   - Summary paragraph (3 lines max; general/behavioral focus)
+   - `| Feature | Change | Source questions | Reason |` table — one row per `.feature` file that was created or updated this session. **Confirmations (no file change) → no row.** Source questions reference journal Q-IDs (e.g. `C4, I2`).
 
-The PO does **not** write `docs/domain-model.md`. Entity suggestions live in `discovery.md` for the SA to formalize at Step 2.
+The PO does **not** write `docs/system.md`. Entity and domain model updates are SA-owned and happen at Step 2.
 
 **Step C — Update .feature descriptions**
 
@@ -393,7 +393,7 @@ The **Rules (Business)** section captures business rules that hold across multip
 The **Constraints** section captures non-functional requirements. Testable constraints should become `Example:` blocks with `@id` tags.
 
 What is **not** in `.feature` files:
-- Entities table — domain model lives in `docs/domain-model.md` (SE-owned)
+- Domain model or entities — domain model lives in the `## Domain Model` section of `docs/system.md` (SA-owned)
 - Session Q&A blocks — live in `docs/scope_journal.md`
 - Architecture section — lives in `docs/adr/ADR-*.md`
 
@@ -428,7 +428,7 @@ Stakeholder reports a feature is wrong after PO acceptance attempt.
    ```
 4. **PO scans `docs/post-mortem/`**, selects relevant files by `<feature-stem>` or `<failure-keyword>` in filename.
 5. **PO reads selected post-mortems** for context before handoff.
-6. **PO resets FLOW.md**: Status to [STEP-2-ARCH], `Next: Run @system-architect — restart Step 2 for <feature-stem> on fix/<feature-stem> with post-mortem context`.
+6. **PO updates `WORK.md`**: set `@state: STEP-2-ARCH`, `@branch: fix/<feature-stem>`; append to Session Log; set `Next: Run @system-architect — restart Step 2 for <feature-stem> on fix/<feature-stem> with post-mortem context`.
 7. **SA begins Step 2** on `fix/<feature-stem>`, reading relevant post-mortems as input.
 
 ### Document Format

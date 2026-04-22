@@ -1,7 +1,7 @@
 ---
 name: architect
 description: Step 2 — Architecture and domain design, one feature at a time
-version: "1.0"
+version: "2.0"
 author: system-architect
 audience: system-architect
 workflow: feature-lifecycle
@@ -9,7 +9,7 @@ workflow: feature-lifecycle
 
 # Architect
 
-Step 2: design the domain model, write architecture stubs, record decisions, and generate test stubs. The system-architect owns this step entirely.
+Step 2: conduct the architectural interview, design the domain model, write architecture stubs, record decisions as ADRs, and generate test stubs. The system-architect owns this step entirely.
 
 ## When to Use
 
@@ -43,35 +43,38 @@ Design correctness is far more important than lint/pyright/coverage compliance. 
 2. Confirm directory exists: `ls <name>/`
 3. All new source files go under `<name>/`
 
-**Note on feature file moves**: The PO moves `.feature` files between folders. The system-architect never moves, creates, or edits `.feature` files. Update FLOW.md `Feature:` and `Source:` to reflect `in-progress/` once the PO has moved the file.
+**Note on feature file moves**: The PO moves `.feature` files between folders. The system-architect never moves, creates, or edits `.feature` files. Verify `WORK.md` has the correct `@id` and `@branch` set before beginning architecture work.
 
 ### Read Phase (targeted reads only — before writing anything)
 
-1. Read `docs/system.md` — understand current system structure and constraints
+1. Read `docs/system.md` — all sections: domain model, Context, Container, module structure, constraints, ADR index
 2. Read `docs/glossary.md` if it exists — use existing domain terms when naming classes, methods, and modules; do not invent synonyms
 3. Read in-progress `.feature` file (full: Rules + Examples + @id)
 4. Run `tree <package>/` — understand package structure without reading every file
 5. Read **specific `.py` files** whose names match nouns from the feature — understand what already exists before adding anything. Do not read the entire package.
 
-### Domain Analysis
+---
 
-From `docs/glossary.md` + Rules (Business) in the `.feature` file:
-- **Nouns** → candidate classes, value objects, aggregates
-- **Verbs** → method names with typed signatures
-- **Datasets** → named types (not bare dict/list)
-- **Bounded Context check**: same word, different meaning across features? → module boundary
-- **Cross-feature entities** → candidate shared domain layer
+## Architectural Interview Protocol
 
-### Create / Update Domain Model
+The arch interview surfaces decisions that must be recorded as ADRs. Each unresolved question becomes one ADR.
 
-**If `docs/domain-model.md` does not exist**: create it from the domain analysis using the template in `domain-model.md.template` in the `implement` skill's directory.
+### Gap-Finding Techniques
 
-**If `docs/domain-model.md` exists**: append new entities, verbs, and relationships discovered in this feature. Deprecate old entries if they are superseded. Never edit existing live entries — code depends on them.
+Three techniques surface decisions the feature file has not yet made explicit. Apply them during the domain analysis pass.
 
-This file is system-architect-owned. The PO reads it but never writes to it.
+**Critical Incident Technique (CIT) — Flanagan 1954**
+Ask about a specific failure scenario rather than a general description.
+- "If this entity is misused, what breaks?"
+- "Tell me about a concrete case where this boundary would be crossed."
 
-### Silent Pre-mortem (before writing anything)
+**Laddering / Means-End Chain — Reynolds & Gutman 1988**
+Climb from surface constraint to architectural consequence.
+- "Why does this need to be immutable?"
+- "What breaks if this is not behind a Protocol?"
+- Stop when the answer produces a design constraint that can be written into an ADR.
 
+**Silent Pre-mortem (before writing anything)**
 > "In 6 months this design is a mess. What mistakes did we make?"
 
 For each candidate class:
@@ -86,7 +89,67 @@ For each noun:
 
 If pattern smell detected, load `skill apply-patterns`.
 
-### Write Stubs into Package
+### ADR Interview Pattern
+
+For each unresolved decision identified during domain analysis:
+
+1. **Frame the question**: state the decision as a clear question with known alternatives.
+   Example: "Should `FrameworkAdapter` be a `typing.Protocol` or an ABC?"
+
+2. **State constraints**: list what is known from the feature file, glossary, and existing ADRs that constrains the answer.
+
+3. **Evaluate alternatives**: for each option, state the consequence. Apply laddering to surface hidden consequences.
+
+4. **Record the decision**: write one ADR per question. Use the template in `adr.md.template`.
+   - `## Context` — the question + constraints that produced it
+   - `## Decision` — one sentence
+   - `## Reason` — one sentence
+   - `## Alternatives Considered` — rejected options with reasons
+   - `## Consequences` — (+) and (-) outcomes
+
+5. **Commit each ADR** as it is finalized: `feat(<feature-stem>): add ADR-<slug>`
+
+Only create an ADR for non-obvious decisions with meaningful trade-offs. Routine YAGNI choices do not need a record.
+
+---
+
+## Domain Analysis
+
+From `docs/glossary.md` + Rules (Business) in the `.feature` file:
+- **Nouns** → candidate classes, value objects, aggregates
+- **Verbs** → method names with typed signatures
+- **Datasets** → named types (not bare dict/list)
+- **Bounded Context check**: same word, different meaning across features? → module boundary
+- **Cross-feature entities** → candidate shared domain layer
+
+### Update Domain Model (in `docs/system.md`)
+
+Update the `## Domain Model` section of `docs/system.md`:
+
+- **New feature, first entities**: add bounded contexts, entities, verbs, and relationships to the Domain Model section.
+- **Existing feature**: append new entities and verbs. Deprecate old entries if superseded — move them to a `### Deprecated` subsection. Never edit existing live entries — code depends on them.
+- Update the `## Context` and `## Container` sections if new actors, external systems, or containers are identified.
+
+The PO reads `docs/system.md` but never writes to it.
+
+### Architecture Smell Check (hard gate)
+
+Apply to the stub files just written:
+
+- [ ] No class with >2 responsibilities (SOLID-S)
+- [ ] No behavioural class with >2 instance variables (OC-8; dataclasses, Pydantic models, value objects, and TypedDicts are exempt)
+- [ ] All external deps assigned a Protocol (SOLID-D + Hexagonal) — N/A if no external dependencies identified in scope
+- [ ] No noun with different meaning across modules (DDD Bounded Context)
+- [ ] No missing Creational pattern: repeated construction without Factory/Builder
+- [ ] No missing Structural pattern: type-switching without Strategy/Visitor
+- [ ] No missing Behavioral pattern: state machine or scattered notification without State/Observer
+- [ ] Each ADR consistent with each @id AC — no contradictions
+
+If any check fails: fix the stub files before committing.
+
+---
+
+## Write Stubs into Package
 
 From the domain analysis, write or extend `.py` files in `<package>/`. For each entity:
 
@@ -123,36 +186,9 @@ class UserRepository(Protocol):
 
 Place stubs where responsibility dictates — do not pre-create `ports/` or `adapters/` folders unless a concrete external dependency was identified in scope. Structure follows domain analysis, not a template.
 
-### Record Architectural Decisions
+---
 
-For each significant decision, create a new file:
-
-```bash
-docs/adr/ADR-YYYY-MM-DD-<slug>.md
-```
-
-Use the template in `adr.md.template` in the `implement` skill's directory. Fill in Decision, Reason, Alternatives Considered, and Consequences.
-
-Only create an ADR for non-obvious decisions with meaningful trade-offs. Routine YAGNI choices do not need a record.
-
-Reference relevant ADRs from `docs/system.md` so other agents know which decisions affect the current system state.
-
-### Architecture Smell Check (hard gate)
-
-Apply to the stub files just written:
-
-- [ ] No class with >2 responsibilities (SOLID-S)
-- [ ] No behavioural class with >2 instance variables (OC-8; dataclasses, Pydantic models, value objects, and TypedDicts are exempt)
-- [ ] All external deps assigned a Protocol (SOLID-D + Hexagonal) — N/A if no external dependencies identified in scope
-- [ ] No noun with different meaning across modules (DDD Bounded Context)
-- [ ] No missing Creational pattern: repeated construction without Factory/Builder
-- [ ] No missing Structural pattern: type-switching without Strategy/Visitor
-- [ ] No missing Behavioral pattern: state machine or scattered notification without State/Observer
-- [ ] Each ADR consistent with each @id AC — no contradictions
-
-If any check fails: fix the stub files before committing.
-
-### Generate Test Stubs
+## Generate Test Stubs
 
 Run `uv run task test-fast` once. It reads the in-progress `.feature` file, assigns `@id` tags to any untagged `Example:` blocks (writing them back to the `.feature` file), and generates `tests/features/<feature_slug>/<rule_slug>_test.py` — one file per `Rule:` block, one skipped function per `@id`. Verify the files were created, then stage all changes (including any `@id` write-backs to the `.feature` file).
 
@@ -165,7 +201,7 @@ Commit: `feat(<feature-stem>): add architecture and test stubs`
    - Feature file path
    - Summary of stubs created
    - Any ADRs that constrain implementation
-   - Any domain-model changes
+   - Any domain model changes in `system.md`
 3. Stop. The SE takes over.
 
 ---
@@ -174,18 +210,17 @@ Commit: `feat(<feature-stem>): add architecture and test stubs`
 
 If during architecture you discover behavior not covered by existing acceptance criteria:
 - **Do not extend criteria yourself** — escalate to PO
-- Note the gap in FLOW.md under `## Next`
+- Note the gap in `WORK.md` Next: line and Session Log
 - The PO will decide whether to add a new Example to the `.feature` file
 
 ---
 
 ## Templates
 
-Templates for files written by this skill live in the `implement` skill's directory:
+Templates for files written by this skill live in this skill's directory (`architect/`):
 
-- `domain-model.md.template` — `docs/domain-model.md` structure
-- `system.md.template` — `docs/system.md` structure
-- `adr.md.template` — individual ADR file structure
+- `system.md.template` — `docs/system.md` structure (domain model + Context + Container sections included)
+- `adr.md.template` — individual ADR file structure (includes `## Context` section)
 
 Base directory for this skill: file:///home/user/Documents/projects/python-project-template/.opencode/skills/architect
 Relative paths in this skill (e.g., scripts/, reference/) are relative to this base directory.

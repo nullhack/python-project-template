@@ -135,13 +135,13 @@ Add the skill name to the agent's "Available Skills" section so the agent knows 
 | `run-session` | all agents | Session start/end protocol |
 | `select-feature` | product-owner | Score and select next backlog feature (WSJF) |
 | `define-scope` | product-owner | Step 1: define acceptance criteria |
-| `implement` | software-engineer | Steps 2-3: architecture + TDD loop |
+| `implement` | software-engineer | Step 3: TDD loop |
 | `apply-patterns` | software-engineer | Steps 2, 3: refactor when smell detected |
 | `verify` | system-architect | Step 4: adversarial verification |
 | `check-quality` | software-engineer | Quick reference — redirects to verify |
 | `create-pr` | system-architect | Step 5: create PR with --no-ff merge |
 | `git-release` | stakeholder | Step 5: calver versioning and release |
-| `update-docs` | product-owner | Step 5 (after acceptance) + on stakeholder demand: C4 diagrams + glossary |
+| `update-docs` | system-architect | post-acceptance + on stakeholder demand: Context, Container sections, and glossary |
 | `design-colors` | designer | Color palette selection and WCAG validation |
 | `design-assets` | designer | SVG visual asset creation and updates |
 | `create-skill` | software-engineer | Create new skills |

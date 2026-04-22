@@ -58,6 +58,8 @@ All must be satisfied before starting any session. If any are missing, stop and 
 States are checked **in order**. The first matching condition is the current state.
 
 ```
+[IDLE] ──► [STEP-1-BACKLOG-CRITERIA] (Stage 2 on backlog files — no WIP slot needed)
+
 [IDLE] ──► [STEP-1-DISCOVERY] ──► [STEP-1-STORIES] ──► [STEP-1-CRITERIA]
                                                                │
                                                                ▼
@@ -67,14 +69,13 @@ States are checked **in order**. The first matching condition is the current sta
      └──────────────────────────────────────────────► [STEP-2-ARCH]
                                                                │
                                                                ▼
-                                                      [STEP-3-READY]
-                                                               │
-                                          ┌────────────────────┤
-                                          ▼                    ▼
-                                      [STEP-3-RED] ──► [STEP-3-GREEN]
-                                                               │
-                                                               ▼
-                                                      [STEP-4-READY]
+                                                      [STEP-3-WORKING]
+                                                                │
+                                                                ▼
+                                                        [STEP-3-RED]
+                                                                │
+                                                                ▼
+                                                       [STEP-4-READY]
                                                                │
                                                                ▼
                                                       [STEP-5-READY]
@@ -91,29 +92,43 @@ States are checked **in order**. The first matching condition is the current sta
 
 ### Detection Rules (evaluated in order)
 
-1. No file in `docs/features/in-progress/` → **[IDLE]**
-2. Feature in `in-progress/`, no `Status: BASELINED` → **[STEP-1-DISCOVERY]**
-3. Feature has `Status: BASELINED`, no `Rule:` blocks → **[STEP-1-STORIES]**
-4. Feature has `Rule:` blocks, no `Example:` with `@id` → **[STEP-1-CRITERIA]**
-5. Feature has `@id` tags, no `feat/` or `fix/` branch exists → **[STEP-2-READY]**
-6. On feature branch, no test stubs in `tests/features/<stem>/` → **[STEP-2-ARCH]**
-7. Test stubs exist, any have `@pytest.mark.skip` → **[STEP-3-READY]**
-8. Unskipped test exists that fails → **[STEP-3-RED]**
-9. All unskipped tests pass, skipped tests remain → **[STEP-3-GREEN]**
-10. All tests pass, no skipped tests → **[STEP-4-READY]**
-11. Manual state set by SA after Step 4 approval → **[STEP-5-READY]**
-12. On main branch, feature still in `in-progress/` → **[STEP-5-MERGE]**
-13. Post-mortem file exists for current feature → **[POST-MORTEM]**
+1. No file in `docs/features/in-progress/` AND any `backlog/` feature has `Status: BASELINED` but no `Example:` with `@id` → **[STEP-1-BACKLOG-CRITERIA]**
+2. No file in `docs/features/in-progress/` → **[IDLE]**
+3. Feature in `in-progress/`, no `Status: BASELINED` → **[STEP-1-DISCOVERY]**
+4. Feature has `Status: BASELINED`, no `Rule:` blocks → **[STEP-1-STORIES]**
+5. Feature has `Rule:` blocks, no `Example:` with `@id` → **[STEP-1-CRITERIA]**
+6. Feature has `@id` tags, no `feat/` or `fix/` branch exists → **[STEP-2-READY]**
+7. On feature branch, no test stubs in `tests/features/<stem>/` → **[STEP-2-ARCH]**
+8. Test stubs exist, any have `@pytest.mark.skip` OR all unskipped tests pass but skipped remain → **[STEP-3-WORKING]**
+9. Unskipped test exists that fails → **[STEP-3-RED]**
+10. `WORK.md @state` is `STEP-5-READY` → **[STEP-5-READY]** *(WORK.md takes precedence over rule 11 — filesystem alone cannot distinguish Step 4 done from Step 5 ready)*
+11. All tests pass, no skipped tests → **[STEP-4-READY]**
+12. On main branch, feature still in `in-progress/` AND `WORK.md @state = STEP-5-COMPLETE` → **[STEP-5-COMPLETE]**
+13. On feature branch (`feat/` or `fix/`), feature still in `in-progress/` → **[STEP-5-MERGE]**
+14. Post-mortem file exists for current feature → **[POST-MORTEM]**
 
 ---
 
 ## States
 
+### [STEP-1-BACKLOG-CRITERIA]
+**Owner**: `product-owner`
+**Entry condition**: No file in `in-progress/` AND one or more `backlog/` features have `Status: BASELINED` but no `Example:` with `@id`
+**Action**: Write `Rule:` blocks and `Example:` blocks with `@id` tags for BASELINED backlog features. Files stay in `backlog/` — do **not** move to `in-progress/`. No `WORK.md` entry required.
+**Exit**: All BASELINED backlog features have `@id` tags → transition to `[IDLE]`
+**Commit**: `feat(criteria): write acceptance criteria for <feature-stem>` per feature
+**Note**: This state exists specifically for bulk Stage 2 work before a feature is selected for development. It does not consume the WIP slot. `run-session` must **not** treat this state as `[IDLE]` — there is work to do.
+
+---
+
 ### [IDLE]
 **Owner**: `product-owner`
-**Entry condition**: No file in `docs/features/in-progress/`
+**Entry condition**: No file in `docs/features/in-progress/` AND all BASELINED backlog features already have `@id` tags (or no BASELINED features exist)
 **Action**: Select next BASELINED feature from `backlog/`; move it to `in-progress/`
-**Exit**: Feature moved → create `WORK.md` entry with `@state: STEP-1-DISCOVERY`
+**Exit**: Feature moved → create `WORK.md` entry; initial `@state` depends on feature content:
+- Feature has no `Rule:` blocks → `@state: STEP-1-DISCOVERY`
+- Feature has `Rule:` blocks but no `@id` Examples → `@state: STEP-1-CRITERIA`
+- Feature has `@id` Examples → `@state: STEP-2-READY`
 
 ---
 
@@ -144,9 +159,9 @@ States are checked **in order**. The first matching condition is the current sta
 ---
 
 ### [STEP-2-READY]
-**Owner**: `system-architect`
+**Owner**: `software-engineer`
 **Entry condition**: Feature has `@id` tags, no `feat/<stem>` or `fix/<stem>` branch
-**Action**: Create branch `feat/<stem>` from `main`; set `@branch` in `WORK.md`
+**Action**: Load `skill version-control`; create branch `feat/<stem>` from `main`; set `@branch` in `WORK.md`
 **Exit**: Branch created → update `@state: STEP-2-ARCH` in `WORK.md`
 
 ---
@@ -154,36 +169,33 @@ States are checked **in order**. The first matching condition is the current sta
 ### [STEP-2-ARCH]
 **Owner**: `system-architect`
 **Entry condition**: On `@branch`, no test stubs in `tests/features/<stem>/`
-**Action**: Read feature; design domain stubs; write ADRs; update `domain-model.md`; run `uv run task test-fast` to generate stubs
-**Exit**: Stubs generated → update `@state: STEP-3-READY` in `WORK.md`
-**Failure**: Spec unclear → escalate to `product-owner`; update `@state: STEP-1-DISCOVERY` in `WORK.md`
+**Action**: Read feature; design domain stubs; write ADRs; update `system.md` (domain model + Context + Container sections); run `uv run task test-fast` to generate stubs
+**Exit**: Stubs generated → update `@state: STEP-3-WORKING` in `WORK.md`
+**Failure**: Spec unclear → escalate to `product-owner`; update `@state: STEP-1-CRITERIA` in `WORK.md`; document the gap in `WORK.md` `Next:` line
 **Commit**: `feat(arch): design @id architecture`
 
 ---
 
-### [STEP-3-READY]
+### [STEP-3-WORKING]
 **Owner**: `software-engineer`
-**Entry condition**: Test stubs exist, some have `@pytest.mark.skip`
-**Action**: Pick first skipped `@id`; remove skip; write test body
-**Exit**: Test written and fails → update `@state: STEP-3-RED` in `WORK.md`
+**Entry condition**: Test stubs exist; at least one has `@pytest.mark.skip` OR all unskipped tests pass but skipped remain
+**Action**:
+1. Pick the next skipped `@id`; remove `@pytest.mark.skip`; write the test body (RED)
+2. Write minimal production code until the test passes (GREEN)
+3. Refactor if needed (REFACTOR)
+4. Repeat from 1 for the next `@id`
+**Exit (more @ids)**: Skipped tests still remain → stay in `[STEP-3-WORKING]`
+**Exit (all done)**: No skipped tests remain → update `@state: STEP-4-READY` in `WORK.md`
+**Commit**: After each `@id` or logical group
 
 ---
 
 ### [STEP-3-RED]
 **Owner**: `software-engineer`
-**Entry condition**: An unskipped test exists that fails
+**Entry condition**: An unskipped test exists that fails (mid-cycle sub-state within STEP-3-WORKING)
 **Action**: Write minimal production code to pass the failing test
-**Exit**: Test passes → update `@state: STEP-3-GREEN` in `WORK.md`
-
----
-
-### [STEP-3-GREEN]
-**Owner**: `software-engineer`
-**Entry condition**: All unskipped tests pass; skipped tests remain
-**Action**: Refactor if needed; then pick next `@id`
-**Exit (more @ids)**: Next @id selected → update `@state: STEP-3-READY` in `WORK.md`
-**Exit (all done)**: No skipped tests remain → update `@state: STEP-4-READY` in `WORK.md`
-**Commit**: After each `@id` or logical group
+**Exit**: Test passes → return to `[STEP-3-WORKING]`
+**Note**: This sub-state is detected automatically during the TDD cycle. `WORK.md @state` stays `STEP-3-WORKING` unless the session ends mid-RED; in that case update to `STEP-3-RED` so the next session knows a test is currently failing.
 
 ---
 
@@ -192,13 +204,13 @@ States are checked **in order**. The first matching condition is the current sta
 **Entry condition**: All tests implemented (no `@skip`) and passing
 **Action**: Run all quality checks; semantic review against acceptance criteria
 **Exit**: All checks pass → update `@state: STEP-5-READY` in `WORK.md`
-**Failure**: Issues found → update `@state: STEP-3-READY` in `WORK.md`; document issues
+**Failure**: Issues found → update `@state: STEP-3-WORKING` in `WORK.md`; document issues in `WORK.md` `Next:` line
 
 ---
 
 ### [STEP-5-READY]
 **Owner**: `product-owner`
-**Entry condition**: Manual state set by SA after Step 4 approval
+**Entry condition**: `WORK.md @state = STEP-5-READY` (set by SA after Step 4 approval)
 **Action**: Demo and validate against acceptance criteria
 **Exit**: Feature accepted → update `@state: STEP-5-MERGE` in `WORK.md`
 **Failure**: Not accepted → update `@state: POST-MORTEM` in `WORK.md`
@@ -207,7 +219,7 @@ States are checked **in order**. The first matching condition is the current sta
 
 ### [STEP-5-MERGE]
 **Owner**: `software-engineer`
-**Entry condition**: Feature accepted; still on `@branch`
+**Entry condition**: Feature accepted; on `feat/<stem>` or `fix/<stem>` branch; feature still in `in-progress/`
 **Action**: Merge `@branch` to `main` with `--no-ff`; delete `@branch`
 **Exit**: Merged → update `@state: STEP-5-COMPLETE` in `WORK.md`
 
@@ -215,17 +227,17 @@ States are checked **in order**. The first matching condition is the current sta
 
 ### [STEP-5-COMPLETE]
 **Owner**: `product-owner`
-**Entry condition**: On `main`, feature still in `in-progress/`
+**Entry condition**: On `main`; `WORK.md @state = STEP-5-COMPLETE`; feature still in `in-progress/`
 **Action**: Move feature from `in-progress/` to `completed/`
 **Exit**: Feature moved → remove item from `WORK.md` active items; return to `[IDLE]`
 
 ---
 
 ### [POST-MORTEM]
-**Owner**: `product-owner`
+**Owner**: `product-owner` (post-mortem doc) + `software-engineer` (fix branch)
 **Entry condition**: Post-mortem file exists for current feature
-**Action**: Write post-mortem in `docs/post-mortem/`; create `fix/<stem>` branch from original start commit
-**Exit**: Post-mortem committed → update `@state: STEP-2-ARCH`, `@branch: fix/<stem>` in `WORK.md`
+**Action**: PO writes post-mortem in `docs/post-mortem/`; SE loads `skill version-control` and creates `fix/<stem>` branch from original start commit; PO updates `WORK.md`
+**Exit**: Post-mortem committed, fix branch created → update `@state: STEP-2-ARCH`, `@branch: fix/<stem>` in `WORK.md`
 
 ---
 
@@ -262,6 +274,11 @@ git add WORK.md && git commit -m "chore: @id transition to @state"
 Run in order; first matching condition determines the state.
 
 ```bash
+# 0. Check for STEP-1-BACKLOG-CRITERIA: no in-progress file AND backlog has BASELINED features without @id
+NO_INPROGRESS=$(ls docs/features/in-progress/*.feature 2>/dev/null | grep -v ".gitkeep" | wc -l)
+HAS_BASELINED_WITHOUT_IDS=$(grep -rl "Status: BASELINED" docs/features/backlog/ 2>/dev/null | xargs grep -L "@id:" 2>/dev/null | wc -l)
+# If NO_INPROGRESS=0 AND HAS_BASELINED_WITHOUT_IDS>0 → [STEP-1-BACKLOG-CRITERIA]
+
 # 1. Check for in-progress feature
 ls docs/features/in-progress/*.feature 2>/dev/null | grep -v ".gitkeep"
 
@@ -269,7 +286,7 @@ ls docs/features/in-progress/*.feature 2>/dev/null | grep -v ".gitkeep"
 grep -q "Status: BASELINED" docs/features/in-progress/*.feature
 
 # 3. Check for Rule blocks
-grep -q "^Rule:" docs/features/in-progress/*.feature
+grep -q "^  Rule:" docs/features/in-progress/*.feature
 
 # 4. Check for Example blocks with @id
 grep -q "@id:" docs/features/in-progress/*.feature
@@ -285,6 +302,9 @@ grep -r "@pytest.mark.skip" tests/features/*/
 
 # 8. Check test failures
 uv run task test-fast 2>&1 | grep -E "FAILED|ERROR"
+
+# 9. Check WORK.md @state for STEP-5-READY (must evaluate before rule 12 / test-pass check)
+grep "@state:" WORK.md | grep -q "STEP-5-READY"
 ```
 
 ---

@@ -1,23 +1,36 @@
 # ADR: <short title>
 
 > Architectural Decision Record
-> Written by the software-engineer during Step 2 for non-obvious decisions with meaningful trade-offs.
+> Written by the system-architect during Step 2 for non-obvious decisions with meaningful trade-offs.
 > Routine YAGNI choices do not need a record.
 
 | Field | Value |
 |-------|-------|
 | **Date** | YYYY-MM-DD |
 | **Feature** | <feature-stem> |
-| **Status** | Proposed | Accepted | Superseded |
+| **Status** | Proposed \| Accepted \| Superseded |
+
+## Context
+
+**Question (<ID>):** <the question that drove this decision>
+
+<1–3 sentences: what was known, what was asked, what constraints or stakeholder input produced the decision>
+
+---
 
 ## Decision
+
 <what was decided — one sentence>
 
 ## Reason
+
 <why — one sentence>
 
 ## Alternatives Considered
-<what was rejected and why>
+
+- **<alternative>**: rejected — <reason>
 
 ## Consequences
-<positive and negative consequences of this decision>
+
+- (+) <positive consequence>
+- (-) <negative consequence>

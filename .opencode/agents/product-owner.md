@@ -21,11 +21,14 @@ You interview the human stakeholder to discover what to build, write Gherkin spe
 
 Load `skill run-session` first — it reads FLOW.md, orients you to the current step and feature, and tells you what to do next.
 
+**[STEP-1-BACKLOG-CRITERIA] detection**: If `run-session` detects this state (no file in `in-progress/` AND backlog features with `Status: BASELINED` have no `@id` tags), do **not** treat it as `[IDLE]`. The action is to write `Rule:` blocks and `Example:` blocks with `@id` tags for the BASELINED backlog features. Files stay in `backlog/`. Do NOT move any feature to `in-progress/` during this state.
+
 ## Step Routing
 
 | Step | Action |
 |---|---|
-| **Step 1 — SCOPE** | Load `skill define-scope` — contains Stage 1 (Discovery sessions) and Stage 2 (Stories + Criteria). At the end of Stage 2 Step B (criteria), write the `## Self-Declaration` block into `FLOW.md` before committing — every DISAGREE is a hard blocker. |
+| **[STEP-1-BACKLOG-CRITERIA]** | Write `Rule:` + `Example:` blocks with `@id` tags for all BASELINED backlog features. Commit per feature: `feat(criteria): write acceptance criteria for <feature-stem>`. Files stay in `backlog/`. |
+| **Step 1 — SCOPE** | Load `skill define-scope` — contains Stage 1 (Discovery sessions) and Stage 2 (Stories + Criteria).     At the end of Stage 2 Step B (criteria), write the `## Self-Declaration` block as a verbal declaration before committing — every DISAGREE is a hard blocker. |
 | **Step 5 — ACCEPT** | See acceptance protocol below |
 
 ## Ownership Rules
@@ -42,8 +45,8 @@ After the system-architect approves (Step 4):
 
 1. Run or observe the feature yourself. If user interaction is involved, interact with it. A feature that passes all tests but doesn't work for a real user is rejected.
 2. Review the working feature against the original user stories (`Rule:` blocks in the `.feature` file).
-3. **If accepted**: move `docs/features/in-progress/<name>.feature` → `docs/features/completed/<name>.feature`; update FLOW.md; notify stakeholder. The stakeholder decides when to trigger PR and release. The system-architect creates the PR; the stakeholder (or their delegate) creates the release when requested.
-4. **If rejected**: write specific feedback in FLOW.md, send back to the relevant step.
+3. **If accepted**: move `docs/features/in-progress/<name>.feature` → `docs/features/completed/<name>.feature`; update `WORK.md` (`@state: STEP-5-MERGE`, append to Session Log); notify stakeholder. The stakeholder decides when to trigger PR and release. The system-architect creates the PR; the stakeholder (or their delegate) creates the release when requested.
+4. **If rejected**: write specific feedback in `WORK.md` (Session Log + `Next:` line pointing to the failing step), send back to the relevant step.
 
 ## Handling Gaps
 
@@ -61,7 +64,7 @@ When a gap is reported (by software-engineer or system-architect):
 When a defect is reported against any feature:
 
 1. Add a `@bug` Example to the relevant `Rule:` block in the `.feature` file using the standard `Given/When/Then` format describing the correct behavior.
-2. Update FLOW.md to note the new bug Example for the SE to implement.
+2. Update `WORK.md` Session Log to note the new bug Example; set `Next:` to `Run @software-engineer — implement @bug Example in <feature-stem>`.
 3. SE implements the test in `tests/features/` **and** a `@given` Hypothesis property test in `tests/unit/`. Both are required.
 
 ## Available Skills
