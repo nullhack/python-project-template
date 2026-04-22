@@ -67,6 +67,8 @@ jobs:
       fail-fast: false
       matrix:
         python-version: ["3.13"]
+    env:
+      UV_SYSTEM_PYTHON: ""
         
     steps:
       - name: Checkout code
@@ -81,8 +83,6 @@ jobs:
           
       - name: Install dependencies
         run: uv sync --locked --all-extras --dev
-        env:
-          UV_SYSTEM_PYTHON: ""
 
       - name: Run fast tests
         run: uv run task test-fast
