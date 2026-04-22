@@ -57,9 +57,7 @@ class _OCVisitor(ast.NodeVisitor):
         code_lines = {
             child.lineno
             for child in ast.walk(node)
-            if hasattr(child, "lineno")
-            and child.lineno > doc_end
-            and child is not node
+            if hasattr(child, "lineno") and child.lineno > doc_end and child is not node
         }
         if len(code_lines) > 20:
             self.violations.append(
@@ -73,17 +71,14 @@ class _OCVisitor(ast.NodeVisitor):
         stack: list[tuple[ast.AST, int]] = [(node, 0)]
         while stack:
             current, depth = stack.pop()
-            if isinstance(
-                current, (ast.For, ast.While, ast.If, ast.With, ast.Try)
-            ):
+            if isinstance(current, (ast.For, ast.While, ast.If, ast.With, ast.Try)):
                 depth += 1
                 max_depth = max(max_depth, depth)
             for child in ast.iter_child_nodes(current):
                 stack.append((child, depth))
         if max_depth > 2:
             self.violations.append(
-                f"{node.name} {self._line_ref(node)}: "
-                f"nesting depth {max_depth} >2"
+                f"{node.name} {self._line_ref(node)}: nesting depth {max_depth} >2"
             )
 
     def _check_else_after_return(self, node: ast.FunctionDef) -> None:
@@ -95,8 +90,7 @@ class _OCVisitor(ast.NodeVisitor):
                 and child.orelse
             ):
                 self.violations.append(
-                    f"{node.name} {self._line_ref(child)}: "
-                    "else after return"
+                    f"{node.name} {self._line_ref(child)}: else after return"
                 )
 
     def _ends_with_return(self, body: list[ast.stmt]) -> bool:
@@ -138,9 +132,7 @@ def _scan_forbidden(text: str, rel_path: Path) -> list[str]:
     return forbidden
 
 
-def _check_file(
-    f: Path, project_root: Path
-) -> tuple[list[str], list[str]]:
+def _check_file(f: Path, project_root: Path) -> tuple[list[str], list[str]]:
     """Run OC checks on a single file; return (violations, forbidden)."""
     text = f.read_text()
     rel = f.relative_to(project_root)

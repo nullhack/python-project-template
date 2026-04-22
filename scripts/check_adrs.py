@@ -32,9 +32,7 @@ def validate_adrs(project_root: Path) -> tuple[bool, list[str]]:
 
     errors = []
     for f in files:
-        if not re.match(
-            r"ADR-\d{4}-\d{2}-\d{2}-[a-z0-9-]+\.md$", f.name
-        ):
+        if not re.match(r"ADR-\d{4}-\d{2}-\d{2}-[a-z0-9-]+\.md$", f.name):
             errors.append(
                 f"{f.name}: invalid naming (expected ADR-YYYY-MM-DD-<slug>.md)"
             )

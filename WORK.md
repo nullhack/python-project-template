@@ -13,7 +13,7 @@ Each item carries exactly the variables defined by `FLOW.md`:
 
 <!-- One entry per in-flight work item. Remove when state reaches IDLE. -->
 
-- @id: cli-entrypoint
-  @state: STEP-2-READY
+- @id: [IDLE]
+  @state: IDLE
   @branch: [NONE]
 

@@ -33,7 +33,7 @@ def _current_branch() -> str:
     content = git_head.read_text().strip()
     # Format: "ref: refs/heads/<branch>" when on a branch
     if content.startswith("ref: refs/heads/"):
-        return content[len("ref: refs/heads/"):]
+        return content[len("ref: refs/heads/") :]
     return ""
 
 
@@ -87,15 +87,11 @@ def validate_work_md(project_root: Path) -> tuple[bool, list[str]]:
         if item["state"] is None:
             errors.append(f"missing @state in: {item['raw']}")
         elif item["state"] not in VALID_STATES:
-            errors.append(
-                f"invalid @state '{item['state']}' in: {item['raw']}"
-            )
+            errors.append(f"invalid @state '{item['state']}' in: {item['raw']}")
         if item["branch"] is None:
             errors.append(f"missing @branch in: {item['raw']}")
         elif item["branch"] != branch:
-            errors.append(
-                f"@branch '{item['branch']}' != current branch '{branch}'"
-            )
+            errors.append(f"@branch '{item['branch']}' != current branch '{branch}'")
 
     return not errors, errors
 

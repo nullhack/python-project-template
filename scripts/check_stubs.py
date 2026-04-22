@@ -34,8 +34,7 @@ def _scan_test_dir(stub_dir: Path) -> dict[str, dict]:
             mapping[node.name] = {
                 "file": f.name,
                 "skipped": any(
-                    isinstance(dec, ast.Attribute)
-                    and dec.attr == "skip"
+                    isinstance(dec, ast.Attribute) and dec.attr == "skip"
                     for dec in node.decorator_list
                 ),
             }
@@ -78,9 +77,7 @@ def check_stubs(project_root: Path) -> tuple[bool, list[str], dict]:
         if func_name.startswith(f"test_{stem}_"):
             derived_id = func_name[len(f"test_{stem}_") :]
             if derived_id not in ids:
-                errors.append(
-                    f"orphan stub {func_name} in {meta['file']}"
-                )
+                errors.append(f"orphan stub {func_name} in {meta['file']}")
 
     if not ids:
         errors.append("no @id tags found in .feature file")
