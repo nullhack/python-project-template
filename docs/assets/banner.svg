@@ -3,32 +3,42 @@
     Colors:
       parchment      #faf7f2   main background
       parchment-mid  #ede8e0   mid-tone texture band
-      stone          #c8c0b8   stone-course borders
-      brown          #3b2410   temple silhouette, title main layer
-      brown-mid      #5c3d1e   stylobate mid step
-      gold           #c9a84c   ∞ glyph, pediment outline, divider, rules, · accent
-      gold-light     #e8c96a   title carved-groove highlight layer
+      parchment-dark #c8c0b8   stone rule lines
+      brown          #3b2410   primary text, structure
+      brown-mid      #5c3d1e   temple mark fill
+      gold           #c9a84c   middle-dot, accent rules, ∞ glyph
+      stone-shadow   #a09890   column shadows
   -->
 
   <!-- ── Background: warm parchment ── -->
   <rect width="1200" height="300" fill="#faf7f2"/>
-  <rect x="0" y="90"  width="1200" height="120" fill="#ede8e0" opacity="0.4"/>
-  <rect x="0" y="0"   width="1200" height="5"   fill="#c8c0b8" opacity="0.5"/>
-  <rect x="0" y="295" width="1200" height="5"   fill="#c8c0b8" opacity="0.5"/>
 
-  <!-- ── Left zone: temple silhouette centred at (125,148) ── -->
-  <g transform="translate(125,148)">
+  <!-- Subtle horizontal texture band across middle third -->
+  <rect x="0" y="100" width="1200" height="100" fill="#ede8e0" opacity="0.45"/>
 
-    <!-- Pediment — solid brown fill, gold outline -->
+  <!-- Top and bottom stone-course borders -->
+  <rect x="0" y="0"   width="1200" height="5" fill="#c8c0b8" opacity="0.5"/>
+  <rect x="0" y="295" width="1200" height="5" fill="#c8c0b8" opacity="0.5"/>
+
+  <!-- ── Left zone background: dark stone panel so parchment temple reads clearly ── -->
+  <rect x="0" y="0" width="248" height="300" fill="#2a2a2a"/>
+
+  <!-- ── Left zone (0–260px): temple mark centred at (130,150) ── -->
+  <g transform="translate(130,150)">
+
+    <!-- Pediment -->
     <polygon
-      points="0,-92 82,-54 -82,-54"
-      fill="#3b2410"
-      stroke="#c9a84c"
-      stroke-width="1.5"
+      points="0,-90 80,-54 -80,-54"
+      fill="#ede8e0"
+      stroke="#5c3d1e"
+      stroke-width="1.4"
       stroke-linejoin="round"
     />
+    <!-- Right-rake shadow -->
+    <line x1="0" y1="-90" x2="80" y2="-54"
+          stroke="#a09890" stroke-width="1" opacity="0.4"/>
 
-    <!-- Infinity glyph in pediment, centred at (0,-70) — gold on brown -->
+    <!-- Infinity glyph in pediment, centred at (0,-70) — scaled from logo -->
     <path
       d="M0,-70
          C0,-73.9 -3.9,-76 -6.3,-76
@@ -47,48 +57,39 @@
     />
 
     <!-- Entablature -->
-    <rect x="-82" y="-54" width="164" height="13" fill="#3b2410"/>
-    <!-- Thin gold frieze line at entablature base -->
-    <line x1="-82" y1="-41" x2="82" y2="-41" stroke="#c9a84c" stroke-width="0.8" opacity="0.6"/>
+    <rect x="-80" y="-54" width="160" height="12" fill="#ede8e0" stroke="#5c3d1e" stroke-width="0.9"/>
+    <rect x="-80" y="-43" width="160" height="2"  fill="#a09890" opacity="0.3"/>
 
     <!-- Column 1 -->
-    <rect x="-70" y="-41" width="14" height="72" fill="#3b2410"/>
+    <rect x="-68" y="-42" width="15" height="70" fill="#ede8e0" stroke="#c8c0b8" stroke-width="0.4"/>
+    <rect x="-55" y="-42" width="3"  height="70" fill="#a09890" opacity="0.2"/>
     <!-- Column 2 -->
-    <rect x="-30" y="-41" width="14" height="72" fill="#3b2410"/>
+    <rect x="-28" y="-42" width="15" height="70" fill="#ede8e0" stroke="#c8c0b8" stroke-width="0.4"/>
+    <rect x="-15" y="-42" width="3"  height="70" fill="#a09890" opacity="0.2"/>
     <!-- Column 3 -->
-    <rect x="16"  y="-41" width="14" height="72" fill="#3b2410"/>
+    <rect x="13"  y="-42" width="15" height="70" fill="#ede8e0" stroke="#c8c0b8" stroke-width="0.4"/>
+    <rect x="26"  y="-42" width="3"  height="70" fill="#a09890" opacity="0.2"/>
     <!-- Column 4 -->
-    <rect x="56"  y="-41" width="14" height="72" fill="#3b2410"/>
+    <rect x="53"  y="-42" width="15" height="70" fill="#ede8e0" stroke="#c8c0b8" stroke-width="0.4"/>
+    <rect x="66"  y="-42" width="3"  height="70" fill="#a09890" opacity="0.2"/>
 
-    <!-- Stylobate — three graduated steps (lighter top → darker bottom) -->
-    <rect x="-82" y="31"  width="164" height="9" fill="#3b2410"/>
-    <rect x="-88" y="40"  width="176" height="8" fill="#5c3d1e"/>
-    <rect x="-94" y="48"  width="188" height="7" fill="#3b2410" opacity="0.75"/>
-
+    <!-- Stylobate — three stepped courses -->
+    <rect x="-80" y="28"  width="160" height="9" fill="#ede8e0" stroke="#5c3d1e" stroke-width="0.7"/>
+    <rect x="-85" y="37"  width="170" height="8" fill="#c8c0b8"/>
+    <rect x="-90" y="45"  width="180" height="7" fill="#a09890" opacity="0.6"/>
   </g>
 
-  <!-- ── Vertical gold divider ── -->
-  <line x1="252" y1="48" x2="252" y2="252" stroke="#c9a84c" stroke-width="1" opacity="0.6"/>
+  <!-- ── Vertical gold divider at x=250 ── -->
+  <line x1="250" y1="50" x2="250" y2="250" stroke="#c9a84c" stroke-width="1" opacity="0.55"/>
 
-  <!-- ── Gold rule above title ── -->
-  <line x1="278" y1="105" x2="1150" y2="105" stroke="#c9a84c" stroke-width="1" opacity="0.65"/>
+  <!-- ── Centre: gold rule above title ── -->
+  <line x1="280" y1="108" x2="1140" y2="108" stroke="#c9a84c" stroke-width="0.8" opacity="0.6"/>
 
-  <!-- ── Title: TEMPLE·VIII — engraved two-layer effect ── -->
-
-  <!-- Layer 1 (groove highlight): offset +1.5,+1.5, gold-light, low opacity -->
+  <!-- ── Title: TEMPLE·VIII — engraved, wide-spaced, thin weight ── -->
+  <!-- Split into tspans so the · gets gold; TEMPLE and VIII in deep brown -->
   <text
-    x="711.5" y="179.5"
-    text-anchor="middle"
-    font-family="system-ui, -apple-system, sans-serif"
-    font-size="72"
-    font-weight="300"
-    letter-spacing="18"
-    opacity="0.45"
-  ><tspan fill="#e8c96a">TEMPLE</tspan><tspan fill="#e8c96a" letter-spacing="0">·</tspan><tspan fill="#e8c96a" letter-spacing="18">VIII</tspan></text>
-
-  <!-- Layer 2 (carved face): main position, deep brown + gold dot -->
-  <text
-    x="710" y="178"
+    x="710"
+    y="178"
     text-anchor="middle"
     font-family="system-ui, -apple-system, sans-serif"
     font-size="72"
@@ -97,6 +98,6 @@
   ><tspan fill="#3b2410">TEMPLE</tspan><tspan fill="#c9a84c" letter-spacing="0">·</tspan><tspan fill="#3b2410" letter-spacing="18">VIII</tspan></text>
 
   <!-- ── Gold rule below title ── -->
-  <line x1="278" y1="200" x2="1150" y2="200" stroke="#c9a84c" stroke-width="1" opacity="0.65"/>
+  <line x1="280" y1="200" x2="1140" y2="200" stroke="#c9a84c" stroke-width="0.8" opacity="0.6"/>
 
 </svg>
