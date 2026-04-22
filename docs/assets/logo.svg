@@ -1,44 +1,90 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-label="temple8 logo">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" role="img" aria-label="temple8 logo — Greek temple façade with infinity symbol in pediment">
   <style>
     :root {
-      --color-primary: #f0ece4;
-      --color-stone: #c8c0b8;
-      --color-shadow: #9c9189;
-      --color-bg: #faf7f2;
-      --color-gold: #c9a84c;
+      --color-stone-light: #f0ece4;
+      --color-stone:       #c8c0b8;
+      --color-stone-dark:  #a09890;
+      --color-gold:        #c9a84c;
+      --color-gold-light:  #e8c96a;
     }
   </style>
 
-  <!-- Badge background — parchment -->
-  <circle cx="100" cy="100" r="92" fill="var(--color-bg)"/>
-  <circle cx="100" cy="100" r="92" fill="none" stroke="var(--color-gold)" stroke-width="2.5"/>
+  <!-- ── Pediment (triangle) ── -->
+  <!-- Filled face -->
+  <polygon
+    points="50,12 88,34 12,34"
+    fill="var(--color-stone-light, #f0ece4)"
+    stroke="var(--color-stone, #c8c0b8)"
+    stroke-width="1"
+    stroke-linejoin="round"
+  />
+  <!-- Subtle shadow on right rake -->
+  <line x1="50" y1="12" x2="88" y2="34"
+        stroke="var(--color-stone-dark, #a09890)" stroke-width="0.8" opacity="0.5"/>
 
-  <!-- Temple group -->
-  <!-- Pediment with infinity symbol -->
-  <polygon points="100,34 168,62 32,62" fill="var(--color-primary)"/>
-  <line x1="100" y1="34" x2="168" y2="62" stroke="var(--color-stone)" stroke-width="2" stroke-linecap="round"/>
-  <line x1="100" y1="34" x2="32"  y2="62" stroke="var(--color-stone)" stroke-width="2" stroke-linecap="round"/>
+  <!-- ── Infinity / 8 glyph in pediment apex ──
+       Two tangent ellipses centred at (50, 24).
+       Left lobe: cx=44, right lobe: cx=56, ry=4.5, rx=5.5
+       Drawn as a single closed path so it reads as ∞ or 8. -->
+  <path
+    d="M50,24
+       C50,19.5 44.5,17 41,17
+       C37.5,17 34,19.5 34,24
+       C34,28.5 37.5,31 41,31
+       C44.5,31 50,28.5 50,24
+       C50,19.5 55.5,17 59,17
+       C62.5,17 66,19.5 66,24
+       C66,28.5 62.5,31 59,31
+       C55.5,31 50,28.5 50,24 Z"
+    fill="none"
+    stroke="var(--color-gold, #c9a84c)"
+    stroke-width="1.8"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
 
-  <!-- Infinity loop in pediment -->
-  <path d="M100,48 C85,48 78,42 78,38 C78,34 85,28 100,28 C115,28 122,34 122,38 C122,42 115,48 100,48 M100,48 C115,48 122,54 122,58 C122,62 115,68 100,68 C85,68 78,62 78,58 C78,54 85,48 100,48"
-        fill="none" stroke="var(--color-gold)" stroke-width="3" stroke-linecap="round"/>
+  <!-- ── Entablature (horizontal band below pediment) ── -->
+  <rect x="12" y="34" width="76" height="7"
+        fill="var(--color-stone-light, #f0ece4)"
+        stroke="var(--color-stone, #c8c0b8)" stroke-width="0.6"/>
+  <!-- Thin shadow line at bottom of entablature -->
+  <rect x="12" y="40" width="76" height="1.2"
+        fill="var(--color-stone-dark, #a09890)" opacity="0.35"/>
 
-  <!-- Entablature -->
-  <rect x="32" y="62" width="136" height="11" rx="0" fill="var(--color-primary)"/>
-  <rect x="32" y="71" width="136" height="2" fill="var(--color-shadow)" opacity="0.25"/>
+  <!-- ── Four columns ──
+       Evenly spaced between x=16 and x=84, each 8px wide.
+       Gaps: 16, 28, 44, 60, 76 → centres; width 8 → x = centre−4
+       Centres at: 20, 36, 64, 80  (4 columns, symmetric) -->
+  <!-- Column 1 -->
+  <rect x="16" y="41" width="8" height="38"
+        fill="var(--color-stone-light, #f0ece4)"/>
+  <rect x="22" y="41" width="2" height="38"
+        fill="var(--color-stone-dark, #a09890)" opacity="0.25"/>
+  <!-- Column 2 -->
+  <rect x="34" y="41" width="8" height="38"
+        fill="var(--color-stone-light, #f0ece4)"/>
+  <rect x="40" y="41" width="2" height="38"
+        fill="var(--color-stone-dark, #a09890)" opacity="0.25"/>
+  <!-- Column 3 -->
+  <rect x="58" y="41" width="8" height="38"
+        fill="var(--color-stone-light, #f0ece4)"/>
+  <rect x="64" y="41" width="2" height="38"
+        fill="var(--color-stone-dark, #a09890)" opacity="0.25"/>
+  <!-- Column 4 -->
+  <rect x="76" y="41" width="8" height="38"
+        fill="var(--color-stone-light, #f0ece4)"/>
+  <rect x="82" y="41" width="2" height="38"
+        fill="var(--color-stone-dark, #a09890)" opacity="0.25"/>
 
-  <!-- 3 columns -->
-  <rect x="50"  y="73" width="17" height="64" fill="var(--color-primary)"/>
-  <rect x="91"  y="73" width="17" height="64" fill="var(--color-primary)"/>
-  <rect x="133" y="73" width="17" height="64" fill="var(--color-primary)"/>
-
-  <!-- Column shadows -->
-  <rect x="64"  y="73" width="3" height="64" fill="var(--color-shadow)" opacity="0.22"/>
-  <rect x="105" y="73" width="3" height="64" fill="var(--color-shadow)" opacity="0.22"/>
-  <rect x="147" y="73" width="3" height="64" fill="var(--color-shadow)" opacity="0.22"/>
-
-  <!-- Stylobate / base steps -->
-  <rect x="32" y="137" width="136" height="10" fill="var(--color-primary)"/>
-  <rect x="38" y="147" width="124" height="8"  fill="var(--color-stone)"/>
-  <rect x="44" y="155" width="112" height="7"  fill="var(--color-shadow)" opacity="0.45"/>
+  <!-- ── Stylobate — three stepped courses ── -->
+  <!-- Step 1 (top, narrowest) -->
+  <rect x="12" y="79" width="76" height="5"
+        fill="var(--color-stone-light, #f0ece4)"
+        stroke="var(--color-stone, #c8c0b8)" stroke-width="0.5"/>
+  <!-- Step 2 (middle) -->
+  <rect x="9"  y="84" width="82" height="5"
+        fill="var(--color-stone, #c8c0b8)"/>
+  <!-- Step 3 (bottom, widest) -->
+  <rect x="6"  y="89" width="88" height="5"
+        fill="var(--color-stone-dark, #a09890)" opacity="0.7"/>
 </svg>
