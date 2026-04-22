@@ -82,6 +82,9 @@ jobs:
       - name: Install dependencies
         run: uv sync --locked --all-extras --dev
         
+      - name: Install package in editable mode
+        run: uv pip install -e .
+
       - name: Run fast tests
         run: uv run task test-fast
         

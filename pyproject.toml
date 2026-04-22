@@ -143,7 +143,7 @@ pytest \
   -q \
 """
 doc-publish = "task doc-build && ghp-import -n -p -f docs"
-static-check = "pyright"
+static-check = "pyright app tests"
 release-check = "python scripts/check_version.py && task lint && task static-check && task test && task doc-build"
 
 [dependency-groups]
