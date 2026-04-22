@@ -1,36 +1,41 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 300" role="img" aria-label="temple8 banner — From zero to hero, production-ready Python, without the ceremony">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 300" role="img" aria-label="temple8 banner — TEMPLE·VIII">
   <!--
     Colors:
-      bg           #1a1a1a   dark charcoal background
-      bg-stone     #2a2a2a   stone-course bands
-      stone-light  #f0ece4   temple structure, title text
-      stone        #c8c0b8   stylobate mid step
-      stone-dark   #a09890   column shadows, bottom step
-      gold         #c9a84c   divider, accent line, ∞ echo
-      gold-light   #e8c96a   middle-dot in title
-      blue         #7baabf   tagline
+      parchment      #faf7f2   main background
+      parchment-mid  #ede8e0   mid-tone texture band
+      parchment-dark #c8c0b8   stone rule lines
+      brown          #3b2410   primary text, structure
+      brown-mid      #5c3d1e   temple mark fill
+      gold           #c9a84c   middle-dot, accent rules, ∞ glyph
+      stone-shadow   #a09890   column shadows
   -->
 
-  <!-- ── Background ── -->
-  <rect width="1200" height="300" fill="#1a1a1a"/>
-  <rect x="0" y="0"   width="1200" height="6" fill="#2a2a2a"/>
-  <rect x="0" y="294" width="1200" height="6" fill="#2a2a2a"/>
+  <!-- ── Background: warm parchment ── -->
+  <rect width="1200" height="300" fill="#faf7f2"/>
 
-  <!-- ── Left zone (0–240px): temple mark centred at (120,150) ── -->
-  <g transform="translate(120,150)">
+  <!-- Subtle horizontal texture band across middle third -->
+  <rect x="0" y="100" width="1200" height="100" fill="#ede8e0" opacity="0.45"/>
+
+  <!-- Top and bottom stone-course borders -->
+  <rect x="0" y="0"   width="1200" height="5" fill="#c8c0b8" opacity="0.5"/>
+  <rect x="0" y="295" width="1200" height="5" fill="#c8c0b8" opacity="0.5"/>
+
+  <!-- ── Left zone (0–260px): temple mark centred at (130,150) ── -->
+  <g transform="translate(130,150)">
+
     <!-- Pediment -->
     <polygon
-      points="0,-90 76,-56 -76,-56"
-      fill="#f0ece4"
-      stroke="#c8c0b8"
-      stroke-width="1.2"
+      points="0,-90 80,-54 -80,-54"
+      fill="#ede8e0"
+      stroke="#5c3d1e"
+      stroke-width="1.4"
       stroke-linejoin="round"
     />
-    <line x1="0" y1="-90" x2="76" y2="-56"
-          stroke="#a09890" stroke-width="1" opacity="0.45"/>
+    <!-- Right-rake shadow -->
+    <line x1="0" y1="-90" x2="80" y2="-54"
+          stroke="#a09890" stroke-width="1" opacity="0.4"/>
 
-    <!-- Infinity glyph in pediment, centred at (0,-74).
-         Scaled 1.6× from logo: lobe rx≈5.6, ry≈4, centres ±6.4 from midpoint. -->
+    <!-- Infinity glyph in pediment, centred at (0,-70) — scaled from logo -->
     <path
       d="M0,-70
          C0,-73.9 -3.9,-76 -6.3,-76
@@ -49,74 +54,47 @@
     />
 
     <!-- Entablature -->
-    <rect x="-76" y="-56" width="152" height="12" fill="#f0ece4" stroke="#c8c0b8" stroke-width="0.8"/>
-    <rect x="-76" y="-45" width="152" height="2"  fill="#a09890" opacity="0.3"/>
+    <rect x="-80" y="-54" width="160" height="12" fill="#ede8e0" stroke="#5c3d1e" stroke-width="0.9"/>
+    <rect x="-80" y="-43" width="160" height="2"  fill="#a09890" opacity="0.3"/>
 
     <!-- Column 1 -->
-    <rect x="-61" y="-44" width="14" height="68" fill="#f0ece4"/>
-    <rect x="-49" y="-44" width="3"  height="68" fill="#a09890" opacity="0.22"/>
+    <rect x="-68" y="-42" width="15" height="70" fill="#ede8e0" stroke="#c8c0b8" stroke-width="0.4"/>
+    <rect x="-55" y="-42" width="3"  height="70" fill="#a09890" opacity="0.2"/>
     <!-- Column 2 -->
-    <rect x="-25" y="-44" width="14" height="68" fill="#f0ece4"/>
-    <rect x="-13" y="-44" width="3"  height="68" fill="#a09890" opacity="0.22"/>
+    <rect x="-28" y="-42" width="15" height="70" fill="#ede8e0" stroke="#c8c0b8" stroke-width="0.4"/>
+    <rect x="-15" y="-42" width="3"  height="70" fill="#a09890" opacity="0.2"/>
     <!-- Column 3 -->
-    <rect x="11"  y="-44" width="14" height="68" fill="#f0ece4"/>
-    <rect x="23"  y="-44" width="3"  height="68" fill="#a09890" opacity="0.22"/>
+    <rect x="13"  y="-42" width="15" height="70" fill="#ede8e0" stroke="#c8c0b8" stroke-width="0.4"/>
+    <rect x="26"  y="-42" width="3"  height="70" fill="#a09890" opacity="0.2"/>
     <!-- Column 4 -->
-    <rect x="47"  y="-44" width="14" height="68" fill="#f0ece4"/>
-    <rect x="59"  y="-44" width="3"  height="68" fill="#a09890" opacity="0.22"/>
+    <rect x="53"  y="-42" width="15" height="70" fill="#ede8e0" stroke="#c8c0b8" stroke-width="0.4"/>
+    <rect x="66"  y="-42" width="3"  height="70" fill="#a09890" opacity="0.2"/>
 
-    <!-- Stylobate -->
-    <rect x="-76" y="24"  width="152" height="9" fill="#f0ece4" stroke="#c8c0b8" stroke-width="0.6"/>
-    <rect x="-80" y="33"  width="160" height="8" fill="#c8c0b8"/>
-    <rect x="-84" y="41"  width="168" height="8" fill="#a09890" opacity="0.65"/>
+    <!-- Stylobate — three stepped courses -->
+    <rect x="-80" y="28"  width="160" height="9" fill="#ede8e0" stroke="#5c3d1e" stroke-width="0.7"/>
+    <rect x="-85" y="37"  width="170" height="8" fill="#c8c0b8"/>
+    <rect x="-90" y="45"  width="180" height="7" fill="#a09890" opacity="0.6"/>
   </g>
 
-  <!-- ── Vertical gold divider at x=220 ── -->
-  <line x1="220" y1="40" x2="220" y2="260" stroke="#c9a84c" stroke-width="1" opacity="0.5"/>
+  <!-- ── Vertical gold divider at x=250 ── -->
+  <line x1="250" y1="50" x2="250" y2="250" stroke="#c9a84c" stroke-width="1" opacity="0.55"/>
 
-  <!-- ── Centre zone: TEMPLE·VIII ── -->
-  <!-- Three tspan segments: TEMPLE (stone-light), · (gold-light), VIII (stone-light) -->
+  <!-- ── Centre: gold rule above title ── -->
+  <line x1="280" y1="108" x2="1140" y2="108" stroke="#c9a84c" stroke-width="0.8" opacity="0.6"/>
+
+  <!-- ── Title: TEMPLE·VIII — engraved, wide-spaced, thin weight ── -->
+  <!-- Split into tspans so the · gets gold; TEMPLE and VIII in deep brown -->
   <text
-    x="590"
-    y="155"
+    x="710"
+    y="178"
     text-anchor="middle"
     font-family="system-ui, -apple-system, sans-serif"
-    font-size="62"
-    font-weight="700"
-    letter-spacing="10"
-  ><tspan fill="#f0ece4">TEMPLE</tspan><tspan fill="#e8c96a">·</tspan><tspan fill="#f0ece4">VIII</tspan></text>
+    font-size="72"
+    font-weight="300"
+    letter-spacing="18"
+  ><tspan fill="#3b2410">TEMPLE</tspan><tspan fill="#c9a84c" letter-spacing="0">·</tspan><tspan fill="#3b2410" letter-spacing="18">VIII</tspan></text>
 
-  <!-- Tagline -->
-  <text
-    x="590"
-    y="195"
-    text-anchor="middle"
-    font-family="system-ui, -apple-system, sans-serif"
-    font-size="19"
-    font-weight="400"
-    letter-spacing="1"
-    fill="#7baabf"
-  >From zero to hero — production-ready Python, without the ceremony.</text>
+  <!-- ── Gold rule below title ── -->
+  <line x1="280" y1="200" x2="1140" y2="200" stroke="#c9a84c" stroke-width="0.8" opacity="0.6"/>
 
-  <!-- ── Bottom accent line ── -->
-  <line x1="240" y1="265" x2="1160" y2="265" stroke="#c9a84c" stroke-width="1" opacity="0.3"/>
-
-  <!-- ── Right zone: ∞ brand echo centred at (1080,150) ── -->
-  <path
-    d="M1080,150
-       C1080,136 1068,129 1056,129
-       C1044,129 1032,136 1032,150
-       C1032,164 1044,171 1056,171
-       C1068,171 1080,164 1080,150
-       C1080,136 1092,129 1104,129
-       C1116,129 1128,136 1128,150
-       C1128,164 1116,171 1104,171
-       C1092,171 1080,164 1080,150 Z"
-    fill="none"
-    stroke="#c9a84c"
-    stroke-width="3"
-    stroke-linecap="round"
-    stroke-linejoin="round"
-    opacity="0.5"
-  />
 </svg>
