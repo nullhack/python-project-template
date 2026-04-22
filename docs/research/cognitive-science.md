@@ -65,7 +65,7 @@ Mechanisms from cognitive and social psychology that justify workflow design dec
 | **Status** | Confirmed |
 | **Core finding** | Highest-quality thinking emerges when parties hold different hypotheses and are charged with finding flaws in each other's reasoning. |
 | **Mechanism** | Explicitly framing the reviewer as "your job is to break this feature" activates the adversarial collaboration mode. The reviewer seeks disconfirmation rather than confirmation. |
-| **Where used** | Adversarial mandate in `reviewer.md` and `verify/SKILL.md`. |
+| **Where used** | Adversarial mandate in `system-architect.md` and `verify/SKILL.md`. |
 
 ---
 
@@ -92,7 +92,7 @@ Mechanisms from cognitive and social psychology that justify workflow design dec
 | **Status** | Confirmed |
 | **Core finding** | Structured tables reduce working memory load vs. narrative text. Chunking related items into table rows enables parallel processing. |
 | **Mechanism** | Replacing prose checklists with structured tables (rows × columns) allows the reviewer to process all items in a single pass. |
-| **Where used** | All enforcement tables in `verify/SKILL.md` and `reviewer.md`. |
+| **Where used** | All enforcement tables in `verify/SKILL.md` and `system-architect.md`. |
 
 ---
 

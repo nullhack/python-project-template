@@ -154,11 +154,11 @@ Tell the user which files were changed (list them). Then show next steps:
 
 ```bash
 # Commit the setup (if not already committed per-step)
-git add -A && git commit -m "chore: initialize project from python-project-template"
+git add -A && git commit -m "chore: initialize project from temple8"
 git push -u origin main
 
 # Optional: rename the project folder (run from the parent directory)
-cd .. && mv python-project-template <project_name>
+cd .. && mv temple8 <project_name>
 ```
 
 Then tell the user to start the workflow:

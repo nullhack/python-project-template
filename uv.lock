@@ -748,15 +748,15 @@ wheels = [
 
 [[package]]
 name = "pytest-beehave"
-version = "3.3.20260419"
+version = "0.1.20260421"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "fire" },
     { name = "gherkin-official" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/70/55/5cac9181f3f30a37e700e002a3d6bc51f6d9b62f3ab13a142f56bec6039f/pytest_beehave-3.3.20260419.tar.gz", hash = "sha256:86f199b213b77cec7082e0d7f96b11ba61b92fc3dcecc2f2753a07f407ad1cbe", size = 35117, upload-time = "2026-04-20T01:01:02.031Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/56/32/5ef8f7ad22dfe574c2b06d92fdd6ff6fbe3950d4076d830451089cb38a29/pytest_beehave-0.1.20260421.tar.gz", hash = "sha256:3c39384a1bf318f7d31e589bb436cd233671a1f7db04accfe34445b25b94ab64", size = 35163, upload-time = "2026-04-21T05:00:35.742Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/f6/76/2766d4dc64137ad05128728f84bd7f2c8ef7a433d30cada289dc6c1bcd0b/pytest_beehave-3.3.20260419-py3-none-any.whl", hash = "sha256:e0048a15af8ccd9e50c0841f43ac1e90bc9d2f5f59b22048d4b79e01016c5f0a", size = 35535, upload-time = "2026-04-20T01:00:59.897Z" },
+    { url = "https://files.pythonhosted.org/packages/46/7c/a0773bf67e013972c22ec6a3099949dcfda37be6b034e3bdca5d851058ce/pytest_beehave-0.1.20260421-py3-none-any.whl", hash = "sha256:f4efc05b0487637ef2e75a0e272960b56f4c76ede5754ca4ee46397da4399e00", size = 35553, upload-time = "2026-04-21T05:00:34.18Z" },
 ]
 
 [package.optional-dependencies]
@@ -826,56 +826,6 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/66/c0/0c8b6ad9f17a802ee498c46e004a0eb49bc148f2fd230864601a86dcf6db/python-dateutil-2.9.0.post0.tar.gz", hash = "sha256:37dd54208da7e1cd875388217d5e00ebd4179249f90fb72437e91a35459a0ad3", size = 342432, upload-time = "2024-03-01T18:36:20.211Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/ec/57/56b9bcc3c9c6a792fcbaf139543cee77261f3651ca9da0c93f5c1221264b/python_dateutil-2.9.0.post0-py2.py3-none-any.whl", hash = "sha256:a8b2bc7bffae282281c8140a97d3aa9c14da0b136dfe83f850eea9a5f7470427", size = 229892, upload-time = "2024-03-01T18:36:18.57Z" },
-]
-
-[[package]]
-name = "python-project-template"
-version = "6.4.20260420"
-source = { virtual = "." }
-dependencies = [
-    { name = "fire" },
-]
-
-[package.optional-dependencies]
-dev = [
-    { name = "ghp-import" },
-    { name = "hypothesis" },
-    { name = "pdoc" },
-    { name = "pyright" },
-    { name = "pytest" },
-    { name = "pytest-beehave", extra = ["html"] },
-    { name = "pytest-cov" },
-    { name = "pytest-mock" },
-    { name = "ruff" },
-    { name = "taskipy" },
-]
-
-[package.dev-dependencies]
-dev = [
-    { name = "gherkin-official" },
-    { name = "safety" },
-]
-
-[package.metadata]
-requires-dist = [
-    { name = "fire", specifier = ">=0.7.1" },
-    { name = "ghp-import", marker = "extra == 'dev'", specifier = ">=2.1.0" },
-    { name = "hypothesis", marker = "extra == 'dev'", specifier = ">=6.148.4" },
-    { name = "pdoc", marker = "extra == 'dev'", specifier = ">=14.0" },
-    { name = "pyright", marker = "extra == 'dev'", specifier = ">=1.1.407" },
-    { name = "pytest", marker = "extra == 'dev'", specifier = ">=9.0.3" },
-    { name = "pytest-beehave", extras = ["html"], marker = "extra == 'dev'", specifier = ">=3.3,<4" },
-    { name = "pytest-cov", marker = "extra == 'dev'", specifier = ">=6.1.1" },
-    { name = "pytest-mock", marker = "extra == 'dev'", specifier = ">=3.14.0" },
-    { name = "ruff", marker = "extra == 'dev'", specifier = ">=0.11.5" },
-    { name = "taskipy", marker = "extra == 'dev'", specifier = ">=1.14.1" },
-]
-provides-extras = ["dev"]
-
-[package.metadata.requires-dev]
-dev = [
-    { name = "gherkin-official", specifier = ">=39.0.0" },
-    { name = "safety", specifier = ">=3.7.0" },
 ]
 
 [[package]]
@@ -1096,6 +1046,56 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/c7/44/572261df3db9c6c3332f8618fafeb07a578fd18b06673c73f000f3586749/taskipy-1.14.1.tar.gz", hash = "sha256:410fbcf89692dfd4b9f39c2b49e1750b0a7b81affd0e2d7ea8c35f9d6a4774ed", size = 14475, upload-time = "2024-11-26T16:37:46.155Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/55/97/4e4cfb1391c81e926bebe3d68d5231b5dbc3bb41c6ba48349e68a881462d/taskipy-1.14.1-py3-none-any.whl", hash = "sha256:6e361520f29a0fd2159848e953599f9c75b1d0b047461e4965069caeb94908f1", size = 13052, upload-time = "2024-11-26T16:37:44.546Z" },
+]
+
+[[package]]
+name = "temple8"
+version = "7.0.20260422"
+source = { virtual = "." }
+dependencies = [
+    { name = "fire" },
+]
+
+[package.optional-dependencies]
+dev = [
+    { name = "ghp-import" },
+    { name = "hypothesis" },
+    { name = "pdoc" },
+    { name = "pyright" },
+    { name = "pytest" },
+    { name = "pytest-beehave", extra = ["html"] },
+    { name = "pytest-cov" },
+    { name = "pytest-mock" },
+    { name = "ruff" },
+    { name = "taskipy" },
+]
+
+[package.dev-dependencies]
+dev = [
+    { name = "gherkin-official" },
+    { name = "safety" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "fire", specifier = ">=0.7.1" },
+    { name = "ghp-import", marker = "extra == 'dev'", specifier = ">=2.1.0" },
+    { name = "hypothesis", marker = "extra == 'dev'", specifier = ">=6.148.4" },
+    { name = "pdoc", marker = "extra == 'dev'", specifier = ">=14.0" },
+    { name = "pyright", marker = "extra == 'dev'", specifier = ">=1.1.407" },
+    { name = "pytest", marker = "extra == 'dev'", specifier = ">=9.0.3" },
+    { name = "pytest-beehave", extras = ["html"], marker = "extra == 'dev'", specifier = ">=0.1,<1" },
+    { name = "pytest-cov", marker = "extra == 'dev'", specifier = ">=6.1.1" },
+    { name = "pytest-mock", marker = "extra == 'dev'", specifier = ">=3.14.0" },
+    { name = "ruff", marker = "extra == 'dev'", specifier = ">=0.11.5" },
+    { name = "taskipy", marker = "extra == 'dev'", specifier = ">=1.14.1" },
+]
+provides-extras = ["dev"]
+
+[package.metadata.requires-dev]
+dev = [
+    { name = "gherkin-official", specifier = ">=39.0.0" },
+    { name = "safety", specifier = ">=3.7.0" },
 ]
 
 [[package]]

@@ -1,6 +1,6 @@
 [project]
-name = "python-project-template"
-version = "6.4.20260420"
+name = "temple8"
+version = "7.0.20260422"
 description = "Python template with some awesome tools to quickstart any Python project"
 readme = "README.md"
 requires-python = ">=3.13"
@@ -16,14 +16,14 @@ dependencies = [
 ]
 
 [project.urls]
-Repository = "https://github.com/nullhack/python-project-template"
-Documentation = "https://github.com/nullhack/python-project-template/tree/main/docs/api/"
+Repository = "https://github.com/nullhack/temple8"
+Documentation = "https://github.com/nullhack/temple8/tree/main/docs/api/"
 
 [project.optional-dependencies]
 dev = [
     "pdoc>=14.0",
     "pytest>=9.0.3",
-    "pytest-beehave[html]>=3.3,<4",
+    "pytest-beehave[html]>=0.1,<1",
     "pytest-cov>=6.1.1",
     "pytest-mock>=3.14.0",
     "ruff>=0.11.5",

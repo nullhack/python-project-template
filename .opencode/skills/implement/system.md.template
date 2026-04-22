@@ -1,0 +1,27 @@
+# System Overview: <project-name>
+
+> Current-state description of the production system.
+> Rewritten by the software-engineer at Step 2 for each feature cycle.
+> Reviewed by the product-owner at Step 5.
+> Contains only completed features — nothing from backlog or in-progress.
+
+## Summary
+<3–5 sentence description of what the system currently does, who uses it, and its primary boundaries.>
+
+## Actors
+- `<role>` — <description> (from completed features)
+
+## Modules / Components
+- `<module>` — <responsibility> (from completed features and ADRs)
+
+## External Dependencies
+- `<system>` — <purpose> (from ADRs)
+
+## Constraints
+- <system-wide constraint from ADRs or completed features>
+
+## Relevant ADRs
+- ADR-YYYY-MM-DD-<slug> — <one-line summary> (only ADRs affecting current system state)
+
+## Completed Features
+- `<feature-stem>` — <one-line description>

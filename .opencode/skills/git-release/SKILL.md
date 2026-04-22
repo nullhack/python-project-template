@@ -2,8 +2,8 @@
 name: git-release
 description: Create releases with hybrid major.minor.calver versioning and optional custom release naming
 version: "1.1"
-author: software-engineer
-audience: software-engineer
+author: stakeholder
+audience: stakeholder
 workflow: release-management
 ---
 
@@ -38,6 +38,16 @@ gh release list --limit 20
 ```
 
 ## Release Process
+
+**Guard**: `git branch --show-current` must output `main`. If not, stop — releases happen from `main` only.
+
+```bash
+git checkout main
+git fetch origin main
+git merge --ff-only origin/main   # fast-forward only; if this fails, main has diverged — resolve first
+```
+
+
 
 ### 0. Read branding
 
@@ -93,11 +103,11 @@ Add at the top. If a release name was generated in Step 0, include it; otherwise
 Run the `update-docs` skill to reflect the newly accepted feature in C4 diagrams and the glossary. This step runs inline — do not commit separately.
 
 Load and execute the full `update-docs` skill now:
-- Update `docs/c4/context.md` (C4 Level 1)
-- Update `docs/c4/container.md` (C4 Level 2, if multi-container)
+- Update `docs/context.md` (C4 Level 1)
+- Update `docs/container.md` (C4 Level 2, if multi-container)
 - Update `docs/glossary.md` (living glossary)
 
-The `living-docs` commit step is **skipped** here — all changed files are staged together with the version bump in step 6.
+The `update-docs` commit step is **skipped** here — all changed files are staged together with the version bump in step 6.
 
 ### 6. Regenerate lockfile and commit version bump
 
@@ -106,7 +116,7 @@ After updating `pyproject.toml`, regenerate the lockfile — CI runs `uv sync --
 ```bash
 uv lock
 git add pyproject.toml <package>/__init__.py CHANGELOG.md uv.lock \
-  docs/c4/context.md docs/c4/container.md docs/glossary.md
+  docs/context.md docs/container.md docs/glossary.md
 git commit -m "chore(release): bump version to v{version}[ - {Release Name}]"
 # Include " - {Release Name}" only if a release name was generated in Step 0; omit otherwise.
 ```

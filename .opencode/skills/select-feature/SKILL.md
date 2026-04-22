@@ -11,13 +11,13 @@ workflow: feature-lifecycle
 
 Select the next most valuable, unblocked feature from the backlog using a lightweight scoring model grounded in flow economics and dependency analysis.
 
-**Research basis**: Weighted Shortest Job First (WSJF) — Reinertsen *Principles of Product Development Flow* (2009); INVEST criteria — Wake (2003); Kano model — Kano (1984); Dependency analysis — PMBOK Critical Path Method. See `docs/scientific-research/requirements-elicitation.md`.
+**Research basis**: Weighted Shortest Job First (WSJF) — Reinertsen *Principles of Product Development Flow* (2009); INVEST criteria — Wake (2003); Kano model — Kano (1984); Dependency analysis — PMBOK Critical Path Method. See `docs/research/requirements-elicitation.md`.
 
 **Core principle**: Cost of Delay ÷ Duration. Features with high user value and low implementation effort should start first. Features blocked by unfinished work should wait regardless of value.
 
 ## When to Use
 
-Load this skill when `TODO.md` says "No feature in progress" — before moving any feature to `in-progress/`.
+Load this skill when `FLOW.md` Status is [IDLE] — before moving any feature to `in-progress/`.
 
 ## Step-by-Step
 
@@ -40,7 +40,7 @@ Read each `.feature` file in `docs/features/backlog/`. Check its discovery secti
 
 **IMPORTANT**
 
-**NEVER move a feature to `in-progress/` unless its discovery section has `Status: BASELINED`**
+**NEVER move a feature to `in-progress/` unless its discovery section has `Status: BASELINED`. Only the PO may move `.feature` files — no other agent ever creates, edits, or moves them.**
 
 ### 3. Score Each Candidate
 
@@ -80,20 +80,30 @@ Ties: prefer higher Value (user impact matters more than effort optimization).
 
 If all BASELINED features have Dependency=1: stop and resolve the blocking dependency first — select and complete the depended-upon feature.
 
-### 5. Move and Update TODO.md
+### 5. Move and Update FLOW.md
 
 ```bash
 mv docs/features/backlog/<name>.feature docs/features/in-progress/<name>.feature
 ```
 
-Update `TODO.md`:
+Update `FLOW.md`:
 
 ```markdown
-# Current Work
+# FLOW Protocol
 
-Feature: <name>
-Step: 1 (SCOPE) or 2 (ARCH) — whichever is next
-Source: docs/features/in-progress/<name>.feature
+## Current Feature
+**Feature**: <name>
+**Branch**: [NONE]
+**Status**: [STEP-1-DISCOVERY] or [STEP-2-READY] — whichever is next
+
+## Prerequisites
+- [x] Agents: product-owner, system-architect, software-engineer
+- [x] Skills: run-session, define-scope, architect, implement, verify, version-control
+- [x] Tools: uv, git
+- [x] Directories: docs/features/, docs/adr/
+
+## Session Log
+**YYYY-MM-DD HH:MM** — product-owner — [IDLE] → [<next-state>] — selected <name> from backlog
 
 ## Next
 Run @<agent-name> — <first concrete action for this feature>
@@ -101,12 +111,12 @@ Run @<agent-name> — <first concrete action for this feature>
 
 - If the feature has no `Rule:` blocks yet → Step 1 (SCOPE): `Run @product-owner — load skill define-scope and write stories`
 - If the feature has `Rule:` blocks but no `@id` Examples → Step 1 Stage 2 Step B (Criteria): `Run @product-owner — load skill define-scope and write acceptance criteria`
-- If the feature has `@id` Examples → Step 2 (ARCH): `Run @software-engineer — load skill implement and write architecture stubs`
+- If the feature has `@id` Examples → Step 2 (ARCH): `Run @system-architect — load skill architect and write architecture stubs`
 
 ### 6. Commit
 
 ```bash
-git add docs/features/in-progress/<name>.feature TODO.md
+git add docs/features/in-progress/<name>.feature FLOW.md
 git commit -m "chore: select <name> as next feature"
 ```
 
@@ -118,5 +128,5 @@ git commit -m "chore: select <name> as next feature"
 - [ ] WSJF scores filled for all candidates
 - [ ] Selected feature has highest WSJF among Dependency=0 candidates
 - [ ] Feature moved to `in-progress/`
-- [ ] `TODO.md` updated with correct Step and `Next` line
+- [ ] `FLOW.md` updated with correct Status and `Next` line
 - [ ] Changes committed

@@ -16,7 +16,7 @@
 
 defaults:
   github_username: nullhack
-  project_name: python-project-template
+  project_name: temple8
   package_name: app
   project_description: "Python template with some awesome tools to quickstart any Python project"
   author_name: eol
@@ -30,7 +30,7 @@ defaults:
 
 substitutions:
   pyproject.toml:
-    - old: 'name = "python-project-template"'
+    - old: 'name = "temple8"'
       new: 'name = "{project_name}"'
       count: 1
     - old: '"Python template with some awesome tools to quickstart any Python project"'
@@ -39,7 +39,7 @@ substitutions:
     - old: '{ name = "eol", email = "nullhack@users.noreply.github.com" }'
       new: '{{ name = "{author_name}", email = "{author_email}" }}'
       count: 2
-    - old: "https://github.com/nullhack/python-project-template"
+    - old: "https://github.com/nullhack/temple8"
       new: "https://github.com/{github_username}/{project_name}"
       count: 2
     - old: 'packages = ["app"]'
@@ -60,7 +60,7 @@ substitutions:
     - old: "nullhack"
       new: "{github_username}"
       count: many
-    - old: "python-project-template"
+    - old: "temple8"
       new: "{project_name}"
       count: many
     - old: "eol"
@@ -74,7 +74,7 @@ substitutions:
       count: 2
 
   Dockerfile:
-    - old: "# Simplified Dockerfile for python-project-template"
+    - old: "# Simplified Dockerfile for temple8"
       new: "# Simplified Dockerfile for {project_name}"
       count: 1
     - old: "CMD python -m app || exit 1"
@@ -89,12 +89,12 @@ substitutions:
     - old: '"Python template with some awesome tools to quickstart any Python project"'
       new: '"{project_description}"'
       count: 1
-    - old: "https://github.com/nullhack/python-project-template"
+    - old: "https://github.com/nullhack/temple8"
       new: "https://github.com/{github_username}/{project_name}"
       count: 1
 
   docker-compose.yml:
-    - old: "# Docker Compose for python-project-template"
+    - old: "# Docker Compose for temple8"
       new: "# Docker Compose for {project_name}"
       count: 1
     - old: "./app:/app/app"
@@ -108,7 +108,7 @@ substitutions:
       count: 1
 
   .dockerignore:
-    - old: "# Docker ignore file for python-project-template"
+    - old: "# Docker ignore file for temple8"
       new: "# Docker ignore file for {project_name}"
       count: 1
 
@@ -131,7 +131,7 @@ substitutions:
     - old: "github_username: nullhack"
       new: "github_username: {github_username}"
       count: 1
-    - old: "project_name: python-project-template"
+    - old: "project_name: temple8"
       new: "project_name: {project_name}"
       count: 1
     - old: "package_name: app"

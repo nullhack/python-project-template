@@ -27,7 +27,7 @@ Before writing any skill, research the domain to ground the skill in industry st
    - Vendor documentation (OpenAI, Anthropic, Google, Microsoft)
    - Industry standards (ISO, NIST, OMG)
    - Established methodologies (e.g., FDD, Scrum, Kanban for process skills)
-3. **Read existing research**: Check `docs/scientific-research/` for related entries — each file covers a domain (testing, oop-design, architecture, ai-agents, etc.)
+3. **Read existing research**: Check `docs/research/` for related entries — each file covers a domain (testing, oop-design, architecture, ai-agents, etc.)
 4. **Synthesize conclusions**: Extract actionable conclusions — what works, why, and when to apply it
 5. **Embed as guidance**: Write the skill's steps, checklists, and decision rules based on those conclusions — not as academic citations but as direct guidance ("Use X because it produces Y outcome")
 
@@ -137,10 +137,10 @@ Add the skill name to the agent's "Available Skills" section so the agent knows 
 | `define-scope` | product-owner | Step 1: define acceptance criteria |
 | `implement` | software-engineer | Steps 2-3: architecture + TDD loop |
 | `apply-patterns` | software-engineer | Steps 2, 3: refactor when smell detected |
-| `verify` | reviewer | Step 4: adversarial verification |
+| `verify` | system-architect | Step 4: adversarial verification |
 | `check-quality` | software-engineer | Quick reference — redirects to verify |
-| `create-pr` | software-engineer | Step 5: create PR with squash merge |
-| `git-release` | software-engineer | Step 5: calver versioning and release |
+| `create-pr` | system-architect | Step 5: create PR with --no-ff merge |
+| `git-release` | stakeholder | Step 5: calver versioning and release |
 | `update-docs` | product-owner | Step 5 (after acceptance) + on stakeholder demand: C4 diagrams + glossary |
 | `design-colors` | designer | Color palette selection and WCAG validation |
 | `design-assets` | designer | SVG visual asset creation and updates |

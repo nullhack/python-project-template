@@ -2,6 +2,37 @@
 
 All notable changes to this template will be documented in this file.
 
+## [v7.0.20260422] - Mighty Titan - 2026-04-22
+
+### Added
+- **PyPI publishing pipeline**: `.github/workflows/tag-release.yml` auto-tags on `pyproject.toml` version bump; `.github/workflows/pypi-publish.yml` builds, publishes via OIDC trusted publisher, and creates a GitHub Release (#100)
+- **FLOW.md state machine**: replaces `TODO.md` — static workflow state machine with auto-detection rules, prerequisites table, and session log (#100)
+- **WORK.md dynamic tracker**: active work items with `@id`, `@state`, `@branch`; append-only session log (#100)
+- **`flow` skill**: full state machine design protocol, FLOW/WORK templates, recovery from interruption (#100)
+- **`version-control` skill**: Git safety rules, branch lifecycle, commit hygiene, `--no-ff` merge protocol, post-mortem branches (#100)
+- **`architect` skill**: Step 2 architecture protocol split from `implement` (#100)
+- **System Architect agent** (`system-architect.md`): owns Step 2 (architecture) and Step 4 (adversarial review) — closed SA→SE→SA loop (#100)
+- **Post-mortem protocol**: compact post-mortem template, `fix/<stem>` branch from original start commit, `define-scope` post-mortem workflow (#100)
+- **Research library**: arc42, Google design docs, RFC/spec patterns, version-control references, Petri Nets, Statecharts, Session Types, Actor Model (entries 59–77) (#100)
+
+### Changed
+- **Project renamed to `temple8`**: `pyproject.toml`, README, `template-config.yaml`, `docs/index.html`, `setup-project` agent, git remote all updated (#100)
+- **README rewritten**: audience-first structure for developers and PMs/POs; painpoint-led personas, delivery cycle, living documentation views, development standards — no arbitrary metrics tables (#100)
+- **8-glyph in assets**: logo and banner SVG updated — `∞` in pediment replaced with `8` between the pillars (rotated 90°) (#100)
+- **SA/SE role split**: `reviewer` agent absorbed into `system-architect`; SE owns Step 3 only; SA owns Steps 2 and 4 (#100)
+- **`run-session` skill v5.0**: reads FLOW.md, detect-state protocol, branch verification, minimalist output discipline (#100)
+- **`git-release` skill**: releases from `main` only guard; `ff-only` pull; release name from `docs/branding.md` (#100)
+- **`create-pr` skill**: `--no-ff` merge; ownership moved to system-architect (#100)
+- **Skill ownership**: `git-release` → stakeholder; `create-pr` → system-architect (#100)
+- **`docs/index.html`**: 6-card landing page (system.md, context.md, features, API, coverage, research) (#100)
+- **`docs/research/`**: renamed from `docs/scientific-research/`; new entries for architecture, documentation, version-control (#100)
+
+### Removed
+- **`TODO.md`**: superseded by `FLOW.md` + `WORK.md` (#100)
+- **`.dockerignore`**: removed (#100)
+- **`docs/architecture.md`**: superseded by `docs/system.md` + `docs/adr/` (#100)
+- **`reviewer` agent**: absorbed into `system-architect` (#100)
+
 ## [v6.4.20260420] - Minimal Prometheus - 2026-04-20
 
 ### Added

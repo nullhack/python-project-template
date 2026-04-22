@@ -1,7 +1,7 @@
 ---
 name: apply-patterns
-description: GoF design pattern catalogue — smell triggers and Python before/after examples
-version: "2.1"
+description: GoF design pattern catalogue — smell triggers and before/after structural descriptions
+version: "3.0"
 author: software-engineer
 audience: software-engineer
 workflow: feature-lifecycle
@@ -9,9 +9,9 @@ workflow: feature-lifecycle
 
 # Design Patterns Reference
 
-Load this skill when the refactor skill's smell table points to a GoF pattern and you need the Python before/after example.
+Load this skill when the refactor skill's smell table points to a GoF pattern and you need structural guidance on how to apply it.
 
-Sources: Gamma, Helm, Johnson, Vlissides. *Design Patterns: Elements of Reusable Object-Oriented Software*. Addison-Wesley, 1995. See `docs/scientific-research/oop-design.md` entry 34.
+Sources: Gamma, Helm, Johnson, Vlissides. *Design Patterns: Elements of Reusable Object-Oriented Software*. Addison-Wesley, 1995; Shvets, A. *Refactoring.Guru* (2014–present) https://refactoring.guru/design-patterns. See `docs/research/oop-design.md` entries 34 and 36.
 
 ---
 
@@ -67,70 +67,35 @@ Load this skill when the `refactor` skill's smell table points to a GoF pattern,
 
 ---
 
-## Smell-Triggered Patterns — Python Examples
+## Smell-Triggered Patterns
 
 ### Creational Smells
 
 ---
 
 #### Smell: Scattered Object Construction
-**Signal**: The same object is constructed in 3+ places with slightly different arguments, or construction logic is duplicated across callers.
+**Signal**: The same object is constructed in 3+ places with slightly different arguments, or construction logic is duplicated across callers. Changes to construction (e.g. adding a required field) require updating every call site.
 
 **Pattern**: Factory Method or Factory Function
 
-```python
-# BEFORE — scattered construction
-# in order_service.py
-order = Order(id=uuid4(), status="pending", created_at=datetime.now())
+**Before**: Construction is repeated inline at every call site with raw arguments. Tests, services, and importers each hardcode the construction details.
 
-# in test_order.py
-order = Order(id=UUID("abc..."), status="pending", created_at=datetime(2026, 1, 1))
+**After**: A dedicated factory function or factory method owns construction. All callers go through it. The factory can inject defaults, substitute a clock or ID generator, and be swapped in tests.
 
-# in import_service.py
-order = Order(id=uuid4(), status="pending", created_at=datetime.now())
-```
-
-```python
-# AFTER — factory function owns construction
-def make_order(
-    *,
-    order_id: OrderId | None = None,
-    clock: Callable[[], datetime] = datetime.now,
-) -> Order:
-    return Order(
-        id=order_id or OrderId(uuid4()),
-        status=OrderStatus.PENDING,
-        created_at=clock(),
-    )
-```
+**Key structural change**: Creation knowledge moves from N call sites to one place.
 
 ---
 
 #### Smell: Multi-Step Construction with Optional Parts
-**Signal**: An object requires several setup calls before it is valid. Callers must remember the correct sequence.
+**Signal**: An object requires several setup calls before it is valid. Callers must remember the correct sequence. Forgetting a step leaves the object in an invalid or partially initialized state.
 
 **Pattern**: Builder
 
-```python
-# BEFORE — callers must know the correct build sequence
-report = Report()
-report.set_title("Q4 Sales")
-report.add_section(summary)
-report.add_section(detail)
-report.set_footer("Confidential")
-# easy to forget a step or get the order wrong
-```
+**Before**: Object constructed with a series of setter calls. Order matters but is not enforced. Optional sections may be skipped by accident.
 
-```python
-# AFTER — builder enforces sequence and provides defaults
-report = (
-    ReportBuilder("Q4 Sales")
-    .with_section(summary)
-    .with_section(detail)
-    .with_footer("Confidential")
-    .build()
-)
-```
+**After**: A builder object accepts each optional part via named methods and produces the final object only when `build()` is called. The builder validates completeness and enforces sequence.
+
+**Key structural change**: Invalid intermediate states are impossible; callers read as a named sequence of intent.
 
 ---
 
@@ -138,116 +103,44 @@ report = (
 
 ---
 
-#### Smell: Type-Switching (if/elif on type or status)
-**Signal**: A function or method contains `if isinstance(x, A): ... elif isinstance(x, B): ...` or `if x.type == "a": ... elif x.type == "b": ...`. Adding a new type requires editing this function.
+#### Smell: Type-Switching (branching on a type or status field)
+**Signal**: A function or method branches on a type flag, kind field, or status string. Adding a new variant requires editing this function — it is open to modification but closed to extension.
 
-**Pattern**: Strategy (behavior varies) or Visitor (operation varies over a fixed structure)
+**Pattern**: Strategy (behavior varies per call) or Visitor (operation varies over a fixed structure)
 
-```python
-# BEFORE — type switch must be updated for every new discount type
-def apply_discount(order: Order, discount_type: str) -> Money:
-    if discount_type == "percentage":
-        return order.total * (1 - order.rate)
-    elif discount_type == "fixed":
-        return order.total - order.amount
-    elif discount_type == "bogo":
-        return order.total - (order.total / 2)
-    else:
-        raise ValueError(discount_type)
-```
+**Before**: A single function contains a multi-branch conditional on the variant. Every new variant requires modifying the function and all its tests.
 
-```python
-# AFTER — Strategy: each discount is a callable, closed to modification
-class DiscountStrategy(Protocol):
-    def apply(self, order: Order) -> Money: ...
+**After (Strategy)**: Each variant is encapsulated in its own class implementing a shared interface. The caller receives the strategy as a dependency. Adding a new variant means adding a new class — the caller and existing variants are untouched.
 
-@dataclass
-class PercentageDiscount:
-    rate: Decimal
-    def apply(self, order: Order) -> Money:
-        return order.total * (1 - self.rate)
+**After (Visitor)**: When the object structure is stable but operations vary, a visitor separates each operation into its own class. Each element accepts a visitor and dispatches to the right method.
 
-@dataclass
-class FixedDiscount:
-    amount: Money
-    def apply(self, order: Order) -> Money:
-        return order.total - self.amount
-
-def apply_discount(order: Order, strategy: DiscountStrategy) -> Money:
-    return strategy.apply(order)
-```
+**Key structural change**: Open/Closed principle restored — new variants extend without modifying existing code.
 
 ---
 
 #### Smell: Feature Envy
-**Signal**: A method in class A uses data from class B more than its own data. The method "envies" class B.
+**Signal**: A method in class A uses data or methods from class B more than its own. The method "envies" class B and is likely in the wrong place.
 
-**Pattern**: Move Method to the envied class (Fowler refactoring that often precedes Strategy or Command)
+**Pattern**: Move Function (Fowler) — often a precursor to Strategy or Command
 
-```python
-# BEFORE — OrderPrinter knows too much about Order internals
-class OrderPrinter:
-    def format_total(self, order: Order) -> str:
-        subtotal = sum(item.price * item.quantity for item in order.items)
-        tax = subtotal * order.tax_rate
-        return f"{subtotal + tax:.2f}"
-```
+**Before**: A method on one class navigates into another class's fields to perform a computation. The computation is separated from the data it operates on.
 
-```python
-# AFTER — total belongs on Order
-@dataclass
-class Order:
-    items: list[LineItem]
-    tax_rate: Decimal
+**After**: The computation moves to the class whose data it uses. The original class delegates to it. The envied class gains behavior; the original class becomes a coordinator.
 
-    def total(self) -> Money:
-        subtotal = sum(item.subtotal() for item in self.items)
-        return subtotal * (1 + self.tax_rate)
-
-class OrderPrinter:
-    def format_total(self, order: Order) -> str:
-        return f"{order.total():.2f}"
-```
+**Key structural change**: Behavior lives next to the data it depends on.
 
 ---
 
 #### Smell: Parallel Inheritance Hierarchies
-**Signal**: Every time you add a subclass to hierarchy A, you must also add a corresponding subclass to hierarchy B. The two trees grow in lockstep.
+**Signal**: Every time a subclass is added to hierarchy A, a corresponding subclass must also be added to hierarchy B. The two trees grow in lockstep — a sign that the two axes of variation are entangled.
 
 **Pattern**: Bridge
 
-```python
-# BEFORE — adding a new Shape requires a new renderer subclass too
-class Shape: ...
-class Circle(Shape): ...
-class Square(Shape): ...
+**Before**: Two hierarchies are coupled. A `Shape` hierarchy and a `Renderer` hierarchy grow together. Each shape–renderer combination requires its own subclass.
 
-class SVGCircle(Circle): ...
-class SVGSquare(Square): ...
-class PNGCircle(Circle): ...
-class PNGSquare(Square): ...
-```
+**After**: The Bridge pattern separates the two hierarchies. The abstraction (shape) holds a reference to the implementation (renderer) as a dependency. Each axis can vary independently. Combinatorial subclass explosion is eliminated.
 
-```python
-# AFTER — Bridge separates shape from renderer
-class Renderer(Protocol):
-    def render_circle(self, radius: float) -> None: ...
-    def render_square(self, side: float) -> None: ...
-
-@dataclass
-class Circle:
-    radius: float
-    renderer: Renderer
-    def draw(self) -> None:
-        self.renderer.render_circle(self.radius)
-
-@dataclass
-class Square:
-    side: float
-    renderer: Renderer
-    def draw(self) -> None:
-        self.renderer.render_square(self.side)
-```
+**Key structural change**: Two axes of variation become two independent hierarchies composed at runtime.
 
 ---
 
@@ -256,131 +149,41 @@ class Square:
 ---
 
 #### Smell: Large State Machine in One Class
-**Signal**: A class has a `status` or `state` field, and many methods begin with `if self.state == X: ... elif self.state == Y: ...`. Adding a new state requires editing all these methods.
+**Signal**: A class has a status or state field, and many methods begin by branching on that field. Adding a new state requires editing all of those methods. The class grows in proportion to the number of states.
 
 **Pattern**: State
 
-```python
-# BEFORE — Order methods all branch on status
-class Order:
-    def confirm(self) -> None:
-        if self.status == "pending":
-            self.status = "confirmed"
-        else:
-            raise InvalidTransition(self.status, "confirm")
+**Before**: The class contains multi-branch conditionals in every method that involves state. Each state's transitions and guards are scattered across the class body.
 
-    def ship(self) -> None:
-        if self.status == "confirmed":
-            self.status = "shipped"
-        else:
-            raise InvalidTransition(self.status, "ship")
-```
+**After**: Each state is its own class implementing a shared interface. Each state object owns its transitions — it knows which transitions are valid and what the next state is. The context object (the original class) delegates to the current state. Adding a new state means adding a new class.
 
-```python
-# AFTER — each state owns its own transitions
-class OrderState(Protocol):
-    def confirm(self, order: Order) -> None: ...
-    def ship(self, order: Order) -> None: ...
-
-class PendingState:
-    def confirm(self, order: Order) -> None:
-        order.state = ConfirmedState()
-    def ship(self, order: Order) -> None:
-        raise InvalidTransition("pending", "ship")
-
-class ConfirmedState:
-    def confirm(self, order: Order) -> None:
-        raise InvalidTransition("confirmed", "confirm")
-    def ship(self, order: Order) -> None:
-        order.state = ShippedState()
-
-@dataclass
-class Order:
-    state: OrderState = field(default_factory=PendingState)
-    def confirm(self) -> None: self.state.confirm(self)
-    def ship(self) -> None: self.state.ship(self)
-```
+**Key structural change**: State-specific behavior is co-located in the state class; the context becomes a thin delegator.
 
 ---
 
 #### Smell: Scattered Notification / Event Fan-Out
-**Signal**: When something happens in class A, it directly calls methods on classes B, C, and D. Adding a new listener requires modifying class A.
+**Signal**: When something happens in class A, it directly calls methods on classes B, C, and D. Adding a new listener requires modifying class A. Class A knows about all downstream consumers.
 
 **Pattern**: Observer
 
-```python
-# BEFORE — Order directly notifies every downstream system
-class Order:
-    def confirm(self) -> None:
-        self.status = "confirmed"
-        EmailService().send_confirmation(self)      # direct coupling
-        InventoryService().reserve(self)             # direct coupling
-        AnalyticsService().record_conversion(self)   # direct coupling
-```
+**Before**: The event source directly invokes each downstream system. The source and all consumers are tightly coupled. Adding a consumer modifies the source.
 
-```python
-# AFTER — Order emits an event; listeners register independently
-class OrderConfirmedListener(Protocol):
-    def on_order_confirmed(self, order: Order) -> None: ...
+**After**: The source defines a listener interface and maintains a list of registered listeners. Each listener registers itself. When the event occurs, the source notifies all listeners without knowing their concrete types. New listeners are added without touching the source.
 
-@dataclass
-class Order:
-    _listeners: list[OrderConfirmedListener] = field(default_factory=list)
-
-    def add_listener(self, listener: OrderConfirmedListener) -> None:
-        self._listeners.append(listener)
-
-    def confirm(self) -> None:
-        self.status = OrderStatus.CONFIRMED
-        for listener in self._listeners:
-            listener.on_order_confirmed(self)
-```
+**Key structural change**: Coupling direction reversed — listeners depend on the source, not the other way around.
 
 ---
 
 #### Smell: Repeated Algorithm Skeleton
-**Signal**: Two or more functions share the same high-level structure (setup → process → teardown) but differ only in one or two steps. The structure is copied rather than shared.
+**Signal**: Two or more functions share the same high-level structure (setup → process → teardown, or read → parse → validate → save) but differ only in one or two steps. The structure is copied rather than shared.
 
 **Pattern**: Template Method
 
-```python
-# BEFORE — CSV and JSON importers duplicate the pipeline structure
-def import_csv(path: Path) -> list[Record]:
-    raw = path.read_text()
-    rows = parse_csv(raw)        # varies
-    records = [validate(r) for r in rows]
-    save_all(records)
-    return records
+**Before**: Two functions duplicate the pipeline structure. When the shared steps change (e.g. validation logic), both must be updated in sync. The differing step is buried inside the duplication.
 
-def import_json(path: Path) -> list[Record]:
-    raw = path.read_text()
-    rows = parse_json(raw)       # varies
-    records = [validate(r) for r in rows]
-    save_all(records)
-    return records
-```
+**After**: A base class defines the algorithm skeleton as a method that calls abstract hook methods for the varying steps. Each subclass implements only the hook(s) that differ. The shared steps exist in one place.
 
-```python
-# AFTER — Template Method: skeleton in base, varying step overridden
-class Importer(ABC):
-    def run(self, path: Path) -> list[Record]:
-        raw = path.read_text()
-        rows = self.parse(raw)          # hook
-        records = [validate(r) for r in rows]
-        save_all(records)
-        return records
-
-    @abstractmethod
-    def parse(self, raw: str) -> list[dict]: ...
-
-class CsvImporter(Importer):
-    def parse(self, raw: str) -> list[dict]:
-        return parse_csv(raw)
-
-class JsonImporter(Importer):
-    def parse(self, raw: str) -> list[dict]:
-        return parse_json(raw)
-```
+**Key structural change**: Invariant structure lives in one place; variants are isolated in named hooks.
 
 ---
 
@@ -390,12 +193,12 @@ class JsonImporter(Importer):
 |---|---|
 | Same object constructed in 3+ places | Factory Method / Factory Function |
 | Multi-step setup before object is valid | Builder |
-| `if type == X: ... elif type == Y:` | Strategy |
-| Method uses another class's data more than its own | Move Method (Fowler) |
+| Branching on a type, kind, or status field | Strategy |
+| Method uses another class's data more than its own | Move Function (Fowler) |
 | Two class hierarchies that grow in lockstep | Bridge |
-| `if self.state == X:` in multiple methods | State |
-| Class directly calls B, C, D on state change | Observer |
-| Two functions share the same skeleton, differ in one step | Template Method |
+| Many methods branch on the same state field | State |
+| Object directly calls multiple downstream systems on change | Observer |
+| Two functions share the same algorithm skeleton, differ in one step | Template Method |
 | Subsystem is complex and callers need a simple entry point | Facade |
 
 ---

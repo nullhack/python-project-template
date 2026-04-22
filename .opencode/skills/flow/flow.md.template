@@ -1,0 +1,140 @@
+# FLOW — <Workflow Name>
+
+This file defines the static state machine for <workflow name>. It does not change during execution.
+Dynamic work tracking lives in `WORK.md`.
+
+---
+
+## Work Variables
+
+Every work item tracked in `WORK.md` must carry exactly these variables:
+
+| Variable  | Description                        |
+|-----------|------------------------------------|
+| `@id`     | <unique identifier for work items> |
+| `@state`  | Current state in this workflow     |
+| `@branch` | <version control reference, if any>|
+
+<!-- Add or remove variables. Keep only what cannot be derived. -->
+
+---
+
+## Roles
+
+These roles must exist before the workflow can run. Each state has exactly one owner.
+
+| Role      | Agent File                     | Responsibility |
+|-----------|--------------------------------|----------------|
+| `<role>`  | `.opencode/agents/<role>.md`   | <description>  |
+
+---
+
+## Prerequisites
+
+All must be satisfied before starting any session. If any are missing, stop and alert the human.
+
+| Requirement   | Verification Command              |
+|---------------|-----------------------------------|
+| Role: <role>  | `test -f .opencode/agents/<role>.md` |
+| Tool: <tool>  | `command -v <tool>`               |
+| Dir: <path>   | `test -d <path>`                  |
+| WORK.md       | `test -f WORK.md`                 |
+
+---
+
+## State Machine
+
+States are checked **in order**. The first matching condition is the current state.
+
+```
+[INITIAL] ──► [STATE-A] ──► [STATE-B] ──► [TERMINAL]
+                                │
+                                ▼
+                           [FAILURE]
+```
+
+### Detection Rules (evaluated in order)
+
+1. <condition> → **[INITIAL]**
+2. <condition> → **[STATE-A]**
+3. <condition> → **[STATE-B]**
+4. <condition> → **[TERMINAL]**
+5. <condition> → **[FAILURE]**
+
+---
+
+## States
+
+### [INITIAL]
+**Owner**: `<role>`
+**Entry condition**: <detectable filesystem/git condition>
+**Action**: <what the owner does>
+**Exit**: <what signals completion> → update `@state: STATE-A` in `WORK.md`
+
+---
+
+### [STATE-A]
+**Owner**: `<role>`
+**Entry condition**: <detectable condition>
+**Action**: <what the owner does>
+**Exit**: <success condition> → update `@state: STATE-B` in `WORK.md`
+**Failure**: <failure condition> → update `@state: FAILURE` in `WORK.md`
+
+---
+
+### [STATE-B]
+**Owner**: `<role>`
+**Entry condition**: <detectable condition>
+**Action**: <what the owner does>
+**Exit**: <success condition> → update `@state: TERMINAL` in `WORK.md`
+
+---
+
+### [TERMINAL]
+**Owner**: `<role>`
+**Entry condition**: <detectable condition>
+**Action**: <cleanup, move artifacts>
+**Exit**: Work item removed from `WORK.md` active items
+
+---
+
+### [FAILURE]
+**Owner**: `<role>`
+**Entry condition**: <detectable condition>
+**Action**: <remediation steps>
+**Exit**: Resolved → update `@state: <recovery state>` in `WORK.md`
+
+---
+
+## Session Protocol
+
+### Session Start
+1. Read `WORK.md` — find the active item; note `@id`, `@state`, `@branch`
+2. Run auto-detection commands to verify `@state` is correct
+3. If detected state differs from `@state` in `WORK.md`, update `WORK.md` to match reality
+4. Check prerequisites — if any missing, stop and report
+
+### Session End
+1. Update `WORK.md`: set `@state` to the new state; append to Session Log
+2. Commit `WORK.md` update before any further work:
+   ```bash
+   git add WORK.md && git commit -m "chore: @id transition to @state"
+   ```
+
+---
+
+## Auto-Detection Commands
+
+```bash
+# 1. <description of check>
+<command>
+
+# 2. <description of check>
+<command>
+```
+
+---
+
+## Output Style
+
+Every session must close with a `Next:` line — one concrete action for a fresh agent.

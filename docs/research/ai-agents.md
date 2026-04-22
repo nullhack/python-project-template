@@ -14,7 +14,7 @@ Foundations for the agent architecture, file structure, and context management d
 | **Status** | Confirmed — corrects the belief that subagents should be "lean routing agents" |
 | **Core finding** | "Define the smallest agent that can own a clear task. Add more agents only when you need separate ownership, different instructions, different tool surfaces, or different approval policies." The split criterion is ownership boundary, not instruction volume. |
 | **Mechanism** | Multiple agents competing to own the same concern create authority conflicts and inconsistent tool access. The right unit is the smallest coherent domain that requires exclusive responsibility. |
-| **Where used** | Agent design in `.opencode/agents/*.md` — 4 agents, each owning a distinct domain (PO, software-engineer, reviewer, setup). |
+| **Where used** | Agent design in `.opencode/agents/*.md` — 5 agents, each owning a distinct domain (PO, system-architect, software-engineer, designer, setup). |
 
 ---
 
@@ -105,14 +105,98 @@ Foundations for the agent architecture, file structure, and context management d
 
 ---
 
+### 72. Actor Model — Message-Passing Ownership
+
+| | |
+|---|---|
+| **Source** | Hewitt, C., Bishop, P., & Steiger, R. (1973). *A universal modular actor formalism for artificial intelligence*. IJCAI. |
+| **Date** | 1973 |
+| **Status** | Confirmed — foundational for single-ownership agent design |
+| **Core finding** | Actors are computational entities that communicate exclusively via asynchronous message passing. Each actor has a single mailbox, processes messages sequentially, and can spawn child actors. No shared state, no direct method calls. |
+| **Mechanism** | The Actor Model eliminates race conditions by construction: an actor can only modify its own state. Message passing creates explicit handoff points where ownership transfers. This maps directly to AI agent design where each agent owns a distinct domain and communicates via structured handoffs (e.g., PO → SA → SE → SA → PO). |
+| **Where used** | Agent ownership boundaries in `.opencode/agents/*.md`; single-feature-at-a-time WIP limit in `FLOW.md`. |
+
+---
+
+### 73. CSP — Synchronous Communication and Deadlock Freedom
+
+| | |
+|---|---|
+| **Source** | Hoare, C. A. R. (1978). *Communicating sequential processes*. Communications of the ACM, 21(8), 666–677. |
+| **Date** | 1978 |
+| **Status** | Confirmed — formal basis for structured handoff protocols |
+| **Core finding** | Processes communicate via synchronous channels (rendezvous). A process that tries to send on a channel blocks until the receiver is ready. This explicit synchronization prevents the "lost update" problem. |
+| **Mechanism** | CSP's channel-based communication ensures that handoffs are atomic: either both parties are ready (handoff succeeds) or the sender waits (no partial state). Applied to AI workflow design: each step transition in `FLOW.md` is a rendezvous point where the outgoing agent commits state before the incoming agent reads it. |
+| **Where used** | Step transition protocol in `FLOW.md` — commit before handoff; session end protocol in `run-session/SKILL.md`. |
+
+---
+
+### 74. Session Types — Protocol Conformance by Construction
+
+| | |
+|---|---|
+| **Source** | Honda, K. (1993). *Types for dyadic interaction*. CONCUR '93. |
+| **Date** | 1993 |
+| **Status** | Confirmed — type-safe communication protocols |
+| **Core finding** | Session types statically verify that communicating parties follow a prescribed protocol. The type checker ensures send/receive sequences match, preventing protocol violations at compile time. |
+| **Mechanism** | Just as session types enforce "send A then receive B then send C", the `FLOW.md` state machine enforces "Step 1 → Step 2 → Step 3 → Step 4 → Step 5". Each state has a defined owner and valid transitions. The auto-detection rules act as a runtime type checker: if the filesystem state doesn't match the expected state, the protocol halts. |
+| **Where used** | `FLOW.md` state machine definition; `flow/SKILL.md` auto-detection rules. |
+
+---
+
+### 75. Statecharts — Hierarchical State Machines with History
+
+| | |
+|---|---|
+| **Source** | Harel, D. (1987). *Statecharts: A visual formalism for complex systems*. Science of Computer Programming, 8(3), 231–274. |
+| **Date** | 1987 |
+| **Status** | Confirmed — hierarchical states for workflow design |
+| **Core finding** | Statecharts extend finite state machines with hierarchy (nested states), orthogonality (parallel regions), and history (return to previous substate). This makes complex systems tractable without state explosion. |
+| **Mechanism** | The `FLOW.md` state machine uses hierarchical grouping: Step 3 contains substates [READY], [RED], [GREEN]. The history mechanism maps to interruption recovery: when resuming, auto-detection determines the exact substate without manual tracking. |
+| **Where used** | `FLOW.md` state design; `flow/SKILL.md` detection rules for interruption recovery. |
+
+---
+
+### 76. Design by Contract — Preconditions and Postconditions
+
+| | |
+|---|---|
+| **Source** | Meyer, B. (1986). *Eiffel: Programming for reusability and extendability*. SIGPLAN Notices, 22(2), 85–94. |
+| **Date** | 1986 |
+| **Status** | Confirmed — explicit contracts for step boundaries |
+| **Core finding** | Software components should specify contracts: preconditions (what must be true before calling), postconditions (what will be true after), and invariants (what remains true). Violations indicate bugs. |
+| **Mechanism** | Each `FLOW.md` state has preconditions (detect rules) and postconditions (success/failure transitions). The prerequisites table is a system-level precondition. When preconditions fail, the protocol halts rather than proceeding with invalid state. |
+| **Where used** | Prerequisites table in `FLOW.md`; per-step preconditions in `flow/SKILL.md`, `architect/SKILL.md`, `implement/SKILL.md`. |
+
+---
+
+### 77. Petri Nets — Places, Transitions, and Token Flow
+
+| | |
+|---|---|
+| **Source** | Petri, C. A. (1962). *Kommunikation mit Automaten*. PhD thesis, University of Bonn. |
+| **Date** | 1962 |
+| **Status** | Confirmed — formal model for concurrent workflow with resource constraints |
+| **Core finding** | Petri Nets model systems as places (conditions), transitions (events), and tokens (resources). A transition fires only when all input places have tokens. This naturally models capacity constraints and competition for resources. |
+| **Mechanism** | The WIP=1 constraint in `FLOW.md` is a Petri Net place with capacity 1: only one feature token can occupy the "in-progress" place at a time. The transition from [IDLE] to [STEP-1-DISCOVERY] requires the "in-progress" place to be empty (no token). This formalizes the single-feature constraint. |
+| **Where used** | WIP limit of 1 in `AGENTS.md` and `FLOW.md`; filesystem-enforced WIP via `docs/features/in-progress/` directory. |
+
+---
+
 ## Bibliography
 
 1. Anthropic. (2024). Building effective agents. https://www.anthropic.com/engineering/building-effective-agents
 2. Anthropic. (2025). Best practices for Claude Code. https://www.anthropic.com/engineering/claude-code-best-practices
 3. Geng et al. (2025). Control Illusion. AAAI-26. arXiv:2502.15851. https://arxiv.org/abs/2502.15851
-4. Liu, N. F. et al. (2023). Lost in the Middle. *TACL*. arXiv:2307.03172. https://arxiv.org/abs/2307.03172
-5. McKinnon, R. (2025). arXiv:2511.05850. https://arxiv.org/abs/2511.05850
-6. OpenAI. (2024). Agent definitions. https://platform.openai.com/docs/guides/agents/define-agents
-7. OpenCode. (2026). Agent Skills. https://opencode.ai/docs/skills/
-8. Sharma, A., & Henley, A. (2026). Modular Prompt Optimization. arXiv:2601.04055. https://arxiv.org/abs/2601.04055
-9. Wallace, E. et al. (2024). The Instruction Hierarchy. arXiv:2404.13208.
+4. Harel, D. (1987). Statecharts: A visual formalism for complex systems. *Science of Computer Programming*, 8(3), 231–274.
+5. Hewitt, C., Bishop, P., & Steiger, R. (1973). A universal modular actor formalism for artificial intelligence. *IJCAI*.
+6. Hoare, C. A. R. (1978). Communicating sequential processes. *Communications of the ACM*, 21(8), 666–677.
+7. Honda, K. (1993). Types for dyadic interaction. *CONCUR '93*.
+8. Liu, N. F. et al. (2023). Lost in the Middle. *TACL*. arXiv:2307.03172. https://arxiv.org/abs/2307.03172
+9. McKinnon, R. (2025). arXiv:2511.05850. https://arxiv.org/abs/2511.05850
+10. Meyer, B. (1986). Eiffel: Programming for reusability and extendability. *SIGPLAN Notices*, 22(2), 85–94.
+11. OpenAI. (2024). Agent definitions. https://platform.openai.com/docs/guides/agents/define-agents
+12. OpenCode. (2026). Agent Skills. https://opencode.ai/docs/skills/
+13. Petri, C. A. (1962). Kommunikation mit Automaten. PhD thesis, University of Bonn.
+14. Sharma, A., & Henley, A. (2026). Modular Prompt Optimization. arXiv:2601.04055. https://arxiv.org/abs/2601.04055
+15. Wallace, E. et al. (2024). The Instruction Hierarchy. arXiv:2404.13208.
