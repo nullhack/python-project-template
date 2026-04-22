@@ -172,6 +172,8 @@ jobs:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     permissions:
       contents: write
+    env:
+      UV_SYSTEM_PYTHON: "false"
 
     steps:
       - name: Checkout code
@@ -187,7 +189,7 @@ jobs:
         run: uv python install 3.13
 
       - name: Install dependencies
-        run: uv sync --locked --all-extras --dev
+        run: uv sync --locked --all-extras --dev && uv pip install -e .
 
       - name: Build and publish documentation
         run: uv run task doc-publish
