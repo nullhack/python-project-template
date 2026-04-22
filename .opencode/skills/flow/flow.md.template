@@ -46,11 +46,14 @@ All must be satisfied before starting any session. If any are missing, stop and 
 
 States are checked **in order**. The first matching condition is the current state.
 
-```
-[INITIAL] ──► [STATE-A] ──► [STATE-B] ──► [TERMINAL]
-                                │
-                                ▼
-                           [FAILURE]
+```mermaid
+stateDiagram-v2
+    [*] --> INITIAL
+    INITIAL --> STATE-A
+    STATE-A --> STATE-B
+    STATE-B --> TERMINAL
+    STATE-B --> FAILURE
+    TERMINAL --> [*]
 ```
 
 ### Detection Rules (evaluated in order)
@@ -115,7 +118,7 @@ States are checked **in order**. The first matching condition is the current sta
 4. Check prerequisites — if any missing, stop and report
 
 ### Session End
-1. Update `WORK.md`: set `@state` to the new state; append to Session Log
+1. Update `WORK.md`: set `@state` to the new state
 2. Commit `WORK.md` update before any further work:
    ```bash
    git add WORK.md && git commit -m "chore: @id transition to @state"
@@ -137,4 +140,4 @@ States are checked **in order**. The first matching condition is the current sta
 
 ## Output Style
 
-Every session must close with a `Next:` line — one concrete action for a fresh agent.
+Report results, not process. No narration, no summaries. Output only what the next agent or stakeholder needs: findings, status, decisions, blockers.

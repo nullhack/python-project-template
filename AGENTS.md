@@ -61,7 +61,7 @@ All feature work happens on branches. `main` is the single source of truth and r
 | `backlog/` → `in-progress/` | PO only | Before Step 2 begins; only if `Status: BASELINED` |
 | `in-progress/` → `completed/` | PO only | After Step 5 acceptance |
 
-**If an agent (SE or SA) finds no `.feature` in `in-progress/`**: update `WORK.md` with the correct `Next:` escalation line and stop. Never self-select a backlog feature.
+**If an agent (SE or SA) finds no `.feature` in `in-progress/`**: update `WORK.md` `@state` to `[IDLE]` and stop. Never self-select a backlog feature.
 
 ## Agents
 
@@ -180,7 +180,7 @@ tests/
     <anything>_test.py                ← software-engineer-authored extras (no @id traceability)
 
 FLOW.md                               ← static workflow state machine (roles, prerequisites, states, transitions)
-WORK.md                               ← dynamic work tracker (active items with @id, @state, @branch + session log)
+WORK.md                               ← dynamic work tracker (active items with @id, @state, @branch)
 ```
 
 Tests in `tests/unit/` are software-engineer-authored extras not covered by any `@id` criterion. Any test style is valid — plain `assert` or Hypothesis `@given`. Use Hypothesis when the test covers a **property** that holds across many inputs (mathematical invariants, parsing contracts, value object constraints). Use plain pytest for specific behaviors or single edge cases discovered during refactoring.
@@ -209,7 +209,7 @@ def test_<feature_slug>_<@id>() -> None:
 
 ### Markers
 - `@pytest.mark.slow` — takes > 50ms; applied to Hypothesis tests and any test with I/O, network, or DB
-- `@pytest.mark.deprecated` — auto-skipped by pytest-beehave; used for superseded Examples
+- `@pytest.mark.deprecated` — auto-skipped by pytest-beehave; used for replaced Examples
 
 ## Development Commands
 
@@ -247,7 +247,7 @@ uv run task doc-build
 - **Principles (in priority order)**: YAGNI > KISS > DRY > SOLID > Object Calisthenics > appropriate design patterns > complex code > complicate code > failing code > no code
 - **Linting**: ruff format, ruff check, Google docstring convention, `noqa` forbidden
 - **Type checking**: pyright, 0 errors required
-- **Coverage**: 100% (measured against your actual package)
+- **Coverage**: enforced by `test-coverage`
 - **Function length**: ≤ 20 lines (code lines only, excluding docstrings)
 - **Class length**: ≤ 50 lines (code lines only, excluding docstrings)
 - **Max nesting**: 2 levels
@@ -288,7 +288,7 @@ The stakeholder initiates the release process. When the stakeholder requests a r
 Every session: load `skill run-session`. Read `FLOW.md` and `WORK.md` at session start; update `WORK.md` at the end.
 
 - `FLOW.md` — static state machine: roles, prerequisites, states, transitions, detection rules. **Agents never modify this file.** Only the stakeholder (human) may change it, using `skill flow` as the design protocol.
-- `WORK.md` — dynamic tracker: active `@id` items with `@state` and `@branch`. Updated by the state owner at every transition. Session Log is append-only.
+- `WORK.md` — dynamic tracker: active `@id` items with `@state` and `@branch`. Updated by the state owner at every transition.
 
 See `.opencode/skills/flow/SKILL.md` for the generic flow protocol, state machine design principles, and templates for creating new workflows.
 

@@ -11,7 +11,7 @@ workflow: session-management
 
 Every session starts by reading state. Every session ends by writing state. This makes any agent able to continue from where the last session stopped.
 
-State is tracked across two files: `FLOW.md` (static state machine — never modified by agents) and `WORK.md` (dynamic tracker — updated every session). Agents read `FLOW.md` to understand the workflow; they read and update `WORK.md` to track the active feature and session log.
+State is tracked across two files: `FLOW.md` (static state machine — never modified by agents) and `WORK.md` (dynamic tracker — updated every session). Agents read `FLOW.md` to understand the workflow; they read and update `WORK.md` to track the active feature.
 
 ## Read Policy
 
@@ -26,7 +26,7 @@ Each agent reads only what is operationally necessary for their current step. Do
 
 ## Session Start
 
-1. **Read `WORK.md`** — find the active item: `@id`, `@state`, `@branch`, and `Next:` line.
+1. **Read `WORK.md`** — find the active item: `@id`, `@state`, `@branch`.
    - If `WORK.md` does not exist, create it from `.opencode/skills/flow/work.md.template`
 2. **Read `FLOW.md`** — understand the static workflow (roles, states, detection rules, transitions).
    - If `FLOW.md` does not exist, create it from `.opencode/skills/flow/flow.md.template`
@@ -48,14 +48,12 @@ Each agent reads only what is operationally necessary for their current step. Do
 **If `WORK.md` `@state` is [IDLE] or no active item exists:**
 
 - **PO**: Load `skill select-feature` — it guides you through scoring and selecting the next BASELINED backlog feature. You must verify the feature has `Status: BASELINED` before moving it to `in-progress/`. Only you may move it.
-- **Software-engineer or system-architect**: Update `WORK.md` `Next:` line to `Run @product-owner — load skill select-feature and pick the next BASELINED feature from backlog.` Then **stop**. Never self-select a feature. Never create, edit, or move a `.feature` file.
+- **Software-engineer or system-architect**: Update `WORK.md` `@state` to `[IDLE]` if it is not already, then **stop**. Never self-select a feature. Never create, edit, or move a `.feature` file.
 
 ## Session End
 
 1. Update `WORK.md`:
    - Set `@state` to the detected state
-   - Append to Session Log with timestamp, agent, state, and action
-   - Update the `Next:` line with one concrete action
 2. Commit any uncommitted work (even WIP):
    ```bash
    git add -A
@@ -83,20 +81,7 @@ When a step completes within a session:
 @id: <feature-stem>
 @state: <state>
 @branch: <branch-name> | [NONE]
-
-## Session Log
-**YYYY-MM-DD HH:MM** — <agent> — <state> — <action>
-
-## Next
-Run @<agent-name> — <one concrete action>
 ```
-
-**"Next" line format**: Always prefix with `Run @<agent-name>` so the human knows exactly which agent to invoke. Agent names are defined in `AGENTS.md` — use the name exactly as listed there. Examples:
-- `Run @software-engineer — implement @id:a1b2c3d4 (Step 3 RED)`
-- `Run @system-architect — load skill architect and begin Step 2 (Architecture) for <feature-stem>`
-- `Run @system-architect — verify feature <feature-stem> at Step 4`
-- `Run @product-owner — pick next BASELINED feature from backlog`
-- `Run @product-owner — accept feature <feature-stem> at Step 5`
 
 ## Rules
 
@@ -104,20 +89,17 @@ Run @<agent-name> — <one concrete action>
 2. Never end a session without updating `WORK.md`
 3. Never leave uncommitted changes — commit as WIP if needed
 4. One step per session where possible; do not start Step N+1 in the same session as Step N
-5. The "Next" line must be actionable enough that a fresh AI can execute it without asking questions
-6. When a step completes, update `WORK.md` and commit **before** any further work
-7. The Session Log is append-only — never delete old entries
-8. If `FLOW.md` is missing, create it from `.opencode/skills/flow/flow.md.template` before doing any other work
-9. If detected state differs from `WORK.md` `@state`, trust the detected state and update `WORK.md`. **Never modify `FLOW.md`.**
-10. Output is minimal-signal: findings, status, decisions, blockers, Next: line only. Use the fewest, least verbose tool calls necessary. Report results, not process. No redundant prose.
+5. When a step completes, update `WORK.md` and commit **before** any further work
+6. If `FLOW.md` is missing, create it from `.opencode/skills/flow/flow.md.template` before doing any other work
+7. If detected state differs from `WORK.md` `@state`, trust the detected state and update `WORK.md`. **Never modify `FLOW.md`.**
+8. Output is minimal-signal: findings, status, decisions, blockers only. Use the fewest, least verbose tool calls necessary. Report results, not process. No redundant prose.
 
 ## Output Style
 
-Use minimal output. Every message must contain only what the next agent or stakeholder needs to continue — findings, status, decisions, blockers, and the Next: line.
+Use minimal output. Every message must contain only what the next agent or stakeholder needs to continue — findings, status, decisions, blockers.
 
 - Use the fewest, least verbose tool calls necessary to achieve the step's goal
 - Report results, not process ("3 files changed" not "I ran git status and it showed...")
 - No narration before or after tool calls
 - No restating tool output in prose
 - No summaries of what was just done
-- Always close with Next:

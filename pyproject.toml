@@ -11,9 +11,7 @@ authors = [
 maintainers = [
     { name = "eol", email = "nullhack@users.noreply.github.com" }
 ]
-dependencies = [
-    "fire>=0.7.1",
-]
+dependencies = []
 
 [project.urls]
 Repository = "https://github.com/nullhack/temple8"
@@ -74,7 +72,7 @@ pydocstyle.convention = "google"
 
 [tool.ruff.lint.per-file-ignores]
 "tests/**" = ["S101", "ANN", "D205", "D212", "D415", "D100", "D103"]
-".opencode/skills/**/scripts/*.py" = ["T20"]
+"scripts/*.py" = ["T20"]
 
 [tool.pytest.ini_options]
 minversion = "6.0"
@@ -95,6 +93,7 @@ python_functions = ["test_*"]
 render_collapsed = "all"
 
 [tool.coverage.report]
+fail_under = 100
 exclude_lines = [
     "pragma: no cover",
     "def __repr__",
@@ -111,7 +110,6 @@ test-coverage = """\
 pytest \
   --cov-config=pyproject.toml \
   --cov=app \
-  --cov-fail-under=100 \
   --tb=no
 """
 test-build = """\
@@ -122,7 +120,6 @@ pytest \
   --cov-report html:docs/coverage \
   --cov-report term:skip-covered \
   --cov=app \
-  --cov-fail-under=100 \
   --hypothesis-show-statistics \
   --html=docs/tests/report.html \
   --self-contained-html \
@@ -147,6 +144,7 @@ pytest \
 """
 doc-publish = "task doc-build && ghp-import -n -p -f docs"
 static-check = "pyright"
+release-check = "python scripts/check_version.py && task lint && task static-check && task test && task doc-build"
 
 [dependency-groups]
 dev = [

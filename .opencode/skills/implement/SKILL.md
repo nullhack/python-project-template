@@ -75,7 +75,7 @@ INNER LOOP
     ├── uv run task test-fast after each individual change
     └── EXIT: test-fast passes; no smells remain
 
-Mark @id completed in WORK.md Session Log
+Commit when a meaningful increment is green
 Commit when a meaningful increment is green
 ```
 
@@ -84,11 +84,11 @@ Commit when a meaningful increment is green
 ```bash
 uv run task lint
 uv run task static-check
-uv run task test                    # coverage must be 100%
+uv run task test-coverage           # coverage must pass
 timeout 10s uv run task run
 ```
 
-If coverage < 100%: add test in `tests/unit/` for uncovered branch (do NOT add @id tests for coverage).
+If coverage is below the threshold: add test in `tests/unit/` for uncovered branch (do NOT add @id tests for coverage).
 
 All must pass before Self-Declaration.
 
@@ -183,7 +183,7 @@ def test_<feature_slug>_<@id>() -> None:
 ### Markers
 
 - `@pytest.mark.slow` — takes > 50ms (Hypothesis, DB, network, terminal I/O)
-- `@pytest.mark.deprecated` — auto-skipped by pytest-beehave; used for superseded Examples
+- `@pytest.mark.deprecated` — auto-skipped by pytest-beehave; used for replaced Examples
 
 ```python
 @pytest.mark.deprecated
@@ -254,7 +254,7 @@ If testing through the real entry point is infeasible, escalate to PO to adjust 
 
 If during implementation you discover a behavior not covered by existing acceptance criteria:
 - **Do not extend criteria yourself** — escalate to PO
-- Note the gap in FLOW.md under `## Next`
+- Document the gap in your handoff message to the PO
 - The PO will decide whether to add a new Example to the `.feature` file
 
 Extra tests in `tests/unit/` are allowed freely (coverage, edge cases, etc.) — these do not need `@id` traceability.
@@ -291,13 +291,6 @@ class UserRepository(Protocol):
 
 ---
 
-## Templates
-
-Templates for architecture files live in the `architect` skill's directory:
-
-- `system.md.template` — `docs/system.md` structure (includes `## Domain Model`, `## Context`, `## Container` sections)
-- `adr.md.template` — individual ADR file structure (includes `## Context` section)
-
-Base directory for this skill: file:///home/user/Documents/projects/python-project-template/.opencode/skills/implement
+Base directory for this skill: `.opencode/skills/implement/`
 Relative paths in this skill (e.g., scripts/, reference/) are relative to this base directory.
 Note: file list is sampled.

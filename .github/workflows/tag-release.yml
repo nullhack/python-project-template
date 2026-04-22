@@ -35,6 +35,25 @@ jobs:
             echo "exists=false" >> "$GITHUB_OUTPUT"
           fi
 
+      - name: Install uv
+        if: steps.check.outputs.exists == 'false'
+        uses: astral-sh/setup-uv@cdfb2ee6dde255817c739680168ad81e184c4bfb # v4.0.0
+        with:
+          enable-cache: true
+          cache-dependency-glob: "uv.lock"
+
+      - name: Set up Python 3.13
+        if: steps.check.outputs.exists == 'false'
+        run: uv python install 3.13
+
+      - name: Install dependencies
+        if: steps.check.outputs.exists == 'false'
+        run: uv sync --locked --all-extras --dev
+
+      - name: Run release-check
+        if: steps.check.outputs.exists == 'false'
+        run: uv run task release-check
+
       - name: Create and push tag
         if: steps.check.outputs.exists == 'false'
         env:

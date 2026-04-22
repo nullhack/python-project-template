@@ -47,15 +47,6 @@ Warm parchment `#faf7f2` background. Left zone: temple mark (same geometry as lo
 
 Every word carries weight. The Greeks had a name for ornament that obscures meaning: *kenophonia* — empty noise.
 
-- **Avoid:** `easy`, `simple`, `just`, `quick`, `scaffold` — these words undermine engineer credibility or imply the work is trivial. A temple is not a scaffold.
-- **Prefer:** `minimal`, `precise`, `production-ready`, `zero-boilerplate`, `rigorous`, `from zero to hero`
+- **Avoid:** `easy`, `simple`, `just`, `quick`, `scaffold`, `superseded` — these words undermine engineer credibility or imply the work is trivial. A temple is not a scaffold.
+- **Prefer:** `minimal`, `precise`, `production-ready`, `zero-boilerplate`, `rigorous`, `replaces`, `from zero to hero`
 
-## Project Summary
-
-A Python project template with a production-ready AI-assisted delivery workflow.
-Ships with quality tooling (ruff, pyright, pytest, hypothesis), Gherkin-driven
-acceptance criteria, and five specialised AI agents covering scope through release.
-Built on the premise that rigorous method, applied from the beginning, produces
-something worth building on. Use this summary in banners, release notes, and document headers.
-
-(End of file - total 59 lines)

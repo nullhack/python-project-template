@@ -23,7 +23,7 @@ The glossary is a secondary artifact derived from the code, the domain entities 
 | Document | Created/Updated by | Inputs read |
 |---|---|---|
 | `docs/system.md` (Context + Container sections) | SA at Step 2; `update-docs` skill (SA) updates these sections post-acceptance | `docs/discovery.md`, `docs/adr/ADR-*.md`, `docs/features/completed/` |
-| `docs/glossary.md` | `update-docs` skill (SA) | `docs/system.md` (Domain Model section), `docs/glossary.md` (existing), `docs/adr/ADR-*.md`, `docs/features/completed/` |
+| `docs/glossary.md` | PO only (Step 1, via `define-scope` skill) | — |
 | `docs/discovery.md` | PO only (Step 1) | — |
 
 **Never edit `docs/adr/ADR-*.md` or `docs/discovery.md` in this skill.** Those files are owned by their respective agents. This skill reads them; it never writes to them.
@@ -63,7 +63,7 @@ Rules:
 - One `System_Ext(...)` per external dependency identified in ADR files
 - Relationships (`Rel`) use verb phrases from feature `When` clauses or architecture decision labels
 - If no external systems are identified in ADRs, omit `System_Ext` entries
-- If the section already exists: update only — add new actors/systems, update relationship labels. Never remove an existing entry unless the feature it came from has been explicitly superseded
+- If the section already exists: update only — add new actors/systems, update relationship labels. Never remove an existing entry unless the feature it came from has been explicitly replaced
 
 ---
 
@@ -84,32 +84,18 @@ Rules:
 
 ---
 
-## Step 4 — Update Living Glossary
+## Step 4 — Read Glossary for Diagram Accuracy
 
-File: `docs/glossary.md`
+File: `docs/glossary.md` — **read-only in this skill**
 
-The glossary answers: **what does each domain term mean in this project's context?**
-
-Use the template in `glossary.md.template` in this skill's directory.
+The glossary is owned by the PO (via `define-scope` skill). This skill reads it to verify that diagram labels and entity names in the Context and Container sections match the canonical domain terms.
 
 ### Rules
 
-- Extract all entities and verbs from the Domain Model section of `docs/system.md`
-- Extract all roles from `As a <role>` clauses in completed `.feature` files
-- Extract all external system names from ADR decisions
-- Extract any term defined or clarified in architectural decision `Reason:` fields
-- **Do not remove existing glossary entries** — if a term's meaning has changed, add a `**Superseded by:**` line pointing to the new entry and write a new entry
-- **Every term must have a traceable source** — completed feature files or ADR decisions. If a term appears in sources but is never defined, write `Definition: Term appears in [source] but has not been explicitly defined.` Do not invent a definition.
-- Terms are sorted alphabetically within the file
-
-### Merge with existing glossary
-
-If `docs/glossary.md` already exists:
-1. Read all existing entries
-2. For each new term found in sources: check if it already exists in the glossary
-   - Exists, definition unchanged → skip
-   - Exists, definition changed → append `**Superseded by:** <new-term-or-date>` to old entry; write new entry
-   - Does not exist → append new entry in alphabetical order
+- Read `docs/glossary.md` if it exists
+- Verify every actor name, container name, and relationship label in the Context and Container diagrams matches a term in the glossary or in the Domain Model section of `system.md`
+- If a diagram label uses a term not found in either source, flag it as a potential inconsistency — do **not** add the term to the glossary; escalate to PO
+- **Never write to `docs/glossary.md` in this skill** — if you identify a missing or incorrect glossary term, note it in the commit message or in a comment to the stakeholder and stop
 
 ---
 
@@ -137,9 +123,8 @@ docs(update-docs): refresh context, container, and glossary
 - [ ] Context section in `system.md` reflects all actors from completed feature files
 - [ ] Context section in `system.md` reflects all external systems from ADR files
 - [ ] Container section in `system.md` present only if multi-container architecture confirmed in ADR files
-- [ ] Glossary contains all entities and verbs from the Domain Model section of `docs/system.md`
-- [ ] No existing glossary entry removed
-- [ ] Every new term has a traceable source in completed feature files or ADRs; no term is invented
+- [ ] Glossary read; all diagram labels verified against glossary and Domain Model section of `system.md`
+- [ ] Any unrecognized diagram term flagged to PO — not added to glossary unilaterally
 - [ ] No edits made to ADR files or `docs/discovery.md`
 - [ ] If standalone: committed with `docs(update-docs): ...` message
 - [ ] If called from release: files staged but not committed (release process commits)
@@ -152,14 +137,12 @@ All templates for diagrams written by this skill live in this skill's directory:
 
 - `context.md.template` — Context diagram body (inserted into `## Context` section of `system.md`)
 - `container.md.template` — Container diagram body (inserted into `## Container` section of `system.md`)
-- `glossary.md.template` — `docs/glossary.md` entry format
 
-Base directory for this skill: file:///home/user/Documents/projects/python-project-template/.opencode/skills/update-docs
+Base directory for this skill: `.opencode/skills/update-docs/`
 Relative paths in this skill (e.g., scripts/, reference/) are relative to this base directory.
 Note: file list is sampled.
 
 <skill_files>
-<file>/home/user/Documents/projects/python-project-template/.opencode/skills/update-docs/container.md.template</file>
-<file>/home/user/Documents/projects/python-project-template/.opencode/skills/update-docs/context.md.template</file>
-<file>/home/user/Documents/projects/python-project-template/.opencode/skills/update-docs/glossary.md.template</file>
+<file>.opencode/skills/update-docs/container.md.template</file>
+<file>.opencode/skills/update-docs/context.md.template</file>
 </skill_files>

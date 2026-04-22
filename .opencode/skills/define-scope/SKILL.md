@@ -428,7 +428,7 @@ Stakeholder reports a feature is wrong after PO acceptance attempt.
    ```
 4. **PO scans `docs/post-mortem/`**, selects relevant files by `<feature-stem>` or `<failure-keyword>` in filename.
 5. **PO reads selected post-mortems** for context before handoff.
-6. **PO updates `WORK.md`**: set `@state: STEP-2-ARCH`, `@branch: fix/<feature-stem>`; append to Session Log; set `Next: Run @system-architect — restart Step 2 for <feature-stem> on fix/<feature-stem> with post-mortem context`.
+6. **PO updates `WORK.md`**: set `@state: STEP-2-ARCH`, `@branch: fix/<feature-stem>`.
 7. **SA begins Step 2** on `fix/<feature-stem>`, reading relevant post-mortems as input.
 
 ### Document Format
@@ -452,13 +452,14 @@ All templates for files written by this skill live in this skill's directory:
 - `discovery.md.template` — `docs/discovery.md` per-session block
 - `feature.md.template` — `.feature` file structure
 - `post-mortem.md.template` — `docs/post-mortem/YYYY-MM-DD-<feature-stem>-<keyword>.md` structure
+- `glossary.md.template` — `docs/glossary.md` initial file (pre-filled with common jargon; PO appends project-specific entries)
 
-Base directory for this skill: file:///home/user/Documents/projects/python-project-template/.opencode/skills/define-scope
+Base directory for this skill: `.opencode/skills/define-scope/`
 Relative paths in this skill (e.g., scripts/, reference/) are relative to this base directory.
 Note: file list is sampled.
 
 <skill_files>
-<file>/home/user/Documents/projects/python-project-template/.opencode/skills/define-scope/discovery.md.template</file>
-<file>/home/user/Documents/projects/python-project-template/.opencode/skills/define-scope/feature.md.template</file>
-<file>/home/user/Documents/projects/python-project-template/.opencode/skills/define-scope/scope-journal.md.template</file>
+<file>.opencode/skills/define-scope/discovery.md.template</file>
+<file>.opencode/skills/define-scope/feature.md.template</file>
+<file>.opencode/skills/define-scope/scope-journal.md.template</file>
 </skill_files>

@@ -31,7 +31,7 @@ Design correctness is far more important than lint/pyright/coverage compliance. 
 
 ### Prerequisites (stop if any fail — escalate to PO)
 
-1. `docs/features/in-progress/` contains exactly one `.feature` file (not just `.gitkeep`). If none exists, **STOP** — update FLOW.md `Next:` to `Run @product-owner — move the chosen feature to in-progress/` and stop. Never self-select or move a feature yourself.
+1. `docs/features/in-progress/` contains exactly one `.feature` file (not just `.gitkeep`). If none exists, **STOP** — update `WORK.md` `@state` to `[IDLE]` and stop. Never self-select or move a feature yourself.
 2. The feature file's discovery section has `Status: BASELINED`. If not, escalate to PO — Step 1 is incomplete.
 3. The feature file contains `Rule:` blocks with `Example:` blocks and `@id` tags. If not, escalate to PO — criteria have not been written.
 4. Package name confirmed: read `pyproject.toml` → locate `[tool.setuptools]` → confirm directory exists on disk.
@@ -196,7 +196,7 @@ Commit: `feat(<feature-stem>): add architecture and test stubs`
 
 ### Hand off to Step 3 (TDD Loop)
 
-1. Update FLOW.md: `Next: Run @software-engineer — Step 3 TDD Loop`
+1. Update `WORK.md` `@state: STEP-3-WORKING`
 2. Provide the SE with:
    - Feature file path
    - Summary of stubs created
@@ -210,7 +210,7 @@ Commit: `feat(<feature-stem>): add architecture and test stubs`
 
 If during architecture you discover behavior not covered by existing acceptance criteria:
 - **Do not extend criteria yourself** — escalate to PO
-- Note the gap in `WORK.md` Next: line and Session Log
+- Note the gap in `WORK.md` and escalate to PO
 - The PO will decide whether to add a new Example to the `.feature` file
 
 ---
@@ -222,6 +222,6 @@ Templates for files written by this skill live in this skill's directory (`archi
 - `system.md.template` — `docs/system.md` structure (domain model + Context + Container sections included)
 - `adr.md.template` — individual ADR file structure (includes `## Context` section)
 
-Base directory for this skill: file:///home/user/Documents/projects/python-project-template/.opencode/skills/architect
+Base directory for this skill: `.opencode/skills/architect/`
 Relative paths in this skill (e.g., scripts/, reference/) are relative to this base directory.
 Note: file list is sampled.
