@@ -19,6 +19,7 @@ package (`app`) with no runtime dependencies beyond the Python stdlib.
 ## Context
 
 ```mermaid
+%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#f0ece4', 'lineColor': '#c9a84c'}}}%%
 C4Context
   title System Context — temple8
 
@@ -42,6 +43,7 @@ C4Context
 ## Container
 
 ```mermaid
+%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#f0ece4', 'lineColor': '#c9a84c'}}}%%
 C4Container
   title Container Diagram — temple8
 
@@ -127,7 +129,7 @@ graph LR
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | `project.name` | string | `"temple8"` | Application name; read from installed package metadata |
-| `project.description` | string | `"From zero to hero — production-ready Python, without the ceremony."` | Tagline; set as `argparse` description |
+| `project.description` | string | `"Python template with some awesome tools to quickstart any Python project"` | Package description from `pyproject.toml`; set as `argparse` description |
 | `project.version` | string | `"7.1.20260422"` | Calver version; read at runtime via `importlib.metadata` |
 
 ---
