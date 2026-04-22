@@ -1,26 +1,46 @@
-# ADR-2026-04-22 — version-source
+# ADR-2026-04-22-version-source
 
-**Status:** Accepted
-**Date:** 2026-04-22
-**Author:** system-architect
-**Feature:** display-version
+## Status
 
----
+Accepted
 
 ## Context
 
-The application needs to expose its own version at runtime. Two options exist: hardcode a `__version__` constant in the source tree, or read the version from `pyproject.toml` — the file that already serves as the project's authoritative metadata record. Duplicating the version introduces drift risk; a single source of truth eliminates it. Python 3.11+ ships `tomllib` in the standard library, so no additional dependency is required.
+The `cli-entrypoint` feature requires the `--version` flag to print the application's version
+string. The feature rule states: "the version string is always read from package metadata at
+runtime; it is never hardcoded." The decision is how to access that metadata.
+
+Alternatives evaluated:
+- `importlib.metadata.version()` (Python stdlib, since 3.8)
+- Read `pyproject.toml` directly at runtime with `tomllib`
+- Hardcode the version string in `__main__.py`
+- Expose a `__version__` constant in `app/__init__.py`
 
 ## Decision
 
-We will read the version from `pyproject.toml` at runtime using `tomllib`. No `__version__` constant will be defined anywhere in the package. The `pyproject.toml` `[project] version` field is the single source of truth.
+Use `importlib.metadata.version("temple8")` at runtime.
+
+## Reason
+
+`importlib.metadata` is the canonical stdlib API for reading installed package metadata since
+Python 3.8. It reads from the distribution's `METADATA` file, which is the single source of
+truth set by `pyproject.toml`. This satisfies the "never hardcoded" rule with the least code
+and zero file I/O complexity.
+
+## Alternatives Considered
+
+- **Hardcoded string**: violates the explicit feature rule; drifts from `pyproject.toml` over
+  time.
+- **Read `pyproject.toml` at runtime with `tomllib`**: works, but requires file path resolution
+  and adds I/O; `importlib.metadata` is simpler and the stdlib-blessed approach.
+- **`app.__version__` constant in `__init__.py`**: requires a second source of truth; still
+  needs `importlib.metadata` or hardcoding to populate it — one extra indirection with no
+  benefit.
 
 ## Consequences
 
-- **Positive:** Version is never out of sync between the package and its metadata; no extra release step to update a constant.
-- **Negative:** `version()` performs a file read on every call; this is acceptable for a CLI tool but would be a concern in a hot path.
-- **Neutral:** Requires Python ≥ 3.11 (tomllib). This matches the project's `requires-python = ">=3.13"` constraint.
-
----
-
-> ADRs are append-only. To revise a decision, create a new ADR and set the Status of this one to "Superseded by ADR-YYYY-MM-DD-<new-slug>".
+- (+) Single source of truth: `pyproject.toml` → installed metadata → runtime
+- (+) Works correctly in editable installs (`uv sync`) and wheel installs
+- (+) Zero additional imports beyond stdlib
+- (-) Requires the package to be installed (not just on `sys.path` as a raw directory) —
+  acceptable since the feature's Given step is "the application package is installed"

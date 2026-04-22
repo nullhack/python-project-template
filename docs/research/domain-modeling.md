@@ -28,7 +28,7 @@ Foundations for bounded context identification, ubiquitous language, and feature
 | **Status** | Confirmed — freely available CC-BY canonical summary; maintained by Evans personally |
 | **Core finding** | The open-access pattern summary of all DDD patterns from the 2003 book. More precisely citable than the book for specific pattern definitions. Key patterns: Ubiquitous Language ("Use the model as the backbone of a language. Commit the team to exercising that language relentlessly in all communication within the team and in the code."), Bounded Context, Context Map, Domain Events, Aggregates, Repositories. |
 | **Mechanism** | Each pattern is described with: intent, prescription, and "therefore" consequences. The Ubiquitous Language pattern prescribes: use the same terms in diagrams, writing, and especially speech. Refactor the code when the language changes. Resolve confusion over terms in conversation, the way confusion over ordinary words is resolved — by agreement and precision. |
-| **Where used** | Primary reference for `docs/domain-model.md` structure and the ubiquitous language practice. `update-docs` skill glossary entries derive from this: terms must match code identifiers (Evans' "use the same language in code" prescription). `docs/research/domain-modeling.md`. |
+| **Where used** | Primary reference for `docs/domain-model.md` structure and the ubiquitous language practice. `update-docs` skill glossary entries derive from this: terms must match code identifiers (Evans' "use the same language in code" prescription). `docs/research/domain-modeling.md`. `define-scope/glossary.md.template` — the living glossary format and entry structure. |
 | **Note** | Supersedes entry #31 as the citable source for specific pattern quotes. Entry #31 remains as the book reference. Use this entry when citing a specific Evans pattern definition. |
 
 ---
@@ -103,6 +103,20 @@ Foundations for bounded context identification, ubiquitous language, and feature
 
 ---
 
+### 69. ISO 704 — Terminology Work Principles and Methods
+
+| | |
+|---|---|
+| **Source** | ISO. (2022). *ISO 704:2022 — Terminology work — Principles and methods*. International Organization for Standardization. https://www.iso.org/standard/79077.html |
+| **Date** | 2022 (first edition 1987; current edition 2022) |
+| **Alternative** | ISO 1087:2019 — Terminology work and terminology science: vocabulary (the companion vocabulary standard) |
+| **Status** | Not directly verified — paywalled standard (~CHF 158). Content described here is drawn from the publicly available ISO preview, ISO TC 37 documentation, and widely cited secondary sources in terminology science literature. Core principles (genus + differentia, monosemy, consistency) are uncontested across secondary sources and have been stable since the 1987 first edition. |
+| **Core finding** | A definition should identify the concept by stating (1) a **genus** — the broader category the concept belongs to — and (2) a **differentia** — the features that distinguish it from all other concepts in the same genus. This produces a one-sentence definition that is internally consistent, non-circular, and sufficient. Definitions should avoid negation ("what it is not") and synonymy ("same as X") as primary definition strategies. |
+| **Mechanism** | Genus + differentia: "A [genus] that [differentia]." Example: "A Bounded Context is a [boundary within a domain model] that [enforces consistency of a single Ubiquitous Language]." The genus locates the term in a category the reader already knows; the differentia narrows it to this specific concept. |
+| **Where used** | `define-scope/glossary.md.template` — the `**Definition:**` field format. The genus + differentia pattern is the prescribed sentence structure for all glossary entries. Not cited by name in the template — Evans DDD is the headline practice; ISO 704 is the definition *format* underlying it. `docs/research/domain-modeling.md`. |
+
+---
+
 ## Bibliography
 
 1. Context Mapper. (2025). Rapid Object-Oriented Analysis and Design. https://contextmapper.org/docs/rapid-ooad
@@ -113,3 +127,4 @@ Foundations for bounded context identification, ubiquitous language, and feature
 6. Fowler, M. (2014). BoundedContext. martinfowler.com. https://martinfowler.com/bliki/BoundedContext.html
 7. Vernon, V. (2013). *Implementing Domain-Driven Design*. Addison-Wesley.
 8. Verraes, M. (2013). Ubiquitous Language Is Not a Glossary. verraes.net (archived). https://web.archive.org/web/20131004/https://verraes.net/2013/04/ubiquitous-language-is-not-a-glossary/
+9. ISO. (2022). *ISO 704:2022 — Terminology work — Principles and methods*. International Organization for Standardization. https://www.iso.org/standard/79077.html

@@ -86,7 +86,7 @@ If all BASELINED features have Dependency=1: stop and resolve the blocking depen
 mv docs/features/backlog/<name>.feature docs/features/in-progress/<name>.feature
 ```
 
-Update `WORK.md` — add (or replace) the active item block and append to Session Log:
+Update `WORK.md` — add (or replace) the active item block:
 
 ```markdown
 ## Active Items
@@ -94,12 +94,6 @@ Update `WORK.md` — add (or replace) the active item block and append to Sessio
 @id: <name>
 @state: [STEP-1-DISCOVERY] or [STEP-2-READY] — whichever is next
 @branch: [NONE]
-
-## Session Log
-**YYYY-MM-DD HH:MM** — product-owner — [IDLE] → [<next-state>] — selected <name> from backlog
-
-## Next
-Run @<agent-name> — <first concrete action for this feature>
 ```
 
 - If the feature has no `Rule:` blocks yet → `@state: STEP-1-DISCOVERY`; `Run @product-owner — load skill define-scope and write stories`
@@ -121,5 +115,5 @@ git commit -m "chore: select <name> as next feature"
 - [ ] WSJF scores filled for all candidates
 - [ ] Selected feature has highest WSJF among Dependency=0 candidates
 - [ ] Feature moved to `in-progress/`
-- [ ] `WORK.md` updated with correct `@state` and `Next:` line
+- [ ] `WORK.md` updated with correct `@state`
 - [ ] Changes committed

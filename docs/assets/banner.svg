@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 300" role="img" aria-label="temple8 banner — TEMPLE·VIII">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 300" role="img" aria-label="temple8 banner — TEMPLE·VIII, Greek temple façade with central lintel">
   <!--
     Colors:
       parchment      #faf7f2   main background
@@ -27,7 +27,7 @@
     <polygon
       points="0,-90 80,-54 -80,-54"
       fill="#ede8e0"
-      stroke="#5c3d1e"
+      stroke="#c8c0b8"
       stroke-width="1.4"
       stroke-linejoin="round"
     />
@@ -35,27 +35,29 @@
     <line x1="0" y1="-90" x2="80" y2="-54"
           stroke="#a09890" stroke-width="1" opacity="0.4"/>
 
-    <!-- 8 glyph between pillars, centred at (0,-7) — radius ~14 -->
-    <path
-      d="M0,-7
-         C0,-15.6 -9.1,-20 -14.7,-20
-         C-20.3,-20 -28,-15.6 -28,-7
-         C-28,1.6 -20.3,6 -14.7,6
-         C-9.1,6 0,1.6 0,-7
-         C0,-15.6 9.1,-20 14.7,-20
-         C20.3,-20 28,-15.6 28,-7
-         C28,1.6 20.3,6 14.7,6
-         C9.1,6 0,1.6 0,-7 Z"
-      fill="none"
-      stroke="#c9a84c"
-      stroke-width="2.2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      transform="rotate(90, 0, -7)"
-    />
+    <!-- Ceiling shadow: underside of entablature over the inner gap
+         darkens the top of the upper void -->
+    <rect x="-13" y="-42" width="26" height="3"
+          fill="#5c3d1e" opacity="0.28"/>
+    <!-- Floor shadow: top of stylobate under the inner gap
+         darkens the base of the lower void -->
+    <rect x="-13" y="25" width="26" height="3"
+          fill="#5c3d1e" opacity="0.28"/>
+    <!-- Horizontal crossbeam between the two central columns — a lintel
+         spanning x=-13 to x=13, centred at y=-7. Together with the
+         entablature above and stylobate below, it carves two rectangular
+         voids that read as a ghosted 8. -->
+    <rect x="-13" y="-9.5" width="26" height="5"
+          fill="#ede8e0" stroke="#5c3d1e" stroke-width="0.9"/>
+    <!-- Underside shadow to give it depth, like a real load-bearing element -->
+    <rect x="-13" y="-4.5" width="26" height="2"
+          fill="#5c3d1e" opacity="0.38"/>
+    <!-- Topside shadow on lintel (upper void floor) -->
+    <rect x="-13" y="-9.5" width="26" height="1.5"
+          fill="#5c3d1e" opacity="0.38"/>
 
     <!-- Entablature -->
-    <rect x="-80" y="-54" width="160" height="12" fill="#ede8e0" stroke="#5c3d1e" stroke-width="0.9"/>
+    <rect x="-80" y="-54" width="160" height="12" fill="#ede8e0" stroke="#c8c0b8" stroke-width="0.9"/>
     <rect x="-80" y="-43" width="160" height="2"  fill="#a09890" opacity="0.3"/>
 
     <!-- Column 1 -->
@@ -64,16 +66,20 @@
     <!-- Column 2 -->
     <rect x="-28" y="-42" width="15" height="70" fill="#ede8e0" stroke="#c8c0b8" stroke-width="0.4"/>
     <rect x="-15" y="-42" width="3"  height="70" fill="#a09890" opacity="0.2"/>
+    <!-- Inner-wall shadow: right face of col 2, frames the 8 void -->
+    <rect x="-15" y="-42" width="2"  height="70" fill="#5c3d1e" opacity="0.50"/>
     <!-- Column 3 -->
     <rect x="13"  y="-42" width="15" height="70" fill="#ede8e0" stroke="#c8c0b8" stroke-width="0.4"/>
     <rect x="26"  y="-42" width="3"  height="70" fill="#a09890" opacity="0.2"/>
+    <!-- Inner-wall shadow: left face of col 3, frames the 8 void -->
+    <rect x="13"  y="-42" width="2"  height="70" fill="#5c3d1e" opacity="0.50"/>
     <!-- Column 4 -->
     <rect x="53"  y="-42" width="15" height="70" fill="#ede8e0" stroke="#c8c0b8" stroke-width="0.4"/>
     <rect x="66"  y="-42" width="3"  height="70" fill="#a09890" opacity="0.2"/>
 
     <!-- Stylobate — three stepped courses -->
-    <rect x="-80" y="28"  width="160" height="9" fill="#ede8e0" stroke="#5c3d1e" stroke-width="0.7"/>
-    <rect x="-85" y="37"  width="170" height="8" fill="#c8c0b8"/>
+    <rect x="-80" y="28"  width="160" height="9" fill="#ede8e0" stroke="#c8c0b8" stroke-width="0.7"/>
+    <rect x="-85" y="37"  width="170" height="8" fill="#d8d4cc"/>
     <rect x="-90" y="45"  width="180" height="7" fill="#a09890" opacity="0.6"/>
   </g>
 

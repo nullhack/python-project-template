@@ -45,9 +45,10 @@ A finite state machine (FSM) consists of:
 
 ### The Two-File Pattern
 
-```
-FLOW.md  ──  "What are the rules?"   (static, versioned with the project)
-WORK.md  ──  "What is happening now?" (dynamic, updated by agents)
+```mermaid
+flowchart LR
+    FLOW["FLOW.md<br/>What are the rules?<br/>(static, versioned with the project)"]
+    WORK["WORK.md<br/>What is happening now?<br/>(dynamic, updated by agents)"]
 ```
 
 Agents read `FLOW.md` to know **what to do**. They read `WORK.md` to know **what is active and where it is**. They write only to `WORK.md` during normal operation.
@@ -121,7 +122,7 @@ List each role with its agent file path. Every state owner must appear in this t
 
 ### Step 6 — Draw the transition diagram
 
-Include an ASCII or Mermaid diagram. It must show every state and every valid transition including failure routes. This is the primary human-readable artifact.
+Include a Mermaid `stateDiagram-v2`. It must show every state and every valid transition including failure routes. This is the primary human-readable artifact.
 
 ---
 
@@ -141,7 +142,6 @@ Include an ASCII or Mermaid diagram. It must show every state and every valid tr
 
 1. Update `WORK.md`:
    - Set `@state` to the new state
-   - Append to Session Log
 2. Commit WORK.md update before any further work:
    ```bash
    git add WORK.md && git commit -m "chore: @id transition to @state"
@@ -181,11 +181,6 @@ Each item carries exactly the variables defined by `FLOW.md`:
   @state: <value>
   @branch: <value>
 
----
-
-## Session Log
-
-<!-- Append only. Never delete. Format: YYYY-MM-DD HH:MM | @role | @id | @state | action -->
 ```
 
 Multiple active items are allowed when the workflow permits parallel work. Each is a separate bullet entry under `## Active Items`.
@@ -214,8 +209,6 @@ Steps:
 1. Never skip reading `FLOW.md` and `WORK.md` at session start
 2. Never end a session without updating `WORK.md` and committing
 3. Never commit directly to `main`
-4. The `Next:` line in every session output must be actionable for a fresh agent
-5. `WORK.md` Session Log is append-only — never delete entries
-6. If `WORK.md` is missing, create it from `work.md.template` before any other work
-7. If detected state differs from `WORK.md`, trust the filesystem and update `WORK.md`
-8. One step per session where possible; do not start Step N+1 in the same session as Step N
+4. If `WORK.md` is missing, create it from `work.md.template` before any other work
+5. If detected state differs from `WORK.md`, trust the filesystem and update `WORK.md`
+6. One step per session where possible; do not start Step N+1 in the same session as Step N

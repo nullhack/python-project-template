@@ -109,7 +109,17 @@ Load and execute the full `update-docs` skill now:
 
 The `update-docs` commit step is **skipped** here — all changed files are staged together with the version bump in step 6.
 
-### 6. Regenerate lockfile and commit version bump
+### 6. Run release-check
+
+Run the automated pre-release checklist before committing:
+
+```bash
+uv run task release-check
+```
+
+If this fails, fix the issues and rerun. Do not commit until it passes.
+
+### 7. Regenerate lockfile and commit version bump
 
 After updating `pyproject.toml`, regenerate the lockfile — CI runs `uv sync --locked` and will fail if it is stale:
 
@@ -121,7 +131,7 @@ git commit -m "chore(release): bump version to v{version}[ - {Release Name}]"
 # Include " - {Release Name}" only if a release name was generated in Step 0; omit otherwise.
 ```
 
-### 7. Create GitHub release
+### 8. Create GitHub release
 
 Assign the SHA first so it expands correctly inside the notes string:
 
@@ -153,7 +163,7 @@ gh release create "v{version}" \
 # Replace [ - {Release Name}] with the actual name, or omit the bracketed portion entirely if Step 0 produced no name.
 ```
 
-### 8. If a hotfix commit follows the release tag
+### 9. If a hotfix commit follows the release tag
 
 If CI fails after the release (e.g. a stale lockfile) and a hotfix commit is pushed, reassign the tag and GitHub release to that commit:
 
@@ -174,12 +184,9 @@ The release notes and title do not need to change — only the target commit mov
 
 ## Quality Checklist
 
-- [ ] `task test` passes
-- [ ] `task lint` passes
-- [ ] `task static-check` passes
+- [ ] `task release-check` passes (runs version alignment, changelog entry, lint, static-check, tests, doc-build)
 - [ ] `pyproject.toml` version updated
-- [ ] `uv lock` run after version bump — lockfile must be up to date
-- [ ] `<package>/__version__` matches `pyproject.toml` version
+- [ ] `<package>/__version__` matches `pyproject.toml` version (if present)
 - [ ] CHANGELOG.md updated
 - [ ] `update-docs` skill run — Context, Container sections, and glossary reflect the new feature
 - [ ] Release name not used before

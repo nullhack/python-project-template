@@ -77,7 +77,7 @@ EOF
 - [ ] All commits follow conventional commit format
 - [ ] `task lint` exits 0
 - [ ] `task static-check` exits 0
-- [ ] `task test` exits 0, coverage 100%
+- [ ] `task test` exits 0, coverage passes
 - [ ] `timeout 10s task run` exits with code ≠ 124
 - [ ] PR description includes all `@id` acceptance criteria
 

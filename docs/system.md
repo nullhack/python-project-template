@@ -1,14 +1,34 @@
 # System Overview: temple8
 
-> Last updated: 2026-04-22 — display-version
-
-**Purpose:** Provide a production-ready Python project template that eliminates setup boilerplate so engineers can ship features immediately.
+> Current-state description of the production system.
+> Rewritten by the system-architect at Step 2 for each feature cycle.
+> Reviewed by the product-owner at Step 5.
+> Contains only completed features — nothing from backlog or in-progress.
 
 ---
 
 ## Summary
 
-temple8 is a Python project template. Engineers clone it and run a five-step AI-assisted delivery workflow — Scope → Arch → TDD Loop → Verify → Accept — to ship features with quality gates from day one. The template ships with one working demonstration feature (`display-version`) that exercises the full stack end-to-end: it reads the application version from `pyproject.toml` at runtime via `tomllib`, logs it at INFO level, and gates visibility on a `ValidVerbosity` parameter. Quality tooling (ruff, pyright, pytest, hypothesis) and CI are preconfigured; no setup required beyond cloning.
+temple8 is a Python project template that gives engineers a production-ready skeleton with zero
+boilerplate. It ships with a single demonstration feature — a CLI entrypoint (`python -m app`) —
+that exercises the full five-step delivery workflow end-to-end. The system is a single Python
+package (`app`) with no runtime dependencies beyond the Python stdlib.
+
+---
+
+## Context
+
+```mermaid
+%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#f0ece4', 'lineColor': '#c9a84c'}}}%%
+C4Context
+  title System Context — temple8
+
+  Person(dev, "Developer", "Python engineer using the template")
+
+  System(temple8, "temple8", "Production-ready Python project template with CLI entrypoint")
+
+  Rel(dev, temple8, "Runs `python -m app --help` / `--version`", "CLI / subprocess")
+```
 
 ---
 
@@ -16,8 +36,25 @@ temple8 is a Python project template. Engineers clone it and run a five-step AI-
 
 | Actor | Needs |
 |-------|-------|
-| Engineer | Clones the template; runs `python -m app` to verify the installed version and control log verbosity; ships features using the built-in workflow |
-| CI Pipeline | Imports the package; runs the full test suite, lint, and type-check on every push |
+| `Developer` | Run `python -m app --help` to verify the CLI is wired up; run `--version` to confirm the installed package version |
+
+---
+
+## Container
+
+```mermaid
+%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#f0ece4', 'lineColor': '#c9a84c'}}}%%
+C4Container
+  title Container Diagram — temple8
+
+  Person(dev, "Developer", "")
+
+  System_Boundary(app_boundary, "temple8") {
+    Container(cli, "CLI Entrypoint", "Python / argparse", "Parses --help and --version; reads version from package metadata")
+  }
+
+  Rel(dev, cli, "Invokes via `python -m app`")
+```
 
 ---
 
@@ -25,32 +62,8 @@ temple8 is a Python project template. Engineers clone it and run a five-step AI-
 
 | Module | Responsibility |
 |--------|----------------|
-| `app/__main__.py` | CLI entry point; accepts `--verbosity` flag; validates it and delegates to `version()` |
-| `app/version.py` | Reads `pyproject.toml` via `tomllib`; logs and returns the version string |
-
----
-
-## Key Decisions
-
-- Version is read from `pyproject.toml` at runtime via `tomllib`; no hardcoded `__version__` constant. (see `ADR-2026-04-22-version-source`)
-- Log verbosity is validated against the five standard Python log levels before use; invalid values raise `ValueError`. (see `ADR-2026-04-22-verbosity-validation`)
-
----
-
-## External Dependencies
-
-| Dependency | What it provides | Why not replaced |
-|------------|------------------|-----------------|
-| `fire` | CLI argument parsing from function signatures | Zero boilerplate; consistent with template philosophy |
-| `tomllib` (stdlib, Python ≥ 3.11) | TOML parsing for `pyproject.toml` | Standard library; no extra dependency needed |
-
----
-
-## Active Constraints
-
-- `pyproject.toml` is the single source of truth for the version string; never duplicate it.
-- `main()` must accept `verbosity` as its only parameter; no global state.
-- All new modules must achieve 100% test coverage before merging.
+| `app/__main__.py` | CLI entrypoint: parses `--help` and `--version` flags; reads version from package metadata |
+| `app/__init__.py` | Package marker; no public API |
 
 ---
 
@@ -60,92 +73,89 @@ temple8 is a Python project template. Engineers clone it and run a five-step AI-
 
 | Context | Responsibility | Key Modules |
 |---------|----------------|-------------|
-| **Version** | Read the project version and emit a log message | `app/version.py` |
-| **CLI** | Parse CLI arguments; validate verbosity; compose entry point | `app/__main__.py` |
+| `CLI` | Expose the application as a command-line tool; parse flags; print help and version | `app/__main__.py` |
 
 ### Entities
 
 | Name | Type | Description | Bounded Context |
 |------|------|-------------|-----------------|
-| `Version` | Value Object | The semver string (`MAJOR.MINOR.YYYYMMDD`) read from `pyproject.toml` at runtime via `tomllib`. Never duplicated as a source-code constant. | Version |
-| `ValidVerbosity` | Value Object | A string drawn from the closed set `{DEBUG, INFO, WARNING, ERROR, CRITICAL}`. Any other value is invalid and raises `ValueError`. | CLI |
+| `ArgumentParser` | Value Object (stdlib) | Configured parser with `--help` and `--version` actions | `CLI` |
 
 ### Actions
 
 | Name | Actor | Object | Description |
 |------|-------|--------|-------------|
-| `version()` | version module | `pyproject.toml` → `Version` | Reads `pyproject.toml`, emits an INFO log in the format `"Version: <version>"`, and returns the version string |
-| `main(verbosity)` | CLI entry point | `ValidVerbosity` → None | Validates verbosity, configures the root logger, then calls `version()`. Raises `ValueError` on invalid verbosity |
+| `build_parser` | `__main__` module | → `argparse.ArgumentParser` | Constructs and returns the configured CLI parser |
+| `main` | `__main__` module | `sys.argv` → exit | Parses arguments and dispatches; `argparse` handles exit codes natively |
 
 ### Relationships
 
 | Subject | Relation | Object | Cardinality | Notes |
 |---------|----------|--------|-------------|-------|
-| `main()` | validates-and-calls | `version()` | 1:1 | Verbosity guard runs before version read |
-| `version()` | reads | `pyproject.toml` | 1:1 | Single file read per call; no caching |
-| `ValidVerbosity` | constrains | `main()` | 1:1 | Only valid level names accepted |
+| `main` | calls | `build_parser` | 1:1 | Parser constructed fresh on each invocation |
+| `build_parser` | reads | `importlib.metadata` | 1:1 | Version string fetched at parser construction time |
 
----
-
-## Context
+### Module Dependency Graph
 
 ```mermaid
-C4Context
-  title System Context — temple8
+graph LR
+  main["app/__main__.py"]
+  argparse["argparse (stdlib)"]
+  metadata["importlib.metadata (stdlib)"]
 
-  Person(engineer, "Engineer", "Clones the template; runs app to verify version; ships features via workflow")
-  Person(ci, "CI Pipeline", "Imports the package; runs full test suite, lint, type-check on every push")
-
-  System(temple8, "temple8", "Production-ready Python project template with AI-assisted five-step delivery workflow")
-
-  System_Ext(pyproject, "pyproject.toml", "Single source of truth for project version and metadata")
-  System_Ext(github, "GitHub Actions", "Runs quality gates on every push via .github/workflows/ci.yml")
-
-  Rel(engineer, temple8, "Runs", "CLI: python -m app [--verbosity LEVEL]")
-  Rel(ci, temple8, "Imports and tests", "pytest / pyright / ruff")
-  Rel(temple8, pyproject, "Reads version at runtime", "tomllib (stdlib)")
-  Rel(github, temple8, "Executes quality gates", "uv run task lint / test / static-check")
+  main --> argparse
+  main --> metadata
 ```
 
 ---
 
-## Container
+## Active Constraints
 
-```mermaid
-C4Container
-  title Container Diagram — temple8
-
-  Person(engineer, "Engineer", "")
-  Person(ci, "CI Pipeline", "")
-
-  System_Boundary(temple8_sys, "temple8") {
-    Container(cli, "CLI Entry Point", "Python / fire", "app/__main__.py — accepts --verbosity, validates it against ValidVerbosity, calls version().")
-    Container(version_mod, "Version Module", "Python / tomllib", "app/version.py — reads pyproject.toml, emits INFO log, returns version string.")
-  }
-
-  System_Ext(pyproject, "pyproject.toml", "Project version and metadata")
-  System_Ext(github, "GitHub Actions", "CI pipeline")
-
-  Rel(engineer, cli, "runs", "CLI: python -m app [--verbosity LEVEL]")
-  Rel(ci, cli, "imports and tests", "pytest / pyright / ruff")
-  Rel(cli, version_mod, "calls version()")
-  Rel(version_mod, pyproject, "reads [project] version", "tomllib / filesystem")
-  Rel(github, cli, "executes quality gates", "uv run task lint / test / static-check")
-```
+- Zero new runtime dependencies — all CLI and metadata functionality uses Python stdlib only
+- All production code lives in `app/__main__.py` — no new source files
+- Version format is calver (`major.minor.YYYYMMDD`); tests must not assume semver
 
 ---
 
-## ADR Index
+## Key Decisions
+
+- Use `argparse` (stdlib) for CLI parsing — zero new dependencies (ADR-2026-04-22-cli-parser-library)
+- Read version from `importlib.metadata` at runtime — single source of truth, never hardcoded (ADR-2026-04-22-version-source)
+
+---
+
+## Configuration Keys
+
+| Key | Type | Default | Description |
+|-----|------|---------|-------------|
+| `project.name` | string | `"temple8"` | Application name; read from installed package metadata |
+| `project.description` | string | `"Python template with some awesome tools to quickstart any Python project"` | Package description from `pyproject.toml`; set as `argparse` description |
+| `project.version` | string | `"7.1.20260422"` | Calver version; read at runtime via `importlib.metadata` |
+
+---
+
+## External Dependencies
+
+| Dependency | What it provides | Why not replaced |
+|------------|------------------|-----------------|
+| `argparse` | CLI argument parsing | stdlib; zero install cost; sufficient for 2-flag skeleton |
+| `importlib.metadata` | Runtime package metadata access | stdlib; canonical API since Python 3.8 |
+
+---
+
+## ADRs
+
+See `docs/adr/` for the full decision record. Each ADR contains a `## Context` section with the Q&A that produced the decision.
 
 | ADR | Decision |
 |-----|----------|
-| [ADR-2026-04-22-version-source](adr/ADR-2026-04-22-version-source.md) | Read version from `pyproject.toml` via `tomllib` at runtime; no hardcoded constant |
-| [ADR-2026-04-22-verbosity-validation](adr/ADR-2026-04-22-verbosity-validation.md) | Validate verbosity against a closed set; raise `ValueError` on invalid input |
+| `ADR-2026-04-22-cli-parser-library` | Use `argparse` (stdlib) for CLI parsing — zero new dependencies |
+| `ADR-2026-04-22-version-source` | Read version from `importlib.metadata` at runtime — never hardcoded |
 
 ---
 
 ## Completed Features
 
-| Feature | Description |
-|---------|-------------|
-| `display-version` | Reads version from `pyproject.toml` at runtime and logs it; verbosity controls log visibility |
+| Feature | Description | Accepted |
+|---------|-------------|----------|
+| `cli-entrypoint` | CLI entrypoint via `python -m app`; `--help` and `--version` flags; stdlib only | 2026-04-22 |

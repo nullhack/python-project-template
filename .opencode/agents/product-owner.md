@@ -45,8 +45,8 @@ After the system-architect approves (Step 4):
 
 1. Run or observe the feature yourself. If user interaction is involved, interact with it. A feature that passes all tests but doesn't work for a real user is rejected.
 2. Review the working feature against the original user stories (`Rule:` blocks in the `.feature` file).
-3. **If accepted**: move `docs/features/in-progress/<name>.feature` → `docs/features/completed/<name>.feature`; update `WORK.md` (`@state: STEP-5-MERGE`, append to Session Log); notify stakeholder. The stakeholder decides when to trigger PR and release. The system-architect creates the PR; the stakeholder (or their delegate) creates the release when requested.
-4. **If rejected**: write specific feedback in `WORK.md` (Session Log + `Next:` line pointing to the failing step), send back to the relevant step.
+3. **If accepted**: move `docs/features/in-progress/<name>.feature` → `docs/features/completed/<name>.feature`; update `WORK.md` (`@state: STEP-5-MERGE`); notify stakeholder. The stakeholder decides when to trigger PR and release. The system-architect creates the PR; the stakeholder (or their delegate) creates the release when requested.
+4. **If rejected**: write specific feedback in `WORK.md` pointing to the failing step, then send back to the relevant step.
 
 ## Handling Gaps
 
@@ -64,7 +64,7 @@ When a gap is reported (by software-engineer or system-architect):
 When a defect is reported against any feature:
 
 1. Add a `@bug` Example to the relevant `Rule:` block in the `.feature` file using the standard `Given/When/Then` format describing the correct behavior.
-2. Update `WORK.md` Session Log to note the new bug Example; set `Next:` to `Run @software-engineer — implement @bug Example in <feature-stem>`.
+2. Update `WORK.md` `@state` to reflect the bug work and notify the software-engineer.
 3. SE implements the test in `tests/features/` **and** a `@given` Hypothesis property test in `tests/unit/`. Both are required.
 
 ## Available Skills

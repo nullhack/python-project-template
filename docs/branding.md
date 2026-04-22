@@ -30,7 +30,7 @@ The palette is drawn from classical marble, parchment, and gold — materials th
 
 ### Logo
 
-Greek temple façade — pediment, four columns, three-step stylobate. A gold lemniscate (∞) sits in the centre of the pediment; it reads as ∞ or 8 depending on size. Transparent background. Stone-light `#f0ece4` / `#c8c0b8` fill, `#5c3d1e` brown outlines, gold `#c9a84c` ∞ glyph.
+Greek temple façade — pediment, four columns, three-step stylobate. A horizontal lintel (crossbeam) spans between the two central columns at mid-height. The void above the lintel and the void below it, framed by the entablature and stylobate, together imply an 8 — structural, not decorative. Transparent background. Stone-light `#f0ece4` / `#c8c0b8` fill, `#5c3d1e` brown outlines.
 
 ### Banner
 
@@ -47,15 +47,6 @@ Warm parchment `#faf7f2` background. Left zone: temple mark (same geometry as lo
 
 Every word carries weight. The Greeks had a name for ornament that obscures meaning: *kenophonia* — empty noise.
 
-- **Avoid:** `easy`, `simple`, `just`, `quick`, `scaffold` — these words undermine engineer credibility or imply the work is trivial. A temple is not a scaffold.
-- **Prefer:** `minimal`, `precise`, `production-ready`, `zero-boilerplate`, `rigorous`, `from zero to hero`
+- **Avoid:** `easy`, `simple`, `just`, `quick`, `scaffold`, `superseded` — these words undermine engineer credibility or imply the work is trivial. A temple is not a scaffold.
+- **Prefer:** `minimal`, `precise`, `production-ready`, `zero-boilerplate`, `rigorous`, `replaces`, `from zero to hero`
 
-## Project Summary
-
-A Python project template with a production-ready AI-assisted delivery workflow.
-Ships with quality tooling (ruff, pyright, pytest, hypothesis), Gherkin-driven
-acceptance criteria, and five specialised AI agents covering scope through release.
-Built on the premise that rigorous method, applied from the beginning, produces
-something worth building on. Use this summary in banners, release notes, and document headers.
-
-(End of file - total 59 lines)
