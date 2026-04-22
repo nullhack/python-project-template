@@ -154,4 +154,6 @@ See `docs/adr/` for the full decision record. Each ADR contains a `## Context` s
 
 ## Completed Features
 
-*(none yet — cli-entrypoint is in-progress)*
+| Feature | Description | Accepted |
+|---------|-------------|----------|
+| `cli-entrypoint` | CLI entrypoint via `python -m app`; `--help` and `--version` flags; stdlib only | 2026-04-22 |
