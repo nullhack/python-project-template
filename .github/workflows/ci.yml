@@ -68,7 +68,7 @@ jobs:
       matrix:
         python-version: ["3.13"]
     env:
-      UV_SYSTEM_PYTHON: ""
+      UV_SYSTEM_PYTHON: "false"
         
     steps:
       - name: Checkout code
