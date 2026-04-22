@@ -245,33 +245,27 @@
     .research-item-title { color: var(--brown); margin-bottom: 0.2rem; font-style: italic; }
     .research-item-meta { color: var(--stone-dark); font-size: 0.75rem; }
 
-    /* ── Workflow section ── */
-    .workflow-steps {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 0;
-      margin-bottom: 3rem;
+    a.research-item {
+      text-decoration: none;
+      color: inherit;
+      transition: border-color 0.15s, box-shadow 0.15s;
     }
-    .workflow-step {
-      padding: 0.75rem;
-      border-top: 3px solid var(--stone-mid);
-      font-size: 0.78rem;
-      text-align: center;
+    a.research-item:hover {
+      border-color: var(--aegean);
+      box-shadow: 0 2px 8px rgba(59,36,16,0.07);
     }
-    .workflow-step:nth-child(1) { border-top-color: var(--aegean); }
-    .workflow-step:nth-child(2) { border-top-color: var(--gold); }
-    .workflow-step:nth-child(3) { border-top-color: var(--brown); }
-    .workflow-step:nth-child(4) { border-top-color: var(--aegean-deep); }
-    .workflow-step:nth-child(5) { border-top-color: var(--gold-light); }
-    .step-num {
-      font-size: 0.65rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--stone-dark);
-      margin-bottom: 0.25rem;
+    a.feature-stem {
+      text-decoration: none;
+      color: var(--aegean-deep);
+      background: var(--stone);
+      padding: 0.1rem 0.4rem;
+      border-radius: 3px;
+      font-family: "Courier New", monospace;
+      font-size: 0.8rem;
+      flex-shrink: 0;
+      transition: background 0.15s;
     }
-    .step-name { font-weight: bold; color: var(--brown-deep); }
-    .step-agent { color: var(--stone-dark); font-style: italic; font-size: 0.72rem; }
+    a.feature-stem:hover { background: var(--stone-mid); }
 
     /* ── Footer ── */
     footer {
@@ -353,6 +347,21 @@
         <div class="doc-card-title">Test Report</div>
         <div class="doc-card-desc">Full pytest run — results, durations, and pass/fail breakdown</div>
       </a>
+      <a class="doc-card" href="https://github.com/nullhack/temple8/blob/main/docs/system.md">
+        <div class="doc-card-label">Architecture</div>
+        <div class="doc-card-title">System Overview</div>
+        <div class="doc-card-desc">Current-state snapshot — domain model, C4 diagrams, ADR index</div>
+      </a>
+      <a class="doc-card" href="https://github.com/nullhack/temple8/blob/main/docs/discovery.md">
+        <div class="doc-card-label">Discovery</div>
+        <div class="doc-card-title">Discovery Log</div>
+        <div class="doc-card-desc">Session synthesis — scope decisions and feature rationale</div>
+      </a>
+      <a class="doc-card" href="https://github.com/nullhack/temple8/blob/main/docs/glossary.md">
+        <div class="doc-card-label">Language</div>
+        <div class="doc-card-title">Glossary</div>
+        <div class="doc-card-desc">Living domain glossary — append-only, source-traced definitions</div>
+      </a>
     </div>
 
     <!-- ── Features ── -->
@@ -367,7 +376,7 @@
       <div id="tab-completed" class="tab-pane active">
         <ul class="feature-list">
           <li class="feature-item">
-            <span class="feature-stem">cli-entrypoint</span>
+            <a class="feature-stem" href="https://github.com/nullhack/temple8/blob/main/docs/features/completed/cli-entrypoint.feature">cli-entrypoint</a>
             <span class="feature-title">CLI Entrypoint — <code>python -m app --help</code> and <code>--version</code></span>
             <span class="feature-status status-completed">Accepted</span>
           </li>
@@ -398,79 +407,53 @@
       </li>
     </ul>
 
-    <!-- ── Five-Step Workflow ── -->
-    <p class="section-title">Five-Step Workflow</p>
-    <div class="workflow-steps">
-      <div class="workflow-step">
-        <div class="step-num">Step 1</div>
-        <div class="step-name">Scope</div>
-        <div class="step-agent">product-owner</div>
-      </div>
-      <div class="workflow-step">
-        <div class="step-num">Step 2</div>
-        <div class="step-name">Arch</div>
-        <div class="step-agent">system-architect</div>
-      </div>
-      <div class="workflow-step">
-        <div class="step-num">Step 3</div>
-        <div class="step-name">TDD Loop</div>
-        <div class="step-agent">software-engineer</div>
-      </div>
-      <div class="workflow-step">
-        <div class="step-num">Step 4</div>
-        <div class="step-name">Verify</div>
-        <div class="step-agent">system-architect</div>
-      </div>
-      <div class="workflow-step">
-        <div class="step-num">Step 5</div>
-        <div class="step-name">Accept</div>
-        <div class="step-agent">product-owner</div>
-      </div>
-    </div>
-
     <!-- ── Research Library ── -->
     <p class="section-title">Research Library</p>
     <div class="research-grid">
-      <div class="research-item">
-        <div class="research-item-title">Test-Driven Development by Example</div>
-        <div class="research-item-meta">Beck (2002) — TDD loop, RED/GREEN/REFACTOR</div>
-      </div>
-      <div class="research-item">
-        <div class="research-item-title">Domain-Driven Design</div>
-        <div class="research-item-meta">Evans (2003) — bounded contexts, ubiquitous language</div>
-      </div>
-      <div class="research-item">
-        <div class="research-item-title">Refactoring</div>
-        <div class="research-item-meta">Fowler (1999/2018) — smell catalogue, safe transformations</div>
-      </div>
-      <div class="research-item">
-        <div class="research-item-title">BDD Origin Paper</div>
-        <div class="research-item-meta">North (2006) — Gherkin Given/When/Then</div>
-      </div>
-      <div class="research-item">
-        <div class="research-item-title">The Critical Incident Technique</div>
-        <div class="research-item-meta">Flanagan (1954) — gap-finding in requirements</div>
-      </div>
-      <div class="research-item">
-        <div class="research-item-title">Implementing Domain-Driven Design</div>
-        <div class="research-item-meta">Vernon (2013) — aggregates, domain events</div>
-      </div>
-      <div class="research-item">
-        <div class="research-item-title">Object Calisthenics</div>
-        <div class="research-item-meta">Mugridge (2008) — 9 OO rules for clean code</div>
-      </div>
-      <div class="research-item">
-        <div class="research-item-title">Architecture Decision Records</div>
-        <div class="research-item-meta">Nygard (2011) — MADR format, rationale capture</div>
-      </div>
-      <div class="research-item">
-        <div class="research-item-title">Laddering / Means-End Chain</div>
-        <div class="research-item-meta">Reynolds &amp; Gutman (1988) — constraint surfacing</div>
-      </div>
-      <div class="research-item">
+      <a class="research-item" href="https://github.com/nullhack/temple8/blob/main/docs/research/testing.md">
+        <div class="research-item-title">Testing</div>
+        <div class="research-item-meta">TDD, pytest, coverage, property-based testing</div>
+      </a>
+      <a class="research-item" href="https://github.com/nullhack/temple8/blob/main/docs/research/domain-modeling.md">
+        <div class="research-item-title">Domain Modeling</div>
+        <div class="research-item-meta">DDD, bounded contexts, ubiquitous language</div>
+      </a>
+      <a class="research-item" href="https://github.com/nullhack/temple8/blob/main/docs/research/refactoring-empirical.md">
+        <div class="research-item-title">Refactoring (Empirical)</div>
+        <div class="research-item-meta">Smell catalogue, safe transformations, evidence base</div>
+      </a>
+      <a class="research-item" href="https://github.com/nullhack/temple8/blob/main/docs/research/requirements-elicitation.md">
+        <div class="research-item-title">Requirements Elicitation</div>
+        <div class="research-item-meta">BDD, Gherkin, CIT, laddering, stakeholder interviews</div>
+      </a>
+      <a class="research-item" href="https://github.com/nullhack/temple8/blob/main/docs/research/oop-design.md">
+        <div class="research-item-title">OOP Design</div>
+        <div class="research-item-meta">SOLID, Object Calisthenics, GoF patterns</div>
+      </a>
+      <a class="research-item" href="https://github.com/nullhack/temple8/blob/main/docs/research/architecture.md">
+        <div class="research-item-title">Architecture</div>
+        <div class="research-item-meta">ADRs, hexagonal architecture, C4 model</div>
+      </a>
+      <a class="research-item" href="https://github.com/nullhack/temple8/blob/main/docs/research/ai-agents.md">
+        <div class="research-item-title">AI Agent Design</div>
+        <div class="research-item-meta">Agent patterns, role design, workflow orchestration</div>
+      </a>
+      <a class="research-item" href="https://github.com/nullhack/temple8/blob/main/docs/research/cognitive-science.md">
+        <div class="research-item-title">Cognitive Science</div>
+        <div class="research-item-meta">Mental models, working memory, decision-making</div>
+      </a>
+      <a class="research-item" href="https://github.com/nullhack/temple8/blob/main/docs/research/documentation.md">
+        <div class="research-item-title">Documentation</div>
+        <div class="research-item-meta">Living docs, diagrams-as-code, decision records</div>
+      </a>
+      <a class="research-item" href="https://github.com/nullhack/temple8/blob/main/docs/research/software-economics.md">
         <div class="research-item-title">Software Economics</div>
-        <div class="research-item-meta">Boehm (1981) — cost of change, quality economics</div>
-      </div>
+        <div class="research-item-meta">Cost of change, quality ROI, technical debt</div>
+      </a>
+      <a class="research-item" href="https://github.com/nullhack/temple8/blob/main/docs/research/version-control.md">
+        <div class="research-item-title">Version Control</div>
+        <div class="research-item-meta">Branching strategies, commit hygiene, merge safety</div>
+      </a>
     </div>
 
   </main>
