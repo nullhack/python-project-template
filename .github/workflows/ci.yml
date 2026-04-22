@@ -82,7 +82,7 @@ jobs:
           python-version: ${{ matrix.python-version }}
           
       - name: Install dependencies
-        run: uv sync --locked --all-extras --dev
+        run: uv sync --locked --all-extras --dev && uv pip install -e .
 
       - name: Run fast tests
         run: uv run task test-fast
