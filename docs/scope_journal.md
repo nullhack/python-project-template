@@ -4,7 +4,7 @@
 
 ## 2026-04-22 — Session 1
 
-Status: IN-PROGRESS
+Status: COMPLETE
 
 ### General
 
@@ -23,16 +23,13 @@ Status: IN-PROGRESS
 | ID | Question | Answer |
 |----|----------|--------|
 | Q8 | Should the template ship with any working feature, or be purely empty? | It should ship with exactly one working demonstration feature so engineers see the full workflow end-to-end. |
-| Q9 | What is the simplest useful feature for that demonstration? | Displaying the application version read from `pyproject.toml` — it exercises the full stack with no external dependencies. |
 
-### Feature: display-version
+### Feature: cli-entrypoint
 
 | ID | Question | Answer |
 |----|----------|--------|
-| Q10 | Where is the authoritative version stored? | In `pyproject.toml` under `[project] version`. No other copy should exist. |
-| Q11 | How should verbosity be controlled? | Via a string parameter to `main()` matching Python's standard log level names. Invalid values should raise a `ValueError`. |
-| Q12 | At what log level should the version be emitted? | INFO — visible by default in most environments, suppressible by raising to WARNING. |
-| Q13 | Is the version needed at import time, or only when `main()` runs? | Only when `main()` runs; no module-level side effects. |
-| Q14 | What should happen with an unrecognised verbosity string? | Raise `ValueError` naming the invalid value and listing the valid options. |
+| Q9 | Which behavioral areas are in scope for the template's own feature backlog? | Just one simple command in the base package — useful for any starting project, simple enough not to bloat the app, and showcasing the template's capabilities end-to-end. |
+| Q10 | What kind of command would be "useful for any starting project"? Candidate options presented: version, hello/greet, info/about, config show, health. | Stakeholder asked: "if I choose version, what will it add to my app/ folder?" — confirmed interest in version-style command after seeing the footprint (one file, ~10 lines, zero new dependencies). |
+| Q11 | Three options presented: (A) `--help` only, (B) `--version` only, (C) `--help` + `--version` combined. Stakeholder also asked how a help/usage command would look in code and terminal. Full code sketches and tradeoff table provided. Which option for the demonstration feature? | Option C — `--help` + `--version` combined. `python -m app --help` shows app name, tagline, and available options. `python -m app --version` shows `temple8 <version>` read from package metadata. Zero new dependencies, all code in `app/__main__.py`. |
 
-Status: COMPLETE
+

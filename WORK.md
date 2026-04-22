@@ -19,7 +19,15 @@ Each item carries exactly the variables defined by `FLOW.md`:
 
 ## Session Log
 
-<!-- Append only. Never delete. Format: YYYY-MM-DD HH:MM | @role | @id | @state | action -->
+### 2026-04-22 — Session 1 (Discovery)
 
-2026-04-22 00:00 | @system-architect | [none] | [IDLE] | Read all 14 backlog features; wrote docs/domain-model.md, docs/system.md, docs/adr/ (5 ADRs); recommended config-reading as first feature; awaiting PO to move feature to in-progress/ and confirm branch creation
-2026-04-22 00:01 | @system-architect | [none] | [IDLE] | Correction: docs/domain-model.md, docs/context.md, and docs/container.md are not separate files — Context and Container diagrams and the Domain Model are all sections inside docs/system.md (SA-owned). docs/domain-model.md was never created; docs/context.md deleted and consolidated into system.md.
+- Resumed interrupted Stage 1 discovery session (Q1–Q8 were pre-captured).
+- Completed Block B cross-cutting questions (Q9–Q11): confirmed scope is one demonstration feature.
+- Completed Block C feature discovery: stakeholder chose CLI entrypoint (`--help` + `--version`) as the demonstration feature.
+- Created `docs/features/backlog/cli-entrypoint.feature` — Status: BASELINED (2026-04-22).
+- Created `docs/features/in-progress/` and `docs/features/completed/` directories.
+- Created `docs/glossary.md`, `docs/discovery.md`.
+- Marked `docs/scope_journal.md` Session 1 as COMPLETE.
+
+**Next:** Run `@system-architect` — begin Step 2 (ARCH) for `cli-entrypoint`. PO must first move `docs/features/backlog/cli-entrypoint.feature` → `docs/features/in-progress/cli-entrypoint.feature`.
+
