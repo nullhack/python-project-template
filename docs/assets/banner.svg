@@ -1,64 +1,35 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 300" role="img" aria-label="temple8 banner — From zero to hero, production-ready Python, without the ceremony">
-  <style>
-    :root {
-      --color-bg:          #1a1a1a;
-      --color-bg-stone:    #2a2a2a;
-      --color-stone-light: #f0ece4;
-      --color-stone:       #c8c0b8;
-      --color-stone-dark:  #a09890;
-      --color-gold:        #c9a84c;
-      --color-gold-light:  #e8c96a;
-      --color-blue:        #7baabf;
-    }
-    .title {
-      font-family: system-ui, -apple-system, sans-serif;
-      font-size: 62px;
-      font-weight: 700;
-      letter-spacing: 10px;
-    }
-    .tagline {
-      font-family: system-ui, -apple-system, sans-serif;
-      font-size: 19px;
-      font-weight: 400;
-      letter-spacing: 1px;
-      fill: var(--color-blue, #7baabf);
-    }
-  </style>
-
-  <!-- ══════════════════════════════════════════
-       BACKGROUND
-  ══════════════════════════════════════════ -->
-  <!-- Main dark charcoal fill -->
-  <rect width="1200" height="300" fill="var(--color-bg, #1a1a1a)"/>
-  <!-- Stone-course texture band — top -->
-  <rect x="0" y="0"   width="1200" height="6" fill="var(--color-bg-stone, #2a2a2a)"/>
-  <!-- Stone-course texture band — bottom -->
-  <rect x="0" y="294" width="1200" height="6" fill="var(--color-bg-stone, #2a2a2a)"/>
-
-  <!-- ══════════════════════════════════════════
-       LEFT ZONE (0–240px) — Temple logo mark
-  ══════════════════════════════════════════ -->
   <!--
-    Temple drawn in a local coordinate system centred at (120, 150).
-    Scale factor ≈ 1.6× the 100×100 logo (columns span ~76px → ~122px here).
-    Pediment apex at (120, 60), base at y=170, stylobate bottom at y=210.
+    Colors:
+      bg           #1a1a1a   dark charcoal background
+      bg-stone     #2a2a2a   stone-course bands
+      stone-light  #f0ece4   temple structure, title text
+      stone        #c8c0b8   stylobate mid step
+      stone-dark   #a09890   column shadows, bottom step
+      gold         #c9a84c   divider, accent line, ∞ echo
+      gold-light   #e8c96a   middle-dot in title
+      blue         #7baabf   tagline
   -->
-  <g transform="translate(120,150)">
 
+  <!-- ── Background ── -->
+  <rect width="1200" height="300" fill="#1a1a1a"/>
+  <rect x="0" y="0"   width="1200" height="6" fill="#2a2a2a"/>
+  <rect x="0" y="294" width="1200" height="6" fill="#2a2a2a"/>
+
+  <!-- ── Left zone (0–240px): temple mark centred at (120,150) ── -->
+  <g transform="translate(120,150)">
     <!-- Pediment -->
     <polygon
       points="0,-90 76,-56 -76,-56"
-      fill="var(--color-stone-light, #f0ece4)"
-      stroke="var(--color-stone, #c8c0b8)"
+      fill="#f0ece4"
+      stroke="#c8c0b8"
       stroke-width="1.2"
       stroke-linejoin="round"
     />
     <line x1="0" y1="-90" x2="76" y2="-56"
-          stroke="var(--color-stone-dark, #a09890)" stroke-width="1" opacity="0.45"/>
+          stroke="#a09890" stroke-width="1" opacity="0.45"/>
 
-    <!-- Infinity glyph in pediment — scaled to fit the larger pediment
-         Two tangent ellipses centred at (0, -74).
-         rx≈13, ry≈8 per lobe, centres at ±14 from midpoint. -->
+    <!-- Infinity glyph in pediment, centred at (0,-74) -->
     <path
       d="M0,-74
          C0,-82 -11,-86 -16,-86
@@ -70,105 +41,66 @@
          C28,-66 21,-62 16,-62
          C11,-62 0,-66 0,-74 Z"
       fill="none"
-      stroke="var(--color-gold, #c9a84c)"
+      stroke="#c9a84c"
       stroke-width="2.6"
       stroke-linecap="round"
       stroke-linejoin="round"
     />
 
     <!-- Entablature -->
-    <rect x="-76" y="-56" width="152" height="12"
-          fill="var(--color-stone-light, #f0ece4)"
-          stroke="var(--color-stone, #c8c0b8)" stroke-width="0.8"/>
-    <rect x="-76" y="-45" width="152" height="2"
-          fill="var(--color-stone-dark, #a09890)" opacity="0.3"/>
+    <rect x="-76" y="-56" width="152" height="12" fill="#f0ece4" stroke="#c8c0b8" stroke-width="0.8"/>
+    <rect x="-76" y="-45" width="152" height="2"  fill="#a09890" opacity="0.3"/>
 
-    <!-- Four columns (centres at -54, -18, 18, 54; width 14) -->
     <!-- Column 1 -->
-    <rect x="-61" y="-44" width="14" height="68"
-          fill="var(--color-stone-light, #f0ece4)"/>
-    <rect x="-49" y="-44" width="3"  height="68"
-          fill="var(--color-stone-dark, #a09890)" opacity="0.22"/>
+    <rect x="-61" y="-44" width="14" height="68" fill="#f0ece4"/>
+    <rect x="-49" y="-44" width="3"  height="68" fill="#a09890" opacity="0.22"/>
     <!-- Column 2 -->
-    <rect x="-25" y="-44" width="14" height="68"
-          fill="var(--color-stone-light, #f0ece4)"/>
-    <rect x="-13" y="-44" width="3"  height="68"
-          fill="var(--color-stone-dark, #a09890)" opacity="0.22"/>
+    <rect x="-25" y="-44" width="14" height="68" fill="#f0ece4"/>
+    <rect x="-13" y="-44" width="3"  height="68" fill="#a09890" opacity="0.22"/>
     <!-- Column 3 -->
-    <rect x="11"  y="-44" width="14" height="68"
-          fill="var(--color-stone-light, #f0ece4)"/>
-    <rect x="23"  y="-44" width="3"  height="68"
-          fill="var(--color-stone-dark, #a09890)" opacity="0.22"/>
+    <rect x="11"  y="-44" width="14" height="68" fill="#f0ece4"/>
+    <rect x="23"  y="-44" width="3"  height="68" fill="#a09890" opacity="0.22"/>
     <!-- Column 4 -->
-    <rect x="47"  y="-44" width="14" height="68"
-          fill="var(--color-stone-light, #f0ece4)"/>
-    <rect x="59"  y="-44" width="3"  height="68"
-          fill="var(--color-stone-dark, #a09890)" opacity="0.22"/>
+    <rect x="47"  y="-44" width="14" height="68" fill="#f0ece4"/>
+    <rect x="59"  y="-44" width="3"  height="68" fill="#a09890" opacity="0.22"/>
 
-    <!-- Stylobate — three stepped courses -->
-    <rect x="-76" y="24"  width="152" height="9"
-          fill="var(--color-stone-light, #f0ece4)"
-          stroke="var(--color-stone, #c8c0b8)" stroke-width="0.6"/>
-    <rect x="-80" y="33"  width="160" height="8"
-          fill="var(--color-stone, #c8c0b8)"/>
-    <rect x="-84" y="41"  width="168" height="8"
-          fill="var(--color-stone-dark, #a09890)" opacity="0.65"/>
+    <!-- Stylobate -->
+    <rect x="-76" y="24"  width="152" height="9" fill="#f0ece4" stroke="#c8c0b8" stroke-width="0.6"/>
+    <rect x="-80" y="33"  width="160" height="8" fill="#c8c0b8"/>
+    <rect x="-84" y="41"  width="168" height="8" fill="#a09890" opacity="0.65"/>
   </g>
 
-  <!-- ══════════════════════════════════════════
-       VERTICAL GOLD DIVIDER at x=220
-  ══════════════════════════════════════════ -->
-  <line
-    x1="220" y1="40" x2="220" y2="260"
-    stroke="var(--color-gold, #c9a84c)"
-    stroke-width="1"
-    opacity="0.5"
-  />
+  <!-- ── Vertical gold divider at x=220 ── -->
+  <line x1="220" y1="40" x2="220" y2="260" stroke="#c9a84c" stroke-width="1" opacity="0.5"/>
 
-  <!-- ══════════════════════════════════════════
-       CENTER ZONE (240–960px) — Typeset
-  ══════════════════════════════════════════ -->
-
-  <!-- Line 1: TEMPLE·VIII
-       Split into three <tspan> segments so the middle-dot gets gold fill.
-       Baseline at y=155. Anchor at x=590 (centre of 240–960 zone). -->
+  <!-- ── Centre zone: TEMPLE·VIII ── -->
+  <!-- Three tspan segments: TEMPLE (stone-light), · (gold-light), VIII (stone-light) -->
   <text
-    class="title"
     x="590"
     y="155"
     text-anchor="middle"
-    dominant-baseline="auto"
-  >
-    <tspan fill="var(--color-stone-light, #f0ece4)">TEMPLE</tspan><tspan fill="var(--color-gold-light, #e8c96a)">·</tspan><tspan fill="var(--color-stone-light, #f0ece4)">VIII</tspan>
-  </text>
+    font-family="system-ui, -apple-system, sans-serif"
+    font-size="62"
+    font-weight="700"
+    letter-spacing="10"
+  ><tspan fill="#f0ece4">TEMPLE</tspan><tspan fill="#e8c96a">·</tspan><tspan fill="#f0ece4">VIII</tspan></text>
 
-  <!-- Line 2: tagline — baseline at y=192 -->
+  <!-- Tagline -->
   <text
-    class="tagline"
     x="590"
-    y="192"
+    y="195"
     text-anchor="middle"
-    dominant-baseline="auto"
+    font-family="system-ui, -apple-system, sans-serif"
+    font-size="19"
+    font-weight="400"
+    letter-spacing="1"
+    fill="#7baabf"
   >From zero to hero — production-ready Python, without the ceremony.</text>
 
-  <!-- ══════════════════════════════════════════
-       BOTTOM ACCENT LINE
-  ══════════════════════════════════════════ -->
-  <line
-    x1="240" y1="265" x2="1160" y2="265"
-    stroke="var(--color-gold, #c9a84c)"
-    stroke-width="1"
-    opacity="0.3"
-  />
+  <!-- ── Bottom accent line ── -->
+  <line x1="240" y1="265" x2="1160" y2="265" stroke="#c9a84c" stroke-width="1" opacity="0.3"/>
 
-  <!-- ══════════════════════════════════════════
-       RIGHT ZONE (960–1200px) — ∞ brand echo
-       Centred at (1080, 150). Large (~80px wide total).
-  ══════════════════════════════════════════ -->
-  <!--
-    Two tangent ellipses centred at (1080, 150).
-    rx≈22, ry≈14 per lobe, lobe centres at ±24 from midpoint.
-  -->
+  <!-- ── Right zone: ∞ brand echo centred at (1080,150) ── -->
   <path
     d="M1080,150
        C1080,136 1068,129 1056,129
@@ -180,7 +112,7 @@
        C1128,164 1116,171 1104,171
        C1092,171 1080,164 1080,150 Z"
     fill="none"
-    stroke="var(--color-gold, #c9a84c)"
+    stroke="#c9a84c"
     stroke-width="3"
     stroke-linecap="round"
     stroke-linejoin="round"

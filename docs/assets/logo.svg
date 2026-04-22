@@ -1,31 +1,25 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" role="img" aria-label="temple8 logo — Greek temple façade with infinity symbol in pediment">
-  <style>
-    :root {
-      --color-stone-light: #f0ece4;
-      --color-stone:       #c8c0b8;
-      --color-stone-dark:  #a09890;
-      --color-gold:        #c9a84c;
-      --color-gold-light:  #e8c96a;
-    }
-  </style>
+  <!--
+    Colors:
+      stone-light  #f0ece4
+      stone        #c8c0b8
+      stone-dark   #a09890
+      gold         #c9a84c
+  -->
 
-  <!-- ── Pediment (triangle) ── -->
-  <!-- Filled face -->
+  <!-- Pediment (triangle) -->
   <polygon
     points="50,12 88,34 12,34"
-    fill="var(--color-stone-light, #f0ece4)"
-    stroke="var(--color-stone, #c8c0b8)"
+    fill="#f0ece4"
+    stroke="#c8c0b8"
     stroke-width="1"
     stroke-linejoin="round"
   />
-  <!-- Subtle shadow on right rake -->
+  <!-- Right-rake shadow -->
   <line x1="50" y1="12" x2="88" y2="34"
-        stroke="var(--color-stone-dark, #a09890)" stroke-width="0.8" opacity="0.5"/>
+        stroke="#a09890" stroke-width="0.8" opacity="0.5"/>
 
-  <!-- ── Infinity / 8 glyph in pediment apex ──
-       Two tangent ellipses centred at (50, 24).
-       Left lobe: cx=44, right lobe: cx=56, ry=4.5, rx=5.5
-       Drawn as a single closed path so it reads as ∞ or 8. -->
+  <!-- Infinity / 8 glyph — gold, centred at (50, 24) in the pediment -->
   <path
     d="M50,24
        C50,19.5 44.5,17 41,17
@@ -37,54 +31,31 @@
        C66,28.5 62.5,31 59,31
        C55.5,31 50,28.5 50,24 Z"
     fill="none"
-    stroke="var(--color-gold, #c9a84c)"
+    stroke="#c9a84c"
     stroke-width="1.8"
     stroke-linecap="round"
     stroke-linejoin="round"
   />
 
-  <!-- ── Entablature (horizontal band below pediment) ── -->
-  <rect x="12" y="34" width="76" height="7"
-        fill="var(--color-stone-light, #f0ece4)"
-        stroke="var(--color-stone, #c8c0b8)" stroke-width="0.6"/>
-  <!-- Thin shadow line at bottom of entablature -->
-  <rect x="12" y="40" width="76" height="1.2"
-        fill="var(--color-stone-dark, #a09890)" opacity="0.35"/>
+  <!-- Entablature -->
+  <rect x="12" y="34" width="76" height="7" fill="#f0ece4" stroke="#c8c0b8" stroke-width="0.6"/>
+  <rect x="12" y="40" width="76" height="1.2" fill="#a09890" opacity="0.35"/>
 
-  <!-- ── Four columns ──
-       Evenly spaced between x=16 and x=84, each 8px wide.
-       Gaps: 16, 28, 44, 60, 76 → centres; width 8 → x = centre−4
-       Centres at: 20, 36, 64, 80  (4 columns, symmetric) -->
   <!-- Column 1 -->
-  <rect x="16" y="41" width="8" height="38"
-        fill="var(--color-stone-light, #f0ece4)"/>
-  <rect x="22" y="41" width="2" height="38"
-        fill="var(--color-stone-dark, #a09890)" opacity="0.25"/>
+  <rect x="16" y="41" width="8" height="38" fill="#f0ece4"/>
+  <rect x="22" y="41" width="2" height="38" fill="#a09890" opacity="0.25"/>
   <!-- Column 2 -->
-  <rect x="34" y="41" width="8" height="38"
-        fill="var(--color-stone-light, #f0ece4)"/>
-  <rect x="40" y="41" width="2" height="38"
-        fill="var(--color-stone-dark, #a09890)" opacity="0.25"/>
+  <rect x="34" y="41" width="8" height="38" fill="#f0ece4"/>
+  <rect x="40" y="41" width="2" height="38" fill="#a09890" opacity="0.25"/>
   <!-- Column 3 -->
-  <rect x="58" y="41" width="8" height="38"
-        fill="var(--color-stone-light, #f0ece4)"/>
-  <rect x="64" y="41" width="2" height="38"
-        fill="var(--color-stone-dark, #a09890)" opacity="0.25"/>
+  <rect x="58" y="41" width="8" height="38" fill="#f0ece4"/>
+  <rect x="64" y="41" width="2" height="38" fill="#a09890" opacity="0.25"/>
   <!-- Column 4 -->
-  <rect x="76" y="41" width="8" height="38"
-        fill="var(--color-stone-light, #f0ece4)"/>
-  <rect x="82" y="41" width="2" height="38"
-        fill="var(--color-stone-dark, #a09890)" opacity="0.25"/>
+  <rect x="76" y="41" width="8" height="38" fill="#f0ece4"/>
+  <rect x="82" y="41" width="2" height="38" fill="#a09890" opacity="0.25"/>
 
-  <!-- ── Stylobate — three stepped courses ── -->
-  <!-- Step 1 (top, narrowest) -->
-  <rect x="12" y="79" width="76" height="5"
-        fill="var(--color-stone-light, #f0ece4)"
-        stroke="var(--color-stone, #c8c0b8)" stroke-width="0.5"/>
-  <!-- Step 2 (middle) -->
-  <rect x="9"  y="84" width="82" height="5"
-        fill="var(--color-stone, #c8c0b8)"/>
-  <!-- Step 3 (bottom, widest) -->
-  <rect x="6"  y="89" width="88" height="5"
-        fill="var(--color-stone-dark, #a09890)" opacity="0.7"/>
+  <!-- Stylobate — three stepped courses -->
+  <rect x="12" y="79" width="76" height="5" fill="#f0ece4" stroke="#c8c0b8" stroke-width="0.5"/>
+  <rect x="9"  y="84" width="82" height="5" fill="#c8c0b8"/>
+  <rect x="6"  y="89" width="88" height="5" fill="#a09890" opacity="0.7"/>
 </svg>
