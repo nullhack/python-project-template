@@ -13,7 +13,9 @@ Each item carries exactly the variables defined by `FLOW.md`:
 
 <!-- One entry per in-flight work item. Remove when state reaches IDLE. -->
 
-*(no active items — waiting for PO to move chosen feature to in-progress/)*
+- @id: cli-entrypoint
+  @state: STEP-2-READY
+  @branch: [NONE — SA creates feat/cli-entrypoint at Step 2 start]
 
 ---
 
@@ -30,4 +32,12 @@ Each item carries exactly the variables defined by `FLOW.md`:
 - Marked `docs/scope_journal.md` Session 1 as COMPLETE.
 
 **Next:** Run `@system-architect` — begin Step 2 (ARCH) for `cli-entrypoint`. PO must first move `docs/features/backlog/cli-entrypoint.feature` → `docs/features/in-progress/cli-entrypoint.feature`.
+
+### 2026-04-22 — PO: Move cli-entrypoint to in-progress
+
+- Stakeholder confirmed: move `cli-entrypoint.feature` to `in-progress/`.
+- Moved `docs/features/backlog/cli-entrypoint.feature` → `docs/features/in-progress/cli-entrypoint.feature`.
+- Updated WORK.md: `@state: STEP-2-READY`.
+
+**Next:** Run `@system-architect` — load skill `architect` and begin Step 2 (Architecture) for `cli-entrypoint`.
 
