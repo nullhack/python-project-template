@@ -37,7 +37,7 @@ jobs:
 
       - name: Install uv
         if: steps.check.outputs.exists == 'false'
-        uses: astral-sh/setup-uv@cdfb2ee6dde255817c739680168ad81e184c4bfb # v4.0.0
+        uses: astral-sh/setup-uv@c0c76fcf76c37099e6a452584d04b015240faefc # v4.0.0
         with:
           enable-cache: true
           cache-dependency-glob: "uv.lock"
