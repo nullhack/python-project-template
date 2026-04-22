@@ -1,4 +1,4 @@
-# Branding — Python Project Template
+# Branding — temple8
 
 > *From zero to hero — production-ready Python, without the ceremony.*
 
@@ -8,7 +8,7 @@ Agents read this file before generating release names, C4 diagrams, README banne
 
 ## Identity
 
-- **Project name:** Python Project Template
+- **Project name:** temple8
 - **Tagline:** From zero to hero — production-ready Python, without the ceremony.
 - **Mission:** Eliminate boilerplate so engineers ship features, not setup.
 - **Vision:** The standard starting point for any serious Python project — the bedrock every Python engineer reaches for first.
@@ -27,6 +27,14 @@ The palette is drawn from classical marble, parchment, and gold — materials th
 - **Banner:** `docs/assets/banner.svg`
 
 > Deep brown `#3b2410` on parchment `#faf7f2` achieves >10:1 contrast (WCAG AAA). Gold is decorative; it never carries meaning that must be read.
+
+### Logo
+
+Greek temple façade — pediment, four columns, three-step stylobate. A gold lemniscate (∞) sits in the centre of the pediment; it reads as ∞ or 8 depending on size. Transparent background. Stone-light `#f0ece4` / `#c8c0b8` fill, `#5c3d1e` brown outlines, gold `#c9a84c` ∞ glyph.
+
+### Banner
+
+Warm parchment `#faf7f2` background. Left zone: temple mark (same geometry as logo, scaled). Right zone: `TEMPLE·VIII` typeset with engraved two-layer effect — front layer `#f0ece4` (stone-light), shadow layer `#3b2410` (deep brown) offset +3px right / +4px down. Middle dot `·` in gold `#c9a84c`. Gold accent rules above and below the title. Gold top and bottom border bands. Vertical gold divider separating temple from title zone. No subtitle.
 
 ## Release Naming
 
@@ -49,3 +57,5 @@ Ships with quality tooling (ruff, pyright, pytest, hypothesis), Gherkin-driven
 acceptance criteria, and five specialised AI agents covering scope through release.
 Built on the premise that rigorous method, applied from the beginning, produces
 something worth building on. Use this summary in banners, release notes, and document headers.
+
+(End of file - total 59 lines)

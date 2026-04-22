@@ -1,61 +1,72 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200" role="img" aria-label="python-project-template">
-  <defs>
-    <!-- Marble warm white to cool grey -->
-    <linearGradient id="g-marble" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%"   stop-color="#f0ece4"/>
-      <stop offset="100%" stop-color="#c8c0b8"/>
-    </linearGradient>
-    <!-- Slightly darker for base/shadow faces -->
-    <linearGradient id="g-stone" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%"   stop-color="#d6cfc6"/>
-      <stop offset="100%" stop-color="#a89f96"/>
-    </linearGradient>
-    <!-- Deep warm shadow -->
-    <linearGradient id="g-shadow" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%"   stop-color="#9c9189"/>
-      <stop offset="100%" stop-color="#7a6f67"/>
-    </linearGradient>
-    <!-- Badge background: warm off-white parchment -->
-    <linearGradient id="g-bg" x1="0%" y1="0%" x2="60%" y2="100%">
-      <stop offset="0%"   stop-color="#faf7f2"/>
-      <stop offset="100%" stop-color="#ede8e0"/>
-    </linearGradient>
-    <!-- Ring: warm taupe -->
-    <linearGradient id="g-ring" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%"   stop-color="#b5a99e"/>
-      <stop offset="100%" stop-color="#7a6f67"/>
-    </linearGradient>
-  </defs>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" role="img" aria-label="temple8 logo — Greek temple façade with infinity symbol in pediment">
+  <!--
+    Geometry mirrors the banner temple exactly, scaled to fit 100×100.
+    Banner temple: translate(130,150), spans ±80 wide, apex at -90, stylobate base at +52.
+    Total height = 142, total width = 180. Scale = 90/142 ≈ 0.634 (height-driven).
+    Centred at (50, 50) with slight upward offset so stylobate sits near bottom.
 
-  <!-- Badge background — parchment -->
-  <circle cx="100" cy="100" r="92" fill="url(#g-bg)"/>
-  <circle cx="100" cy="100" r="92" fill="none" stroke="url(#g-ring)" stroke-width="2.5"/>
+    Colors:
+      parchment-mid  #ede8e0   structure fill
+      stone          #c8c0b8   stylobate mid step, column outlines
+      stone-dark     #a09890   shadows
+      brown-mid      #5c3d1e   pediment/entablature/stylobate outlines
+      gold           #c9a84c   ∞ glyph
+  -->
 
-  <!-- Temple group — scaled to fit inside circle with margin -->
-  <!-- Width: 136px (x 32..168), Height: ~138px (y 34..172) — all within r=92 circle -->
+  <!-- Temple mark: same group as banner, scaled 0.55 and centred at (50,52) -->
+  <g transform="translate(50,52) scale(0.55)">
 
-  <!-- Pediment -->
-  <polygon points="100,34  168,62  32,62" fill="url(#g-marble)"/>
-  <line x1="100" y1="34" x2="168" y2="62" stroke="url(#g-stone)" stroke-width="2" stroke-linecap="round"/>
-  <line x1="100" y1="34" x2="32"  y2="62" stroke="url(#g-stone)" stroke-width="2" stroke-linecap="round"/>
+    <!-- Pediment -->
+    <polygon
+      points="0,-90 80,-54 -80,-54"
+      fill="#ede8e0"
+      stroke="#5c3d1e"
+      stroke-width="1.4"
+      stroke-linejoin="round"
+    />
+    <!-- Right-rake shadow -->
+    <line x1="0" y1="-90" x2="80" y2="-54"
+          stroke="#a09890" stroke-width="1" opacity="0.4"/>
 
-  <!-- Entablature -->
-  <rect x="32" y="62" width="136" height="11" rx="0" fill="url(#g-marble)"/>
-  <rect x="32" y="71" width="136" height="2"  fill="url(#g-shadow)" opacity="0.25"/>
+    <!-- Infinity glyph in pediment, centred at (0,-70) -->
+    <path
+      d="M0,-70
+         C0,-73.9 -3.9,-76 -6.3,-76
+         C-8.7,-76 -12,-73.9 -12,-70
+         C-12,-66.1 -8.7,-64 -6.3,-64
+         C-3.9,-64 0,-66.1 0,-70
+         C0,-73.9 3.9,-76 6.3,-76
+         C8.7,-76 12,-73.9 12,-70
+         C12,-66.1 8.7,-64 6.3,-64
+         C3.9,-64 0,-66.1 0,-70 Z"
+      fill="none"
+      stroke="#c9a84c"
+      stroke-width="2.2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
 
-  <!-- 3 columns — centers at 59, 100, 141 — shaft 17px wide, gaps ~25px -->
-  <rect x="50"  y="73" width="17" height="64" fill="url(#g-marble)"/>
-  <rect x="91"  y="73" width="17" height="64" fill="url(#g-marble)"/>
-  <rect x="133" y="73" width="17" height="64" fill="url(#g-marble)"/>
+    <!-- Entablature -->
+    <rect x="-80" y="-54" width="160" height="12" fill="#ede8e0" stroke="#5c3d1e" stroke-width="0.9"/>
+    <rect x="-80" y="-43" width="160" height="2"  fill="#a09890" opacity="0.3"/>
 
-  <!-- Column right-edge shadows -->
-  <rect x="64"  y="73" width="3" height="64" fill="url(#g-shadow)" opacity="0.22"/>
-  <rect x="105" y="73" width="3" height="64" fill="url(#g-shadow)" opacity="0.22"/>
-  <rect x="147" y="73" width="3" height="64" fill="url(#g-shadow)" opacity="0.22"/>
+    <!-- Column 1 -->
+    <rect x="-68" y="-42" width="15" height="70" fill="#ede8e0" stroke="#c8c0b8" stroke-width="0.4"/>
+    <rect x="-55" y="-42" width="3"  height="70" fill="#a09890" opacity="0.2"/>
+    <!-- Column 2 -->
+    <rect x="-28" y="-42" width="15" height="70" fill="#ede8e0" stroke="#c8c0b8" stroke-width="0.4"/>
+    <rect x="-15" y="-42" width="3"  height="70" fill="#a09890" opacity="0.2"/>
+    <!-- Column 3 -->
+    <rect x="13"  y="-42" width="15" height="70" fill="#ede8e0" stroke="#c8c0b8" stroke-width="0.4"/>
+    <rect x="26"  y="-42" width="3"  height="70" fill="#a09890" opacity="0.2"/>
+    <!-- Column 4 -->
+    <rect x="53"  y="-42" width="15" height="70" fill="#ede8e0" stroke="#c8c0b8" stroke-width="0.4"/>
+    <rect x="66"  y="-42" width="3"  height="70" fill="#a09890" opacity="0.2"/>
 
-  <!-- Stylobate / base steps -->
-  <rect x="32" y="137" width="136" height="10" fill="url(#g-marble)"/>
-  <rect x="38" y="147" width="124" height="8"  fill="url(#g-stone)"/>
-  <rect x="44" y="155" width="112" height="7"  fill="url(#g-shadow)" opacity="0.45"/>
+    <!-- Stylobate — three stepped courses -->
+    <rect x="-80" y="28"  width="160" height="9" fill="#ede8e0" stroke="#5c3d1e" stroke-width="0.7"/>
+    <rect x="-85" y="37"  width="170" height="8" fill="#c8c0b8"/>
+    <rect x="-90" y="45"  width="180" height="7" fill="#a09890" opacity="0.6"/>
 
+  </g>
 </svg>

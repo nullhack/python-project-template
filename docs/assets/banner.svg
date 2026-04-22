@@ -1,123 +1,110 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 830 160" width="830" height="160" role="img" aria-label="Python Project Template">
-  <defs>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 300" role="img" aria-label="temple8 banner — TEMPLE·VIII">
+  <!--
+    Colors:
+      parchment      #faf7f2   main background
+      parchment-mid  #ede8e0   mid-tone texture band
+      parchment-dark #c8c0b8   stone rule lines
+      brown          #3b2410   primary text, structure
+      brown-mid      #5c3d1e   temple mark fill
+      gold           #c9a84c   middle-dot, accent rules, ∞ glyph
+      stone-shadow   #a09890   column shadows
+  -->
 
-    <!-- Antique gold for border and accents -->
-    <linearGradient id="g-gold" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%"   stop-color="#c9a84c" stop-opacity="0"/>
-      <stop offset="15%"  stop-color="#e8c96a"/>
-      <stop offset="85%"  stop-color="#c9a84c"/>
-      <stop offset="100%" stop-color="#c9a84c" stop-opacity="0"/>
-    </linearGradient>
-    <linearGradient id="g-gold-solid" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%"   stop-color="#e8c96a"/>
-      <stop offset="100%" stop-color="#a07830"/>
-    </linearGradient>
+  <!-- ── Background: warm parchment ── -->
+  <rect width="1200" height="300" fill="#faf7f2"/>
 
-    <!-- "Project" — deep warm brown, harmonizes with marble and gold -->
-    <linearGradient id="g-main-text" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%"   stop-color="#5c3d1e"/>
-      <stop offset="100%" stop-color="#3b2410"/>
-    </linearGradient>
+  <!-- Subtle horizontal texture band across middle third -->
+  <rect x="250" y="100" width="950" height="100" fill="#ede8e0" opacity="0.45"/>
 
-    <!-- "Python" — muted steel blue, smaller, secondary -->
-    <linearGradient id="g-python" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%"   stop-color="#7baabf"/>
-      <stop offset="100%" stop-color="#4a7a96"/>
-    </linearGradient>
+  <!-- Top and bottom stone-course borders -->
+  <rect x="0" y="0"   width="1200" height="5" fill="#c9a84c" opacity="0.8"/>
+  <rect x="0" y="295" width="1200" height="5" fill="#c9a84c" opacity="0.8"/>
 
-    <!-- Logo badge -->
-    <linearGradient id="g-bg" x1="0%" y1="0%" x2="60%" y2="100%">
-      <stop offset="0%"   stop-color="#faf7f2"/>
-      <stop offset="100%" stop-color="#ede8e0"/>
-    </linearGradient>
-    <linearGradient id="g-marble" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%"   stop-color="#f0ece4"/>
-      <stop offset="100%" stop-color="#c8c0b8"/>
-    </linearGradient>
-    <linearGradient id="g-stone" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%"   stop-color="#d6cfc6"/>
-      <stop offset="100%" stop-color="#a89f96"/>
-    </linearGradient>
-    <linearGradient id="g-shadow-lg" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%"   stop-color="#9c9189"/>
-      <stop offset="100%" stop-color="#7a6f67"/>
-    </linearGradient>
-    <linearGradient id="g-ring" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%"   stop-color="#b5a99e"/>
-      <stop offset="100%" stop-color="#7a6f67"/>
-    </linearGradient>
+  <!-- ── Left zone (0–260px): temple mark centred at (130,150) ── -->
+  <g transform="translate(130,150)">
 
-  </defs>
+    <!-- Pediment -->
+    <polygon
+      points="0,-90 80,-54 -80,-54"
+      fill="#ede8e0"
+      stroke="#5c3d1e"
+      stroke-width="1.4"
+      stroke-linejoin="round"
+    />
+    <!-- Right-rake shadow -->
+    <line x1="0" y1="-90" x2="80" y2="-54"
+          stroke="#a09890" stroke-width="1" opacity="0.4"/>
 
-  <!-- White background -->
-  <rect x="0" y="0" width="830" height="160" rx="8" fill="white"/>
+    <!-- Infinity glyph in pediment, centred at (0,-70) — scaled from logo -->
+    <path
+      d="M0,-70
+         C0,-73.9 -3.9,-76 -6.3,-76
+         C-8.7,-76 -12,-73.9 -12,-70
+         C-12,-66.1 -8.7,-64 -6.3,-64
+         C-3.9,-64 0,-66.1 0,-70
+         C0,-73.9 3.9,-76 6.3,-76
+         C8.7,-76 12,-73.9 12,-70
+         C12,-66.1 8.7,-64 6.3,-64
+         C3.9,-64 0,-66.1 0,-70 Z"
+      fill="none"
+      stroke="#c9a84c"
+      stroke-width="2.2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
 
-  <!-- Golden border — top -->
-  <line x1="12" y1="6"  x2="818" y2="6"  stroke="url(#g-gold)" stroke-width="1.2"/>
-  <!-- Golden border — bottom -->
-  <line x1="12" y1="154" x2="818" y2="154" stroke="url(#g-gold)" stroke-width="1.2"/>
-  <!-- Golden border — left -->
-  <line x1="6" y1="12" x2="6" y2="148" stroke="#c9a84c" stroke-width="1.2" opacity="0.6"/>
-  <!-- Golden border — right -->
-  <line x1="824" y1="12" x2="824" y2="148" stroke="#c9a84c" stroke-width="1.2" opacity="0.6"/>
-  <!-- Corner dots -->
-  <circle cx="6"   cy="6"   r="2" fill="#c9a84c" opacity="0.7"/>
-  <circle cx="824" cy="6"   r="2" fill="#c9a84c" opacity="0.7"/>
-  <circle cx="6"   cy="154" r="2" fill="#c9a84c" opacity="0.7"/>
-  <circle cx="824" cy="154" r="2" fill="#c9a84c" opacity="0.7"/>
+    <!-- Entablature -->
+    <rect x="-80" y="-54" width="160" height="12" fill="#ede8e0" stroke="#5c3d1e" stroke-width="0.9"/>
+    <rect x="-80" y="-43" width="160" height="2"  fill="#a09890" opacity="0.3"/>
 
-  <!-- ── LOGO — centered at x=82, y=80 ── -->
-  <circle cx="82" cy="80" r="60" fill="url(#g-bg)"/>
-  <circle cx="82" cy="80" r="60" fill="none" stroke="url(#g-ring)" stroke-width="1.8"/>
+    <!-- Column 1 -->
+    <rect x="-68" y="-42" width="15" height="70" fill="#ede8e0" stroke="#c8c0b8" stroke-width="0.4"/>
+    <rect x="-55" y="-42" width="3"  height="70" fill="#a09890" opacity="0.2"/>
+    <!-- Column 2 -->
+    <rect x="-28" y="-42" width="15" height="70" fill="#ede8e0" stroke="#c8c0b8" stroke-width="0.4"/>
+    <rect x="-15" y="-42" width="3"  height="70" fill="#a09890" opacity="0.2"/>
+    <!-- Column 3 -->
+    <rect x="13"  y="-42" width="15" height="70" fill="#ede8e0" stroke="#c8c0b8" stroke-width="0.4"/>
+    <rect x="26"  y="-42" width="3"  height="70" fill="#a09890" opacity="0.2"/>
+    <!-- Column 4 -->
+    <rect x="53"  y="-42" width="15" height="70" fill="#ede8e0" stroke="#c8c0b8" stroke-width="0.4"/>
+    <rect x="66"  y="-42" width="3"  height="70" fill="#a09890" opacity="0.2"/>
 
-  <g transform="translate(82,80) scale(0.65) translate(-100,-100)">
-    <polygon points="100,34  168,62  32,62" fill="url(#g-marble)"/>
-    <line x1="100" y1="34" x2="168" y2="62" stroke="url(#g-stone)" stroke-width="2" stroke-linecap="round"/>
-    <line x1="100" y1="34" x2="32"  y2="62" stroke="url(#g-stone)" stroke-width="2" stroke-linecap="round"/>
-    <rect x="32" y="62" width="136" height="11" fill="url(#g-marble)"/>
-    <rect x="32" y="71" width="136" height="2"  fill="url(#g-shadow-lg)" opacity="0.25"/>
-    <rect x="50"  y="73" width="17" height="64" fill="url(#g-marble)"/>
-    <rect x="91"  y="73" width="17" height="64" fill="url(#g-marble)"/>
-    <rect x="133" y="73" width="17" height="64" fill="url(#g-marble)"/>
-    <rect x="64"  y="73" width="3" height="64" fill="url(#g-shadow-lg)" opacity="0.22"/>
-    <rect x="105" y="73" width="3" height="64" fill="url(#g-shadow-lg)" opacity="0.22"/>
-    <rect x="147" y="73" width="3" height="64" fill="url(#g-shadow-lg)" opacity="0.22"/>
-    <rect x="32" y="137" width="136" height="10" fill="url(#g-marble)"/>
-    <rect x="38" y="147" width="124" height="8"  fill="url(#g-stone)"/>
-    <rect x="44" y="155" width="112" height="7"  fill="url(#g-shadow-lg)" opacity="0.45"/>
+    <!-- Stylobate — three stepped courses -->
+    <rect x="-80" y="28"  width="160" height="9" fill="#ede8e0" stroke="#5c3d1e" stroke-width="0.7"/>
+    <rect x="-85" y="37"  width="170" height="8" fill="#c8c0b8"/>
+    <rect x="-90" y="45"  width="180" height="7" fill="#a09890" opacity="0.6"/>
   </g>
 
-  <!-- Vertical gold divider between logo and text -->
-  <line x1="158" y1="22" x2="158" y2="138" stroke="#c9a84c" stroke-width="1" opacity="0.5"/>
+  <!-- ── Vertical gold divider at x=250 ── -->
+  <line x1="250" y1="50" x2="250" y2="250" stroke="#c9a84c" stroke-width="1" opacity="0.55"/>
 
-  <!-- "PYTHON" — small label, widely tracked, steel blue -->
-  <text x="178" y="58"
-        font-family="'Gill Sans', 'Optima', Candara, sans-serif"
-        font-size="13"
-        font-weight="400"
-        letter-spacing="7"
-        fill="url(#g-python)"
-        text-anchor="start">PYTHON</text>
+  <!-- ── Centre: gold rule above title ── -->
+  <line x1="280" y1="108" x2="1140" y2="108" stroke="#c9a84c" stroke-width="0.8" opacity="0.6"/>
 
-  <!-- Thin gold rule under label -->
-  <line x1="178" y1="65" x2="818" y2="65" stroke="#c9a84c" stroke-width="0.8" opacity="0.45"/>
+  <!-- ── Title: TEMPLE·VIII — engraved two-layer effect ── -->
+  <!-- Layer 1: deep shadow — offset +3,+4, dark brown, high opacity -->
+  <text
+    x="713" y="182"
+    text-anchor="middle"
+    font-family="system-ui, -apple-system, sans-serif"
+    font-size="72"
+    font-weight="300"
+    letter-spacing="18"
+    fill="#3b2410"
+    opacity="0.55"
+  ><tspan>TEMPLE</tspan><tspan letter-spacing="0">·</tspan><tspan letter-spacing="18">VIII</tspan></text>
+  <!-- Layer 2: carved face — true position, warm stone + gold dot -->
+  <text
+    x="710" y="178"
+    text-anchor="middle"
+    font-family="system-ui, -apple-system, sans-serif"
+    font-size="72"
+    font-weight="300"
+    letter-spacing="18"
+  ><tspan fill="#f0ece4">TEMPLE</tspan><tspan fill="#c9a84c" letter-spacing="0">·</tspan><tspan fill="#f0ece4" letter-spacing="18">VIII</tspan></text>
 
-  <!-- "Project" — large, warm brown -->
-  <text x="175" y="112"
-        font-family="'Gill Sans', 'Optima', Candara, sans-serif"
-        font-size="46"
-        font-weight="600"
-        letter-spacing="2"
-        fill="url(#g-main-text)"
-        text-anchor="start">Project</text>
-
-  <!-- "Template" — large, antique gold -->
-  <text x="175" y="145"
-        font-family="'Gill Sans', 'Optima', Candara, sans-serif"
-        font-size="32"
-        font-weight="600"
-        letter-spacing="10"
-        fill="url(#g-gold-solid)"
-        text-anchor="start">TEMPLATE</text>
+  <!-- ── Gold rule below title ── -->
+  <line x1="280" y1="200" x2="1140" y2="200" stroke="#c9a84c" stroke-width="0.8" opacity="0.6"/>
 
 </svg>
