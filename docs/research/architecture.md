@@ -27,7 +27,7 @@ Foundations for the architectural decisions and patterns used in this template.
 | **Alternative** | Keeling, M. (2017). *Design It!: From Programmer to Software Architect*. Pragmatic Bookshelf. (Chapter 6: "Architectural Decisions") |
 | **Status** | Confirmed — widely adopted industry standard; tooled by adr-tools, ADR Manager, Log4Brains |
 | **Core finding** | Architectural decisions should be recorded as short, immutable documents capturing: what was decided, why, and what alternatives were rejected. Without this record, decisions get re-litigated by every new developer (or AI agent) who encounters the codebase, producing rework and re-divergence. |
-| **Mechanism** | An ADR is written at decision time, never edited afterward. If the decision changes, a new ADR is written that supersedes the old one. The append-only record becomes a reliable audit trail. The constraint "one sentence per field" forces clarity — if you can't state the reason in one sentence, the decision is not yet understood. |
+| **Mechanism** | An ADR is written at decision time, never edited afterward. If the decision changes, a new ADR is written that replaces the old one. The append-only record becomes a reliable audit trail. The constraint "one sentence per field" forces clarity — if you can't state the reason in one sentence, the decision is not yet understood. |
 | **Where used** | `docs/adr/ADR-YYYY-MM-DD-<slug>.md` (one file per decision). SA creates one file per non-obvious decision after Step 2. The `update-docs` skill reads ADRs as input for C4 diagram annotations. |
 
 ---

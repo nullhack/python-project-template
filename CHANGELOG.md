@@ -67,9 +67,9 @@ All notable changes to this template will be documented in this file.
 - **`docs/research/`**: renamed from `docs/scientific-research/`; new entries for architecture, documentation, version-control (#100)
 
 ### Removed
-- **`TODO.md`**: superseded by `FLOW.md` + `WORK.md` (#100)
+- **`TODO.md`**: replaced by `FLOW.md` + `WORK.md` (#100)
 - **`.dockerignore`**: removed (#100)
-- **`docs/architecture.md`**: superseded by `docs/system.md` + `docs/adr/` (#100)
+- **`docs/architecture.md`**: replaced by `docs/system.md` + `docs/adr/` (#100)
 - **`reviewer` agent**: absorbed into `system-architect` (#100)
 
 ## [v6.4.20260420] - Minimal Prometheus - 2026-04-20
