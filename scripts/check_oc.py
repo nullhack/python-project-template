@@ -14,7 +14,7 @@ class _OCVisitor(ast.NodeVisitor):
     def __init__(self) -> None:
         self.violations: list[str] = []
 
-    def _line_ref(self, node: ast.AST) -> str:
+    def _line_ref(self, node: ast.stmt) -> str:
         """Return 'L{line}' for a node."""
         return f"L{node.lineno}"
 
@@ -24,7 +24,7 @@ class _OCVisitor(ast.NodeVisitor):
         for child in ast.walk(node):
             if child is node:
                 continue
-            if hasattr(child, "lineno"):
+            if isinstance(child, ast.stmt):
                 code_lines.add(child.lineno)
         if len(code_lines) > 50:
             self.violations.append(
@@ -35,15 +35,24 @@ class _OCVisitor(ast.NodeVisitor):
 
     def visit_FunctionDef(self, node: ast.FunctionDef) -> None:
         """Check function-level OC rules."""
+        self._check_func(node)
+        self.generic_visit(node)
+
+    def _check_func(self, node: ast.FunctionDef | ast.AsyncFunctionDef) -> None:
+        """Shared OC checks for sync and async functions."""
         self._check_function_length(node)
         self._check_nesting(node)
         self._check_else_after_return(node)
         self._check_getter_setter(node)
+
+    def visit_AsyncFunctionDef(self, node: ast.AsyncFunctionDef) -> None:
+        """Check async function-level OC rules (same as sync)."""
+        self._check_func(node)
         self.generic_visit(node)
 
-    visit_AsyncFunctionDef = visit_FunctionDef  # noqa: N815
-
-    def _check_function_length(self, node: ast.FunctionDef) -> None:
+    def _check_function_length(
+        self, node: ast.FunctionDef | ast.AsyncFunctionDef
+    ) -> None:
         """OC-7: function body <=20 code lines (excluding docstring)."""
         doc_end = 0
         if (
@@ -57,7 +66,9 @@ class _OCVisitor(ast.NodeVisitor):
         code_lines = {
             child.lineno
             for child in ast.walk(node)
-            if hasattr(child, "lineno") and child.lineno > doc_end and child is not node
+            if isinstance(child, ast.stmt)
+            and child.lineno > doc_end
+            and child is not node
         }
         if len(code_lines) > 20:
             self.violations.append(
@@ -65,7 +76,7 @@ class _OCVisitor(ast.NodeVisitor):
                 f"({len(code_lines)} code lines)"
             )
 
-    def _check_nesting(self, node: ast.FunctionDef) -> None:
+    def _check_nesting(self, node: ast.FunctionDef | ast.AsyncFunctionDef) -> None:
         """OC-1: nesting depth <=2."""
         max_depth = 0
         stack: list[tuple[ast.AST, int]] = [(node, 0)]
@@ -81,7 +92,9 @@ class _OCVisitor(ast.NodeVisitor):
                 f"{node.name} {self._line_ref(node)}: nesting depth {max_depth} >2"
             )
 
-    def _check_else_after_return(self, node: ast.FunctionDef) -> None:
+    def _check_else_after_return(
+        self, node: ast.FunctionDef | ast.AsyncFunctionDef
+    ) -> None:
         """OC-2: no else after return."""
         for child in ast.walk(node):
             if (
@@ -100,7 +113,9 @@ class _OCVisitor(ast.NodeVisitor):
         last = body[-1]
         return isinstance(last, (ast.Return, ast.Raise))
 
-    def _check_getter_setter(self, node: ast.FunctionDef) -> None:
+    def _check_getter_setter(
+        self, node: ast.FunctionDef | ast.AsyncFunctionDef
+    ) -> None:
         """OC-9: no get_ / set_ method names."""
         if node.name.startswith(("get_", "set_")):
             self.violations.append(

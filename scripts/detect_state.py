@@ -157,7 +157,7 @@ VALID_STATES = {
 }
 
 
-def _detect_idle(project_root: Path) -> tuple[str, str] | None:
+def _detect_idle(project_root: Path) -> tuple[str, str]:
     """Rules 1-2: no feature in progress."""
     if _backlog_features_with_baselined_no_id(project_root):
         return "STEP-1-BACKLOG-CRITERIA", "backlog BASELINED but no @id"
