@@ -67,9 +67,7 @@ def main() -> int:
     print("| Feature | @ids | Effort | Must count |")
     print("|---------|------|--------|------------|")
     for r in results:
-        print(
-            f"| {r['stem']} | {r['ids']} | {r['effort']} | {r['must']} |"
-        )
+        print(f"| {r['stem']} | {r['ids']} | {r['effort']} | {r['must']} |")
 
     return 0
 

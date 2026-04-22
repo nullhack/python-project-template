@@ -25,7 +25,7 @@ def _current_branch(project_root: Path) -> str:
         return ""
     content = git_head.read_text().strip()
     if content.startswith("ref: refs/heads/"):
-        return content[len("ref: refs/heads/"):]
+        return content[len("ref: refs/heads/") :]
     return ""
 
 
@@ -71,7 +71,7 @@ def _reflog_commits(project_root: Path, branch: str) -> list[tuple[str, str]]:
         action_msg = parts[1]
         # Only commit entries (not checkout/merge/etc)
         if action_msg.startswith("commit: "):
-            subject = action_msg[len("commit: "):]
+            subject = action_msg[len("commit: ") :]
             commits.append((new_sha, subject))
     return commits
 

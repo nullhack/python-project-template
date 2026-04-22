@@ -27,33 +27,33 @@ def _flush_example(
     return None
 
 
-def _flush_rule(
-    current_rule: dict | None, data: dict
-) -> dict | None:
+def _flush_rule(current_rule: dict | None, data: dict) -> dict | None:
     """Append current_rule to data["rules"] and return None."""
     if current_rule is not None:
         data["rules"].append(current_rule)
     return None
 
 
-def _handle_rule_line(line: str, current_example: dict | None,
-                      current_rule: dict | None,
-                      data: dict) -> tuple[dict | None, dict | None]:
+def _handle_rule_line(
+    line: str, current_example: dict | None, current_rule: dict | None, data: dict
+) -> tuple[dict | None, dict | None]:
     """Process a 'Rule:' line and return updated state."""
     current_example = _flush_example(current_example, current_rule)
     current_rule = _flush_rule(current_rule, data)
     return {"name": line, "examples": []}, current_example
 
 
-def _handle_tag_line(line: str, current_example: dict | None,
-                     current_rule: dict | None) -> tuple[dict | None, dict | None]:
+def _handle_tag_line(
+    line: str, current_example: dict | None, current_rule: dict | None
+) -> tuple[dict | None, dict | None]:
     """Process an @id tag line and return updated state."""
     current_example = _flush_example(current_example, current_rule)
     return {"id": line[1:], "steps": []}, current_example
 
 
-def _handle_keyword_line(line: str, current_example: dict | None,
-                         data: dict) -> dict | None:
+def _handle_keyword_line(
+    line: str, current_example: dict | None, data: dict
+) -> dict | None:
     """Process Example:/Scenario: or step lines."""
     if current_example is None:
         current_example = {"id": None, "steps": []}
@@ -83,13 +83,9 @@ def parse_feature(text: str) -> dict:
                 line, current_example, current_rule, data
             )
         if re.match(r"^@\w+$", line):
-            current_example, _ = _handle_tag_line(
-                line, current_example, current_rule
-            )
+            current_example, _ = _handle_tag_line(line, current_example, current_rule)
         if line.startswith(("Example:", "Scenario:")):
-            current_example = _handle_keyword_line(
-                line, current_example, data
-            )
+            current_example = _handle_keyword_line(line, current_example, data)
         step_keywords = ("Given ", "When ", "Then ", "And ", "But ")
         if line.startswith(step_keywords) and current_example is not None:
             current_example["steps"].append(line)
@@ -112,9 +108,7 @@ def _validate_examples(rule: dict, errors: list[str]) -> int:
         steps = [s.split()[0] for s in ex["steps"]]
         for keyword in ("Given", "When", "Then"):
             if keyword not in steps:
-                errors.append(
-                    f"@{ex['id'] or '?'} missing {keyword} step"
-                )
+                errors.append(f"@{ex['id'] or '?'} missing {keyword} step")
     return count
 
 
@@ -132,14 +126,10 @@ def validate_feature(project_root: Path) -> tuple[bool, list[str]]:
     if not data["rules"]:
         errors.append("no 'Rule:' blocks found")
 
-    total_examples = sum(
-        _validate_examples(rule, errors) for rule in data["rules"]
-    )
+    total_examples = sum(_validate_examples(rule, errors) for rule in data["rules"])
 
     if total_examples > 8:
-        errors.append(
-            f"decomposition check failed: {total_examples} examples (>8)"
-        )
+        errors.append(f"decomposition check failed: {total_examples} examples (>8)")
 
     return not errors, errors
 

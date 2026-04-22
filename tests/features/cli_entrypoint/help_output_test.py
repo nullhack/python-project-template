@@ -1,9 +1,10 @@
 """Tests for help output story."""
 
-import pytest
+import importlib.metadata
+import subprocess
+import sys
 
 
-@pytest.mark.skip(reason="not yet implemented")
 def test_cli_entrypoint_c1a2b3d4() -> None:
     """
     Given: the application package is installed
@@ -12,10 +13,17 @@ def test_cli_entrypoint_c1a2b3d4() -> None:
     And: the output contains the tagline
     And: the process exits with code 0
     """
-    raise NotImplementedError
+    tagline = importlib.metadata.metadata("temple8")["Summary"]
+    result = subprocess.run(
+        [sys.executable, "-m", "app", "--help"],
+        capture_output=True,
+        text=True,
+    )
+    assert "temple8" in result.stdout
+    assert tagline in result.stdout
+    assert result.returncode == 0
 
 
-@pytest.mark.skip(reason="not yet implemented")
 def test_cli_entrypoint_e5f6a7b8() -> None:
     """
     Given: the application package is installed
@@ -23,5 +31,10 @@ def test_cli_entrypoint_e5f6a7b8() -> None:
     Then: the output contains "--help"
     And: the output contains "--version"
     """
-    raise NotImplementedError
-
+    result = subprocess.run(
+        [sys.executable, "-m", "app", "--help"],
+        capture_output=True,
+        text=True,
+    )
+    assert "--help" in result.stdout
+    assert "--version" in result.stdout

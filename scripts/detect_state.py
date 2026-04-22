@@ -18,7 +18,7 @@ def _current_branch(project_root: Path) -> str:
         return ""
     content = git_head.read_text().strip()
     if content.startswith("ref: refs/heads/"):
-        return content[len("ref: refs/heads/"):]
+        return content[len("ref: refs/heads/") :]
     return ""
 
 
@@ -93,8 +93,7 @@ def _count_skipped_stubs(project_root: Path, feature_stem: str) -> int:
     if not stub_dir.exists():
         return 0
     return sum(
-        f.read_text().count("@pytest.mark.skip")
-        for f in stub_dir.glob("*_test.py")
+        f.read_text().count("@pytest.mark.skip") for f in stub_dir.glob("*_test.py")
     )
 
 
@@ -137,9 +136,7 @@ def _postmortem_exists(project_root: Path, feature_stem: str) -> bool:
     pm_dir = project_root / "docs" / "post-mortem"
     if not pm_dir.exists():
         return False
-    return any(
-        feature_stem in f.name for f in pm_dir.iterdir() if f.is_file()
-    )
+    return any(feature_stem in f.name for f in pm_dir.iterdir() if f.is_file())
 
 
 VALID_STATES = {
@@ -215,9 +212,7 @@ def _detect_from_tests(
     return None
 
 
-def _detect_final(
-    project_root: Path, stem: str, branch: str
-) -> tuple[str, str] | None:
+def _detect_final(project_root: Path, stem: str, branch: str) -> tuple[str, str] | None:
     """Rules 12-14: final state detection."""
     work_state = _work_md_state(project_root)
     if branch == "main" and work_state == "STEP-5-COMPLETE":
