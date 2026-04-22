@@ -116,8 +116,8 @@ Only create an ADR for non-obvious decisions with meaningful trade-offs. Routine
 ## Domain Analysis
 
 From `docs/glossary.md` + Rules (Business) in the `.feature` file:
-- **Nouns** → candidate classes, value objects, aggregates
-- **Verbs** → method names with typed signatures
+- **Nouns** in feature/glossary language → candidate Entities, Value Objects, or Aggregates in the domain model
+- **Verbs** in feature/glossary language → candidate Actions (operations with typed signatures on an Entity, a standalone function, or a Domain Service)
 - **Datasets** → named types (not bare dict/list)
 - **Bounded Context check**: same word, different meaning across features? → module boundary
 - **Cross-feature entities** → candidate shared domain layer
@@ -126,8 +126,8 @@ From `docs/glossary.md` + Rules (Business) in the `.feature` file:
 
 Update the `## Domain Model` section of `docs/system.md`:
 
-- **New feature, first entities**: add bounded contexts, entities, verbs, and relationships to the Domain Model section.
-- **Existing feature**: append new entities and verbs. Deprecate old entries if superseded — move them to a `### Deprecated` subsection. Never edit existing live entries — code depends on them.
+- **New feature, first entities**: add bounded contexts, entities, actions, and relationships to the Domain Model section.
+- **Existing feature**: append new entities and actions. Deprecate old entries if superseded — move them to a `### Deprecated` subsection. Never edit existing live entries — code depends on them.
 - Update the `## Context` and `## Container` sections if new actors, external systems, or containers are identified.
 
 The PO reads `docs/system.md` but never writes to it.

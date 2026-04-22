@@ -46,7 +46,7 @@ Identify from the read phase:
 - **Actors** — named human roles from feature `As a <role>` clauses and discovery Scope section
 - **External systems** — any system outside the package boundary named in features or architecture decisions
 - **Containers** — deployable/runnable units identified in ADR files (Hexagonal adapters, CLIs, services)
-- **Key domain terms** — all nouns and verbs from the Domain Model section of `system.md`, plus any terms defined in ADR decisions
+- **Key domain terms** — all entities and actions from the Domain Model section of `system.md`, plus any terms defined in ADR decisions
 
 ---
 

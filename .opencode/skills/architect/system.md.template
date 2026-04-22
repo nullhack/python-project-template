@@ -72,11 +72,11 @@
 | `<Name>` | Entity | <description> | <Context> |
 | `<Name>` | Value Object | <description> | <Context> |
 
-### Verbs
+### Actions
 
 | Name | Actor | Object | Description |
 |------|-------|--------|-------------|
-| `<verb>` | <who> | <what> → <result> | <description> |
+| `<action>` | <who> | <what> → <result> | <description> |
 
 ### Relationships
 
