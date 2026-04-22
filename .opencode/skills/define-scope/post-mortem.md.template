@@ -1,0 +1,16 @@
+# <Feature Stem>: <One-line failure>
+
+## Failed At
+Step 5 — stakeholder: "<exact complaint>"
+
+## Root Cause
+<One sentence: what process gap allowed this?>
+
+## Missed Gate
+<Which step's gate failed and why>
+
+## Fix
+<Process change to prevent recurrence>
+
+## Restart Check
+<How SA verifies this mode is handled>

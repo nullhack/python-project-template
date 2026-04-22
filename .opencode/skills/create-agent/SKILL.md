@@ -49,7 +49,7 @@ Create `.opencode/agents/<agent-name>.md`:
 ---
 name: <agent-name>
 description: <1-sentence description of what this agent does>
-role: <product-owner | software-engineer | reviewer | setup-project | human-user>
+role: <product-owner | system-architect | software-engineer | setup-project | human-user>
 steps: <step numbers this agent owns, e.g., "2, 3">
 ---
 
@@ -138,7 +138,7 @@ Register the agent in the workflow section of `AGENTS.md`:
 ---
 name: <agent-name>
 description: <what this agent does, 1 sentence>
-role: <product-owner | software-engineer | reviewer | setup-project | human-user>
+role: <product-owner | system-architect | software-engineer | setup-project | human-user>
 steps: <owned steps, e.g., "2-3">
 ---
 
@@ -184,8 +184,8 @@ When to escalate to human: <conditions>
 | Agent | Role | Steps | Purpose |
 |---|---|---|---|
 | `product-owner` | product-owner | 1, 5 | Scope discovery, acceptance |
-| `software-engineer` | software-engineer | 2, 3, 5 | Architecture, TDD, releases |
-| `reviewer` | reviewer | 4 | Adversarial verification |
+| `system-architect` | system-architect | 2, 4 | Architecture, adversarial verification |
+| `software-engineer` | software-engineer | 3, 5 | TDD, releases |
 | `setup-project` | setup-project | meta | Initialize new projects |
 
 ## Best Practices Summary

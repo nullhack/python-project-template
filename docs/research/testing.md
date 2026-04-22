@@ -26,7 +26,7 @@ Foundations for test design, TDD, BDD, and property-based testing used in this t
 | **Status** | Confirmed |
 | **Core finding** | Test setup may need to change if implementation changes, but the actual test shouldn't need to change if the code's user-facing behavior doesn't change. |
 | **Mechanism** | Tests that are tightly coupled to implementation break on refactoring and become a drag on design improvement. Behavioral tests survive internal rewrites. |
-| **Where used** | Contract test rule in `implementation/SKILL.md`, reviewer verification check in `reviewer.md`. |
+| **Where used** | Contract test rule in `implement/SKILL.md`, system-architect verification check in `verify/SKILL.md`. |
 
 ---
 
@@ -39,7 +39,7 @@ Foundations for test design, TDD, BDD, and property-based testing used in this t
 | **Status** | Confirmed |
 | **Core finding** | Tests should be treated as first-class citizens of the system — not coupled to implementation. Bad tests are worse than no tests because they give false confidence. |
 | **Mechanism** | Tests written as "contract tests" — describing what the caller observes — remain stable through refactoring. Tests that verify implementation details are fragile and create maintenance burden. |
-| **Where used** | Contract test rule in `implementation/SKILL.md`, verification check in `reviewer.md`. |
+| **Where used** | Contract test rule in `implement/SKILL.md`, verification check in `verify/SKILL.md`. |
 
 ---
 

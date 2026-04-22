@@ -1,7 +1,7 @@
 ---
 name: implement
-description: Steps 2-3 — Architecture + TDD Loop, one @id at a time
-version: "3.1"
+description: Step 3 — TDD Loop, one @id at a time
+version: "5.0"
 author: software-engineer
 audience: software-engineer
 workflow: feature-lifecycle
@@ -9,11 +9,11 @@ workflow: feature-lifecycle
 
 # Implement
 
-Steps 2 (Architecture) and 3 (TDD Loop) combined into a single skill. The software-engineer owns both.
+Step 3: RED → GREEN → REFACTOR, one @id at a time. The software-engineer owns this step entirely.
 
 ## When to Use
 
-Load this skill when starting Step 2 (Architecture) after the PO has moved a BASELINED feature to `in-progress/`, or when continuing Step 3 (TDD Loop) for an in-progress feature.
+Load this skill when continuing Step 3 (TDD Loop) for an in-progress feature. Architecture stubs must already exist (created by the system-architect at Step 2).
 
 ## Software-Engineer Quality Gate Priority Order
 
@@ -28,141 +28,18 @@ Design correctness is far more important than lint/pyright/coverage compliance. 
 
 ---
 
-## Step 2 — Architecture
-
-### Prerequisites (stop if any fail — escalate to PO)
-
-1. `docs/features/in-progress/` contains exactly one `.feature` file (not just `.gitkeep`). If none exists, **STOP** — update TODO.md `Next:` to `Run @product-owner — move the chosen feature to in-progress/` and stop. Never self-select or move a feature yourself.
-2. The feature file's discovery section has `Status: BASELINED`. If not, escalate to PO — Step 1 is incomplete.
-3. The feature file contains `Rule:` blocks with `Example:` blocks and `@id` tags. If not, escalate to PO — criteria have not been written.
-4. Package name confirmed: read `pyproject.toml` → locate `[tool.setuptools]` → confirm directory exists on disk.
-
-### Package Verification (mandatory — before writing any code)
-
-1. Read `pyproject.toml` → locate `[tool.setuptools]` → record `packages = ["<name>"]`
-2. Confirm directory exists: `ls <name>/`
-3. All new source files go under `<name>/`
-
-**Note on feature file moves**: The PO moves `.feature` files between folders. The software-engineer never moves or edits `.feature` files. Update TODO.md `Source:` path to reflect `in-progress/` once the PO has moved the file.
-
-### Read Phase (all before writing anything)
-
-1. Read `docs/discovery.md` (project-level synthesis changelog) and optionally `docs/discovery_journal.md` (Q&A history for context)
-2. Read `docs/glossary.md` if it exists — use existing domain terms when naming classes, methods, and modules; do not invent synonyms for terms already defined
-3. Read **ALL** `.feature` files in `docs/features/backlog/` (discovery + entities sections)
-4. Read in-progress `.feature` file (full: Rules + Examples + @id)
-5. Read **ALL** existing `.py` files in `<package>/` — understand what already exists before adding anything
-
-### Domain Analysis
-
-From the Domain Model table in `docs/discovery.md` + Rules (Business) in the `.feature` file:
-- **Nouns** → named classes, value objects, aggregates
-- **Verbs** → method names with typed signatures
-- **Datasets** → named types (not bare dict/list)
-- **Bounded Context check**: same word, different meaning across features? → module boundary
-- **Cross-feature entities** → candidate shared domain layer
-
-### Silent Pre-mortem (before writing anything)
-
-> "In 6 months this design is a mess. What mistakes did we make?"
-
-For each candidate class:
-- >2 ivars? → split
-- >1 reason to change? → isolate
-
-For each external dep:
-- Is it behind a Protocol? → if not, add
-
-For each noun:
-- Serving double duty across modules? → isolate
-
-If pattern smell detected, load `skill apply-patterns`.
-
-### Write Stubs into Package
-
-From the domain analysis, write or extend `.py` files in `<package>/`. For each entity:
-
-- **If the file already exists**: add the new class or method signature — do not remove or alter existing code.
-- **If the file does not exist**: create it with the new signatures only.
-
-**Stub rules (strictly enforced):**
-- Method bodies must be `...` — no logic, no conditionals, no imports beyond `typing` and domain types
-- No docstrings — signatures will change; add docstrings after GREEN (lint enforces this at quality gate)
-- No inline comments, no TODO comments, no speculative code
-
-**Example — correct stub style:**
-
-```python
-from dataclasses import dataclass
-from typing import Protocol
-
-
-@dataclass(frozen=True, slots=True)
-class EmailAddress:
-    value: str
-
-    def validate(self) -> None: ...
-
-
-class UserRepository(Protocol):
-    def save(self, user: "User") -> None: ...
-    def find_by_email(self, email: EmailAddress) -> "User | None": ...
-```
-
-**File placement (common patterns, not required names):**
-- `<package>/domain/<noun>.py` — entities, value objects
-- `<package>/domain/service.py` — cross-entity operations
-
-Place stubs where responsibility dictates — do not pre-create `ports/` or `adapters/` folders unless a concrete external dependency was identified in scope. Structure follows domain analysis, not a template.
-
-### Record Architectural Decisions
-
-Append a new dated block to `docs/architecture.md` for each significant decision:
-
-```markdown
-## YYYY-MM-DD — <feature-stem>: <short title>
-
-Decision: <what was decided>
-Reason: <why, one sentence>
-Alternatives considered: <what was rejected and why>
-Feature: <feature-stem>
-```
-
-Only write a block for non-obvious decisions with meaningful trade-offs. Routine YAGNI choices do not need a record.
-
-### Architecture Smell Check (hard gate)
-
-Apply to the stub files just written:
-
-- [ ] No class with >2 responsibilities (SOLID-S)
-- [ ] No behavioural class with >2 instance variables (OC-8; dataclasses, Pydantic models, value objects, and TypedDicts are exempt)
-- [ ] All external deps assigned a Protocol (SOLID-D + Hexagonal) — N/A if no external dependencies identified in scope
-- [ ] No noun with different meaning across modules (DDD Bounded Context)
-- [ ] No missing Creational pattern: repeated construction without Factory/Builder
-- [ ] No missing Structural pattern: type-switching without Strategy/Visitor
-- [ ] No missing Behavioral pattern: state machine or scattered notification without State/Observer
-- [ ] Each ADR consistent with each @id AC — no contradictions
-
-If any check fails: fix the stub files before committing.
-
-### Generate Test Stubs
-
-Run `uv run task test-fast` once. It reads the in-progress `.feature` file, assigns `@id` tags to any untagged `Example:` blocks (writing them back to the `.feature` file), and generates `tests/features/<feature_slug>/<rule_slug>_test.py` — one file per `Rule:` block, one skipped function per `@id`. Verify the files were created, then stage all changes (including any `@id` write-backs to the `.feature` file).
-
-Commit: `feat(<feature-stem>): add architecture and test stubs`
-
----
-
 ## Step 3 — TDD Loop
 
 ### Prerequisites
 
 - [ ] Exactly one .feature `in_progress`. If not present, load `skill select-feature`
+- [ ] On `feat/<stem>` or `fix/<stem>` branch (`git branch --show-current`). If on `main`, load `skill version-control` and create/switch to the branch first
 - [ ] Architecture stubs present in `<package>/` (committed by Step 2)
-- [ ] Read `docs/architecture.md` — understand all architectural decisions before writing any test
+- [ ] Read `docs/system.md` — understand current system structure and constraints
+- [ ] Read in-progress `.feature` file — understand acceptance criteria
 - [ ] Test stub files exist in `tests/features/<feature_slug>/<rule_slug>_test.py` — generated by pytest-beehave at Step 2 end; if missing, re-run `uv run task test-fast` and commit the generated files before entering RED
 
-### Build TODO.md Test List
+### Build Test List
 
 1. List all `@id` tags from in-progress `.feature` file
 2. Order: fewest dependencies first; most impactful within that set
@@ -198,7 +75,7 @@ INNER LOOP
     ├── uv run task test-fast after each individual change
     └── EXIT: test-fast passes; no smells remain
 
-Mark @id completed in TODO.md
+Mark @id completed in FLOW.md Session Log
 Commit when a meaningful increment is green
 ```
 
@@ -219,39 +96,48 @@ All must pass before Self-Declaration.
 
 <!-- This list has exactly 25 items — count before submitting. If your count ≠ 25, you missed one. -->
 
-Communicate verbally to the reviewer. Answer honestly for each principle:
+Communicate verbally to the system-architect. Answer honestly for each principle:
 
-1. YAGNI: no code without a failing test — AGREE/DISAGREE | file:line
-2. YAGNI: no speculative abstractions — AGREE/DISAGREE | file:line
-3. KISS: simplest solution that passes — AGREE/DISAGREE | file:line
-4. KISS: no premature optimization — AGREE/DISAGREE | file:line
-5. DRY: no duplication — AGREE/DISAGREE | file:line
-6. DRY: no redundant comments — AGREE/DISAGREE | file:line
-7. SOLID-S: one reason to change per class — AGREE/DISAGREE | file:line
-8. SOLID-O: open for extension, closed for modification — AGREE/DISAGREE | file:line
-9. SOLID-L: subtypes substitutable — AGREE/DISAGREE | file:line
-10. SOLID-I: no forced unused deps — AGREE/DISAGREE | file:line
-11. SOLID-D: depend on abstractions, not concretions — AGREE/DISAGREE | file:line
-12. OC-1: one level of indentation per method — AGREE/DISAGREE | deepest: file:line
-13. OC-2: no else after return — AGREE/DISAGREE | file:line
-14. OC-3: primitive types wrapped — AGREE/DISAGREE | file:line
-15. OC-4: first-class collections — AGREE/DISAGREE | file:line
-16. OC-5: one dot per line — AGREE/DISAGREE | file:line
-17. OC-6: no abbreviations — AGREE/DISAGREE | file:line
-18. OC-7: ≤20 lines per function, ≤50 per class — AGREE/DISAGREE | longest: file:line
-19. OC-8: ≤2 instance variables per class (behavioural classes only; dataclasses, Pydantic models, value objects, and TypedDicts are exempt) — AGREE/DISAGREE | file:line
-20. OC-9: no getters/setters — AGREE/DISAGREE | file:line
-21. Patterns: no good reason remains to refactor using OOP or Design Patterns — AGREE/DISAGREE | file:line
-22. Patterns: no creational smell — AGREE/DISAGREE | file:line
-23. Patterns: no structural smell — AGREE/DISAGREE | file:line
-24. Patterns: no behavioral smell — AGREE/DISAGREE | file:line
-25. Semantic: tests operate at same abstraction as AC — AGREE/DISAGREE | file:line
+As a software-engineer I declare that:
+* 1. YAGNI: no code without a failing test — AGREE/DISAGREE | file:line
+* 2. YAGNI: no speculative abstractions — AGREE/DISAGREE | file:line
+* 3. KISS: simplest solution that passes — AGREE/DISAGREE | file:line
+* 4. KISS: no premature optimization — AGREE/DISAGREE | file:line
+* 5. DRY: no duplication — AGREE/DISAGREE | file:line
+* 6. DRY: no redundant comments — AGREE/DISAGREE | file:line
+* 7. SOLID-S: one reason to change per class — AGREE/DISAGREE | file:line
+* 8. SOLID-O: open for extension, closed for modification — AGREE/DISAGREE | file:line
+* 9. SOLID-L: subtypes substitutable — AGREE/DISAGREE | file:line
+* 10. SOLID-I: no forced unused deps — AGREE/DISAGREE | file:line
+* 11. SOLID-D: depend on abstractions, not concretions — AGREE/DISAGREE | file:line
+* 12. OC-1: one level of indentation per method — AGREE/DISAGREE | deepest: file:line
+* 13. OC-2: no else after return — AGREE/DISAGREE | file:line
+* 14. OC-3: primitive types wrapped — AGREE/DISAGREE | file:line
+* 15. OC-4: first-class collections — AGREE/DISAGREE | file:line
+* 16. OC-5: one dot per line — AGREE/DISAGREE | file:line
+* 17. OC-6: no abbreviations — AGREE/DISAGREE | file:line
+* 18. OC-7: ≤20 lines per function, ≤50 per class — AGREE/DISAGREE | longest: file:line
+* 19. OC-8: ≤2 instance variables per class (behavioural classes only; dataclasses, Pydantic models, value objects, and TypedDicts are exempt) — AGREE/DISAGREE | file:line
+* 20. OC-9: no getters/setters — AGREE/DISAGREE | file:line
+* 21. Patterns: no good reason remains to refactor using OOP or Design Patterns — AGREE/DISAGREE | file:line
+* 22. Patterns: no creational smell — AGREE/DISAGREE | file:line
+* 23. Patterns: no structural smell — AGREE/DISAGREE | file:line
+* 24. Patterns: no behavioral smell — AGREE/DISAGREE | file:line
+* 25. Semantic: tests operate at same abstraction as AC — AGREE/DISAGREE | file:line
 
 A `DISAGREE` answer is not automatic rejection — state the reason and fix before handing off.
 
+### Branch Hygiene (before handoff)
+
+Before signalling completion:
+1. `git status` — working tree must be clean. Commit any remaining changes.
+2. `git branch --show-current` — must be `feat/<stem>` or `fix/<stem>`, never `main`.
+3. `git log main..HEAD --oneline` — must show 1+ commits. If empty, nothing was committed on this branch.
+4. `git push origin $(git branch --show-current)` — all commits must be on origin.
+
 ### Hand off to Step 4 (Verify)
 
-Signal completion to the reviewer. Provide:
+Signal completion to the system-architect. Provide:
 - Feature file path
 - Self-Declaration (communicated verbally, as above)
 - Summary of what was implemented
@@ -368,7 +254,7 @@ If testing through the real entry point is infeasible, escalate to PO to adjust 
 
 If during implementation you discover a behavior not covered by existing acceptance criteria:
 - **Do not extend criteria yourself** — escalate to PO
-- Note the gap in TODO.md under `## Next`
+- Note the gap in FLOW.md under `## Next`
 - The PO will decide whether to add a new Example to the `.feature` file
 
 Extra tests in `tests/unit/` are allowed freely (coverage, edge cases, etc.) — these do not need `@id` traceability.
@@ -377,7 +263,7 @@ Extra tests in `tests/unit/` are allowed freely (coverage, edge cases, etc.) —
 
 ## Signature Design
 
-<package> signatures are written during Step 2 (Architecture) and refined during Step 3 (RED). They live directly in the package `.py` files — never in the `.feature` file.
+<package> signatures are written during Step 2 (Architecture) by the system-architect and refined during Step 3 (RED) by the software-engineer. They live directly in the package `.py` files — never in the `.feature` file.
 
 Key rules:
 - Bodies are always `...` in the architecture stub
@@ -402,3 +288,17 @@ class UserRepository(Protocol):
     def save(self, user: "User") -> None: ...
     def find_by_email(self, email: EmailAddress) -> "User | None": ...
 ```
+
+---
+
+## Templates
+
+Templates for architecture files live in the `architect` skill's directory:
+
+- `domain-model.md.template` — `docs/domain-model.md` structure
+- `system.md.template` — `docs/system.md` structure
+- `adr.md.template` — individual ADR file structure
+
+Base directory for this skill: file:///home/user/Documents/projects/python-project-template/.opencode/skills/implement
+Relative paths in this skill (e.g., scripts/, reference/) are relative to this base directory.
+Note: file list is sampled.

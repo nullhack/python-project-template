@@ -2,8 +2,8 @@
 name: create-pr
 description: Create pull requests with conventional commits, proper formatting, and branch workflow
 version: "1.0"
-author: software-engineer
-audience: software-engineer
+author: system-architect
+audience: system-architect
 workflow: git-management
 ---
 
@@ -11,7 +11,7 @@ workflow: git-management
 
 ## When to Use
 
-Load this skill after the reviewer approves the feature (Step 4 APPROVED) and the PO has accepted it (Step 5). Use it to create and merge the feature pull request.
+Load this skill after the system-architect approves the feature (Step 4 APPROVED) and the PO has accepted it (Step 5). Use it to create and merge the feature pull request.
 
 ## Step-by-Step
 
@@ -66,7 +66,7 @@ gh pr create \
 - Application runs: `timeout 10s task run` (exit 124 = hung = fix it)
 
 ## Reviewer Notes
-<Any context the reviewer needs>
+<Any context the system-architect needs>
 EOF
 )"
 ```
@@ -83,13 +83,15 @@ EOF
 
 ## Merging
 
-Use squash merge for feature branches to keep main history clean:
+Use `--no-ff` merge to preserve feature boundary in history. This makes the feature revertible as a single unit:
 ```bash
-gh pr merge <number> --squash --delete-branch
+gh pr merge <number> --merge --delete-branch
 ```
 
-After merge, update local main:
+**After merge**:
 ```bash
 git checkout main
 git pull origin main
 ```
+
+**Why not squash**: Squash merge erases the individual commit history of the feature. With `--no-ff`, the merge commit groups all feature commits together while preserving each commit's message and authorship.
