@@ -57,37 +57,37 @@ All must be satisfied before starting any session. If any are missing, stop and 
 
 States are checked **in order**. The first matching condition is the current state.
 
-```
-[IDLE] ──► [STEP-1-BACKLOG-CRITERIA] (Stage 2 on backlog files — no WIP slot needed)
+```mermaid
+stateDiagram-v2
+    [*] --> IDLE
 
-[IDLE] ──► [STEP-1-DISCOVERY] ──► [STEP-1-STORIES] ──► [STEP-1-CRITERIA]
-                                                               │
-                                                               ▼
-[POST-MORTEM] ◄──────────────────────────────────── [STEP-2-READY]
-     │                                                         │
-     │                                                         ▼
-     └──────────────────────────────────────────────► [STEP-2-ARCH]
-                                                               │
-                                                               ▼
-                                                      [STEP-3-WORKING]
-                                                                │
-                                                                ▼
-                                                        [STEP-3-RED]
-                                                                │
-                                                                ▼
-                                                       [STEP-4-READY]
-                                                               │
-                                                               ▼
-                                                      [STEP-5-READY]
-                                                               │
-                                                               ▼
-                                                      [STEP-5-MERGE]
-                                                               │
-                                                               ▼
-                                                      [STEP-5-COMPLETE]
-                                                               │
-                                                               ▼
-                                                            [IDLE]
+    IDLE --> STEP-1-BACKLOG-CRITERIA
+    IDLE --> STEP-1-DISCOVERY
+
+    STEP-1-BACKLOG-CRITERIA --> IDLE
+    STEP-1-DISCOVERY --> STEP-1-STORIES
+    STEP-1-STORIES --> STEP-1-CRITERIA
+    STEP-1-CRITERIA --> STEP-2-READY
+
+    STEP-2-READY --> STEP-2-ARCH
+    STEP-2-ARCH --> STEP-3-WORKING
+    STEP-2-ARCH --> STEP-1-CRITERIA : failure
+
+    STEP-3-WORKING --> STEP-3-RED
+    STEP-3-RED --> STEP-3-WORKING
+    STEP-3-WORKING --> STEP-4-READY
+
+    STEP-4-READY --> STEP-5-READY
+    STEP-4-READY --> STEP-3-WORKING : failure
+
+    STEP-5-READY --> STEP-5-MERGE
+    STEP-5-READY --> POST-MORTEM : failure
+
+    POST-MORTEM --> STEP-2-ARCH
+
+    STEP-5-MERGE --> STEP-5-COMPLETE
+    STEP-5-COMPLETE --> IDLE
+    STEP-5-COMPLETE --> [*]
 ```
 
 ### Detection Rules (evaluated in order)
@@ -169,9 +169,9 @@ States are checked **in order**. The first matching condition is the current sta
 ### [STEP-2-ARCH]
 **Owner**: `system-architect`
 **Entry condition**: On `@branch`, no test stubs in `tests/features/<stem>/`
-**Action**: Read feature; design domain stubs; write ADRs; update `system.md` (domain model + Context + Container sections); run `uv run task test-fast` to generate stubs
+**Action**: Read feature; design domain stubs; draft ADRs; present ADR validation table to stakeholder; commit approved ADRs; update `system.md` (domain model + Context + Container sections); run `uv run task test-fast` to generate stubs
 **Exit**: Stubs generated → update `@state: STEP-3-WORKING` in `WORK.md`
-**Failure**: Spec unclear → escalate to `product-owner`; update `@state: STEP-1-CRITERIA` in `WORK.md`; document the gap in `WORK.md` `Next:` line
+**Failure**: Spec unclear → escalate to `product-owner`; update `@state: STEP-1-CRITERIA` in `WORK.md`; document the gap for the PO
 **Commit**: `feat(arch): design @id architecture`
 
 ---
@@ -204,7 +204,7 @@ States are checked **in order**. The first matching condition is the current sta
 **Entry condition**: All tests implemented (no `@skip`) and passing
 **Action**: Run all quality checks; semantic review against acceptance criteria
 **Exit**: All checks pass → update `@state: STEP-5-READY` in `WORK.md`
-**Failure**: Issues found → update `@state: STEP-3-WORKING` in `WORK.md`; document issues in `WORK.md` `Next:` line
+**Failure**: Issues found → update `@state: STEP-3-WORKING` in `WORK.md`; document issues for the SE
 
 ---
 
@@ -252,7 +252,7 @@ States are checked **in order**. The first matching condition is the current sta
 6. Run `git status` and `git branch --show-current` to confirm workspace matches `@branch`
 
 ### Session End
-1. Update `WORK.md`: set `@state` to the new state; append to Session Log
+1. Update `WORK.md`: set `@state` to the new state
 2. Commit any uncommitted work:
    ```bash
    git add -A && git commit -m "WIP(@id): <what was done>"
@@ -271,47 +271,24 @@ git add WORK.md && git commit -m "chore: @id transition to @state"
 
 ## Auto-Detection Commands
 
-Run in order; first matching condition determines the state.
+Run these three checks to verify workspace consistency. Finer-grained state
+verification happens during normal agent session work (reading the `.feature`
+file, running tests, etc.).
 
 ```bash
-# 0. Check for STEP-1-BACKLOG-CRITERIA: no in-progress file AND backlog has BASELINED features without @id
-NO_INPROGRESS=$(ls docs/features/in-progress/*.feature 2>/dev/null | grep -v ".gitkeep" | wc -l)
-HAS_BASELINED_WITHOUT_IDS=$(grep -rl "Status: BASELINED" docs/features/backlog/ 2>/dev/null | xargs grep -L "@id:" 2>/dev/null | wc -l)
-# If NO_INPROGRESS=0 AND HAS_BASELINED_WITHOUT_IDS>0 → [STEP-1-BACKLOG-CRITERIA]
-
-# 1. Check for in-progress feature
+# 1. Is there a feature in progress?
 ls docs/features/in-progress/*.feature 2>/dev/null | grep -v ".gitkeep"
 
-# 2. Check feature baselined
-grep -q "Status: BASELINED" docs/features/in-progress/*.feature
+# 2. Are we on the correct branch?
+git branch --show-current
 
-# 3. Check for Rule blocks
-grep -q "^  Rule:" docs/features/in-progress/*.feature
-
-# 4. Check for Example blocks with @id
-grep -q "@id:" docs/features/in-progress/*.feature
-
-# 5. Check for feature branch
-git branch --show-current | grep -E "^feat/|^fix/"
-
-# 6. Check for test stubs
+# 3. Do test stubs exist when they should?
 ls tests/features/*/ 2>/dev/null | head -1
-
-# 7. Check for skipped tests
-grep -r "@pytest.mark.skip" tests/features/*/
-
-# 8. Check test failures
-uv run task test-fast 2>&1 | grep -E "FAILED|ERROR"
-
-# 9. Check WORK.md @state for STEP-5-READY (must evaluate before rule 12 / test-pass check)
-grep "@state:" WORK.md | grep -q "STEP-5-READY"
 ```
 
 ---
 
 ## Output Style
-
-Every agent session must close with a `Next:` line — one concrete action, enough for a fresh agent to continue without questions.
 
 - Report results, not process
 - No narration around tool calls

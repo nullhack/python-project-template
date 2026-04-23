@@ -1,24 +1,28 @@
-"""Entry point for running the application as a module."""
+"""CLI entrypoint for temple8 — invoked via `python -m app`."""
 
-import logging
-
-import fire
-
-logger = logging.getLogger(__name__)
+import argparse
+import importlib.metadata
 
 
-def main(verbosity: str = "INFO") -> None:
-    """Run the application.
-
-    Args:
-        verbosity: Log level (DEBUG, INFO, WARNING, ERROR, CRITICAL).
-    """
-    logging.basicConfig(
-        level=getattr(logging, verbosity.upper(), logging.INFO),
-        format="%(levelname)s - %(name)s: %(message)s",
+def build_parser() -> argparse.ArgumentParser:
+    """Build and return the argument parser."""
+    meta = importlib.metadata.metadata("temple8")
+    parser = argparse.ArgumentParser(
+        prog="temple8",
+        description=meta["Summary"],
     )
-    logger.info("Ready.")
+    parser.add_argument(
+        "--version",
+        action="version",
+        version=f"temple8 {meta['Version']}",
+    )
+    return parser
+
+
+def main() -> None:
+    """Run the application."""
+    build_parser().parse_args()
 
 
 if __name__ == "__main__":
-    fire.Fire(main)
+    main()

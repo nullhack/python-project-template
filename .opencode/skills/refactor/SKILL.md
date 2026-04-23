@@ -17,7 +17,7 @@ Sources: Fowler *Refactoring* 2nd ed. (2018); Beck *Canon TDD* (2023); Beck *Tid
 
 ## The Definition
 
-A refactoring is a **behavior-preserving** transformation of internal structure. If the transformation changes observable behavior, it is not a refactoring — it is a feature change, and requires its own RED-GREEN-REFACTOR cycle.
+A refactoring is a **behaviour-preserving** transformation of internal structure. If the transformation changes observable behaviour, it is not a refactoring — it is a feature change, and requires its own RED-GREEN-REFACTOR cycle.
 
 ---
 
@@ -36,7 +36,7 @@ Wear one hat at a time:
 | Hat | Activity | Allowed during this hat |
 |---|---|---|
 | **Feature hat** | RED → GREEN | Write failing test, write minimum code to pass |
-| **Refactoring hat** | REFACTOR | Restructure passing code; never add new behavior |
+| **Refactoring hat** | REFACTOR | Restructure passing code; never add new behaviour |
 
 **Never mix hats in the same step.** If you discover a refactoring is needed while making a test pass (GREEN), note it — finish GREEN first, then switch hats.
 
@@ -92,7 +92,7 @@ Smell categories from Shvets *Refactoring.Guru* (2014–present); each smell lin
 | Smell | Signal | Likely catalogue entry |
 |---|---|---|
 | Divergent Change | One class must change for multiple unrelated reasons | Extract Class (split by axis of change) |
-| Shotgun Surgery | One concept change touches many classes | Move Function/Field, Inline Class, combine scattered behavior |
+| Shotgun Surgery | One concept change touches many classes | Move Function/Field, Inline Class, combine scattered behaviour |
 | Parallel Inheritance Hierarchies | Adding a subclass to one hierarchy forces a new subclass in another | Move Function/Field to flatten or unify hierarchies |
 
 #### Dispensables — dead weight
@@ -102,7 +102,7 @@ Smell categories from Shvets *Refactoring.Guru* (2014–present); each smell lin
 | Comments | Comment explains *what* or *why* when the code could be self-explanatory | Extract Function, Rename Variable/Function |
 | Duplicate Code | Same logic copied in 2+ places | Extract Function, Pull Up Method, Form Template Method |
 | Lazy Class | Class does too little to justify its existence | Inline Class, Collapse Hierarchy |
-| Data Class | Class holds only fields with getters/setters; no behavior | Move Function into class, Encapsulate Field |
+| Data Class | Class holds only fields with getters/setters; no behaviour | Move Function into class, Encapsulate Field |
 | Dead Code | Unreachable code, unused variable, never-called function | Delete it |
 | Speculative Generality | Abstractions added "for future use" with no current caller | Inline Class/Function, Remove unused parameters |
 
@@ -191,10 +191,10 @@ Test fails after a structural change
          ▼
 Is the test testing internal structure
 (private methods, specific call chains,
-concrete types) rather than observable behavior?
+concrete types) rather than observable behaviour?
          │
     YES  │  NO
-         │   └──→ The "refactoring" changed observable behavior.
+         │   └──→ The "refactoring" changed observable behaviour.
          │         This is a FEATURE CHANGE.
          │         Revert the step.
          │         Put on the feature hat.
@@ -219,7 +219,7 @@ Refactoring commits are always **separate** from feature commits.
 | REFACTOR phase | `refactor(<feature-stem>): <what>` | After GREEN, cleaning up the green code |
 | Feature addition | `feat(<feature-stem>): <what>` | After GREEN (never mixed with refactor) |
 
-Never mix a structural cleanup with a behavior addition in one commit. This keeps history bisectable and CI green at every commit.
+Never mix a structural cleanup with a behaviour addition in one commit. This keeps history bisectable and CI green at every commit.
 
 ---
 
@@ -248,8 +248,8 @@ Before marking the `@id` complete, verify all of the following. Each failed item
 | Principle | Check | Violation signal |
 |---|---|---|
 | **S** — Single Responsibility | Does this class have exactly one reason to change? | Class handles data + formatting, or business logic + persistence |
-| **O** — Open/Closed | Can new behavior be added without editing this class? | Adding a case requires editing an `if/elif` chain inside the class |
-| **L** — Liskov Substitution | Do all subtypes honor the full contract of their base type? | Subclass raises on an inherited method, or narrows a precondition |
+| **O** — Open/Closed | Can new behaviour be added without editing this class? | Adding a case requires editing an `if/elif` chain inside the class |
+| **L** — Liskov Substitution | Do all subtypes honour the full contract of their base type? | Subclass raises on an inherited method, or narrows a precondition |
 | **I** — Interface Segregation | Does every implementor use every method in the interface? | Implementors stub out methods they don't need |
 | **D** — Dependency Inversion | Does domain code depend only on abstractions, not concrete I/O? | Domain class directly imports a database, file, or network class |
 

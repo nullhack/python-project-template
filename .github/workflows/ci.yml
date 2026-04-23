@@ -33,10 +33,10 @@ jobs:
     
     steps:
       - name: Checkout code
-        uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4.1.1
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v4.1.1
         
       - name: Install uv
-        uses: astral-sh/setup-uv@cdfb2ee6dde255817c739680168ad81e184c4bfb # v4.0.0
+        uses: astral-sh/setup-uv@c0c76fcf76c37099e6a452584d04b015240faefc # v4.0.0
         with:
           enable-cache: true
           cache-dependency-glob: "uv.lock"
@@ -67,21 +67,23 @@ jobs:
       fail-fast: false
       matrix:
         python-version: ["3.13"]
+    env:
+      UV_SYSTEM_PYTHON: "false"
         
     steps:
       - name: Checkout code
-        uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4.1.1
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v4.1.1
         
       - name: Install uv
-        uses: astral-sh/setup-uv@cdfb2ee6dde255817c739680168ad81e184c4bfb # v4.0.0
+        uses: astral-sh/setup-uv@c0c76fcf76c37099e6a452584d04b015240faefc # v4.0.0
         with:
           enable-cache: true
           cache-dependency-glob: "uv.lock"
           python-version: ${{ matrix.python-version }}
           
       - name: Install dependencies
-        run: uv sync --locked --all-extras --dev
-        
+        run: uv sync --locked --all-extras --dev && uv pip install -e .
+
       - name: Run fast tests
         run: uv run task test-fast
         
@@ -115,13 +117,15 @@ jobs:
     permissions:
       contents: read
       actions: read
-    
+    env:
+      UV_SYSTEM_PYTHON: "false"
+
     steps:
       - name: Checkout code
-        uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4.1.1
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v4.1.1
         
       - name: Install uv
-        uses: astral-sh/setup-uv@cdfb2ee6dde255817c739680168ad81e184c4bfb # v4.0.0
+        uses: astral-sh/setup-uv@c0c76fcf76c37099e6a452584d04b015240faefc # v4.0.0
         with:
           enable-cache: true
           cache-dependency-glob: "uv.lock"
@@ -130,7 +134,7 @@ jobs:
         run: uv python install 3.13
         
       - name: Install dependencies
-        run: uv sync --locked --all-extras --dev
+        run: uv sync --locked --all-extras --dev && uv pip install -e .
         
       - name: Build documentation
         run: uv run task doc-build
@@ -168,13 +172,15 @@ jobs:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     permissions:
       contents: write
+    env:
+      UV_SYSTEM_PYTHON: "false"
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4.1.1
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v4.1.1
 
       - name: Install uv
-        uses: astral-sh/setup-uv@cdfb2ee6dde255817c739680168ad81e184c4bfb # v4.0.0
+        uses: astral-sh/setup-uv@c0c76fcf76c37099e6a452584d04b015240faefc # v4.0.0
         with:
           enable-cache: true
           cache-dependency-glob: "uv.lock"
@@ -183,7 +189,7 @@ jobs:
         run: uv python install 3.13
 
       - name: Install dependencies
-        run: uv sync --locked --all-extras --dev
+        run: uv sync --locked --all-extras --dev && uv pip install -e .
 
       - name: Build and publish documentation
         run: uv run task doc-publish

@@ -77,7 +77,7 @@ Every artifact is version-controlled alongside the code that implements it.
 
 **Behavioral tests only** — Tests describe observable contracts, not implementation internals. A test that survives a complete internal rewrite is a good test. A test that breaks on refactoring is a liability.
 
-**100% coverage** — Measured against your package. No untested paths ship. Coverage is a floor, not a goal.
+**Coverage enforced** — Measured against your package. Threshold is defined in `pyproject.toml`. No untested paths ship. Coverage is a floor, not a goal.
 
 **Design principles enforced** — YAGNI, KISS, DRY, SOLID, and Object Calisthenics are not guidelines — they are review gates. Every principle is checked with file and line evidence before a feature is approved.
 

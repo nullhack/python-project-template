@@ -60,7 +60,7 @@ Load this skill when the `refactor` skill's smell table points to a GoF pattern,
 | **Mediator** | Centralize complex communication between objects through a mediator object |
 | **Memento** | Capture and restore object state without violating encapsulation |
 | **Observer** | Define a one-to-many dependency so dependents are notified automatically |
-| **State** | Allow an object to alter its behavior when its internal state changes |
+| **State** | Allow an object to alter its behaviour when its internal state changes |
 | **Strategy** | Define a family of algorithms, encapsulate each, and make them interchangeable |
 | **Template Method** | Define the skeleton of an algorithm; let subclasses fill in specific steps |
 | **Visitor** | Separate an algorithm from the object structure it operates on |
@@ -87,7 +87,7 @@ Load this skill when the `refactor` skill's smell table points to a GoF pattern,
 ---
 
 #### Smell: Multi-Step Construction with Optional Parts
-**Signal**: An object requires several setup calls before it is valid. Callers must remember the correct sequence. Forgetting a step leaves the object in an invalid or partially initialized state.
+**Signal**: An object requires several setup calls before it is valid. Callers must remember the correct sequence. Forgetting a step leaves the object in an invalid or partially initialised state.
 
 **Pattern**: Builder
 
@@ -106,7 +106,7 @@ Load this skill when the `refactor` skill's smell table points to a GoF pattern,
 #### Smell: Type-Switching (branching on a type or status field)
 **Signal**: A function or method branches on a type flag, kind field, or status string. Adding a new variant requires editing this function — it is open to modification but closed to extension.
 
-**Pattern**: Strategy (behavior varies per call) or Visitor (operation varies over a fixed structure)
+**Pattern**: Strategy (behaviour varies per call) or Visitor (operation varies over a fixed structure)
 
 **Before**: A single function contains a multi-branch conditional on the variant. Every new variant requires modifying the function and all its tests.
 
@@ -125,7 +125,7 @@ Load this skill when the `refactor` skill's smell table points to a GoF pattern,
 
 **Before**: A method on one class navigates into another class's fields to perform a computation. The computation is separated from the data it operates on.
 
-**After**: The computation moves to the class whose data it uses. The original class delegates to it. The envied class gains behavior; the original class becomes a coordinator.
+**After**: The computation moves to the class whose data it uses. The original class delegates to it. The envied class gains behaviour; the original class becomes a coordinator.
 
 **Key structural change**: Behavior lives next to the data it depends on.
 
@@ -157,7 +157,7 @@ Load this skill when the `refactor` skill's smell table points to a GoF pattern,
 
 **After**: Each state is its own class implementing a shared interface. Each state object owns its transitions — it knows which transitions are valid and what the next state is. The context object (the original class) delegates to the current state. Adding a new state means adding a new class.
 
-**Key structural change**: State-specific behavior is co-located in the state class; the context becomes a thin delegator.
+**Key structural change**: State-specific behaviour is co-located in the state class; the context becomes a thin delegator.
 
 ---
 
