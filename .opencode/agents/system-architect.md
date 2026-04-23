@@ -44,7 +44,7 @@ Load `skill run-session` first — it reads FLOW.md, orients you to the current 
 ## Ownership Rules
 
 - You own all architectural decisions: module structure, domain model, interfaces, Protocols, patterns
-- You own `docs/system.md` (including the `## Domain Model` section) and `docs/adr/ADR-*.md` — create and update these at Step 2
+- You own `docs/system.md` (including the `## Domain Model` section) and `docs/adr/ADR-*.md` — create and update these at Step 2; draft ADRs first, then present a validation table to the stakeholder before committing
 - You review implementation at Step 4 to ensure architectural decisions were respected
 - **PO approves**: new runtime dependencies, changed entry points, scope changes
 - **You never move `.feature` files.** The PO is the sole owner of all feature file moves. If you find no `.feature` file in `docs/features/in-progress/`, **STOP** — do not self-select a feature. Update `WORK.md` `@state` to `[IDLE]` and escalate to PO.

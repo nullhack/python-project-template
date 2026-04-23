@@ -2,18 +2,19 @@
 
 ## Status
 
-Proposed | Accepted | Deprecated | Superseded by ADR-YYYY-MM-DD-<slug>
+Accepted | Deprecated
 
 ## Context
 
-<What is the issue that we're seeing that is motivating this decision or change?
-State the decision as a clear question. List constraints from the feature file,
-glossary, and existing ADRs.>
+<What is the situation that triggered these questions? Describe the forces at
+play — constraints from the feature file, glossary, and existing ADRs that
+narrow the design space.>
 
-Alternatives evaluated:
-- <option A>
-- <option B>
-- <option C>
+## Interview
+
+| Question | Answer |
+|---|---|
+| <clear question about the decision> | <concise answer — the chosen option> |
 
 ## Decision
 

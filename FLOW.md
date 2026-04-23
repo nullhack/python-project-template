@@ -169,7 +169,7 @@ stateDiagram-v2
 ### [STEP-2-ARCH]
 **Owner**: `system-architect`
 **Entry condition**: On `@branch`, no test stubs in `tests/features/<stem>/`
-**Action**: Read feature; design domain stubs; write ADRs; update `system.md` (domain model + Context + Container sections); run `uv run task test-fast` to generate stubs
+**Action**: Read feature; design domain stubs; draft ADRs; present ADR validation table to stakeholder; commit approved ADRs; update `system.md` (domain model + Context + Container sections); run `uv run task test-fast` to generate stubs
 **Exit**: Stubs generated → update `@state: STEP-3-WORKING` in `WORK.md`
 **Failure**: Spec unclear → escalate to `product-owner`; update `@state: STEP-1-CRITERIA` in `WORK.md`; document the gap for the PO
 **Commit**: `feat(arch): design @id architecture`

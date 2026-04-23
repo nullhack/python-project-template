@@ -11,7 +11,7 @@ Features flow through 5 steps with a WIP limit of 1 feature at a time. The files
 
 ```
 STEP 1: SCOPE          (product-owner)     → discovery + Gherkin stories + criteria
-STEP 2: ARCH           (system-architect)  → branch from main; read system.md + glossary.md + in-progress feature + targeted package files; write domain stubs; update ## Domain Model section in system.md; significant decisions as docs/adr/ADR-YYYY-MM-DD-<slug>.md; system.md rewritten
+STEP 2: ARCH           (system-architect)  → branch from main; read system.md + glossary.md + in-progress feature + targeted package files; write domain stubs; update ## Domain Model section in system.md; draft ADRs → stakeholder validation table → commit approved ADRs as docs/adr/ADR-YYYY-MM-DD-<slug>.md; system.md rewritten
 STEP 3: TDD LOOP       (software-engineer) → RED → GREEN → REFACTOR, one @id at a time
 STEP 4: VERIFY         (system-architect)  → run all commands, review code against architecture
 STEP 5: ACCEPT         (product-owner)     → demo, validate, SE merges branch to main with --no-ff, move .feature to completed/ (PO only)

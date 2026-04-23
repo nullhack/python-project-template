@@ -21,7 +21,7 @@ During architecture, correctness priorities are (in order):
 
 1. **Design correctness** — YAGNI > KISS > DRY > SOLID > Object Calisthenics > appropriate design patterns > complex code > complicated code > failing code > no code
 2. **One test green** — `uv run task test-fast` passes after stub generation
-3. **Commit** — when stubs and ADRs are complete
+3. **Commit** — when stubs and ADRs are complete (ADRs require stakeholder validation before commit)
 
 Design correctness is far more important than lint/pyright/coverage compliance. Never run lint or static-check during architecture — those are handoff-only checks.
 
@@ -67,7 +67,7 @@ ADR details are available on demand: reference Key Decisions in `system.md`, the
 
 ## Architectural Interview Protocol
 
-The arch interview surfaces decisions that must be recorded as ADRs. Each unresolved question becomes one ADR.
+The arch interview surfaces decisions that must be recorded as ADRs. Related questions from the interview are grouped into one ADR — multiple Q&A pairs converge on a single decision.
 
 ### Gap-Finding Techniques
 
@@ -101,23 +101,33 @@ If pattern smell detected, load `skill apply-patterns`.
 
 ### ADR Interview Pattern
 
-For each unresolved decision identified during domain analysis:
+For each group of related unresolved decisions identified during domain analysis:
 
-1. **Frame the question**: state the decision as a clear question with known alternatives.
+1. **Frame the questions**: state each decision as a clear question with known alternatives.
    Example: "Should `FrameworkAdapter` be a `typing.Protocol` or an ABC?"
 
 2. **State constraints**: list what is known from the feature file, glossary, and existing ADRs that constrains the answer.
 
 3. **Evaluate alternatives**: for each option, state the consequence. Apply laddering to surface hidden consequences.
 
-4. **Record the decision**: write one ADR per question. Use the template in `adr.md.template`.
-   - `## Context` — the question + constraints that produced it
+4. **Draft the ADR**: group related questions into one ADR using the template in `adr.md.template`.
+   - `## Context` — the situation that triggered these questions
+   - `## Interview` — Q&A table with final accepted answers (one row per question)
    - `## Decision` — one sentence
    - `## Reason` — one sentence
    - `## Alternatives Considered` — rejected options with reasons
    - `## Consequences` — (+) and (-) outcomes
+   Do **not** commit yet — ADRs require stakeholder validation first.
 
-5. **Commit each ADR** as it is finalized: `feat(<feature-stem>): add ADR-<slug>`
+5. **Stakeholder validation**: after all ADRs are drafted, present a validation table to the stakeholder:
+
+   | ADR | Summary | Decision | Reason | Alternatives |
+   |---|---|---|---|---|
+   | ADR-YYYY-MM-DD-<slug> | <one-line summary> | <chosen option> | <one-line reason> | <option names only> |
+
+6. **If stakeholder approves**: commit each approved ADR. `feat(<feature-stem>): add ADR-<slug>`
+
+7. **If stakeholder rejects an ADR**: expand that ADR with deeper considerations and consequences, then present the specific ADR as a targeted question with options. Iterate until the stakeholder approves, then commit.
 
 Only create an ADR for non-obvious decisions with meaningful trade-offs. Routine YAGNI choices do not need a record.
 
@@ -235,7 +245,7 @@ If during architecture you discover behaviour not covered by existing acceptance
 Templates for files written by this skill live in this skill's directory (`architect/`):
 
 - `system.md.template` — `docs/system.md` structure (domain model + Context + Container sections included; markdown table format)
-- `adr.md.template` — individual ADR file structure (includes `## Context` section)
+- `adr.md.template` — ADR file structure (Status, Context, Interview Q&A table, Decision, Reason, Alternatives Considered, Consequences)
 
 Base directory for this skill: `.opencode/skills/architect/`
 Relative paths in this skill (e.g., scripts/, reference/) are relative to this base directory.

@@ -39,11 +39,11 @@ Entries are sorted alphabetically.
 
 ## ADR (Architecture Decision Record)
 
-**Definition:** A short document that records a single significant architectural decision, the context that forced it, the alternatives considered, and the consequences.
+**Definition:** A short document that records a significant architectural decision — the context that triggered it, the self-interview questions and answers that led to the decision, the alternatives considered, and the consequences. One ADR can group multiple related Q&A pairs that converge on a single decision.
 
 **Aliases:** decision log entry, design decision record
 
-**Example:** "ADR-2026-04-22-cli-entrypoint records why the team chose argparse over click for the CLI skeleton."
+**Example:** "ADR-2026-04-22-cli-parser-library records why the team chose argparse over click for the CLI skeleton, including the self-interview questions the SA asked before stakeholder validation."
 
 **Source:** template — Nygard (2011), MADR format
 
