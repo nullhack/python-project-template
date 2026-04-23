@@ -1,0 +1,34 @@
+# ADR-YYYY-MM-DD-<slug>
+
+## Status
+
+Proposed | Accepted | Deprecated | Superseded by ADR-YYYY-MM-DD-<slug>
+
+## Context
+
+<What is the issue that we're seeing that is motivating this decision or change?
+State the decision as a clear question. List constraints from the feature file,
+glossary, and existing ADRs.>
+
+Alternatives evaluated:
+- <option A>
+- <option B>
+- <option C>
+
+## Decision
+
+<One sentence stating the chosen option.>
+
+## Reason
+
+<One sentence explaining why this option was chosen over the alternatives.>
+
+## Alternatives Considered
+
+- **<option A>**: <reason for rejection>
+- **<option B>**: <reason for rejection>
+
+## Consequences
+
+- (+) <positive outcome>
+- (-) <negative outcome — include mitigations where applicable>

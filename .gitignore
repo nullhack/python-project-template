@@ -1,4 +1,5 @@
 .DS_Store
+*.swp
 .coverage
 .vscode/\n.idea/
 # Byte-compiled / optimized / DLL files
