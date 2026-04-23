@@ -2,6 +2,34 @@
 
 All notable changes to this template will be documented in this file.
 
+## [v7.2.20260423] - Methodical Theseus - 2026-04-23
+
+### Added
+
+- **`scripts/`**: 10 validation and automation scripts (`assign_ids.py`, `check_adrs.py`, `check_commit_messages.py`, `check_feature_file.py`, `check_oc.py`, `check_stubs.py`, `check_version.py`, `check_work_md.py`, `detect_state.py`, `score_features.py`, `update_index_html.py`) (#113)
+- **`docs/adr/ADR-2026-04-22-cli-parser-library.md`**: decision record for choosing `argparse` over click/typer (#113)
+- **`.opencode/skills/architect/adr.md.template`**: ADR template for Step 2 architectural decisions (#113)
+- **`docs/features/completed/cli-entrypoint.feature`**: completed feature file for CLI entrypoint (#113)
+- **`scripts/update_index_html.py`**: documentation portal generator (#113)
+
+### Changed
+
+- **Mermaid → markdown tables**: C4 diagrams in `system.md` and skill templates converted from Mermaid to markdown tables; British English adopted across project files (#113)
+- **ADR format restructured**: Interview Q&A table and stakeholder validation gate added to ADR template (#113)
+- **Skill and agent files updated**: `architect/SKILL.md`, `define-scope/SKILL.md`, `implement/SKILL.md`, `refactor/SKILL.md`, `update-docs/SKILL.md`, `verify/SKILL.md`, and all agent files updated with latest conventions (#113)
+- **`docs/index.html`**: redesigned documentation portal with branding palette, inline features, ADR list (#113)
+- **`docs/system.md`**: section order and domain model terminology updated (#113)
+- **`docs/glossary.md`**: expanded living glossary (#113)
+- **CI workflows**: updated for `UV_SYSTEM_PYTHON` and editable install handling (#113)
+
+### Removed
+
+- **Duplicate template files**: `define-scope/discovery-template.md`, `implement/adr.md.template`, `implement/system.md.template`, `update-docs/container.md.template`, `update-docs/context.md.template`, `update-docs/glossary.md.template` — consolidated under `architect/` (#113)
+- **Stale test files**: `tests/unit/app_test.py` (broken `main(verbosity)` call) and `tests/features/completed/display-version.feature` (superseded) (#113)
+- **`tests/conftest.py`**: manual marker skip hook removed — now owned by pytest-beehave (#113)
+
+---
+
 ## [v7.2.20260422] - Resolute Hermes - 2026-04-22
 
 ### Added

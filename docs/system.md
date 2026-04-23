@@ -125,7 +125,7 @@ See `docs/adr/` for the full decision record.
 |-----|------|---------|-------------|
 | `project.name` | string | `"temple8"` | Application name; read from installed package metadata |
 | `project.description` | string | `"Python template with some awesome tools to quickstart any Python project"` | Package description from `pyproject.toml`; set as `argparse` description |
-| `project.version` | string | `"7.1.20260422"` | Calver version; read at runtime via `importlib.metadata` |
+| `project.version` | string | `"7.2.20260423"` | Calver version; read at runtime via `importlib.metadata` |
 
 ---
 
