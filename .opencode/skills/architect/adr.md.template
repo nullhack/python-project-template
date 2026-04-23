@@ -1,0 +1,35 @@
+# ADR-YYYY-MM-DD-<slug>
+
+## Status
+
+Accepted | Deprecated
+
+## Context
+
+<What is the situation that triggered these questions? Describe the forces at
+play — constraints from the feature file, glossary, and existing ADRs that
+narrow the design space.>
+
+## Interview
+
+| Question | Answer |
+|---|---|
+| <clear question about the decision> | <concise answer — the chosen option> |
+
+## Decision
+
+<One sentence stating the chosen option.>
+
+## Reason
+
+<One sentence explaining why this option was chosen over the alternatives.>
+
+## Alternatives Considered
+
+- **<option A>**: <reason for rejection>
+- **<option B>**: <reason for rejection>
+
+## Consequences
+
+- (+) <positive outcome>
+- (-) <negative outcome — include mitigations where applicable>

@@ -12,7 +12,7 @@ Foundations for test design, TDD, BDD, and property-based testing used in this t
 | **Date** | 2018 |
 | **Status** | Confirmed |
 | **Core finding** | Tests should answer "if I enter X and Y, will the result be Z?" — not "will method A call class B first?" |
-| **Mechanism** | A test is behavioral if its assertion describes something a caller/user can observe without knowing the implementation. The test should still pass if you completely rewrite the internals. |
+| **Mechanism** | A test is behavioural if its assertion describes something a caller/user can observe without knowing the implementation. The test should still pass if you completely rewrite the internals. |
 | **Where used** | Contract test rule in `implementation/SKILL.md`: "Write every test as if you cannot see the production code." |
 
 ---
@@ -24,7 +24,7 @@ Foundations for test design, TDD, BDD, and property-based testing used in this t
 | **Source** | Google Testing Blog (2013). *Testing on the Toilet: Test Behavior, Not Implementation*. |
 | **Date** | 2013 |
 | **Status** | Confirmed |
-| **Core finding** | Test setup may need to change if implementation changes, but the actual test shouldn't need to change if the code's user-facing behavior doesn't change. |
+| **Core finding** | Test setup may need to change if implementation changes, but the actual test shouldn't need to change if the code's user-facing behaviour doesn't change. |
 | **Mechanism** | Tests that are tightly coupled to implementation break on refactoring and become a drag on design improvement. Behavioral tests survive internal rewrites. |
 | **Where used** | Contract test rule in `implement/SKILL.md`, system-architect verification check in `verify/SKILL.md`. |
 
@@ -64,7 +64,7 @@ Foundations for test design, TDD, BDD, and property-based testing used in this t
 | **Date** | 1991 |
 | **Alternative** | Mutation testing tools: Cosmic Ray, mutmut (Python) |
 | **Status** | Confirmed |
-| **Core finding** | A meaningful test fails when a mutation (small deliberate code change) is introduced. A tautological test passes even with mutations because it doesn't constrain the behavior. |
+| **Core finding** | A meaningful test fails when a mutation (small deliberate code change) is introduced. A tautological test passes even with mutations because it doesn't constrain the behaviour. |
 | **Mechanism** | If a test survives every mutation of the production code without failing, it tests nothing. Only tests that fail on purposeful "damage" to the code are worth keeping. |
 | **Where used** | Implicitly encouraged: tests must describe contracts, not implementation, which is the theoretical complement to mutation testing. |
 
@@ -118,8 +118,8 @@ Foundations for test design, TDD, BDD, and property-based testing used in this t
 | **Date** | 2006 |
 | **Alternative** | Fowler, M. (2013). "Given When Then." *martinfowler.com*. https://martinfowler.com/bliki/GivenWhenThen.html |
 | **Status** | Confirmed — primary BDD source |
-| **Core finding** | BDD evolved directly from TDD to address persistent practitioner confusion. BDD reframes TDD vocabulary around observable behavior: scenarios instead of tests, Given-When-Then instead of Arrange-Act-Assert. |
-| **Mechanism** | "Given" captures preconditions (Arrange), "When" captures the triggering event (Act), "Then" captures the observable outcome (Assert). Translating to G/W/T shifts focus from implementation mechanics to user-observable behavior. |
+| **Core finding** | BDD evolved directly from TDD to address persistent practitioner confusion. BDD reframes TDD vocabulary around observable behaviour: scenarios instead of tests, Given-When-Then instead of Arrange-Act-Assert. |
+| **Mechanism** | "Given" captures preconditions (Arrange), "When" captures the triggering event (Act), "Then" captures the observable outcome (Assert). Translating to G/W/T shifts focus from implementation mechanics to user-observable behaviour. |
 | **Where used** | Theoretical link between Gherkin `@id` Examples (Step 1 output) and the TDD inner loop (Step 3). |
 
 ---

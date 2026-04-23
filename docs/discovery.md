@@ -1,24 +1,18 @@
 # Discovery: temple8
 
+> Append-only session synthesis log.
+> Written by the product-owner at the end of each discovery session.
+> Each block records one session: a summary paragraph and a table of features whose behaviour changed.
+> A row appears only when a `.feature` file would be updated as a result of the session.
+> Confirmations of existing behaviour are not recorded here — see `docs/scope_journal.md` for the full Q&A.
+> Never edit past blocks — later blocks extend or retire in favour of earlier ones.
+
 ---
 
-## Session: 2026-04-22
+## Session 2026-04-22
 
-### Context
+**Summary**: First discovery session for temple8. Established that the product serves Python engineers who want a production-ready project skeleton without setup cost. Confirmed the template ships with exactly one demonstration feature — a CLI entrypoint (`python -m app --help` and `python -m app --version`) implemented entirely in `app/__main__.py` using stdlib only. The feature was chosen for its genuine utility, minimal footprint (zero new dependencies, ~15 lines), and its ability to showcase the full five-step delivery workflow end-to-end.
 
-temple8 is a Python project template used by Python engineers who want to start a new project with production-ready tooling already in place. The product eliminates setup boilerplate — quality tooling, CI, test infrastructure, and an AI-assisted delivery workflow are all preconfigured. It exists because the cost of setting up a rigorous environment from scratch discourages engineers from applying good practices from day one. Success means an engineer can clone the template and ship a meaningful first feature within a single session. Failure means the template introduces more friction than it removes, or that it locks engineers into choices they cannot override.
-
-Out of scope: runtime infrastructure (databases, message queues, cloud deployment), UI frameworks, and any domain-specific business logic.
-
-### Feature List
-
-- `display-version` — The application reads its own version from `pyproject.toml` at runtime and logs it; log output is gated by a verbosity parameter.
-
-### Domain Model
-
-| Type | Name | Description | In Scope |
-|------|------|-------------|----------|
-| Noun | `Version` | Semver string read from `pyproject.toml` via `tomllib` | Yes |
-| Noun | `ValidVerbosity` | Closed set of five standard Python log level names | Yes |
-| Verb | `version()` | Reads version and emits INFO log | Yes |
-| Verb | `main(verbosity)` | Configures logging and calls `version()` | Yes |
+| Feature | Change | Source questions | Reason |
+|---------|--------|-----------------|--------|
+| `cli-entrypoint` | created | Q8: "ship with one working demo feature" → one end-to-end example; Q9: "simple useful command, no bloat" → single CLI command; Q11: Option C chosen → `--help` + `--version` combined | New feature: CLI entrypoint with `--help` (prints name, tagline, options, exits 0), `--version` (prints `temple8 <version>` from package metadata, exits 0), and unknown-flag handling (exits 2). All code in `app/__main__.py`, zero new dependencies. |

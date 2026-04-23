@@ -35,7 +35,7 @@ Before writing any skill, research the domain to ground the skill in industry st
 ```
 Research question: How to structure a security review skill?
 Sources found: OWASP Testing Guide, NIST SP 800-53, Anthropic's agent design patterns
-Conclusion: Security reviews should be adversarial (assume breakage), use defense-in-depth checklist, escalate on first critical finding.
+Conclusion: Security reviews should be adversarial (assume breakage), use defence-in-depth checklist, escalate on first critical finding.
 → Skill step: "3. Run adversarial checks — assume breach, verify every control"
 ```
 

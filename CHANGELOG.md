@@ -2,6 +2,24 @@
 
 All notable changes to this template will be documented in this file.
 
+## [v7.2.20260422] - Resolute Hermes - 2026-04-22
+
+### Added
+
+- **`app/__main__.py`**: CLI entrypoint — `python -m app --help` and `python -m app --version`; zero new dependencies (argparse + importlib.metadata are stdlib) (#cli-entrypoint)
+- **`docs/adr/ADR-2026-04-22-cli-parser-library.md`**: decision record for choosing `argparse` over click/typer (#cli-entrypoint)
+- **`docs/adr/ADR-2026-04-22-version-source.md`**: decision record for reading version from `importlib.metadata` at runtime (#cli-entrypoint)
+- **`tests/features/cli_entrypoint/`**: 3 test files covering 6 acceptance criteria via subprocess (#cli-entrypoint)
+- **`tests/unit/main_test.py`**: 5 in-process unit tests for 100% coverage (#cli-entrypoint)
+- **`docs/index.html`**: redesigned documentation portal — branding palette, inline logo SVG, doc cards, tabbed features, ADR list, research library
+
+### Changed
+
+- **`docs/system.md`**: C4 diagrams with branding colors (stone `#f0ece4`, gold `#c9a84c`); Completed Features table added; section order follows zoom-in narrative
+- **Workflow skills**: `architect/SKILL.md`, `update-docs/SKILL.md`, `architect/system.md.template` — domain model terminology updated (Verbs → Actions, Nouns → Entities); WORK.md format simplified (Session Log and Next: removed from format spec)
+
+---
+
 ## [v7.1.20260422] - Precise Hypatia - 2026-04-22
 
 ### Added
@@ -49,9 +67,9 @@ All notable changes to this template will be documented in this file.
 - **`docs/research/`**: renamed from `docs/scientific-research/`; new entries for architecture, documentation, version-control (#100)
 
 ### Removed
-- **`TODO.md`**: superseded by `FLOW.md` + `WORK.md` (#100)
+- **`TODO.md`**: retired in favour of `FLOW.md` + `WORK.md` (#100)
 - **`.dockerignore`**: removed (#100)
-- **`docs/architecture.md`**: superseded by `docs/system.md` + `docs/adr/` (#100)
+- **`docs/architecture.md`**: retired in favour of `docs/system.md` + `docs/adr/` (#100)
 - **`reviewer` agent**: absorbed into `system-architect` (#100)
 
 ## [v6.4.20260420] - Minimal Prometheus - 2026-04-20
@@ -74,7 +92,7 @@ All notable changes to this template will be documented in this file.
 
 ### Added
 - **pytest-beehave integration**: `@id` tags now auto-assigned to untagged `Example:` blocks on every `pytest` run; test stubs auto-generated from `.feature` files at Step 2 end — no manual ID generation or stub writing required (#78)
-- **Self-declaration defense in depth**: all 25 items numbered 1–25 in `implementation/SKILL.md`; `verify/SKILL.md` now hard-gates on completeness (count must equal 25, sequence must be gapless) before item audit begins (#78)
+- **Self-declaration defence in depth**: all 25 items numbered 1–25 in `implementation/SKILL.md`; `verify/SKILL.md` now hard-gates on completeness (count must equal 25, sequence must be gapless) before item audit begins (#78)
 
 ### Changed
 - **Naming convention**: `.feature` file paths now use `<feature-stem>` (kebab); test directories use `<feature_slug>` (underscore) — applied consistently across all skills, `AGENTS.md`, and docs (#78)
@@ -159,7 +177,7 @@ All notable changes to this template will be documented in this file.
 
 ### Changed
 - **5-step workflow** (breaking): Steps restructured — TDD loop merged into Step 3, Verify is Step 4, Accept is Step 5; all agents, skills, and docs updated to match
-- **Behavior groups terminology**: "Cluster" renamed to "behavior group" throughout scope skill, AGENTS.md, workflow.md, and templates for clearer AI focus
+- **Behavior groups terminology**: "Cluster" renamed to "behaviour group" throughout scope skill, AGENTS.md, workflow.md, and templates for clearer AI focus
 - **Story candidates terminology**: Phase 3 now derives "story candidates" → `Rule:` blocks, removing ambiguity from the cluster-to-story mapping
 - **Test stub format** (breaking): Stubs now use `@pytest.mark.skip(reason="not yet implemented")` instead of `raise NotImplementedError`; skip marker is removed when implementing in RED phase
 - **Dropped `@pytest.mark.unit` and `@pytest.mark.integration`**: Only `@pytest.mark.slow` and `@pytest.mark.deprecated` remain; folder structure (`tests/features/` vs `tests/unit/`) encodes test type
@@ -410,7 +428,7 @@ This represents a fundamental architectural shift from V1 (template validation w
 ### Features
 - **7-Phase Development Cycle**: Feature Definition → Prototype → TDD → Signature Design → Architecture Review → Implementation → Quality Assurance
 - **SOLID Principles Enforcement** - Single responsibility, dependency inversion, interface segregation
-- **Object Calisthenics** - No primitives, small classes, behavior-rich objects
+- **Object Calisthenics** - No primitives, small classes, behaviour-rich objects
 - **Hybrid Calver Versioning**: v1.2.20260302 format with themed releases
 - **Themed Release Names**: "Swift Cheetah", "Vigilant Owl", "Creative Fox" based on PR sentiment
 - **Property-Based Testing**: Hypothesis integration for robust test coverage

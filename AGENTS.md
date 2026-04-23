@@ -11,7 +11,7 @@ Features flow through 5 steps with a WIP limit of 1 feature at a time. The files
 
 ```
 STEP 1: SCOPE          (product-owner)     → discovery + Gherkin stories + criteria
-STEP 2: ARCH           (system-architect)  → branch from main; read system.md + glossary.md + in-progress feature + targeted package files; write domain stubs; update ## Domain Model section in system.md; significant decisions as docs/adr/ADR-YYYY-MM-DD-<slug>.md; system.md rewritten
+STEP 2: ARCH           (system-architect)  → branch from main; read system.md + glossary.md + in-progress feature + targeted package files; write domain stubs; update ## Domain Model section in system.md; draft ADRs → stakeholder validation table → commit approved ADRs as docs/adr/ADR-YYYY-MM-DD-<slug>.md; system.md rewritten
 STEP 3: TDD LOOP       (software-engineer) → RED → GREEN → REFACTOR, one @id at a time
 STEP 4: VERIFY         (system-architect)  → run all commands, review code against architecture
 STEP 5: ACCEPT         (product-owner)     → demo, validate, SE merges branch to main with --no-ff, move .feature to completed/ (PO only)
@@ -61,15 +61,15 @@ All feature work happens on branches. `main` is the single source of truth and r
 | `backlog/` → `in-progress/` | PO only | Before Step 2 begins; only if `Status: BASELINED` |
 | `in-progress/` → `completed/` | PO only | After Step 5 acceptance |
 
-**If an agent (SE or SA) finds no `.feature` in `in-progress/`**: update `WORK.md` with the correct `Next:` escalation line and stop. Never self-select a backlog feature.
+**If an agent (SE or SA) finds no `.feature` in `in-progress/`**: update `WORK.md` `@state` to `[IDLE]` and stop. Never self-select a backlog feature.
 
 ## Agents
 
 - **product-owner** — defines scope (Stage 1 Discovery + Stage 2 Specification), picks features, accepts deliveries
 - **system-architect** — architecture and domain design (Step 2), adversarial technical review (Step 4)
 - **software-engineer** — TDD loop, implementation, tests, code, git, releases (Step 3 + release)
-- **designer** — creates and updates visual assets (SVG banners, logos) and maintains `docs/branding.md`
-- **setup-project** — one-time setup to initialize a new project from this template
+- **designer** — creates and updates visual assets (SVG banners, logos); proposes changes to `docs/branding.md` (stakeholder approves)
+- **setup-project** — one-time setup to initialise a new project from this template
 
 ## Skills
 
@@ -94,7 +94,9 @@ All feature work happens on branches. `main` is the single source of truth and r
 | `create-skill` | software-engineer | meta |
 | `create-agent` | human-user | meta |
 
-**Branding**: Agents that generate docs, diagrams, release names, or visual assets read `docs/branding.md` if present. Absent or blank fields fall back to defaults (adjective-animal release names, Mermaid default colors, no wording constraints). `docs/branding.md` and `docs/assets/` are owned by the designer agent.
+**Scripts**: The `scripts/` directory contains validation and automation scripts. Before performing any validation or analysis work manually, check what's available — a script may already do it faster and more consistently. Read each script's docstring to understand its purpose and usage. Agents without bash access can request that other agents run scripts on their behalf.
+
+**Branding**: Agents that generate docs, diagrams, release names, or visual assets read `docs/branding.md` if present. Absent or blank fields fall back to defaults (adjective-animal release names, Mermaid default colors, no wording constraints). `docs/branding.md` is owned by the stakeholder; the designer proposes changes and the stakeholder approves. `docs/assets/` are maintained by the designer.
 
 **Session protocol**: Every agent loads `skill run-session` at session start. Load additional skills as needed for the current step.
 
@@ -106,9 +108,9 @@ Step 1 has two stages:
 
 Discovery follows a block structure per session. See `skill define-scope` for the full protocol.
 
-**Block A — Session Start**: Resume check (if `IN-PROGRESS`), read `system.md` Domain Model section (existing entities), declare scope.
+**Block A — Session Start**: Resume check (if `IN-PROGRESS`), read `system.md` Domain Model section (existing entities), read `branding.md` (tone alignment), read `discovery.md` (consistency check), declare scope.
 
-**Block B — General & Cross-cutting**: 5Ws, behavioral groups, bounded contexts. Active listening + reconciliation against `glossary.md` and `system.md` (Domain Model section).
+**Block B — General & Cross-cutting**: 5Ws, behavioural groups, bounded contexts. Active listening + reconciliation against `glossary.md` and `system.md` (Domain Model section).
 
 **Block C — Feature Discovery (per feature)**: Detailed questions, pre-mortem, create/update `.feature` files.
 
@@ -128,10 +130,10 @@ Commit per session: `feat(discovery): <session summary>`
 
 Only runs on features with `Status: BASELINED`. No stakeholder involvement. If a gap requires stakeholder input, open a new Stage 1 session first.
 
-**Step A — Stories**: derive one `Rule:` block per user story from the baselined feature description. INVEST gate: all 6 letters must pass.
+**Step A — Stories**: derive one `Rule:` block per user story from the baselined feature description. No additional reads — the feature description is the sole input. INVEST gate: all 6 letters must pass.
 Commit: `feat(stories): write user stories for <name>`
 
-**Step B — Criteria**: PO writes `Example:` blocks with `@id` tags under each `Rule:`. Pre-mortem per Rule before writing any Examples. MoSCoW triage per Example. Examples are frozen after commit.
+**Step B — Criteria**: PO writes `Example:` blocks under each `Rule:`, then runs `uv run task assign-ids` to generate `@id` tags and verify global uniqueness. No additional reads — the feature file with Rules is the sole input. Pre-mortem per Rule before writing any Examples. MoSCoW triage per Example. Examples are frozen after commit.
 Commit: `feat(criteria): write acceptance criteria for <name>`
 
 **Criteria are frozen**: no `Example:` changes after commit. Adding a new Example with a new `@id` replaces old.
@@ -161,11 +163,11 @@ Post-mortems are append-only, never edited. If a failure mode recurs, write a ne
 ```
 docs/
   scope_journal.md                    ← raw Q&A, PO appends after every session
-  discovery.md                        ← session synthesis changelog (behavioral changes only), PO appends after every session
+  discovery.md                        ← session synthesis changelog (behavioural changes only), PO appends after every session
   adr/                                ← one file per decision: ADR-YYYY-MM-DD-<slug>.md, SA creates at Step 2
-  system.md                           ← SA-owned current-state snapshot: domain model + Context + Container sections + modules + constraints + ADR index; SA rewrites at Step 2, PO reviews at Step 5
+  system.md                           ← SA-owned current-state snapshot: domain model + Context + Container sections + modules + constraints + key decisions; SA rewrites at Step 2
   glossary.md                         ← living glossary, PO updates after each session
-  branding.md                         ← project identity, colors, release naming, wording (designer owns)
+  branding.md                         ← project identity, colors, release naming, wording (stakeholder owns; designer proposes)
   assets/                             ← logo.svg, banner.svg, and other visual assets (designer owns)
   post-mortem/                        ← compact post-mortems, PO-owned, append-only
   features/
@@ -180,10 +182,10 @@ tests/
     <anything>_test.py                ← software-engineer-authored extras (no @id traceability)
 
 FLOW.md                               ← static workflow state machine (roles, prerequisites, states, transitions)
-WORK.md                               ← dynamic work tracker (active items with @id, @state, @branch + session log)
+WORK.md                               ← dynamic work tracker (active items with @id, @state, @branch)
 ```
 
-Tests in `tests/unit/` are software-engineer-authored extras not covered by any `@id` criterion. Any test style is valid — plain `assert` or Hypothesis `@given`. Use Hypothesis when the test covers a **property** that holds across many inputs (mathematical invariants, parsing contracts, value object constraints). Use plain pytest for specific behaviors or single edge cases discovered during refactoring.
+Tests in `tests/unit/` are software-engineer-authored extras not covered by any `@id` criterion. Any test style is valid — plain `assert` or Hypothesis `@given`. Use Hypothesis when the test covers a **property** that holds across many inputs (mathematical invariants, parsing contracts, value object constraints). Use plain pytest for specific behaviours or single edge cases discovered during refactoring.
 
 - `@pytest.mark.slow` is mandatory on every `@given`-decorated test (Hypothesis is genuinely slow)
 - `@example(...)` is optional but encouraged when using `@given` to document known corner cases
@@ -197,7 +199,7 @@ tests/features/<feature_slug>/<rule_slug>_test.py
 
 ### Stub Format
 
-Stubs are auto-generated by pytest-beehave. The SA triggers generation at Step 2 end by running `uv run task test-fast`. pytest-beehave reads the in-progress `.feature` file and creates one skipped function per `@id`:
+Stubs are auto-generated by pytest-beehave. The SA triggers generation at Step 2 end by running `uv run task test-fast`. pytest-beehave reads the in-progress `.feature` file (all `@id` tags must already be present — assigned by the PO at Step 1) and creates one skipped function per `@id`:
 
 ```python
 @pytest.mark.skip(reason="not yet implemented")
@@ -209,7 +211,7 @@ def test_<feature_slug>_<@id>() -> None:
 
 ### Markers
 - `@pytest.mark.slow` — takes > 50ms; applied to Hypothesis tests and any test with I/O, network, or DB
-- `@pytest.mark.deprecated` — auto-skipped by pytest-beehave; used for superseded Examples
+- `@pytest.mark.deprecated` — auto-skipped by pytest-beehave; used for replaced Examples
 
 ## Development Commands
 
@@ -225,6 +227,9 @@ timeout 10s uv run task run
 
 # Run tests (fast, no coverage)
 uv run task test-fast
+
+# Assign @id tags to untagged Examples (PO runs at Step 1 Criteria)
+uv run task assign-ids
 
 # Run full test suite with coverage
 uv run task test
@@ -247,7 +252,7 @@ uv run task doc-build
 - **Principles (in priority order)**: YAGNI > KISS > DRY > SOLID > Object Calisthenics > appropriate design patterns > complex code > complicate code > failing code > no code
 - **Linting**: ruff format, ruff check, Google docstring convention, `noqa` forbidden
 - **Type checking**: pyright, 0 errors required
-- **Coverage**: 100% (measured against your actual package)
+- **Coverage**: enforced by `test-coverage`
 - **Function length**: ≤ 20 lines (code lines only, excluding docstrings)
 - **Class length**: ≤ 50 lines (code lines only, excluding docstrings)
 - **Max nesting**: 2 levels
@@ -288,13 +293,13 @@ The stakeholder initiates the release process. When the stakeholder requests a r
 Every session: load `skill run-session`. Read `FLOW.md` and `WORK.md` at session start; update `WORK.md` at the end.
 
 - `FLOW.md` — static state machine: roles, prerequisites, states, transitions, detection rules. **Agents never modify this file.** Only the stakeholder (human) may change it, using `skill flow` as the design protocol.
-- `WORK.md` — dynamic tracker: active `@id` items with `@state` and `@branch`. Updated by the state owner at every transition. Session Log is append-only.
+- `WORK.md` — dynamic tracker: active `@id` items with `@state` and `@branch`. Updated by the state owner at every transition.
 
 See `.opencode/skills/flow/SKILL.md` for the generic flow protocol, state machine design principles, and templates for creating new workflows.
 
 ## Setup
 
-To initialize a new project from this template:
+To initialise a new project from this template:
 ```bash
 @setup-project
 ```

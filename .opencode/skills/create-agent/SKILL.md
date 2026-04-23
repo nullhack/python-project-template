@@ -33,7 +33,7 @@ Before writing any agent, research the domain to ground the agent design in indu
 ```
 Agent domain: Security reviewer agent
 Research: OWASP Testing Guide, NIST security controls, Anthropic's adversarial verification patterns
-Conclusion: Security agents should assume breach by default, escalate on any critical finding, use defense-in-depth checklist.
+Conclusion: Security agents should assume breach by default, escalate on any critical finding, use defence-in-depth checklist.
 → Agent design: "role: reviewer", "escalation: any critical = human", "tool: security-scan + vuln-check"
 ```
 
@@ -80,7 +80,7 @@ steps: <step numbers this agent owns, e.g., "2, 3">
 
 ### 2. Follow the structural rules
 
-Apply the research conclusions about file organization:
+Apply the research conclusions about file organisation:
 
 | File | When Loaded | Content | Avoid |
 |---|---|---|---|
@@ -98,7 +98,7 @@ Apply the research conclusions about file organization:
 - Different tool surface (distinct actions)
 - Different approval policy (escalation rules)
 
-**Anti-pattern**: Creating agents just to organize instructions. A single agent with more tools is usually better than multiple agents.
+**Anti-pattern**: Creating agents just to organise instructions. A single agent with more tools is usually better than multiple agents.
 
 ### 4. Write effective instructions
 

@@ -1050,11 +1050,8 @@ wheels = [
 
 [[package]]
 name = "temple8"
-version = "7.1.20260422"
+version = "7.2.20260422"
 source = { virtual = "." }
-dependencies = [
-    { name = "fire" },
-]
 
 [package.optional-dependencies]
 dev = [
@@ -1078,7 +1075,6 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "fire", specifier = ">=0.7.1" },
     { name = "ghp-import", marker = "extra == 'dev'", specifier = ">=2.1.0" },
     { name = "hypothesis", marker = "extra == 'dev'", specifier = ">=6.148.4" },
     { name = "pdoc", marker = "extra == 'dev'", specifier = ">=14.0" },

@@ -21,7 +21,7 @@ During architecture, correctness priorities are (in order):
 
 1. **Design correctness** — YAGNI > KISS > DRY > SOLID > Object Calisthenics > appropriate design patterns > complex code > complicated code > failing code > no code
 2. **One test green** — `uv run task test-fast` passes after stub generation
-3. **Commit** — when stubs and ADRs are complete
+3. **Commit** — when stubs and ADRs are complete (ADRs require stakeholder validation before commit)
 
 Design correctness is far more important than lint/pyright/coverage compliance. Never run lint or static-check during architecture — those are handoff-only checks.
 
@@ -31,7 +31,7 @@ Design correctness is far more important than lint/pyright/coverage compliance. 
 
 ### Prerequisites (stop if any fail — escalate to PO)
 
-1. `docs/features/in-progress/` contains exactly one `.feature` file (not just `.gitkeep`). If none exists, **STOP** — update FLOW.md `Next:` to `Run @product-owner — move the chosen feature to in-progress/` and stop. Never self-select or move a feature yourself.
+1. `docs/features/in-progress/` contains exactly one `.feature` file (not just `.gitkeep`). If none exists, **STOP** — update `WORK.md` `@state` to `[IDLE]` and stop. Never self-select or move a feature yourself.
 2. The feature file's discovery section has `Status: BASELINED`. If not, escalate to PO — Step 1 is incomplete.
 3. The feature file contains `Rule:` blocks with `Example:` blocks and `@id` tags. If not, escalate to PO — criteria have not been written.
 4. Package name confirmed: read `pyproject.toml` → locate `[tool.setuptools]` → confirm directory exists on disk.
@@ -47,7 +47,17 @@ Design correctness is far more important than lint/pyright/coverage compliance. 
 
 ### Read Phase (targeted reads only — before writing anything)
 
-1. Read `docs/system.md` — all sections: domain model, Context, Container, module structure, constraints, ADR index
+| Read | Why |
+|---|---|
+| `docs/system.md` — all sections | Domain model, Context, Container, module structure, constraints, key decisions |
+| `docs/glossary.md` | Use existing domain terms; do not invent synonyms |
+| In-progress `.feature` file | Rules + Examples + @id |
+| `tree <package>/` | Package structure without reading every file |
+| Specific `.py` files matching feature nouns | Understand what already exists |
+
+ADR details are available on demand: reference Key Decisions in `system.md`, then read specific ADR files only when a decision needs deeper context. Do not read all ADRs upfront.
+
+1. Read `docs/system.md` — all sections: domain model, Context, Container, module structure, constraints, key decisions
 2. Read `docs/glossary.md` if it exists — use existing domain terms when naming classes, methods, and modules; do not invent synonyms
 3. Read in-progress `.feature` file (full: Rules + Examples + @id)
 4. Run `tree <package>/` — understand package structure without reading every file
@@ -57,7 +67,7 @@ Design correctness is far more important than lint/pyright/coverage compliance. 
 
 ## Architectural Interview Protocol
 
-The arch interview surfaces decisions that must be recorded as ADRs. Each unresolved question becomes one ADR.
+The arch interview surfaces decisions that must be recorded as ADRs. Related questions from the interview are grouped into one ADR — multiple Q&A pairs converge on a single decision.
 
 ### Gap-Finding Techniques
 
@@ -91,23 +101,33 @@ If pattern smell detected, load `skill apply-patterns`.
 
 ### ADR Interview Pattern
 
-For each unresolved decision identified during domain analysis:
+For each group of related unresolved decisions identified during domain analysis:
 
-1. **Frame the question**: state the decision as a clear question with known alternatives.
+1. **Frame the questions**: state each decision as a clear question with known alternatives.
    Example: "Should `FrameworkAdapter` be a `typing.Protocol` or an ABC?"
 
 2. **State constraints**: list what is known from the feature file, glossary, and existing ADRs that constrains the answer.
 
 3. **Evaluate alternatives**: for each option, state the consequence. Apply laddering to surface hidden consequences.
 
-4. **Record the decision**: write one ADR per question. Use the template in `adr.md.template`.
-   - `## Context` — the question + constraints that produced it
+4. **Draft the ADR**: group related questions into one ADR using the template in `adr.md.template`.
+   - `## Context` — the situation that triggered these questions
+   - `## Interview` — Q&A table with final accepted answers (one row per question)
    - `## Decision` — one sentence
    - `## Reason` — one sentence
    - `## Alternatives Considered` — rejected options with reasons
    - `## Consequences` — (+) and (-) outcomes
+   Do **not** commit yet — ADRs require stakeholder validation first.
 
-5. **Commit each ADR** as it is finalized: `feat(<feature-stem>): add ADR-<slug>`
+5. **Stakeholder validation**: after all ADRs are drafted, present a validation table to the stakeholder:
+
+   | ADR | Summary | Decision | Reason | Alternatives |
+   |---|---|---|---|---|
+   | ADR-YYYY-MM-DD-<slug> | <one-line summary> | <chosen option> | <one-line reason> | <option names only> |
+
+6. **If stakeholder approves**: commit each approved ADR. `feat(<feature-stem>): add ADR-<slug>`
+
+7. **If stakeholder rejects an ADR**: expand that ADR with deeper considerations and consequences, then present the specific ADR as a targeted question with options. Iterate until the stakeholder approves, then commit.
 
 Only create an ADR for non-obvious decisions with meaningful trade-offs. Routine YAGNI choices do not need a record.
 
@@ -116,8 +136,8 @@ Only create an ADR for non-obvious decisions with meaningful trade-offs. Routine
 ## Domain Analysis
 
 From `docs/glossary.md` + Rules (Business) in the `.feature` file:
-- **Nouns** → candidate classes, value objects, aggregates
-- **Verbs** → method names with typed signatures
+- **Nouns** in feature/glossary language → candidate Entities, Value Objects, or Aggregates in the domain model
+- **Verbs** in feature/glossary language → candidate Actions (operations with typed signatures on an Entity, a standalone function, or a Domain Service)
 - **Datasets** → named types (not bare dict/list)
 - **Bounded Context check**: same word, different meaning across features? → module boundary
 - **Cross-feature entities** → candidate shared domain layer
@@ -126,9 +146,14 @@ From `docs/glossary.md` + Rules (Business) in the `.feature` file:
 
 Update the `## Domain Model` section of `docs/system.md`:
 
-- **New feature, first entities**: add bounded contexts, entities, verbs, and relationships to the Domain Model section.
-- **Existing feature**: append new entities and verbs. Deprecate old entries if superseded — move them to a `### Deprecated` subsection. Never edit existing live entries — code depends on them.
-- Update the `## Context` and `## Container` sections if new actors, external systems, or containers are identified.
+- **New feature, first entities**: add bounded contexts, entities, actions, and relationships to the Domain Model section.
+- **Existing feature**: append new entities and actions. Deprecate old entries if retired in favour of a newer entry — move them to a `### Deprecated` subsection. Never edit existing live entries — code depends on them.
+- Update the `## Context` section (Actors, Systems, and Interactions
+  sub-tables) if new actors, external systems, or interactions are
+  identified.
+- Update the `## Container` section (Boundary and Interactions
+  sub-tables) if new containers or container interactions are
+  identified.
 
 The PO reads `docs/system.md` but never writes to it.
 
@@ -190,13 +215,13 @@ Place stubs where responsibility dictates — do not pre-create `ports/` or `ada
 
 ## Generate Test Stubs
 
-Run `uv run task test-fast` once. It reads the in-progress `.feature` file, assigns `@id` tags to any untagged `Example:` blocks (writing them back to the `.feature` file), and generates `tests/features/<feature_slug>/<rule_slug>_test.py` — one file per `Rule:` block, one skipped function per `@id`. Verify the files were created, then stage all changes (including any `@id` write-backs to the `.feature` file).
+Run `uv run task test-fast` once. It reads the in-progress `.feature` file (all `@id` tags must already be present — assigned by the PO at Step 1) and generates `tests/features/<feature_slug>/<rule_slug>_test.py` — one file per `Rule:` block, one skipped function per `@id`. Verify the files were created, then stage all changes.
 
 Commit: `feat(<feature-stem>): add architecture and test stubs`
 
 ### Hand off to Step 3 (TDD Loop)
 
-1. Update FLOW.md: `Next: Run @software-engineer — Step 3 TDD Loop`
+1. Update `WORK.md` `@state: STEP-3-WORKING`
 2. Provide the SE with:
    - Feature file path
    - Summary of stubs created
@@ -208,9 +233,9 @@ Commit: `feat(<feature-stem>): add architecture and test stubs`
 
 ## Handling Spec Gaps
 
-If during architecture you discover behavior not covered by existing acceptance criteria:
+If during architecture you discover behaviour not covered by existing acceptance criteria:
 - **Do not extend criteria yourself** — escalate to PO
-- Note the gap in `WORK.md` Next: line and Session Log
+- Note the gap in `WORK.md` and escalate to PO
 - The PO will decide whether to add a new Example to the `.feature` file
 
 ---
@@ -219,9 +244,9 @@ If during architecture you discover behavior not covered by existing acceptance 
 
 Templates for files written by this skill live in this skill's directory (`architect/`):
 
-- `system.md.template` — `docs/system.md` structure (domain model + Context + Container sections included)
-- `adr.md.template` — individual ADR file structure (includes `## Context` section)
+- `system.md.template` — `docs/system.md` structure (domain model + Context + Container sections included; markdown table format)
+- `adr.md.template` — ADR file structure (Status, Context, Interview Q&A table, Decision, Reason, Alternatives Considered, Consequences)
 
-Base directory for this skill: file:///home/user/Documents/projects/python-project-template/.opencode/skills/architect
+Base directory for this skill: `.opencode/skills/architect/`
 Relative paths in this skill (e.g., scripts/, reference/) are relative to this base directory.
 Note: file list is sampled.

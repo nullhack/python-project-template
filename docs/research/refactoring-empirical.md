@@ -27,7 +27,7 @@ Empirical studies on code smells, refactoring prioritization, and OOP complexity
 | **URL** | https://doi.org/10.1145/3387904.3389276 |
 | **Status** | Confirmed — empirical |
 | **Core finding** | Study of 50 projects, 52,667 refactored elements. 67.53% of smells co-occur. Smells that co-occur are indicators of architectural refactoring in 88.53% of cases. |
-| **Mechanism** | Single smells are often code-level; co-occurring smells indicate architectural problems. Pattern catalog for smells → specific architectural refactorings. |
+| **Mechanism** | Single smells are often code-level; co-occurring smells indicate architectural problems. Pattern catalogue for smells → specific architectural refactorings. |
 | **Where used** | Smell detection triggers architectural analysis when co-occurrence patterns detected. |
 
 ---

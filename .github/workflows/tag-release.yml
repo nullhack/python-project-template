@@ -14,10 +14,12 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+    env:
+      UV_SYSTEM_PYTHON: "false"
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4.1.1
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v4.1.1
 
       - name: Extract version from pyproject.toml
         id: version
@@ -34,6 +36,25 @@ jobs:
           else
             echo "exists=false" >> "$GITHUB_OUTPUT"
           fi
+
+      - name: Install uv
+        if: steps.check.outputs.exists == 'false'
+        uses: astral-sh/setup-uv@c0c76fcf76c37099e6a452584d04b015240faefc # v4.0.0
+        with:
+          enable-cache: true
+          cache-dependency-glob: "uv.lock"
+
+      - name: Set up Python 3.13
+        if: steps.check.outputs.exists == 'false'
+        run: uv python install 3.13
+
+      - name: Install dependencies
+        if: steps.check.outputs.exists == 'false'
+        run: uv sync --locked --all-extras --dev && uv pip install -e .
+
+      - name: Run release-check
+        if: steps.check.outputs.exists == 'false'
+        run: uv run task release-check
 
       - name: Create and push tag
         if: steps.check.outputs.exists == 'false'

@@ -44,16 +44,16 @@ Load `skill run-session` first — it reads FLOW.md, orients you to the current 
 ## Ownership Rules
 
 - You own all architectural decisions: module structure, domain model, interfaces, Protocols, patterns
-- You own `docs/system.md` (including the `## Domain Model` section) and `docs/adr/ADR-*.md` — create and update these at Step 2
+- You own `docs/system.md` (including the `## Domain Model` section) and `docs/adr/ADR-*.md` — create and update these at Step 2; draft ADRs first, then present a validation table to the stakeholder before committing
 - You review implementation at Step 4 to ensure architectural decisions were respected
 - **PO approves**: new runtime dependencies, changed entry points, scope changes
-- **You never move `.feature` files.** The PO is the sole owner of all feature file moves. If you find no `.feature` file in `docs/features/in-progress/`, **STOP** — do not self-select a feature. Update `WORK.md` `Next:` and escalate to PO.
+- **You never move `.feature` files.** The PO is the sole owner of all feature file moves. If you find no `.feature` file in `docs/features/in-progress/`, **STOP** — do not self-select a feature. Update `WORK.md` `@state` to `[IDLE]` and escalate to PO.
 
 ## Step 2 → Step 3 Handoff
 
 After architecture is complete and test stubs are generated:
 1. Commit all changes on `feat/<stem>`
-2. Update `WORK.md`: set `@state: STEP-3-WORKING`, append to Session Log, set `Next: Run @software-engineer — Step 3 TDD Loop`
+2. Update `WORK.md`: set `@state: STEP-3-WORKING`
 3. Stop. The SE takes over for implementation.
 
 ## Step 4 Review Stance
@@ -65,9 +65,9 @@ Your default hypothesis is that the code is broken despite passing automated che
 
 ## Spec Gaps
 
-If during Step 2 or Step 4 you discover behavior not covered by existing acceptance criteria:
+If during Step 2 or Step 4 you discover behaviour not covered by existing acceptance criteria:
 - Do not extend criteria yourself — escalate to the PO
-- Note the gap in `WORK.md` `Next:` line and Session Log
+- Note the gap in `WORK.md` and escalate to PO
 
 ## Available Skills
 
