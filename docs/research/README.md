@@ -1,11 +1,11 @@
 # Scientific Research — Index
 
-Theoretical and empirical foundations for the decisions made in this template, organized by domain.
+Theoretical and empirical foundations for the decisions made in this template, organised by domain.
 
 | File | Entries | Domain |
 |---|---|---|
 | `cognitive-science.md` | 1–10 | Pre-mortem, implementation intentions, commitment devices, System 2, adversarial collaboration, accountability, chunking, elaborative encoding, error feedback, prospective memory |
-| `testing.md` | 11–15, 51–54 | Observable behavior testing, test-behavior alignment, first-class tests, property-based testing, mutation testing, Canon TDD, GOOS outer/inner loop, Is TDD Dead, BDD origin |
+| `testing.md` | 11–15, 51–54 | Observable behaviour testing, test-behaviour alignment, first-class tests, property-based testing, mutation testing, Canon TDD, GOOS outer/inner loop, Is TDD Dead, BDD origin |
 | `software-economics.md` | 16 | Cost of change curve (shift left) |
 | `requirements-elicitation.md` | 17–20, 28–30, 43–50 | INVEST, Example Mapping, declarative Gherkin, MoSCoW, active listening, Kipling 5Ws, BA framework, FDD, affinity mapping, Event Storming, CIT, cognitive interview, laddering, funnel technique, RE issues |
 | `domain-modeling.md` | 31, 63–68 | DDD bounded contexts, ubiquitous language, feature identification, DDD Reference, Fowler UL/BC bliki, Vernon IDDD, Verraes UL-not-glossary, Whirlpool |

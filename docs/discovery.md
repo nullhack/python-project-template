@@ -2,10 +2,10 @@
 
 > Append-only session synthesis log.
 > Written by the product-owner at the end of each discovery session.
-> Each block records one session: a summary paragraph and a table of features whose behavior changed.
+> Each block records one session: a summary paragraph and a table of features whose behaviour changed.
 > A row appears only when a `.feature` file would be updated as a result of the session.
-> Confirmations of existing behavior are not recorded here — see `docs/scope_journal.md` for the full Q&A.
-> Never edit past blocks — later blocks extend or replace earlier ones.
+> Confirmations of existing behaviour are not recorded here — see `docs/scope_journal.md` for the full Q&A.
+> Never edit past blocks — later blocks extend or retire in favour of earlier ones.
 
 ---
 

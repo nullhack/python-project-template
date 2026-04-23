@@ -28,7 +28,7 @@ Status: COMPLETE
 
 | ID | Question | Answer |
 |----|----------|--------|
-| Q9 | Which behavioral areas are in scope for the template's own feature backlog? | Just one simple command in the base package — useful for any starting project, simple enough not to bloat the app, and showcasing the template's capabilities end-to-end. |
+| Q9 | Which behavioural areas are in scope for the template's own feature backlog? | Just one simple command in the base package — useful for any starting project, simple enough not to bloat the app, and showcasing the template's capabilities end-to-end. |
 | Q10 | What kind of command would be "useful for any starting project"? Candidate options presented: version, hello/greet, info/about, config show, health. | Stakeholder asked: "if I choose version, what will it add to my app/ folder?" — confirmed interest in version-style command after seeing the footprint (one file, ~10 lines, zero new dependencies). |
 | Q11 | Three options presented: (A) `--help` only, (B) `--version` only, (C) `--help` + `--version` combined. Stakeholder also asked how a help/usage command would look in code and terminal. Full code sketches and tradeoff table provided. Which option for the demonstration feature? | Option C — `--help` + `--version` combined. `python -m app --help` shows app name, tagline, and available options. `python -m app --version` shows `temple8 <version>` read from package metadata. Zero new dependencies, all code in `app/__main__.py`. |
 

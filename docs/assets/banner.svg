@@ -37,23 +37,24 @@
 
     <!-- Ceiling shadow: underside of entablature over the inner gap
          darkens the top of the upper void -->
-    <rect x="-13" y="-42" width="26" height="3"
-          fill="#5c3d1e" opacity="0.28"/>
+    <rect x="-13" y="-42" width="26" height="2"
+          fill="#5c3d1e" opacity="0.45"/>
     <!-- Floor shadow: top of stylobate under the inner gap
-         darkens the base of the lower void -->
-    <rect x="-13" y="25" width="26" height="3"
-          fill="#5c3d1e" opacity="0.28"/>
+          darkens the base of the lower void -->
+    <rect x="-13" y="26" width="26" height="2"
+          fill="#5c3d1e" opacity="0.45"/>
     <!-- Horizontal crossbeam between the two central columns — a lintel
          spanning x=-13 to x=13, centred at y=-7. Together with the
          entablature above and stylobate below, it carves two rectangular
          voids that read as a ghosted 8. -->
     <rect x="-13" y="-9.5" width="26" height="5"
-          fill="#ede8e0" stroke="#5c3d1e" stroke-width="0.9"/>
+           fill="#ede8e0"/>
+    <rect x="-13" y="-9.5" width="26" height="1.5"
+          fill="#a09890" opacity="0.2"/>
+    <line x1="-13" y1="-4.5" x2="13" y2="-4.5"
+          stroke="#5c3d1e" stroke-width="0.9"/>
     <!-- Underside shadow to give it depth, like a real load-bearing element -->
     <rect x="-13" y="-4.5" width="26" height="2"
-          fill="#5c3d1e" opacity="0.38"/>
-    <!-- Topside shadow on lintel (upper void floor) -->
-    <rect x="-13" y="-9.5" width="26" height="1.5"
           fill="#5c3d1e" opacity="0.38"/>
 
     <!-- Entablature -->

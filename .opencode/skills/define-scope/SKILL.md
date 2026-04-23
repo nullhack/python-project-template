@@ -61,8 +61,8 @@ Ask the stakeholder to describe the same situation from another actor's point of
 Three levels of active listening apply throughout every interview session:
 
 - **Level 1 — Per answer**: immediately paraphrase each answer before moving to the next question. "So if I understand correctly, you're saying that X happens when Y?" Catches misunderstanding in the moment.
-- **Level 2 — Per group**: brief synthesis when transitioning between behavior groups. "We've covered [area A] and [area B]. Before I ask about [area C], here is what I understood so far: [summary]. Does that capture it?" Confirms completeness, gives stakeholder a recovery point.
-- **Level 3 — End of session**: full synthesis of everything discussed. Present to stakeholder for approval. This is the accuracy gate and the input to domain modeling.
+- **Level 2 — Per group**: brief synthesis when transitioning between behaviour groups. "We've covered [area A] and [area B]. Before I ask about [area C], here is what I understood so far: [summary]. Does that capture it?" Confirms completeness, gives stakeholder a recovery point.
+- **Level 3 — End of session**: full synthesis of everything discussed. Present to stakeholder for approval. This is the accuracy gate and the input to domain modelling.
 
 Do not introduce topic labels or categories during active listening. The summary must reflect what the stakeholder said, not new framing that prompts reactions to things they haven't considered.
 
@@ -73,6 +73,16 @@ Do not introduce topic labels or categories during active listening. The summary
 Discovery is a continuous, iterative process. Sessions happen whenever scope needs to be established or refined — for a new project, for a new feature, or when new information emerges. There is no "Phase 1" vs "Phase 2" distinction; every session follows the same structure.
 
 ### Session Start (every session)
+
+**Required reads** (before asking any questions):
+
+| Read | Why |
+|---|---|
+| `docs/scope_journal.md` | Resume check — was the previous session interrupted? |
+| `docs/system.md` § Domain Model | Check existing entities (read-only; SA-owned) |
+| `docs/discovery.md` | Consistency check — past session synthesis |
+| `docs/glossary.md` | Anchor interview language in existing domain terms |
+| `docs/branding.md` | Align tone and wording with project identity |
 
 **Before asking any questions:**
 
@@ -94,10 +104,10 @@ Discovery is a continuous, iterative process. Sessions happen whenever scope nee
 State the session structure upfront:
 > "This discovery session has 3 question groups:
 > 1. General (7 questions) — about users, goals, success/failure
-> 2. Cross-cutting — about behavior groups, integrations, lifecycle events
+> 2. Cross-cutting — about behaviour groups, integrations, lifecycle events
 > 3. Feature: <name> — about specific functionality
 >
-> I will ask one group at a time and summarize before moving on."
+> I will ask one group at a time and summarise before moving on."
 
 **Question grouping:**
 - One `question` tool call per question group
@@ -135,7 +145,7 @@ Apply Level 1 active listening per answer. Apply CIT, Laddering, and CI Perspect
 
 **2. Cross-cutting questions**
 
-Target behavior groups, bounded contexts, integration points, lifecycle events, and system-wide constraints. Apply Level 2 active listening when transitioning between groups.
+Target behaviour groups, bounded contexts, integration points, lifecycle events, and system-wide constraints. Apply Level 2 active listening when transitioning between groups.
 
 **3. Feature questions** (one feature at a time)
 
@@ -188,7 +198,7 @@ Group headers use this format:
 1. Update `docs/glossary.md` **after** the session closes — batch update, not real-time during the interview. Read `glossary.md` before the session starts to anchor interview language; update it after all Q&A is complete. New or corrected definitions; edits allowed.
 2. Append to `docs/discovery.md` (use the template in `discovery.md.template`):
    - One `## Session YYYY-MM-DD` block per session
-   - Summary paragraph (3 lines max; general/behavioral focus)
+   - Summary paragraph (3 lines max; general/behavioural focus)
    - `| Feature | Change | Source questions | Reason |` table — one row per `.feature` file that was created or updated this session. **Confirmations (no file change) → no row.** Source questions reference journal Q-IDs (e.g. `C4, I2`).
 
 The PO does **not** write `docs/system.md`. Entity and domain model updates are SA-owned and happen at Step 2.
@@ -202,7 +212,7 @@ If a feature is new (just created as a stub): write its initial description now.
 **Step D — Completed feature regression check**
 
 If a `completed/` feature was touched and its description/rules changed:
-- **Move it to `backlog/`**. Description changes always imply behavior changes; cosmetic rewrites are never performed.
+- **Move it to `backlog/`**. Description changes always imply behaviour changes; cosmetic rewrites are never performed.
 - Record the move in `discovery.md`: "Moved `<feature-stem>` from completed to backlog due to changed requirements."
 
 **Step E — Mark session complete**
@@ -235,6 +245,12 @@ Stage 2 runs per feature, after `Status: BASELINED`. PO works alone. No stakehol
 If the PO discovers a gap during Stage 2 that requires stakeholder input: stop Stage 2, open a new Stage 1 session, resolve the gap, then return to Stage 2.
 
 ### Step A — Stories
+
+**Required reads**:
+
+| Read | Why |
+|---|---|
+| In-progress `.feature` file | The baselined description is the sole input for user stories |
 
 Derive `Rule:` blocks from the baselined feature description. One `Rule:` per user story.
 
@@ -280,11 +296,17 @@ Commit: `feat(stories): write user stories for <feature-stem>`
 
 ### Step B — Criteria
 
+**Required reads**:
+
+| Read | Why |
+|---|---|
+| In-progress `.feature` file | Rules and feature description are the sole input for Examples |
+
 Add `Example:` blocks under each `Rule:`. PO writes all Examples alone, based on the approved feature description and domain knowledge. No stakeholder review of individual Examples.
 
 **Silent pre-mortem per Rule** (before writing any Examples):
 
-> "What observable behaviors must we prove for this Rule to be complete?"
+> "What observable behaviours must we prove for this Rule to be complete?"
 
 All Rules must have their pre-mortems completed before any Examples are written.
 
@@ -308,7 +330,7 @@ All Rules must have their pre-mortems completed before any Examples are written.
 - `Given/When/Then` in plain English
 - `Then` must be a single, observable, measurable outcome — no "and"
 - **Observable means observable by the end user**, not by a test harness
-- **Declarative, not imperative** — describe behavior, not UI steps
+- **Declarative, not imperative** — describe behaviour, not UI steps
 - Each Example must be observably distinct from every other
 
 **Declarative vs. imperative Gherkin**:
@@ -324,9 +346,9 @@ All Rules must have their pre-mortems completed before any Examples are written.
 **Common mistakes to avoid**:
 - "Then: It works correctly" — not measurable
 - "Then: The system updates the database and sends an email" — split into two Examples
-- Multiple behaviors in one Example — split them
+- Multiple behaviours in one Example — split them
 - Examples that test implementation details ("Then: the Strategy pattern is used")
-- Imperative UI steps instead of declarative behavior descriptions
+- Imperative UI steps instead of declarative behaviour descriptions
 
 **Review checklist:**
 - [ ] Every `Rule:` block has at least one Example
@@ -349,15 +371,21 @@ As a product-owner I declare that:
 * Observable: every Then is a single, observable, measurable outcome — AGREE/DISAGREE | file:line
 * No impl details: no Example tests internal state or implementation — AGREE/DISAGREE | file:line
 * Coverage: every entity in the feature description appears in at least one Rule — AGREE/DISAGREE | missing:
-* Distinct: no two Examples test the same observable behavior — AGREE/DISAGREE | file:line
+* Distinct: no two Examples test the same observable behaviour — AGREE/DISAGREE | file:line
 * Pre-mortem: I ran a pre-mortem on each Rule and found no hidden failure modes — AGREE/DISAGREE | Rule:
-* Scope: no Example introduces behavior outside the feature boundary — AGREE/DISAGREE | file:line
+* Scope: no Example introduces behaviour outside the feature boundary — AGREE/DISAGREE | file:line
+
+### Step C — Assign @id tags
+
+Run `uv run task assign-ids`. This auto-generates unique `@id:XXXXXXXX` tags (8-char hex) for any untagged `Example:` blocks across all `.feature` files, then verifies that all IDs are globally unique. Exit code 0 = success.
+
+Only commit if `assign-ids` passes. If it reports errors, fix the `.feature` files and re-run.
 
 Commit: `feat(criteria): write acceptance criteria for <feature-stem>`
 
 **After this commit, `Example:` blocks are frozen.** Any change requires:
 1. Add `@deprecated` tag to the old Example
-2. Write a new Example (the `@id` tag will be assigned automatically)
+2. Write a new Example and run `uv run task assign-ids` to assign its `@id` tag
 
 ---
 
@@ -372,7 +400,7 @@ When a defect is reported against a completed or in-progress feature:
    Example: <what the bug is>
      Given <conditions that trigger the bug>
      When <action>
-     Then <correct behavior>
+     Then <correct behaviour>
    ```
 
 2. **SE** implements the specific test in `tests/features/<feature_slug>/` (the `@id` test).

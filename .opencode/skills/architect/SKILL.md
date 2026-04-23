@@ -47,7 +47,17 @@ Design correctness is far more important than lint/pyright/coverage compliance. 
 
 ### Read Phase (targeted reads only — before writing anything)
 
-1. Read `docs/system.md` — all sections: domain model, Context, Container, module structure, constraints, ADR index
+| Read | Why |
+|---|---|
+| `docs/system.md` — all sections | Domain model, Context, Container, module structure, constraints, key decisions |
+| `docs/glossary.md` | Use existing domain terms; do not invent synonyms |
+| In-progress `.feature` file | Rules + Examples + @id |
+| `tree <package>/` | Package structure without reading every file |
+| Specific `.py` files matching feature nouns | Understand what already exists |
+
+ADR details are available on demand: reference Key Decisions in `system.md`, then read specific ADR files only when a decision needs deeper context. Do not read all ADRs upfront.
+
+1. Read `docs/system.md` — all sections: domain model, Context, Container, module structure, constraints, key decisions
 2. Read `docs/glossary.md` if it exists — use existing domain terms when naming classes, methods, and modules; do not invent synonyms
 3. Read in-progress `.feature` file (full: Rules + Examples + @id)
 4. Run `tree <package>/` — understand package structure without reading every file
@@ -127,8 +137,13 @@ From `docs/glossary.md` + Rules (Business) in the `.feature` file:
 Update the `## Domain Model` section of `docs/system.md`:
 
 - **New feature, first entities**: add bounded contexts, entities, actions, and relationships to the Domain Model section.
-- **Existing feature**: append new entities and actions. Deprecate old entries if replaced — move them to a `### Deprecated` subsection. Never edit existing live entries — code depends on them.
-- Update the `## Context` and `## Container` sections if new actors, external systems, or containers are identified.
+- **Existing feature**: append new entities and actions. Deprecate old entries if retired in favour of a newer entry — move them to a `### Deprecated` subsection. Never edit existing live entries — code depends on them.
+- Update the `## Context` section (Actors, Systems, and Interactions
+  sub-tables) if new actors, external systems, or interactions are
+  identified.
+- Update the `## Container` section (Boundary and Interactions
+  sub-tables) if new containers or container interactions are
+  identified.
 
 The PO reads `docs/system.md` but never writes to it.
 
@@ -190,7 +205,7 @@ Place stubs where responsibility dictates — do not pre-create `ports/` or `ada
 
 ## Generate Test Stubs
 
-Run `uv run task test-fast` once. It reads the in-progress `.feature` file, assigns `@id` tags to any untagged `Example:` blocks (writing them back to the `.feature` file), and generates `tests/features/<feature_slug>/<rule_slug>_test.py` — one file per `Rule:` block, one skipped function per `@id`. Verify the files were created, then stage all changes (including any `@id` write-backs to the `.feature` file).
+Run `uv run task test-fast` once. It reads the in-progress `.feature` file (all `@id` tags must already be present — assigned by the PO at Step 1) and generates `tests/features/<feature_slug>/<rule_slug>_test.py` — one file per `Rule:` block, one skipped function per `@id`. Verify the files were created, then stage all changes.
 
 Commit: `feat(<feature-stem>): add architecture and test stubs`
 
@@ -208,7 +223,7 @@ Commit: `feat(<feature-stem>): add architecture and test stubs`
 
 ## Handling Spec Gaps
 
-If during architecture you discover behavior not covered by existing acceptance criteria:
+If during architecture you discover behaviour not covered by existing acceptance criteria:
 - **Do not extend criteria yourself** — escalate to PO
 - Note the gap in `WORK.md` and escalate to PO
 - The PO will decide whether to add a new Example to the `.feature` file
@@ -219,7 +234,7 @@ If during architecture you discover behavior not covered by existing acceptance 
 
 Templates for files written by this skill live in this skill's directory (`architect/`):
 
-- `system.md.template` — `docs/system.md` structure (domain model + Context + Container sections included)
+- `system.md.template` — `docs/system.md` structure (domain model + Context + Container sections included; markdown table format)
 - `adr.md.template` — individual ADR file structure (includes `## Context` section)
 
 Base directory for this skill: `.opencode/skills/architect/`

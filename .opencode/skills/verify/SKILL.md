@@ -27,15 +27,16 @@ Load this skill when the software-engineer signals Step 3 complete and hands off
 
 ### 1. Read the Feature Docs
 
-Read `docs/features/in-progress/<name>.feature`. Extract:
-- All `@id` tags and their Example titles from `Rule:` blocks
-- The interaction model (if the feature involves user interaction)
-- The current-state overview in `docs/system.md`
-- `docs/system.md` `## Domain Model` section — verify naming consistency of new classes/methods against existing entities
-- `docs/glossary.md` — verify domain terms are used correctly
-- The software-engineer's Self-Declaration (communicated verbally in the handoff message)
+**Required reads**:
 
-Only read specific ADR files if `docs/system.md` references them as relevant to this feature.
+| Read | Why |
+|---|---|
+| In-progress `.feature` file | All `@id` tags, Example titles, interaction model |
+| `docs/system.md` | Current-state overview and Domain Model — verify naming consistency |
+| `docs/glossary.md` | Verify domain terms are used correctly |
+| SE Self-Declaration | Communicated verbally in the handoff message |
+
+Read specific ADR files on demand only — reference Key Decisions in `system.md` first, then read individual ADRs when a decision needs deeper scrutiny.
 
 ### 2. pyproject.toml Gate
 
@@ -141,7 +142,7 @@ If a new name is genuinely needed (not in domain model or glossary), the SE shou
 | Principle | Why it matters | What to check | How to check |
 |---|---|---|---|
 | SRP | Multiple change-reasons accumulate bugs | Each class/function has one reason to change | Count distinct concerns |
-| OCP | Modifying existing code invalidates tests | New behavior via extension, not modification | Check if adding new case required editing existing class |
+| OCP | Modifying existing code invalidates tests | New behaviour via extension, not modification | Check if adding new case required editing existing class |
 | LSP | Substitution failures cause silent errors | Subtypes behave identically to base | Check for narrowed contracts |
 | ISP | Fat interfaces force unused methods | No Protocol forces stub implementations | Check for NotImplementedError |
 | DIP | Concrete I/O makes unit testing impossible | High-level depends on abstractions | Check domain imports no I/O/DB |
@@ -262,7 +263,7 @@ Record what input was given and what output was observed.
 | 21 | Patterns: no good reason remains to refactor using OOP or Design Patterns | AGREE/DISAGREE | PASS/FAIL | |
 | 22 | Patterns: no creational smell | AGREE/DISAGREE | PASS/FAIL | |
 | 23 | Patterns: no structural smell | AGREE/DISAGREE | PASS/FAIL | |
-| 24 | Patterns: no behavioral smell | AGREE/DISAGREE | PASS/FAIL | |
+| 24 | Patterns: no behavioural smell | AGREE/DISAGREE | PASS/FAIL | |
 | 25 | Semantic: tests operate at same abstraction as AC | AGREE/DISAGREE | PASS/FAIL | |
 
 ### Architect Review Stance Declaration
@@ -274,7 +275,7 @@ As a system-architect I declare:
 * Architecture preservation: I verified that stubs, Protocols, and ADR decisions from Step 2 were respected — AGREE/DISAGREE | violations:
 * Manual trace: I traced at least one execution path manually beyond automated output — AGREE/DISAGREE | path:
 * Boundary check: I checked the boundary conditions and edge cases of every Rule — AGREE/DISAGREE | gaps:
-* Semantic read: I read each test against its AC and confirmed it tests the right observable behavior — AGREE/DISAGREE | mismatches:
+* Semantic read: I read each test against its AC and confirmed it tests the right observable behaviour — AGREE/DISAGREE | mismatches:
 * Independence: my verdict was not influenced by how much effort has already been spent — AGREE/DISAGREE
 
 ### Decision

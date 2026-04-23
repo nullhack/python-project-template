@@ -12,7 +12,7 @@ Foundations for object-oriented design principles used in this template.
 | **Date** | ~2005 |
 | **Status** | Practitioner synthesis |
 | **Core finding** | 9 rules to internalize OOP: (1) One level indentation per method, (2) No ELSE, (3) Wrap primitives/Strings, (4) First class collections, (5) One dot per line, (6) No abbreviations, (7) Classes ≤50 lines, (8) ≤2 instance variables, (9) No getters/setters. 7 of 9 enforce data encapsulation; 1 drives polymorphism; 1 drives naming. |
-| **Mechanism** | Restrictions force decomposition. When you cannot use getters, behavior must move into the object. When you cannot use ELSE, you use polymorphism. When classes must be ≤2 ivars, you discover missing abstractions. |
+| **Mechanism** | Restrictions force decomposition. When you cannot use getters, behaviour must move into the object. When you cannot use ELSE, you use polymorphism. When classes must be ≤2 ivars, you discover missing abstractions. |
 | **Where used** | Refactor self-declaration checklist in `refactor/SKILL.md`. |
 
 ---
@@ -24,8 +24,8 @@ Foundations for object-oriented design principles used in this template.
 | **Source** | Fowler, M. (1999/2018). *Refactoring: Improving the Design of Existing Code* (2nd ed.). Addison-Wesley. https://martinfowler.com/books/refactoring.html |
 | **Date** | 1999, 2018 |
 | **Status** | Confirmed — foundational |
-| **Core finding** | Refactoring = behavior-preserving transformations. 68 catalogued refactorings, each small enough to do safely but cumulative effect significant. Code smells (duplicate code, long methods, feature envy) indicate refactoring opportunities. |
-| **Mechanism** | Small steps reduce risk. Each refactoring is reversible. Test suite validates behavior unchanged. |
+| **Core finding** | Refactoring = behaviour-preserving transformations. 68 catalogued refactorings, each small enough to do safely but cumulative effect significant. Code smells (duplicate code, long methods, feature envy) indicate refactoring opportunities. |
+| **Mechanism** | Small steps reduce risk. Each refactoring is reversible. Test suite validates behaviour unchanged. |
 | **Where used** | `refactor/SKILL.md`: smell detection triggers refactoring; full protocol and catalogue entries. |
 
 ---

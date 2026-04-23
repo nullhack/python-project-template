@@ -65,7 +65,7 @@ Foundations for the PO interview structure, Gherkin criteria, and feature discov
 | **Date** | 1957 |
 | **Alternative** | McNaughton, D. et al. (2008). Learning to Listen. *Topics in Early Childhood Special Education*, 27(4), 223–231. |
 | **Status** | Confirmed — foundational clinical research; widely replicated |
-| **Core finding** | Active listening — paraphrasing what was heard in the listener's own words, asking clarifying questions, then summarizing the main points and intent — reduces misunderstanding, builds trust, and confirms mutual understanding before proceeding. |
+| **Core finding** | Active listening — paraphrasing what was heard in the listener's own words, asking clarifying questions, then summarising the main points and intent — reduces misunderstanding, builds trust, and confirms mutual understanding before proceeding. |
 | **Mechanism** | Paraphrasing forces the listener to reconstruct the speaker's meaning, surfacing gaps immediately. Clarifying questions address residual ambiguity. Summarizing creates a shared record that both parties can confirm or correct. |
 | **Where used** | PO summarization protocol in `scope/SKILL.md`: after each interview round, PO produces a "Here is what I understood" block before proceeding. |
 
@@ -79,7 +79,7 @@ Foundations for the PO interview structure, Gherkin criteria, and feature discov
 | **Date** | 2010–2015 |
 | **Status** | Synthesized rule of thumb — each component individually confirmed |
 | **Core finding** | Active listening in requirements interviews operates at three granularities: **Level 1** (per answer) — immediate paraphrase; **Level 2** (per topic cluster) — transition summary; **Level 3** (end of interview) — full synthesis serving four downstream purposes. |
-| **Level 3 — four uses** | 1. Accuracy gate (NN/G). 2. Scope crystallization (Ambler/FDD). 3. Input to domain modeling (Ambler/FDD). 4. Baseline trigger (Wynne/Cucumber). |
+| **Level 3 — four uses** | 1. Accuracy gate (NN/G). 2. Scope crystallization (Ambler/FDD). 3. Input to domain modelling (Ambler/FDD). 4. Baseline trigger (Wynne/Cucumber). |
 | **Where used** | Stage 1 Discovery sessions in `scope/SKILL.md`. |
 
 ---
@@ -117,8 +117,8 @@ Foundations for the PO interview structure, Gherkin criteria, and feature discov
 | **Date** | 2002 |
 | **Alternative** | Palmer, S. R., & Felsing, J. M. (2002). *A Practical Guide to Feature-Driven Development*. Prentice Hall. |
 | **Status** | Confirmed |
-| **Core finding** | FDD requires domain modeling *before* feature naming. Features are expressed as "Action result object" triples. Features group into Feature Sets (shared domain object), which group into Subject Areas. |
-| **Mechanism** | Domain modeling extracts the vocabulary (nouns = candidate classes, verbs = candidate methods). Feature identification then asks: "what verbs act on each noun?" |
+| **Core finding** | FDD requires domain modelling *before* feature naming. Features are expressed as "Action result object" triples. Features group into Feature Sets (shared domain object), which group into Subject Areas. |
+| **Mechanism** | Domain modelling extracts the vocabulary (nouns = candidate classes, verbs = candidate methods). Feature identification then asks: "what verbs act on each noun?" |
 | **Where used** | Stage 1 Discovery in `scope/SKILL.md`: after session synthesis, PO performs domain analysis (nouns/verbs → subject areas → FDD "Action object" feature names) for first session. |
 
 ---
@@ -132,7 +132,7 @@ Foundations for the PO interview structure, Gherkin criteria, and feature discov
 | **Alternative** | Kawakita, J. (1967). *Abduction*. Chuokoronsha. |
 | **Status** | Confirmed |
 | **Core finding** | Affinity diagramming groups raw observations/requirements into clusters by bottom-up similarity — no categories are named until grouping is complete. This prevents confirmation bias from top-down pre-labelling. |
-| **Where used** | Stage 1 Discovery in `scope/SKILL.md` (alternative to FDD domain modeling): PO uses affinity mapping on interview answers to derive feature clusters. Best suited when working from interview transcripts solo. |
+| **Where used** | Stage 1 Discovery in `scope/SKILL.md` (alternative to FDD domain modelling): PO uses affinity mapping on interview answers to derive feature clusters. Best suited when working from interview transcripts solo. |
 
 ---
 

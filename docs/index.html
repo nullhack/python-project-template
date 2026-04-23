@@ -331,11 +331,27 @@
 
     <!-- ── Generated Documentation ── -->
     <p class="section-title">Generated Documentation</p>
+    <!-- BEGIN:DOC_CARDS -->
     <div class="docs-grid">
+      <a class="doc-card" href="https://github.com/nullhack/temple8/blob/main/docs/system.md">
+        <div class="doc-card-label">Architecture</div>
+        <div class="doc-card-title">System Overview</div>
+        <div class="doc-card-desc">Current-state snapshot — domain model, C4 diagrams, ADR index</div>
+      </a>
+      <a class="doc-card" href="https://github.com/nullhack/temple8/blob/main/docs/glossary.md">
+        <div class="doc-card-label">Language</div>
+        <div class="doc-card-title">Glossary</div>
+        <div class="doc-card-desc">Living domain glossary — append-only, source-traced definitions</div>
+      </a>
       <a class="doc-card" href="api/app.html">
         <div class="doc-card-label">Reference</div>
         <div class="doc-card-title">API Docs</div>
         <div class="doc-card-desc">Auto-generated from source docstrings via pdoc</div>
+      </a>
+      <a class="doc-card" href="https://github.com/nullhack/temple8/blob/main/docs/discovery.md">
+        <div class="doc-card-label">Discovery</div>
+        <div class="doc-card-title">Discovery Log</div>
+        <div class="doc-card-desc">Session synthesis — scope decisions and feature rationale</div>
       </a>
       <a class="doc-card" href="coverage/index.html">
         <div class="doc-card-label">Quality</div>
@@ -347,121 +363,112 @@
         <div class="doc-card-title">Test Report</div>
         <div class="doc-card-desc">Full pytest run — results, durations, and pass/fail breakdown</div>
       </a>
-      <a class="doc-card" href="https://github.com/nullhack/temple8/blob/main/docs/system.md">
-        <div class="doc-card-label">Architecture</div>
-        <div class="doc-card-title">System Overview</div>
-        <div class="doc-card-desc">Current-state snapshot — domain model, C4 diagrams, ADR index</div>
-      </a>
-      <a class="doc-card" href="https://github.com/nullhack/temple8/blob/main/docs/discovery.md">
-        <div class="doc-card-label">Discovery</div>
-        <div class="doc-card-title">Discovery Log</div>
-        <div class="doc-card-desc">Session synthesis — scope decisions and feature rationale</div>
-      </a>
-      <a class="doc-card" href="https://github.com/nullhack/temple8/blob/main/docs/glossary.md">
-        <div class="doc-card-label">Language</div>
-        <div class="doc-card-title">Glossary</div>
-        <div class="doc-card-desc">Living domain glossary — append-only, source-traced definitions</div>
-      </a>
     </div>
+<!-- END:DOC_CARDS -->
 
     <!-- ── Features ── -->
     <p class="section-title">Features</p>
+    <!-- BEGIN:FEATURES -->
     <div class="features-section">
       <div class="features-tabs">
         <button class="tab-btn active" onclick="switchTab(event,'completed')">Completed</button>
         <button class="tab-btn" onclick="switchTab(event,'in-progress')">In Progress</button>
         <button class="tab-btn" onclick="switchTab(event,'backlog')">Backlog</button>
       </div>
-
       <div id="tab-completed" class="tab-pane active">
         <ul class="feature-list">
           <li class="feature-item">
             <a class="feature-stem" href="https://github.com/nullhack/temple8/blob/main/docs/features/completed/cli-entrypoint.feature">cli-entrypoint</a>
-            <span class="feature-title">CLI Entrypoint — <code>python -m app --help</code> and <code>--version</code></span>
+            <span class="feature-title">CLI Entrypoint</span>
             <span class="feature-status status-completed">Accepted</span>
           </li>
         </ul>
       </div>
-
       <div id="tab-in-progress" class="tab-pane">
         <p class="empty-note">No feature currently in progress.</p>
       </div>
-
       <div id="tab-backlog" class="tab-pane">
         <p class="empty-note">Backlog is empty — ready for the next feature.</p>
       </div>
     </div>
+<!-- END:FEATURES -->
 
     <!-- ── Architecture Decisions ── -->
     <p class="section-title">Architecture Decisions</p>
+    <!-- BEGIN:ADRS -->
     <ul class="adr-list">
       <li class="adr-item">
         <span class="adr-date">2026-04-22</span>
-        <span class="adr-slug">cli-parser-library — Use <code>argparse</code> (stdlib); zero new dependencies</span>
+        <span class="adr-slug">parser-library</span>
         <span class="adr-status">Accepted</span>
       </li>
       <li class="adr-item">
         <span class="adr-date">2026-04-22</span>
-        <span class="adr-slug">version-source — Read version from <code>importlib.metadata</code> at runtime; never hardcoded</span>
+        <span class="adr-slug">source</span>
         <span class="adr-status">Accepted</span>
       </li>
     </ul>
+<!-- END:ADRS -->
 
     <!-- ── Research Library ── -->
     <p class="section-title">Research Library</p>
+    <!-- BEGIN:RESEARCH -->
     <div class="research-grid">
-      <a class="research-item" href="https://github.com/nullhack/temple8/blob/main/docs/research/testing.md">
-        <div class="research-item-title">Testing</div>
-        <div class="research-item-meta">TDD, pytest, coverage, property-based testing</div>
-      </a>
-      <a class="research-item" href="https://github.com/nullhack/temple8/blob/main/docs/research/domain-modeling.md">
-        <div class="research-item-title">Domain Modeling</div>
-        <div class="research-item-meta">DDD, bounded contexts, ubiquitous language</div>
-      </a>
-      <a class="research-item" href="https://github.com/nullhack/temple8/blob/main/docs/research/refactoring-empirical.md">
-        <div class="research-item-title">Refactoring (Empirical)</div>
-        <div class="research-item-meta">Smell catalogue, safe transformations, evidence base</div>
-      </a>
-      <a class="research-item" href="https://github.com/nullhack/temple8/blob/main/docs/research/requirements-elicitation.md">
-        <div class="research-item-title">Requirements Elicitation</div>
-        <div class="research-item-meta">BDD, Gherkin, CIT, laddering, stakeholder interviews</div>
-      </a>
-      <a class="research-item" href="https://github.com/nullhack/temple8/blob/main/docs/research/oop-design.md">
-        <div class="research-item-title">OOP Design</div>
-        <div class="research-item-meta">SOLID, Object Calisthenics, GoF patterns</div>
+      <a class="research-item" href="https://github.com/nullhack/temple8/blob/main/docs/research/ai-agents.md">
+        <div class="research-item-title">Scientific Research — AI Agent Design</div>
+        <div class="research-item-meta">Foundations for the agent architecture, file structure, and context management decisions in this template.</div>
       </a>
       <a class="research-item" href="https://github.com/nullhack/temple8/blob/main/docs/research/architecture.md">
-        <div class="research-item-title">Architecture</div>
-        <div class="research-item-meta">ADRs, hexagonal architecture, C4 model</div>
-      </a>
-      <a class="research-item" href="https://github.com/nullhack/temple8/blob/main/docs/research/ai-agents.md">
-        <div class="research-item-title">AI Agent Design</div>
-        <div class="research-item-meta">Agent patterns, role design, workflow orchestration</div>
+        <div class="research-item-title">Scientific Research — Architecture</div>
+        <div class="research-item-meta">Foundations for the architectural decisions and patterns used in this template.</div>
       </a>
       <a class="research-item" href="https://github.com/nullhack/temple8/blob/main/docs/research/cognitive-science.md">
-        <div class="research-item-title">Cognitive Science</div>
-        <div class="research-item-meta">Mental models, working memory, decision-making</div>
+        <div class="research-item-title">Scientific Research — Cognitive Science</div>
+        <div class="research-item-meta">Mechanisms from cognitive and social psychology that justify workflow design decisions in this template.</div>
       </a>
       <a class="research-item" href="https://github.com/nullhack/temple8/blob/main/docs/research/documentation.md">
-        <div class="research-item-title">Documentation</div>
-        <div class="research-item-meta">Living docs, diagrams-as-code, decision records</div>
+        <div class="research-item-title">Scientific Research — Documentation</div>
+        <div class="research-item-meta">Foundations for living documentation, docs-as-code, information architecture, and post-mortem practices used in this template.</div>
+      </a>
+      <a class="research-item" href="https://github.com/nullhack/temple8/blob/main/docs/research/domain-modeling.md">
+        <div class="research-item-title">Scientific Research — Domain Modeling</div>
+        <div class="research-item-meta">Foundations for bounded context identification, ubiquitous language, and feature decomposition used in this template.</div>
+      </a>
+      <a class="research-item" href="https://github.com/nullhack/temple8/blob/main/docs/research/oop-design.md">
+        <div class="research-item-title">Scientific Research — OOP Design</div>
+        <div class="research-item-meta">Foundations for object-oriented design principles used in this template.</div>
+      </a>
+      <a class="research-item" href="https://github.com/nullhack/temple8/blob/main/docs/research/refactoring-empirical.md">
+        <div class="research-item-title">Scientific Research — Refactoring (Empirical)</div>
+        <div class="research-item-meta">Empirical studies on code smells, refactoring prioritization, and OOP complexity used in this template.</div>
+      </a>
+      <a class="research-item" href="https://github.com/nullhack/temple8/blob/main/docs/research/requirements-elicitation.md">
+        <div class="research-item-title">Scientific Research — Requirements Elicitation</div>
+        <div class="research-item-meta">Foundations for the PO interview structure, Gherkin criteria, and feature discovery in this template.</div>
       </a>
       <a class="research-item" href="https://github.com/nullhack/temple8/blob/main/docs/research/software-economics.md">
-        <div class="research-item-title">Software Economics</div>
-        <div class="research-item-meta">Cost of change, quality ROI, technical debt</div>
+        <div class="research-item-title">Scientific Research — Software Economics</div>
+        <div class="research-item-meta">Foundations for the shift-left, early defect detection, and workflow ordering decisions in this template.</div>
+      </a>
+      <a class="research-item" href="https://github.com/nullhack/temple8/blob/main/docs/research/testing.md">
+        <div class="research-item-title">Scientific Research — Testing</div>
+        <div class="research-item-meta">Foundations for test design, TDD, BDD, and property-based testing used in this template.</div>
       </a>
       <a class="research-item" href="https://github.com/nullhack/temple8/blob/main/docs/research/version-control.md">
-        <div class="research-item-title">Version Control</div>
-        <div class="research-item-meta">Branching strategies, commit hygiene, merge safety</div>
+        <div class="research-item-title">Version Control &amp; Branching Strategies</div>
+        <div class="research-item-meta">**Source**: Chacon, S., &amp; Straub, B. (2014). *Pro Git* (2nd ed.). Apress. Free online: https://git-scm.com/book</div>
       </a>
     </div>
+<!-- END:RESEARCH -->
 
   </main>
 
+  <!-- BEGIN:FOOTER -->
   <footer>
     <span>Built with pdoc · pytest-cov · pytest-html</span>
     <span>temple8 &nbsp;·&nbsp; <a href="https://github.com/nullhack/temple8">github.com/nullhack/temple8</a></span>
   </footer>
+<!-- END:FOOTER -->
 
   <script>
     function switchTab(e, name) {

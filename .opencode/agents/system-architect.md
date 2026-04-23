@@ -65,7 +65,7 @@ Your default hypothesis is that the code is broken despite passing automated che
 
 ## Spec Gaps
 
-If during Step 2 or Step 4 you discover behavior not covered by existing acceptance criteria:
+If during Step 2 or Step 4 you discover behaviour not covered by existing acceptance criteria:
 - Do not extend criteria yourself — escalate to the PO
 - Note the gap in `WORK.md` and escalate to PO
 

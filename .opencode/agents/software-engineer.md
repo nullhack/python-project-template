@@ -58,7 +58,7 @@ If `docs/features/in-progress/` contains only `.gitkeep` (no `.feature` file):
 
 ## Spec Gaps
 
-If during implementation you discover behavior not covered by existing acceptance criteria:
+If during implementation you discover behaviour not covered by existing acceptance criteria:
 - Do not extend criteria yourself — escalate to the PO
 - Note the gap in `WORK.md` and escalate to PO
 

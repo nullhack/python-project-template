@@ -2,7 +2,6 @@
 
 > Current-state description of the production system.
 > Rewritten by the system-architect at Step 2 for each feature cycle.
-> Reviewed by the product-owner at Step 5.
 > Contains only completed features — nothing from backlog or in-progress.
 
 ---
@@ -15,47 +14,39 @@
 
 ## Context
 
-```mermaid
-%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '<branding.Visual.Stone/marble hex>', 'lineColor': '<branding.Visual.Accent/gold hex>'}}}%%
-C4Context
-  title System Context — <project-name>
+### Actors
 
-  Person(<id>, "<Name>", "<description>")
-
-  System(<id>, "<Name>", "<description>")
-
-  System_Ext(<id>, "<Name>", "<description>")
-
-  Rel(<from>, <to>, "<label>", "<technology>")
-```
-
----
-
-## Actors
-
-| Actor | Needs |
-|-------|-------|
+| Actor | Description |
+|-------|-------------|
 | `<role>` | <description> |
+
+### Systems
+
+| System | Kind | Description |
+|--------|------|-------------|
+| `<name>` | Internal / External | <description> |
+
+### Interactions
+
+| Interaction | Behaviour | Technology |
+|-------------|-----------|------------|
+| `<from> → <to>` | <behaviour description> | <technology> |
 
 ---
 
 ## Container
 
-```mermaid
-%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '<branding.Visual.Stone/marble hex>', 'lineColor': '<branding.Visual.Accent/gold hex>'}}}%%
-C4Container
-  title Container Diagram — <project-name>
+### Boundary: <system-name>
 
-  Person(<id>, "<Name>", "")
+| Container | Technology | Responsibility |
+|-----------|------------|----------------|
+| `<name>` | <technology> | <responsibility> |
 
-  System_Boundary(<id>, "<Name>") {
-    Container(<id>, "<Name>", "<technology>", "<description>")
-  }
+### Interactions
 
-  System_Ext(<id>, "<Name>", "<description>")
-
-  Rel(<from>, <to>, "<label>")
-```
+| Interaction | Behaviour |
+|-------------|-----------|
+| `<from> → <to>` | <behaviour description> |
 
 ---
 
@@ -94,15 +85,11 @@ C4Container
 |---------|----------|--------|-------------|-------|
 | `<A>` | <has / uses / emits> | `<B>` | <1:1 / 1:N / M:N> | <notes> |
 
-### Module Dependency Graph
+### Module Dependencies
 
-```mermaid
-graph LR
-  <module>["<module>"]
-  <dep>["<dep> (stdlib|external)"]
-
-  <module> --> <dep>
-```
+| Module | Depends On |
+|--------|------------|
+| `<module>` | `<dependency> (stdlib|external)` |
 
 ---
 
@@ -115,6 +102,12 @@ graph LR
 ## Key Decisions
 
 - <system-wide decision from ADRs — one bullet per decision>
+
+---
+
+## ADRs
+
+See `docs/adr/` for the full decision record.
 
 ---
 
@@ -134,16 +127,6 @@ graph LR
 
 ---
 
-## ADRs
-
-See `docs/adr/` for the full decision record. Each ADR contains a `## Context` section with the Q&A that produced the decision.
-
-| ADR | Decision |
-|-----|----------|
-| `ADR-YYYY-MM-DD-<slug>` | <one-line summary> |
-
----
-
 ## Completed Features
 
-- `<feature-stem>` — <one-line description>
+See `docs/features/completed/` for accepted features.

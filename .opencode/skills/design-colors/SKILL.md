@@ -9,7 +9,7 @@ workflow: branding
 
 # Design Colors
 
-Select a color palette for the project and validate it for accessibility. Write the result to `docs/branding.md`.
+Select a color palette for the project and validate it for accessibility. Propose the result for `docs/branding.md` — changes require stakeholder approval.
 
 ## When to Use
 
@@ -59,9 +59,9 @@ Contrast = (L_lighter + 0.05) / (L_darker + 0.05)
 
 If contrast < 4.5:1, darken the primary until compliant. Accent colors on non-text surfaces are exempt.
 
-### 5. Write to branding
+### 5. Propose to branding
 
-Update `docs/branding.md` under `## Visual`:
+Update `docs/branding.md` under `## Visual` (requires stakeholder approval):
 
 ```markdown
 - **Primary color:** `#XXXXXX`  — <hue> (<semantic rationale>)

@@ -2,7 +2,6 @@
 
 > Current-state description of the production system.
 > Rewritten by the system-architect at Step 2 for each feature cycle.
-> Reviewed by the product-owner at Step 5.
 > Contains only completed features — nothing from backlog or in-progress.
 
 ---
@@ -10,7 +9,7 @@
 ## Summary
 
 temple8 is a Python project template that gives engineers a production-ready skeleton with zero
-boilerplate. It ships with a single demonstration feature — a CLI entrypoint (`python -m app`) —
+overhead. It ships with a single demonstration feature — a CLI entrypoint (`python -m app`) —
 that exercises the full five-step delivery workflow end-to-end. The system is a single Python
 package (`app`) with no runtime dependencies beyond the Python stdlib.
 
@@ -18,50 +17,39 @@ package (`app`) with no runtime dependencies beyond the Python stdlib.
 
 ## Context
 
-```mermaid
-C4Context
-  title System Context — temple8
+### Actors
 
-  Person(dev, "Developer", "Python engineer using the template")
+| Actor | Description |
+|-------|-------------|
+| `Developer` | Python engineer using the template |
 
-  System(temple8, "temple8", "Production-ready Python project template with CLI entrypoint")
+### Systems
 
-  Rel(dev, temple8, "Runs `python -m app --help` / `--version`", "CLI / subprocess")
+| System | Kind | Description |
+|--------|------|-------------|
+| `temple8` | Internal | Production-ready Python project template with CLI entrypoint |
 
-  UpdateElementStyle(dev, $bgColor="#f0ece4", $fontColor="#3b2410", $borderColor="#c9a84c")
-  UpdateElementStyle(temple8, $bgColor="#f0ece4", $fontColor="#3b2410", $borderColor="#c9a84c")
-  UpdateRelStyle(dev, temple8, $textColor="#3b2410", $lineColor="#c9a84c")
-```
+### Interactions
 
----
-
-## Actors
-
-| Actor | Needs |
-|-------|-------|
-| `Developer` | Run `python -m app --help` to verify the CLI is wired up; run `--version` to confirm the installed package version |
+| Interaction | Behaviour | Technology |
+|-------------|-----------|------------|
+| Developer → temple8 | Runs `python -m app --help` / `--version` | CLI / subprocess |
 
 ---
 
 ## Container
 
-```mermaid
-C4Container
-  title Container Diagram — temple8
+### Boundary: temple8
 
-  Person(dev, "Developer", "")
+| Container | Technology | Responsibility |
+|-----------|------------|----------------|
+| CLI Entrypoint | Python / argparse | Parses --help and --version; reads version from package metadata |
 
-  System_Boundary(app_boundary, "temple8") {
-    Container(cli, "CLI Entrypoint", "Python / argparse", "Parses --help and --version; reads version from package metadata")
-  }
+### Interactions
 
-  Rel(dev, cli, "Invokes via `python -m app`")
-
-  UpdateElementStyle(dev, $bgColor="#f0ece4", $fontColor="#3b2410", $borderColor="#c9a84c")
-  UpdateElementStyle(cli, $bgColor="#f0ece4", $fontColor="#3b2410", $borderColor="#c9a84c")
-  UpdateElementStyle(app_boundary, $bgColor="#faf7f2", $fontColor="#3b2410", $borderColor="#c9a84c")
-  UpdateRelStyle(dev, cli, $textColor="#3b2410", $lineColor="#c9a84c")
-```
+| Interaction | Behaviour |
+|-------------|-----------|
+| Developer → CLI Entrypoint | Invokes via `python -m app` |
 
 ---
 
@@ -102,18 +90,11 @@ C4Container
 | `main` | calls | `build_parser` | 1:1 | Parser constructed fresh on each invocation |
 | `build_parser` | reads | `importlib.metadata` | 1:1 | Version string fetched at parser construction time |
 
-### Module Dependency Graph
+### Module Dependencies
 
-```mermaid
-%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#f0ece4', 'primaryTextColor': '#3b2410', 'primaryBorderColor': '#c9a84c', 'lineColor': '#c9a84c', 'edgeLabelBackground': '#faf7f2'}}}%%
-graph LR
-  main["app/__main__.py"]
-  argparse["argparse (stdlib)"]
-  metadata["importlib.metadata (stdlib)"]
-
-  main --> argparse
-  main --> metadata
-```
+| Module | Depends On |
+|--------|------------|
+| `app/__main__.py` | `argparse` (stdlib), `importlib.metadata` (stdlib) |
 
 ---
 
@@ -129,6 +110,12 @@ graph LR
 
 - Use `argparse` (stdlib) for CLI parsing — zero new dependencies (ADR-2026-04-22-cli-parser-library)
 - Read version from `importlib.metadata` at runtime — single source of truth, never hardcoded (ADR-2026-04-22-version-source)
+
+---
+
+## ADRs
+
+See `docs/adr/` for the full decision record.
 
 ---
 
@@ -151,19 +138,6 @@ graph LR
 
 ---
 
-## ADRs
-
-See `docs/adr/` for the full decision record. Each ADR contains a `## Context` section with the Q&A that produced the decision.
-
-| ADR | Decision |
-|-----|----------|
-| `ADR-2026-04-22-cli-parser-library` | Use `argparse` (stdlib) for CLI parsing — zero new dependencies |
-| `ADR-2026-04-22-version-source` | Read version from `importlib.metadata` at runtime — never hardcoded |
-
----
-
 ## Completed Features
 
-| Feature | Description | Accepted |
-|---------|-------------|----------|
-| `cli-entrypoint` | CLI entrypoint via `python -m app`; `--help` and `--version` flags; stdlib only | 2026-04-22 |
+See `docs/features/completed/` for accepted features.

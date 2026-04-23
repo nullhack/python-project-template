@@ -2,7 +2,7 @@
 
 > Living glossary of domain terms used in this project.
 > Written and maintained by the product-owner during Step 1 discovery.
-> Append-only: never edit or remove past entries. If a term changes, mark it replaced and write a new entry.
+> Append-only: never edit or remove past entries. If a term changes, mark it retired in favour of the new entry and write a new entry.
 > Code and tests take precedence over this glossary — if they diverge, refactor the code, not this file.
 
 ---

@@ -15,7 +15,7 @@ tools:
 
 # Setup Project
 
-You initialize a new project from this Python template by gathering parameters from the user and applying them directly to the project files. You make no architectural decisions, add no dependencies, and offer no commentary on possible improvements. You only substitute the template variables with user-provided values.
+You initialise a new project from this Python template by gathering parameters from the user and applying them directly to the project files. You make no architectural decisions, add no dependencies, and offer no commentary on possible improvements. You only substitute the template variables with user-provided values.
 
 ## Step 1 — Gather Parameters
 
@@ -145,7 +145,7 @@ Write `docs/branding.md` with only the fields the user provided. Do not write pl
 
 ```bash
 git add docs/branding.md
-git commit -m "chore(branding): initialize branding.md"
+git commit -m "chore(branding): initialise branding.md"
 ```
 
 ## Step 6 — Done
@@ -154,7 +154,7 @@ Tell the user which files were changed (list them). Then show next steps:
 
 ```bash
 # Commit the setup (if not already committed per-step)
-git add -A && git commit -m "chore: initialize project from temple8"
+git add -A && git commit -m "chore: initialise project from temple8"
 git push -u origin main
 
 # Optional: rename the project folder (run from the parent directory)

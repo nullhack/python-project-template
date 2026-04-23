@@ -29,22 +29,23 @@
           stroke="#a09890" stroke-width="1" opacity="0.4"/>
 
     <!-- Ceiling shadow over inner gap -->
-    <rect x="-13" y="-42" width="26" height="3"
-          fill="#5c3d1e" opacity="0.28"/>
+    <rect x="-13" y="-42" width="26" height="2"
+          fill="#5c3d1e" opacity="0.45"/>
     <!-- Floor shadow under inner gap -->
-    <rect x="-13" y="25" width="26" height="3"
-          fill="#5c3d1e" opacity="0.28"/>
+    <rect x="-13" y="26" width="26" height="2"
+          fill="#5c3d1e" opacity="0.45"/>
     <!-- Horizontal crossbeam between the two central columns — mirrors banner.
          Spans x=-13 to x=13, centred at y=-7. The entablature above,
          this lintel, and the stylobate below create two rectangular voids
          between the inner columns — a ghosted 8, implicit in the structure. -->
     <rect x="-13" y="-9.5" width="26" height="5"
-          fill="#ede8e0" stroke="#5c3d1e" stroke-width="0.9"/>
+           fill="#ede8e0"/>
+    <rect x="-13" y="-9.5" width="26" height="1.5"
+          fill="#a09890" opacity="0.2"/>
+    <line x1="-13" y1="-4.5" x2="13" y2="-4.5"
+          stroke="#5c3d1e" stroke-width="0.9"/>
     <!-- Underside shadow -->
     <rect x="-13" y="-4.5" width="26" height="2"
-          fill="#5c3d1e" opacity="0.38"/>
-    <!-- Topside shadow on lintel -->
-    <rect x="-13" y="-9.5" width="26" height="1.5"
           fill="#5c3d1e" opacity="0.38"/>
 
     <!-- Entablature -->

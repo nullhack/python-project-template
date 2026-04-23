@@ -55,7 +55,7 @@ When a gap is reported (by software-engineer or system-architect):
 | Situation | Action |
 |---|---|
 | Edge case within current user stories | Add a new Example to the relevant `.feature` file. |
-| New behavior beyond current stories | Add to backlog as a new feature. Do not extend the current feature. |
+| New behaviour beyond current stories | Add to backlog as a new feature. Do not extend the current feature. |
 | Behavior contradicts an existing Example | Add `@deprecated` to the old Example; write a new Example. |
 | Post-merge defect | Move the `.feature` file back to `in-progress/`, add new Example, resume at Step 3. |
 
@@ -63,7 +63,7 @@ When a gap is reported (by software-engineer or system-architect):
 
 When a defect is reported against any feature:
 
-1. Add a `@bug` Example to the relevant `Rule:` block in the `.feature` file using the standard `Given/When/Then` format describing the correct behavior.
+1. Add a `@bug` Example to the relevant `Rule:` block in the `.feature` file using the standard `Given/When/Then` format describing the correct behaviour.
 2. Update `WORK.md` `@state` to reflect the bug work and notify the software-engineer.
 3. SE implements the test in `tests/features/` **and** a `@given` Hypothesis property test in `tests/unit/`. Both are required.
 
