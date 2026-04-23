@@ -103,7 +103,7 @@ Entries are sorted alphabetically.
 
 **Aliases:** entry point, main module, CLI entry
 
-**Example:** "Running `python -m app --version` invokes the CLI entrypoint and prints `temple8 7.1.20260422`."
+**Example:** "Running `python -m app --version` invokes the CLI entrypoint and prints `temple8 7.2.20260423`."
 
 **Source:** 2026-04-22 — Session 1; feature `cli-entrypoint`
 
@@ -175,7 +175,7 @@ Entries are sorted alphabetically.
 
 **Aliases:** project metadata, distribution metadata
 
-**Example:** "`importlib.metadata.version('temple8')` returns `7.1.20260422` at runtime, matching the `version` field in `pyproject.toml`."
+**Example:** "`importlib.metadata.version('temple8')` returns `7.2.20260423` at runtime, matching the `version` field in `pyproject.toml`."
 
 **Source:** 2026-04-22 — Session 1 (Q10, Q11); feature `cli-entrypoint`
 
