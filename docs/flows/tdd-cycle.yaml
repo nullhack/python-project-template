@@ -1,50 +1,30 @@
 flow: tdd-cycle
-params:
-  - feature_slug
-  - branch_name
-  - test_dir
-  - source_dir
+version: 1.0.0
+params: [feature_slug, branch_name, test_dir, source_dir]
+exits: [complete, blocked]
+attrs:
+  agents:
+    setup: software-engineer
+    red: software-engineer
+    green: software-engineer
+    refactor: software-engineer
+
 states:
   - id: setup
-    agent: software-engineer
-    type: normal
-    params:
-      feature_slug: feature_slug
-      branch_name: branch_name
     next:
       branch-ready: red
       branch-exists: red
 
   - id: red
-    agent: software-engineer
-    type: normal
-    params:
-      feature_slug: feature_slug
-      test_dir: test_dir
     next:
       test-written: green
       spec-gap: blocked
 
   - id: green
-    agent: software-engineer
-    type: normal
-    params:
-      feature_slug: feature_slug
-      source_dir: source_dir
     next:
       test-passing: refactor
 
   - id: refactor
-    agent: software-engineer
-    type: normal
-    params:
-      feature_slug: feature_slug
-      source_dir: source_dir
-      test_dir: test_dir
     next:
       more-ids: red
       all-green: complete
-
-exits:
-  - complete
-  - blocked

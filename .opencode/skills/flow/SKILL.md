@@ -1,6 +1,6 @@
 ---
 name: flow
-version: "2.0"
+version: "3.0"
 description: Flow protocol — design and operate state machine workflows with YAML flow definitions and session tracking
 author: software-engineer
 audience: all-agents
@@ -60,7 +60,14 @@ If the session file and auto-detection disagree, the filesystem is the source of
 
 ## Designing a Workflow
 
-Flow definitions are YAML files in `docs/flows/`. Use the flowception format. See `docs/flows/feature-flow.yaml` as an example. See [[workflow/state-machine]] for the full schema, contract syntax, and state definition fields.
+Flow definitions are YAML files in `docs/flows/`. Use the flowception v1 format. See `docs/flows/feature-flow.yaml` as an example. See [[workflow/state-machine]] for the full schema, contract syntax, and state definition fields.
+
+Key v1 format rules:
+- `exits` is always required — it declares the flow's contract with parent flows
+- `flow` on a state makes it a subflow (no `type` field needed)
+- Guard conditions use `when` on transitions, not `requires` on states — no inheritance, always explicit
+- `attrs` holds project-specific data (agents, params, descriptions) at flow or state level; the library ignores it
+- `version` is required (semver)
 
 ---
 
@@ -72,16 +79,13 @@ Session files live in `.flowception/` and track the active flow, current state, 
 
 ## Creating a New Workflow
 
-Use the templates bundled with this skill as reference:
-
-- `flow.md.template` — legacy FLOW.md skeleton (for reference only)
-- `work.md.template` — legacy WORK.md skeleton (for reference only)
-
 Steps:
-1. Create a new YAML file in `docs/flows/` following the flowception format
-2. Define states, transitions, contracts, and params per the schema in [[workflow/state-machine]]
-3. Verify the detection rules are ordered correctly
-4. Verify all agent references have corresponding agent files
+1. Create a new YAML file in `docs/flows/` following the flowception v1 format
+2. Define `flow`, `version`, `exits`, and `states` (minimum required fields)
+3. Use `when` dicts for guarded transitions, `flow` + `flow-version` for subflows
+4. Put project-specific data (agents, descriptions) in `attrs`
+5. Verify the detection rules are ordered correctly
+6. Verify all agent references have corresponding agent files
 
 ---
 

@@ -1,102 +1,72 @@
 flow: feature-flow
-params:
-  - feature_slug
-  - branch_name
+version: 1.0.0
+params: [feature_slug, branch_name]
+exits: [complete, blocked]
+attrs:
+  agents:
+    idle: product-owner
+    step-1-scope: product-owner
+    step-2-arch: system-architect
+    step-3-working: software-engineer
+    step-4-ready: system-architect
+    step-5-ready: product-owner
+    step-5-merge: software-engineer
+    step-5-complete: product-owner
+    post-mortem: product-owner
+
 states:
   - id: idle
-    agent: product-owner
-    type: normal
     next:
       select-feature: step-1-scope
       discover: step-1-scope
 
   - id: step-1-scope
-    agent: product-owner
-    type: subflow
     flow: scope-cycle
-    params:
-      feature_slug: feature_slug
+    flow-version: "^1"
     next:
       complete: step-2-arch
       blocked: idle
 
   - id: step-2-arch
-    agent: system-architect
-    type: subflow
     flow: arch-cycle
-    params:
-      feature_slug: feature_slug
-      branch_name: branch_name
+    flow-version: "^1"
     next:
       complete: step-3-working
       blocked: step-1-scope
 
   - id: step-3-working
-    agent: software-engineer
-    type: subflow
     flow: tdd-cycle
-    params:
-      feature_slug: feature_slug
-      branch_name: branch_name
-      test_dir: "tests/features/{feature_slug}"
-      source_dir: "src/{feature_slug}"
+    flow-version: "^1"
     next:
-      complete: step-4-ready
+      complete:
+        to: step-4-ready
+        when: { all_tests_pass: "==true" }
       blocked: step-1-scope
 
   - id: step-4-ready
-    agent: system-architect
-    type: normal
-    requires:
-      all_tests_pass: "true"
-    params:
-      feature_slug: feature_slug
-      branch_name: branch_name
     next:
-      approved: step-5-ready
+      approved:
+        to: step-5-ready
+        when: { review_approved: "==true" }
       rejected: step-3-working
 
   - id: step-5-ready
-    agent: product-owner
-    type: normal
-    requires:
-      review_approved: "true"
-    params:
-      feature_slug: feature_slug
     next:
-      accepted: step-5-merge
+      accepted:
+        to: step-5-merge
+        when: { acceptance_passed: "==true" }
       failed: post-mortem
 
   - id: step-5-merge
-    agent: software-engineer
-    type: normal
-    requires:
-      acceptance_passed: "true"
-    params:
-      feature_slug: feature_slug
-      branch_name: branch_name
     next:
-      merged: step-5-complete
+      merged:
+        to: step-5-complete
+        when: { merge_complete: "==true" }
 
   - id: step-5-complete
-    agent: product-owner
-    type: normal
-    requires:
-      merge_complete: "true"
-    params:
-      feature_slug: feature_slug
     next:
       feature-archived: idle
 
   - id: post-mortem
-    agent: product-owner
-    type: normal
-    params:
-      feature_slug: feature_slug
-      branch_name: branch_name
     next:
       restart: step-2-arch
-
-exits:
-  - complete
-  - blocked
