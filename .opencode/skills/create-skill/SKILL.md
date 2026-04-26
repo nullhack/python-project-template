@@ -1,7 +1,7 @@
 ---
 name: create-skill
 description: Create new OpenCode skills following the skill definition standard
-version: "2.0"
+version: "3.0"
 author: software-engineer
 audience: software-engineer
 workflow: opencode
@@ -9,124 +9,81 @@ workflow: opencode
 
 # Create Skill
 
-Create a new reusable skill for OpenCode agents, following research-backed best practices.
+Create a new reusable skill for OpenCode agents.
 
 ## When to Use
 
 When you need to codify a repeatable workflow that multiple agents or sessions will follow. Skills are loaded on demand; they don't run automatically.
 
-## How to Create a Skill
+## Step-by-Step
 
-### 0. Research (mandatory — do this first)
+### 1. Research
 
-Before writing any skill, research the domain to ground the skill in industry standards and scientifically-backed evidence:
+Before writing any skill, research the domain:
 
-1. **Identify the domain**: What workflow or methodology will this skill codify?
-2. **Search for best practices**:
-   - Academic sources (Google Scholar, IEEE, ACM)
-   - Vendor documentation (OpenAI, Anthropic, Google, Microsoft)
-   - Industry standards (ISO, NIST, OMG)
-   - Established methodologies (e.g., FDD, Scrum, Kanban for process skills)
-3. **Read existing research**: Check `docs/research/` for related entries — each file covers a domain (testing, oop-design, architecture, ai-agents, etc.)
-4. **Synthesize conclusions**: Extract actionable conclusions — what works, why, and when to apply it
-5. **Embed as guidance**: Write the skill's steps, checklists, and decision rules based on those conclusions — not as academic citations but as direct guidance ("Use X because it produces Y outcome")
+1. Identify the domain: what workflow or methodology will this skill codify?
+2. Search for best practices (academic sources, vendor documentation, industry standards)
+3. Read existing research in `docs/research/` for related entries
+4. Read [[skill-design/principles#concepts]] for research-backed skill design patterns
+5. Synthesize conclusions into actionable guidance embedded directly in steps
 
-**Example research synthesis:**
-```
-Research question: How to structure a security review skill?
-Sources found: OWASP Testing Guide, NIST SP 800-53, Anthropic's agent design patterns
-Conclusion: Security reviews should be adversarial (assume breakage), use defence-in-depth checklist, escalate on first critical finding.
-→ Skill step: "3. Run adversarial checks — assume breach, verify every control"
-```
-
-### 1. Create the directory
+### 2. Create the directory
 
 ```bash
 mkdir .opencode/skills/<skill-name>/
 ```
 
-Naming rules:
-- 1–64 characters
-- Lowercase alphanumeric with single hyphens
-- Cannot start or end with hyphen, no consecutive hyphens
-- Must match the directory name exactly
+Read [[skill-design/opencode-format#key-takeaways]] for naming rules (1–64 chars, kebab-case, must match directory name).
 
-### 2. Create SKILL.md with frontmatter
+### 3. Create SKILL.md with frontmatter
 
-```markdown
----
-name: <skill-name>
-description: <1-sentence description, 10-100 characters>
-version: "1.0"
-author: <agent-name>
-audience: <agent-name | all-agents>
-workflow: <workflow-category>
----
+Read [[skill-design/opencode-format]] for the complete frontmatter specification. Key requirements:
+- `name`: kebab-case, matches directory name
+- `description`: 1 sentence, 10–1024 chars, include key terms and triggers
+- `author`/`audience`: use role names from `AGENTS.md`
 
-# <Skill Title>
+### 4. Write body content
 
-<One paragraph explaining what this skill does and when to use it.>
+Read [[skill-design/principles#concepts]] for research-backed patterns. Follow this structure:
 
-## When to Use
-
-<Specific trigger conditions>
-
-## Step-by-Step
-
-### 1. <First step>
-<Instructions>
-
-### 2. <Second step>
-<Instructions>
-
-## Checklist
-
-- [ ] <Verification item>
-```
-
-**Frontmatter requirements:**
-- `name`: Max 64 chars, lowercase letters/numbers/hyphens only
-- `description`: 1 sentence, 10-100 chars, include key terms and triggers
-- `author`/`audience`: Use role names from AGENTS.md
-- `workflow`: Category like `feature-lifecycle`, `opencode`, `release-management`
-
-### 3. Write body content
-
-Follow these research-backed patterns:
-
-**Structure:**
 1. **When to Use** — specific trigger conditions, not vague guidance
 2. **Step-by-Step** — clear sequential steps with specific actions
 3. **Checklist** — verification items the agent can self-check
 
-**Formatting rules:**
-- Use imperative voice ("Write the test" not "You should write")
+Formatting rules:
+- Imperative voice ("Write the test" not "You should write")
 - One step per line item in checklists
-- Include concrete examples (one is enough, not exhaustive)
-- Use tables for multi-column data (tool options, decision criteria)
-- Link to reference docs instead of duplicating them
+- Include concrete examples (one is enough)
+- Use tables for multi-column data
+- Reference knowledge files with `[[domain/concept]]` wikilinks instead of duplicating content
 
-**Tone:** Write in third person. The description is injected into the system prompt.
+### 5. Keep it lean
 
-### 4. Keep it lean
-
-Skills are loaded into context. Long skills consume tokens. Target:
+Read [[skill-design/principles#concepts]] — specifically the "Lean Skill Design" section. Target:
 - < 150 lines for focused workflow skills
 - < 250 lines for complex multi-phase skills
-- < 500 lines absolute maximum (Anthropic recommendation)
 
-**Cut:**
+Cut without hesitation:
 - Exhaustive examples when one is enough
-- Reference documentation (link to it instead)
-- Boilerplate CI/CD YAML (it belongs in `.github/`, not skills)
+- Reference documentation — link to knowledge files with `[[domain/concept]]`
+- Knowledge content — extract to `.opencode/knowledge/`
 
-### 5. Test with real usage
+### 6. Test with real usage
 
-The most effective skill development process involves using the skill in real tasks and iterating based on failures.
+Use the skill in real tasks and iterate based on failures.
 
-### 6. Reference from agents
+### 7. Reference from agents
 
-Add the skill name to the agent's "Available Skills" section so the agent knows to load it. Update AGENTS.md skills table.
+Add the skill name to the agent's "Available Skills" section. Update the skills table in `AGENTS.md`.
+
+## Checklist
+
+- [ ] Skill name is kebab-case, matches directory name, 1–64 chars
+- [ ] Description is 1 sentence with key terms and triggers
+- [ ] Body follows: When to Use → Step-by-Step → Checklist
+- [ ] No knowledge content embedded — all domain knowledge referenced via `[[domain/concept]]` wikilinks
+- [ ] No duplication of `AGENTS.md` content or other skills
+- [ ] Skill is under 250 lines (under 150 for focused skills)
 
 ## Available Skills in This Project
 
@@ -141,8 +98,9 @@ Add the skill name to the agent's "Available Skills" section so the agent knows 
 | `check-quality` | software-engineer | Quick reference — redirects to verify |
 | `create-pr` | system-architect | Step 5: create PR with --no-ff merge |
 | `git-release` | stakeholder | Step 5: calver versioning and release |
-| `update-docs` | system-architect | post-acceptance + on stakeholder demand: Context, Container sections, and glossary |
+| `update-docs` | system-architect | post-acceptance + on stakeholder demand |
 | `design-colors` | designer | Color palette selection and WCAG validation |
 | `design-assets` | designer | SVG visual asset creation and updates |
 | `create-skill` | software-engineer | Create new skills |
 | `create-agent` | human-user | Create new agents with research-backed design |
+| `create-knowledge` | all agents | Create new knowledge files |

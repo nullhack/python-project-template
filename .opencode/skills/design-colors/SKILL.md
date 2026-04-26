@@ -25,39 +25,15 @@ Read `docs/branding.md`. If colors are already set and the stakeholder has not a
 
 ### 2. Select primary hue
 
-Map the project theme or mission to a hue. Hue carries meaning before any other element is read (Itten 1961 — hue semantics precede form perception):
-
-| Theme / Mission | Hue | Semantic |
-|---|---|---|
-| Technology, trust, precision | Blue | Calm, reliable |
-| Growth, nature, sustainability | Green | Life, progress |
-| Creativity, energy, community | Orange | Warmth, action |
-| Innovation, premium, research | Purple | Depth, curiosity |
-| Urgency, passion, power | Red | Use sparingly |
-| Clarity, neutrality | Grey | Professional, recedes |
+Map the project theme or mission to a hue. See [[branding/wcag-colors]] for the hue semantics table mapping themes to hues and their semantic meanings.
 
 ### 3. Build the palette
 
-Use a complementary scheme by default — a muted primary plus a pure complementary accent. This produces the most reliably professional result without requiring design expertise (Albers 1963 — simultaneous contrast; complementary pairs read as distinct without competing):
-
-- **Primary** — muted/deep tone of chosen hue (lower saturation, lower value). Used for surfaces, backgrounds, headers.
-- **Accent** — complementary hue (180° on color wheel), pure/saturated. Used for links, highlights, diagram lines only.
-
-Example for green: Primary `#2D6A4F` (deep forest), Accent `#D4A017` (golden amber).
-
-Use analogous, split-complementary, or triadic only when the stakeholder explicitly requests it.
+Use a complementary scheme by default — a muted primary plus a pure complementary accent. See [[branding/wcag-colors]] for the complementary color scheme theory, primary/accent definitions, and when alternative schemes are appropriate.
 
 ### 4. Validate WCAG 2.1 AA
 
-Any color used as a text background must achieve ≥ 4.5:1 contrast with white `#FFFFFF` (WCAG 2.1 SC 1.4.3 — derived from ISO 9241-3 baseline × 1.5 acuity loss factor):
-
-```
-sRGB → linear: c ≤ 0.04045 ? c/12.92 : ((c+0.055)/1.055)^2.4
-L = 0.2126·R + 0.7152·G + 0.0722·B
-Contrast = (L_lighter + 0.05) / (L_darker + 0.05)
-```
-
-If contrast < 4.5:1, darken the primary until compliant. Accent colors on non-text surfaces are exempt.
+Any color used as a text background must achieve at least 4.5:1 contrast with white `#FFFFFF`. See [[branding/wcag-colors]] for the WCAG 2.1 AA contrast formula and calculation steps. If contrast is below 4.5:1, darken the primary until compliant. Accent colors on non-text surfaces are exempt.
 
 ### 5. Propose to branding
 
@@ -76,5 +52,5 @@ Update `docs/branding.md` under `## Visual` (requires stakeholder approval):
 - [ ] Hue chosen from theme/mission semantics
 - [ ] Primary is muted/deep (not pure saturated)
 - [ ] Accent is complementary or stakeholder-specified
-- [ ] White-on-primary contrast ≥ 4.5:1 calculated and reported
+- [ ] White-on-primary contrast >= 4.5:1 calculated and reported
 - [ ] `docs/branding.md` updated with hex codes, rationale, and contrast note

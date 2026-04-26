@@ -1,0 +1,72 @@
+flow: feature-flow
+version: 1.0.0
+params: [feature_slug, branch_name]
+exits: [complete, blocked]
+attrs:
+  agents:
+    idle: product-owner
+    step-1-scope: product-owner
+    step-2-arch: system-architect
+    step-3-working: software-engineer
+    step-4-ready: system-architect
+    step-5-ready: product-owner
+    step-5-merge: software-engineer
+    step-5-complete: product-owner
+    post-mortem: product-owner
+
+states:
+  - id: idle
+    next:
+      select-feature: step-1-scope
+      discover: step-1-scope
+
+  - id: step-1-scope
+    flow: scope-cycle
+    flow-version: "^1"
+    next:
+      complete: step-2-arch
+      blocked: idle
+
+  - id: step-2-arch
+    flow: arch-cycle
+    flow-version: "^1"
+    next:
+      complete: step-3-working
+      blocked: step-1-scope
+
+  - id: step-3-working
+    flow: tdd-cycle
+    flow-version: "^1"
+    next:
+      complete:
+        to: step-4-ready
+        when: { all_tests_pass: "==true" }
+      blocked: step-1-scope
+
+  - id: step-4-ready
+    next:
+      approved:
+        to: step-5-ready
+        when: { review_approved: "==true" }
+      rejected: step-3-working
+
+  - id: step-5-ready
+    next:
+      accepted:
+        to: step-5-merge
+        when: { acceptance_passed: "==true" }
+      failed: post-mortem
+
+  - id: step-5-merge
+    next:
+      merged:
+        to: step-5-complete
+        when: { merge_complete: "==true" }
+
+  - id: step-5-complete
+    next:
+      feature-archived: idle
+
+  - id: post-mortem
+    next:
+      restart: step-2-arch

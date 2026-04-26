@@ -15,7 +15,7 @@ This skill guides the system-architect through Step 4: adversarial verification 
 
 **Every PASS/FAIL cell must have evidence.** Empty evidence = UNCHECKED = REJECTED.
 
-**You never move, create, or edit `.feature` files.** After producing an APPROVED report: update `WORK.md` `@state` to `STEP-5-READY` then stop. The PO accepts the feature and moves the file.
+**You never move, create, or edit `.feature` files.** After producing an APPROVED report: update the session file in `.flowception/` `state` to `step-5-ready` then stop. The PO accepts the feature and moves the file.
 
 The system-architect produces one written report (see template below) that includes: all gate results, the SE Self-Declaration Audit, the **Architect Review Stance Declaration**, and the final APPROVED/REJECTED verdict. Do not start until the software-engineer has committed all work and communicated the Self-Declaration verbally in the handoff message.
 
@@ -104,6 +104,8 @@ For every **DISAGREE** claim:
 
 Undeclared violations found during semantic review → REJECT.
 
+See [[software-craft/self-declaration]] for the full Self-Declaration audit checklist.
+
 ### 7. Code Review
 
 Read the source files changed in this feature. **Do this before running lint/static-check/test** — if semantic review finds a design problem, commands will need to re-run after the fix anyway.
@@ -139,48 +141,27 @@ If a new name is genuinely needed (not in domain model or glossary), the SE shou
 
 #### 6d. SOLID — any FAIL → REJECTED
 
-| Principle | Why it matters | What to check | How to check |
-|---|---|---|---|
-| SRP | Multiple change-reasons accumulate bugs | Each class/function has one reason to change | Count distinct concerns |
-| OCP | Modifying existing code invalidates tests | New behaviour via extension, not modification | Check if adding new case required editing existing class |
-| LSP | Substitution failures cause silent errors | Subtypes behave identically to base | Check for narrowed contracts |
-| ISP | Fat interfaces force unused methods | No Protocol forces stub implementations | Check for NotImplementedError |
-| DIP | Concrete I/O makes unit testing impossible | High-level depends on abstractions | Check domain imports no I/O/DB |
+See [[software-craft/solid]] for the SOLID review checklist.
 
 #### 6e. Object Calisthenics — any FAIL → REJECTED
 
 Load `skill apply-patterns` and apply the full OC checklist (9 rules). Record a PASS/FAIL with `file:line` evidence for each rule. Rules 1 and 7 (nesting and entity size) share thresholds with 6b above.
 
+See [[software-craft/object-calisthenics]] for the full OC rules.
+
 #### 6f. Design Patterns — any FAIL → REJECTED
 
-| Code smell | Pattern missed | How to check |
-|---|---|---|
-| Multiple if/elif on type/state | State or Strategy | Search for `isinstance` chains |
-| Complex `__init__` | Factory or Builder | Check line count and side effects |
-| Callers know multiple components | Facade | Check caller coupling |
-| External dep without Protocol | Repository/Adapter | Check dep injection |
-| 0 domain classes, many functions | Missing domain model | Count classes vs functions |
+See [[software-craft/design-patterns]] for the pattern smell checklist.
 
 #### 6g. Tests — any FAIL → REJECTED
 
-| Check | How to check | PASS | FAIL |
-|---|---|---|---|
-| Docstring format | Read each test docstring | Given/When/Then only | Extra metadata |
-| Contract test | Would test survive internal rewrite? | Yes | No |
-| No internal attribute access | Search for `_x` in assertions | None found | `_x`, `isinstance`, `type()` |
-| Every `@id` has a mapped test | Match `@id` to test functions | All mapped | Missing test |
-| No orphaned skipped stubs | Search for `@pytest.mark.skip` in `tests/features/` | None found | Any found — stub was written but never implemented |
-| Function naming | Matches `test_<feature_slug>_<8char_hex>` | All match | Mismatch |
-| Hypothesis tests have `@slow` | Read every `@given` for `@slow` marker | All present | Any missing |
+See [[software-craft/test-conventions]] for the test review checklist.
+
+See [[software-craft/test-design]] for refactor-safe test design principles — tests must not be coupled to implementation details.
 
 #### 6h. Code Quality — any FAIL → REJECTED
 
-| Check | How to check | PASS | FAIL |
-|---|---|---|---|
-| No `noqa` comments | `grep -r "noqa" <package>/` | None found | Any found |
-| No `type: ignore` | `grep -r "type: ignore" <package>/` | None found | Any found |
-| Public functions have type hints | Read signatures | All annotated | Missing |
-| Public functions have docstrings | Read source | Google-style | Missing |
+See [[software-craft/code-quality]] for the code quality checklist.
 
 ### 8. Run Verification Commands
 
@@ -238,33 +219,7 @@ Record what input was given and what output was observed.
 | No invented synonyms | PASS / FAIL | |
 
 ### Self-Declaration Audit
-| # | Claim | SE Claims | Reviewer Verdict | Evidence |
-|---|-------|-----------|------------------|----------|
-| 1 | YAGNI: no code without a failing test | AGREE/DISAGREE | PASS/FAIL | |
-| 2 | YAGNI: no speculative abstractions | AGREE/DISAGREE | PASS/FAIL | |
-| 3 | KISS: simplest solution that passes | AGREE/DISAGREE | PASS/FAIL | |
-| 4 | KISS: no premature optimization | AGREE/DISAGREE | PASS/FAIL | |
-| 5 | DRY: no duplication | AGREE/DISAGREE | PASS/FAIL | |
-| 6 | DRY: no redundant comments | AGREE/DISAGREE | PASS/FAIL | |
-| 7 | SOLID-S: one reason to change per class | AGREE/DISAGREE | PASS/FAIL | |
-| 8 | SOLID-O: open for extension, closed for modification | AGREE/DISAGREE | PASS/FAIL | |
-| 9 | SOLID-L: subtypes substitutable | AGREE/DISAGREE | PASS/FAIL | |
-| 10 | SOLID-I: no forced unused deps | AGREE/DISAGREE | PASS/FAIL | |
-| 11 | SOLID-D: depend on abstractions, not concretions | AGREE/DISAGREE | PASS/FAIL | |
-| 12 | OC-1: one level of indentation per method | AGREE/DISAGREE | PASS/FAIL | |
-| 13 | OC-2: no else after return | AGREE/DISAGREE | PASS/FAIL | |
-| 14 | OC-3: primitive types wrapped | AGREE/DISAGREE | PASS/FAIL | |
-| 15 | OC-4: first-class collections | AGREE/DISAGREE | PASS/FAIL | |
-| 16 | OC-5: one dot per line | AGREE/DISAGREE | PASS/FAIL | |
-| 17 | OC-6: no abbreviations | AGREE/DISAGREE | PASS/FAIL | |
-| 18 | OC-7: ≤20 lines per function, ≤50 per class | AGREE/DISAGREE | PASS/FAIL | |
-| 19 | OC-8: ≤2 instance variables (behavioural classes only) | AGREE/DISAGREE | PASS/FAIL | |
-| 20 | OC-9: no getters/setters | AGREE/DISAGREE | PASS/FAIL | |
-| 21 | Patterns: no good reason remains to refactor using OOP or Design Patterns | AGREE/DISAGREE | PASS/FAIL | |
-| 22 | Patterns: no creational smell | AGREE/DISAGREE | PASS/FAIL | |
-| 23 | Patterns: no structural smell | AGREE/DISAGREE | PASS/FAIL | |
-| 24 | Patterns: no behavioural smell | AGREE/DISAGREE | PASS/FAIL | |
-| 25 | Semantic: tests operate at same abstraction as AC | AGREE/DISAGREE | PASS/FAIL | |
+See [[software-craft/self-declaration]] for the full checklist. Record each claim with SE verdict and reviewer verdict with evidence.
 
 ### Architect Review Stance Declaration
 

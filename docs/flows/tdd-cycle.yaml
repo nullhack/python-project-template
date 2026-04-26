@@ -1,0 +1,30 @@
+flow: tdd-cycle
+version: 1.0.0
+params: [feature_slug, branch_name, test_dir, source_dir]
+exits: [complete, blocked]
+attrs:
+  agents:
+    setup: software-engineer
+    red: software-engineer
+    green: software-engineer
+    refactor: software-engineer
+
+states:
+  - id: setup
+    next:
+      branch-ready: red
+      branch-exists: red
+
+  - id: red
+    next:
+      test-written: green
+      spec-gap: blocked
+
+  - id: green
+    next:
+      test-passing: refactor
+
+  - id: refactor
+    next:
+      more-ids: red
+      all-green: complete

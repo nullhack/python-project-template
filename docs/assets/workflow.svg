@@ -1,0 +1,433 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 940 2100" role="img" aria-label="Temple8 Feature Development Workflow">
+  <style>
+    .bg { fill: #1a1a2e; }
+    .po { fill: #2d6a4f; }
+    .se { fill: #3a5a8c; }
+    .sa { fill: #7b4f8a; }
+    .idle { fill: #4a4a5a; }
+    .subflow { fill: #8b6914; stroke: #d4a017; stroke-width: 2; stroke-dasharray: 6 3; }
+    .postmortem { fill: #8b3a3a; }
+    .text { fill: #ffffff; font-family: system-ui, -apple-system, sans-serif; font-size: 12px; }
+    .text-sm { fill: #cccccc; font-family: system-ui, -apple-system, sans-serif; font-size: 10px; }
+    .text-xs { fill: #999999; font-family: system-ui, -apple-system, sans-serif; font-size: 9px; }
+    .gate { fill: none; stroke: #d4a017; stroke-width: 1.5; stroke-dasharray: 4 2; }
+    .gate-text { fill: #d4a017; font-family: system-ui, -apple-system, sans-serif; font-size: 9px; }
+    .arrow { fill: none; stroke: #888888; stroke-width: 1.5; marker-end: url(#arrowhead); }
+    .arrow-fail { fill: none; stroke: #cc4444; stroke-width: 1.2; stroke-dasharray: 5 3; marker-end: url(#arrowhead-red); }
+    .arrow-loop { fill: none; stroke: #66aa66; stroke-width: 1.2; stroke-dasharray: 5 3; marker-end: url(#arrowhead-green); }
+    .arrow-exit { fill: none; stroke: #d4a017; stroke-width: 1.5; stroke-dasharray: 4 2; marker-end: url(#arrowhead-gold); }
+    .title { fill: #ffffff; font-family: system-ui, -apple-system, sans-serif; font-size: 18px; font-weight: 700; }
+    .subtitle { fill: #aaaaaa; font-family: system-ui, -apple-system, sans-serif; font-size: 11px; }
+    .legend-label { fill: #cccccc; font-family: system-ui, -apple-system, sans-serif; font-size: 10px; }
+    .section-header { fill: #d4a017; font-family: system-ui, -apple-system, sans-serif; font-size: 13px; font-weight: 600; }
+    .subflow-box { fill: none; stroke: #7b4f8a; stroke-width: 1.5; stroke-dasharray: 4 2; }
+    .po-subflow-box { fill: none; stroke: #2d6a4f; stroke-width: 1.5; stroke-dasharray: 4 2; }
+    .se-subflow-box { fill: none; stroke: #3a5a8c; stroke-width: 1.5; stroke-dasharray: 4 2; }
+    .exit-label { fill: #d4a017; font-family: system-ui, -apple-system, sans-serif; font-size: 9px; font-weight: 600; }
+  </style>
+  <defs>
+    <marker id="arrowhead" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#888888"/>
+    </marker>
+    <marker id="arrowhead-red" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#cc4444"/>
+    </marker>
+    <marker id="arrowhead-green" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#66aa66"/>
+    </marker>
+    <marker id="arrowhead-gold" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#d4a017"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect class="bg" width="940" height="2100" rx="0"/>
+
+  <!-- Title -->
+  <text class="title" x="470" y="32" text-anchor="middle">Temple8 — Feature Development Workflow</text>
+  <text class="subtitle" x="470" y="50" text-anchor="middle">feature-flow.yaml + scope-cycle.yaml + arch-cycle.yaml + tdd-cycle.yaml</text>
+
+  <!-- Legend -->
+  <rect x="20" y="62" width="14" height="14" class="po" rx="3"/>
+  <text class="legend-label" x="40" y="74">Product Owner</text>
+  <rect x="140" y="62" width="14" height="14" class="se" rx="3"/>
+  <text class="legend-label" x="160" y="74">Software Engineer</text>
+  <rect x="290" y="62" width="14" height="14" class="sa" rx="3"/>
+  <text class="legend-label" x="310" y="74">System Architect</text>
+  <rect x="430" y="62" width="14" height="14" class="idle" rx="3"/>
+  <text class="legend-label" x="450" y="74">Idle / Gate</text>
+  <rect x="540" y="60" width="14" height="14" class="subflow" rx="3"/>
+  <text class="legend-label" x="560" y="74">Subflow</text>
+  <rect x="640" y="60" width="14" height="14" class="postmortem" rx="3"/>
+  <text class="legend-label" x="660" y="74">Post-Mortem</text>
+  <line x1="770" y1="69" x2="800" y2="69" class="gate"/>
+  <text class="legend-label" x="806" y="73">Contract Gate</text>
+  <line x1="830" y1="69" x2="860" y2="69" class="arrow-exit"/>
+  <text class="legend-label" x="866" y="73">Exit</text>
+
+  <!-- ============================================================ -->
+  <!-- IDLE                                                         -->
+  <!-- ============================================================ -->
+  <rect x="350" y="90" width="240" height="40" class="idle" rx="8"/>
+  <text class="text" x="470" y="115" text-anchor="middle">idle</text>
+  <text class="text-xs" x="470" y="126" text-anchor="middle">product-owner</text>
+
+  <!-- idle -> step-1-scope -->
+  <line x1="470" y1="130" x2="470" y2="165" class="arrow"/>
+  <text class="text-xs" x="480" y="150">select-feature / discover</text>
+
+  <!-- ============================================================ -->
+  <!-- STEP 1 — SCOPE (subflow)                                     -->
+  <!-- ============================================================ -->
+  <text class="section-header" x="40" y="155">STEP 1 — SCOPE (subflow)</text>
+
+  <rect x="310" y="165" width="320" height="64" class="subflow" rx="8"/>
+  <text class="text" x="470" y="190" text-anchor="middle">step-1-scope</text>
+  <text class="text-sm" x="470" y="206" text-anchor="middle">Scope subflow: backlog-criteria → discovery → stories → criteria</text>
+  <text class="text-xs" x="470" y="222" text-anchor="middle">product-owner</text>
+
+  <!-- Scope Cycle detail box -->
+  <rect x="100" y="245" width="740" height="130" class="po-subflow-box" rx="6"/>
+  <text class="text-sm" x="470" y="268" text-anchor="middle" fill="#2d6a4f">Scope Cycle (scope-cycle.yaml)</text>
+
+  <rect x="130" y="282" width="140" height="36" class="po" rx="6"/>
+  <text class="text-sm" x="200" y="304" text-anchor="middle">backlog-criteria</text>
+  <rect x="295" y="282" width="110" height="36" class="po" rx="6"/>
+  <text class="text-sm" x="350" y="304" text-anchor="middle">discovery</text>
+  <rect x="430" y="282" width="100" height="36" class="po" rx="6"/>
+  <text class="text-sm" x="480" y="304" text-anchor="middle">stories</text>
+  <rect x="555" y="282" width="100" height="36" class="po" rx="6"/>
+  <text class="text-sm" x="605" y="304" text-anchor="middle">criteria</text>
+
+  <!-- Internal transitions -->
+  <line x1="270" y1="300" x2="295" y2="300" class="arrow"/>
+  <text class="text-xs" x="282" y="296" text-anchor="middle">discover</text>
+  <line x1="405" y1="300" x2="430" y2="300" class="arrow"/>
+  <text class="text-xs" x="417" y="296" text-anchor="middle">baselined</text>
+  <line x1="530" y1="300" x2="555" y2="300" class="arrow"/>
+  <text class="text-xs" x="542" y="296" text-anchor="middle">committed</text>
+
+  <!-- discovery self-loop -->
+  <path d="M 350 318 L 350 345 L 280 345 L 280 300 L 295 300" class="arrow-loop"/>
+  <text class="text-xs" x="250" y="345" text-anchor="end">more-discovery</text>
+
+  <!-- Exit: backlog-criteria -> complete -->
+  <line x1="200" y1="318" x2="200" y2="360" class="arrow-exit"/>
+  <text class="exit-label" x="210" y="358">exit: complete</text>
+
+  <!-- Exit: criteria -> complete -->
+  <line x1="605" y1="318" x2="605" y2="360" class="arrow-exit"/>
+  <text class="exit-label" x="570" y="358">exit: complete</text>
+
+  <!-- step-1-scope blocked -> idle -->
+  <path d="M 310 197 L 80 197 L 80 110 L 350 110" class="arrow-fail"/>
+  <text class="text-xs" x="75" y="155" text-anchor="end">blocked</text>
+
+  <!-- ============================================================ -->
+  <!-- STEP 2 — ARCHITECTURE (subflow)                              -->
+  <!-- ============================================================ -->
+  <text class="section-header" x="40" y="400">STEP 2 — ARCHITECTURE (subflow)</text>
+
+  <rect x="310" y="410" width="320" height="64" class="subflow" rx="8"/>
+  <text class="text" x="470" y="435" text-anchor="middle">step-2-arch</text>
+  <text class="text-sm" x="470" y="451" text-anchor="middle">Arch subflow: read → interview → validate → design → stubs</text>
+  <text class="text-xs" x="470" y="467" text-anchor="middle">system-architect</text>
+
+  <!-- step-1-scope complete -> step-2-arch -->
+  <line x1="470" y1="229" x2="470" y2="410" class="arrow"/>
+  <text class="text-xs" x="480" y="320">complete</text>
+
+  <!-- step-2-arch blocked -> step-1-scope -->
+  <path d="M 310 442 L 80 442 L 80 197 L 310 197" class="arrow-fail"/>
+  <text class="text-xs" x="75" y="320" text-anchor="end">blocked</text>
+
+  <!-- Arch Cycle detail box -->
+  <rect x="100" y="490" width="740" height="190" class="subflow-box" rx="6"/>
+  <text class="text-sm" x="470" y="512" text-anchor="middle" fill="#7b4f8a">Arch Cycle (arch-cycle.yaml)</text>
+
+  <rect x="125" y="524" width="90" height="44" class="sa" rx="6"/>
+  <text class="text-sm" x="170" y="544" text-anchor="middle">read</text>
+  <rect x="235" y="524" width="110" height="44" class="sa" rx="6"/>
+  <text class="text-sm" x="290" y="540" text-anchor="middle">interview</text>
+  <text class="text-xs" x="290" y="560" text-anchor="middle">gap analysis</text>
+  <rect x="365" y="524" width="110" height="44" class="sa" rx="6"/>
+  <text class="text-sm" x="420" y="540" text-anchor="middle">validate</text>
+  <text class="text-xs" x="420" y="560" text-anchor="middle">ADR approval</text>
+  <rect x="495" y="524" width="110" height="44" class="sa" rx="6"/>
+  <text class="text-sm" x="550" y="540" text-anchor="middle">design</text>
+  <text class="text-xs" x="550" y="560" text-anchor="middle">stubs + model</text>
+  <rect x="625" y="524" width="90" height="44" class="sa" rx="6"/>
+  <text class="text-sm" x="670" y="544" text-anchor="middle">stubs</text>
+
+  <!-- Internal transitions -->
+  <line x1="215" y1="546" x2="235" y2="546" class="arrow"/>
+  <text class="text-xs" x="225" y="542" text-anchor="middle">ready</text>
+  <line x1="345" y1="546" x2="365" y2="546" class="arrow"/>
+  <line x1="475" y1="546" x2="495" y2="546" class="arrow"/>
+  <line x1="605" y1="546" x2="625" y2="546" class="arrow"/>
+
+  <!-- Contract gates -->
+  <rect x="237" y="580" width="106" height="24" class="gate" rx="4"/>
+  <text class="gate-text" x="290" y="596" text-anchor="middle">adrs_drafted == "true"</text>
+  <rect x="367" y="580" width="106" height="24" class="gate" rx="4"/>
+  <text class="gate-text" x="420" y="596" text-anchor="middle">adrs_approved == "true"</text>
+  <rect x="497" y="580" width="106" height="24" class="gate" rx="4"/>
+  <text class="gate-text" x="550" y="596" text-anchor="middle">stubs_written == "true"</text>
+
+  <!-- interview self-loop -->
+  <path d="M 290 568 L 290 610 L 210 610 L 210 546 L 235 546" class="arrow-loop"/>
+  <text class="text-xs" x="200" y="590" text-anchor="end">gaps-found</text>
+
+  <!-- validate -> interview (ADR rejected) -->
+  <path d="M 420 568 L 420 635 L 210 635 L 210 568 L 235 568" class="arrow-loop"/>
+  <text class="text-xs" x="200" y="610" text-anchor="end">adrs-rejected</text>
+
+  <!-- Exit: read -> blocked -->
+  <line x1="170" y1="568" x2="170" y2="665" class="arrow-exit"/>
+  <text class="exit-label" x="180" y="664">exit: blocked</text>
+
+  <!-- Exit: stubs -> complete -->
+  <line x1="670" y1="568" x2="670" y2="665" class="arrow-exit"/>
+  <text class="exit-label" x="610" y="664">exit: complete</text>
+
+  <!-- ============================================================ -->
+  <!-- STEP 3 — TDD LOOP (subflow)                                  -->
+  <!-- ============================================================ -->
+  <text class="section-header" x="40" y="705">STEP 3 — TDD LOOP (subflow)</text>
+
+  <rect x="310" y="715" width="320" height="64" class="subflow" rx="8"/>
+  <text class="text" x="470" y="740" text-anchor="middle">step-3-working</text>
+  <text class="text-sm" x="470" y="756" text-anchor="middle">TDD subflow: setup → red → green → refactor</text>
+  <text class="text-xs" x="470" y="772" text-anchor="middle">software-engineer</text>
+
+  <!-- step-2-arch complete -> step-3-working -->
+  <line x1="470" y1="474" x2="470" y2="715" class="arrow"/>
+  <text class="text-xs" x="480" y="600">complete</text>
+
+  <!-- step-3-working blocked -> step-1-scope -->
+  <path d="M 310 747 L 60 747 L 60 197 L 310 197" class="arrow-fail"/>
+  <text class="text-xs" x="55" y="470" text-anchor="end">blocked</text>
+
+  <!-- TDD Subflow detail box -->
+  <rect x="310" y="795" width="320" height="110" class="se-subflow-box" rx="6"/>
+  <text class="text-sm" x="470" y="816" text-anchor="middle" fill="#3a5a8c">TDD Cycle (tdd-cycle.yaml)</text>
+  <rect x="325" y="826" width="55" height="30" class="se" rx="6"/>
+  <text class="text-sm" x="353" y="846" text-anchor="middle">setup</text>
+  <rect x="395" y="826" width="50" height="30" class="se" rx="6"/>
+  <text class="text-sm" x="420" y="846" text-anchor="middle">red</text>
+  <rect x="460" y="826" width="60" height="30" class="se" rx="6"/>
+  <text class="text-sm" x="490" y="846" text-anchor="middle">green</text>
+  <rect x="535" y="826" width="75" height="30" class="se" rx="6"/>
+  <text class="text-sm" x="573" y="846" text-anchor="middle">refactor</text>
+
+  <!-- Internal transitions -->
+  <line x1="380" y1="841" x2="395" y2="841" class="arrow"/>
+  <text class="text-xs" x="387" y="838" text-anchor="middle">branch-ready</text>
+  <line x1="445" y1="841" x2="460" y2="841" class="arrow"/>
+  <line x1="520" y1="841" x2="535" y2="841" class="arrow"/>
+
+  <!-- refactor -> red loop -->
+  <path d="M 573 856 L 573 880 L 420 880 L 420 856" class="arrow-loop"/>
+  <text class="text-xs" x="470" y="896" text-anchor="middle">more-ids → red</text>
+
+  <!-- Exit: red -> blocked -->
+  <line x1="395" y1="856" x2="395" y2="895" class="arrow-exit"/>
+  <text class="exit-label" x="405" y="895">exit: blocked</text>
+
+  <!-- Exit: refactor -> complete -->
+  <line x1="573" y1="856" x2="573" y2="895" class="arrow-exit"/>
+  <text class="exit-label" x="520" y="895">exit: complete</text>
+
+  <!-- ============================================================ -->
+  <!-- STEP 4 — VERIFY                                              -->
+  <!-- ============================================================ -->
+  <text class="section-header" x="40" y="930">STEP 4 — VERIFY</text>
+
+  <rect x="340" y="942" width="260" height="56" class="sa" rx="8"/>
+  <text class="text" x="470" y="966" text-anchor="middle">step-4-ready</text>
+  <text class="text-xs" x="470" y="982" text-anchor="middle">Adversarial review — system-architect</text>
+
+  <rect x="620" y="950" width="130" height="32" class="gate" rx="4"/>
+  <text class="gate-text" x="685" y="964" text-anchor="middle">all_tests_pass</text>
+  <text class="gate-text" x="685" y="976" text-anchor="middle">== "true"</text>
+
+  <!-- step-3-working complete -> step-4-ready -->
+  <line x1="470" y1="779" x2="470" y2="942" class="arrow"/>
+  <text class="text-xs" x="480" y="860">complete</text>
+
+  <!-- step-4-ready rejected -> step-3-working -->
+  <path d="M 340 970 L 200 970 L 200 747 L 310 747" class="arrow-fail"/>
+  <text class="text-xs" x="195" y="860" text-anchor="end">rejected</text>
+
+  <!-- ============================================================ -->
+  <!-- STEP 5 — ACCEPT                                              -->
+  <!-- ============================================================ -->
+  <text class="section-header" x="40" y="1025">STEP 5 — ACCEPT</text>
+
+  <rect x="340" y="1037" width="260" height="56" class="po" rx="8"/>
+  <text class="text" x="470" y="1059" text-anchor="middle">step-5-ready</text>
+  <text class="text-xs" x="470" y="1077" text-anchor="middle">Demo &amp; validate — product-owner</text>
+
+  <rect x="620" y="1045" width="140" height="32" class="gate" rx="4"/>
+  <text class="gate-text" x="690" y="1059" text-anchor="middle">review_approved</text>
+  <text class="gate-text" x="690" y="1071" text-anchor="middle">== "true"</text>
+
+  <line x1="470" y1="998" x2="470" y2="1037" class="arrow"/>
+  <text class="text-xs" x="480" y="1020">approved</text>
+
+  <rect x="340" y="1117" width="260" height="56" class="se" rx="8"/>
+  <text class="text" x="470" y="1139" text-anchor="middle">step-5-merge</text>
+  <text class="text-xs" x="470" y="1157" text-anchor="middle">Merge to main with --no-ff — software-engineer</text>
+
+  <rect x="620" y="1125" width="140" height="32" class="gate" rx="4"/>
+  <text class="gate-text" x="690" y="1139" text-anchor="middle">acceptance_passed</text>
+  <text class="gate-text" x="690" y="1151" text-anchor="middle">== "true"</text>
+
+  <line x1="470" y1="1093" x2="470" y2="1117" class="arrow"/>
+  <text class="text-xs" x="480" y="1110">accepted</text>
+
+  <rect x="340" y="1197" width="260" height="56" class="po" rx="8"/>
+  <text class="text" x="470" y="1219" text-anchor="middle">step-5-complete</text>
+  <text class="text-xs" x="470" y="1237" text-anchor="middle">Move feature to completed/ — product-owner</text>
+
+  <rect x="620" y="1205" width="130" height="32" class="gate" rx="4"/>
+  <text class="gate-text" x="685" y="1219" text-anchor="middle">merge_complete</text>
+  <text class="gate-text" x="685" y="1231" text-anchor="middle">== "true"</text>
+
+  <line x1="470" y1="1173" x2="470" y2="1197" class="arrow"/>
+  <text class="text-xs" x="480" y="1190">merged</text>
+
+  <!-- feature-archived -> idle -->
+  <path d="M 470 1253 L 470 1273 L 820 1273 L 820 110 L 590 110" class="arrow"/>
+  <text class="text-xs" x="830" y="700">feature-archived → idle</text>
+
+  <!-- step-5-ready failed -> post-mortem -->
+  <path d="M 340 1065 L 200 1065 L 200 1350 L 340 1350" class="arrow-fail"/>
+  <text class="text-xs" x="195" y="1210" text-anchor="end">failed</text>
+
+  <!-- ============================================================ -->
+  <!-- POST-MORTEM                                                   -->
+  <!-- ============================================================ -->
+  <text class="section-header" x="40" y="1315">POST-MORTEM (failure restart)</text>
+
+  <rect x="340" y="1325" width="260" height="56" class="postmortem" rx="8"/>
+  <text class="text" x="470" y="1347" text-anchor="middle">post-mortem</text>
+  <text class="text-xs" x="470" y="1363" text-anchor="middle">Write post-mortem, create fix branch</text>
+  <text class="text-xs" x="470" y="1375" text-anchor="middle">product-owner + software-engineer</text>
+
+  <!-- post-mortem restart -> step-2-arch -->
+  <path d="M 600 1353 L 720 1353 L 720 442 L 630 442" class="arrow-loop"/>
+  <text class="text-xs" x="725" y="900">restart → step-2-arch</text>
+
+  <!-- ============================================================ -->
+  <!-- TRANSITIONS SUMMARY (parent flow only)                       -->
+  <!-- ============================================================ -->
+  <text class="section-header" x="40" y="1415">Parent Flow Transitions (feature-flow.yaml)</text>
+
+  <rect x="40" y="1429" width="860" height="226" fill="none" stroke="#444444" stroke-width="1" rx="4"/>
+  <line x1="40" y1="1451" x2="900" y2="1451" stroke="#444444" stroke-width="0.5"/>
+
+  <text class="text-sm" x="50" y="1445" fill="#d4a017">From → To</text>
+  <text class="text-sm" x="400" y="1445" fill="#d4a017">Trigger (exit name for subflows)</text>
+  <text class="text-sm" x="640" y="1445" fill="#d4a017">Contract (requires)</text>
+
+  <line x1="40" y1="1457" x2="900" y2="1457" stroke="#444444" stroke-width="0.5"/>
+  <text class="text-xs" x="50" y="1473">idle → step-1-scope</text>
+  <text class="text-xs" x="400" y="1473">select-feature / discover</text>
+  <text class="text-xs" x="640" y="1473">—</text>
+
+  <line x1="40" y1="1483" x2="900" y2="1483" stroke="#444444" stroke-width="0.5"/>
+  <text class="text-xs" x="50" y="1499">step-1-scope → step-2-arch</text>
+  <text class="text-xs" x="400" y="1499">complete</text>
+  <text class="text-xs" x="640" y="1499">—</text>
+
+  <line x1="40" y1="1509" x2="900" y2="1509" stroke="#444444" stroke-width="0.5"/>
+  <text class="text-xs" x="50" y="1525">step-1-scope → idle</text>
+  <text class="text-xs" x="400" y="1525">blocked</text>
+  <text class="text-xs" x="640" y="1525">—</text>
+
+  <line x1="40" y1="1535" x2="900" y2="1535" stroke="#444444" stroke-width="0.5"/>
+  <text class="text-xs" x="50" y="1551">step-2-arch → step-3-working</text>
+  <text class="text-xs" x="400" y="1551">complete</text>
+  <text class="text-xs" x="640" y="1551">—</text>
+
+  <line x1="40" y1="1561" x2="900" y2="1561" stroke="#444444" stroke-width="0.5"/>
+  <text class="text-xs" x="50" y="1577">step-2-arch → step-1-scope</text>
+  <text class="text-xs" x="400" y="1577">blocked</text>
+  <text class="text-xs" x="640" y="1577">—</text>
+
+  <line x1="40" y1="1587" x2="900" y2="1587" stroke="#444444" stroke-width="0.5"/>
+  <text class="text-xs" x="50" y="1603">step-3-working → step-4-ready</text>
+  <text class="text-xs" x="400" y="1603">complete</text>
+  <text class="text-xs" x="640" y="1603">—</text>
+
+  <line x1="40" y1="1613" x2="900" y2="1613" stroke="#444444" stroke-width="0.5"/>
+  <text class="text-xs" x="50" y="1629">step-3-working → step-1-scope</text>
+  <text class="text-xs" x="400" y="1629">blocked</text>
+  <text class="text-xs" x="640" y="1629">—</text>
+
+  <line x1="40" y1="1639" x2="900" y2="1639" stroke="#444444" stroke-width="0.5"/>
+  <text class="text-xs" x="50" y="1655">step-4-ready → step-5-ready</text>
+  <text class="text-xs" x="400" y="1655">approved</text>
+  <text class="text-xs" x="640" y="1655">all_tests_pass == "true"</text>
+
+  <line x1="40" y1="1661" x2="900" y2="1661" stroke="#444444" stroke-width="0.5"/>
+  <text class="text-xs" x="50" y="1677">step-4-ready → step-3-working</text>
+  <text class="text-xs" x="400" y="1677">rejected</text>
+  <text class="text-xs" x="640" y="1677">—</text>
+
+  <line x1="40" y1="1683" x2="900" y2="1683" stroke="#444444" stroke-width="0.5"/>
+  <text class="text-xs" x="50" y="1699">step-5-ready → step-5-merge</text>
+  <text class="text-xs" x="400" y="1699">accepted</text>
+  <text class="text-xs" x="640" y="1699">review_approved == "true"</text>
+
+  <line x1="40" y1="1705" x2="900" y2="1705" stroke="#444444" stroke-width="0.5"/>
+  <text class="text-xs" x="50" y="1721">step-5-merge → step-5-complete</text>
+  <text class="text-xs" x="400" y="1721">merged</text>
+  <text class="text-xs" x="640" y="1721">acceptance_passed == "true"</text>
+
+  <line x1="40" y1="1727" x2="900" y2="1727" stroke="#444444" stroke-width="0.5"/>
+  <text class="text-xs" x="50" y="1743">step-5-complete → idle</text>
+  <text class="text-xs" x="400" y="1743">feature-archived</text>
+  <text class="text-xs" x="640" y="1743">merge_complete == "true"</text>
+
+  <line x1="40" y1="1749" x2="900" y2="1749" stroke="#444444" stroke-width="0.5"/>
+  <text class="text-xs" x="50" y="1765">step-5-ready → post-mortem</text>
+  <text class="text-xs" x="400" y="1765">failed</text>
+  <text class="text-xs" x="640" y="1765">—</text>
+
+  <line x1="40" y1="1771" x2="900" y2="1771" stroke="#444444" stroke-width="0.5"/>
+  <text class="text-xs" x="50" y="1787">post-mortem → step-2-arch</text>
+  <text class="text-xs" x="400" y="1787">restart</text>
+  <text class="text-xs" x="640" y="1787">—</text>
+
+  <!-- ============================================================ -->
+  <!-- SUBFLOW STATE DETAILS                                         -->
+  <!-- ============================================================ -->
+  <text class="section-header" x="40" y="1815">Subflow State Details</text>
+
+  <rect x="40" y="1829" width="860" height="248" fill="none" stroke="#444444" stroke-width="1" rx="4"/>
+
+  <!-- scope-cycle -->
+  <text class="text-sm" x="50" y="1851" fill="#2d6a4f">scope-cycle (Step 1) — exits: complete, blocked</text>
+  <text class="text-xs" x="50" y="1867">backlog-criteria → [exit:complete] (criteria-done)</text>
+  <text class="text-xs" x="50" y="1883">discovery → stories (baselined) | discovery → discovery (more-discovery)</text>
+  <text class="text-xs" x="50" y="1899">stories → criteria (stories-committed) | criteria → [exit:complete] (criteria-committed)</text>
+
+  <line x1="40" y1="1911" x2="900" y2="1911" stroke="#444444" stroke-width="0.5"/>
+
+  <!-- arch-cycle -->
+  <text class="text-sm" x="50" y="1931" fill="#7b4f8a">arch-cycle (Step 2) — exits: complete, blocked</text>
+  <text class="text-xs" x="50" y="1947">read → [exit:blocked] (spec-gap) | read → interview (ready)</text>
+  <text class="text-xs" x="50" y="1963">interview → interview (gaps-found) | interview → validate (adrs-drafted)</text>
+  <text class="text-xs" x="50" y="1979">validate → interview (adrs-rejected) | validate → design (adrs-approved)</text>
+  <text class="text-xs" x="50" y="1995">design → stubs (stubs-written) | stubs → [exit:complete] (test-fast-green)</text>
+
+  <line x1="40" y1="2007" x2="900" y2="2007" stroke="#444444" stroke-width="0.5"/>
+
+  <!-- tdd-cycle -->
+  <text class="text-sm" x="50" y="2027" fill="#3a5a8c">tdd-cycle (Step 3) — exits: complete, blocked</text>
+  <text class="text-xs" x="50" y="2043">setup → red (branch-ready | branch-exists) | red → [exit:blocked] (spec-gap)</text>
+  <text class="text-xs" x="50" y="2059">red → green (test-written) | green → refactor (test-passing)</text>
+  <text class="text-xs" x="50" y="2075">refactor → red (more-ids) | refactor → [exit:complete] (all-green)</text>
+</svg>

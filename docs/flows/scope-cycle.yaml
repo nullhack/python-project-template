@@ -1,0 +1,28 @@
+flow: scope-cycle
+version: 1.0.0
+params: [feature_slug]
+exits: [complete, blocked]
+attrs:
+  agents:
+    backlog-criteria: product-owner
+    discovery: product-owner
+    stories: product-owner
+    criteria: product-owner
+
+states:
+  - id: backlog-criteria
+    next:
+      criteria-done: complete
+
+  - id: discovery
+    next:
+      baselined: stories
+      more-discovery: discovery
+
+  - id: stories
+    next:
+      stories-committed: criteria
+
+  - id: criteria
+    next:
+      criteria-committed: complete
