@@ -10,9 +10,9 @@ Features flow through 5 steps with a WIP limit of 1 feature at a time. The files
 - `docs/features/completed/<feature-stem>.feature` — accepted and shipped features
 
 ```
-STEP 1: SCOPE          (product-owner)     → discovery + Gherkin stories + criteria
-STEP 2: ARCH           (system-architect)  → branch from main; read system.md + glossary.md + in-progress feature + targeted package files; write domain stubs; update ## Domain Model section in system.md; draft ADRs → stakeholder validation table → commit approved ADRs as docs/adr/ADR-YYYY-MM-DD-<slug>.md; system.md rewritten
-STEP 3: TDD LOOP       (software-engineer) → RED → GREEN → REFACTOR, one @id at a time
+STEP 1: SCOPE          (product-owner)     → discovery + Gherkin stories + criteria (subflow: backlog-criteria → discovery → stories → criteria)
+STEP 2: ARCH           (system-architect)  → read system.md + glossary.md + in-progress feature + targeted package files; arch interview (gap-finding + ADR drafting); stakeholder ADR validation; domain stubs + model; update ## Domain Model section in system.md; commit approved ADRs as docs/adr/ADR-YYYY-MM-DD-<slug>.md; system.md rewritten; test stubs generated (subflow: read → interview → validate → design → stubs)
+STEP 3: TDD LOOP       (software-engineer) → create/switch feature branch; RED → GREEN → REFACTOR, one @id at a time (subflow: setup → red → green → refactor)
 STEP 4: VERIFY         (system-architect)  → run all commands, review code against architecture
 STEP 5: ACCEPT         (product-owner)     → demo, validate, SE merges branch to main with --no-ff, move .feature to completed/ (PO only)
 ```
@@ -22,8 +22,8 @@ STEP 5: ACCEPT         (product-owner)     → demo, validate, SE merges branch 
 All feature work happens on branches. `main` is the single source of truth and receives code only via `--no-ff` merge from an approved feature branch.
 
 **Normal flow**:
-1. SE creates `feat/<stem>` from latest `main` at Step 2 start
-2. All commits live on `feat/<stem>` through Steps 2–4
+1. SE creates `feat/<stem>` from latest `main` at Step 3 start
+2. All commits live on `feat/<stem>` through Steps 3–4
 3. After PO acceptance (Step 5), SE merges `feat/<stem>` to `main` with `--no-ff`
 4. SE deletes the feature branch
 
@@ -33,11 +33,7 @@ All feature work happens on branches. `main` is the single source of truth and r
 3. Post-mortem is committed as the first commit on `fix/<stem>`
 4. Steps 2–5 rerun on `fix/<stem>`, then merge to `main` with `--no-ff`
 
-**Git Safety Protocol** (absolute — never violate):
-- No force push (`git push --force` forbidden)
-- No history rewrite on pushed branches (no `rebase -i`, `commit --amend`, `reset --hard` after push)
-- Use `git revert` to undo changes on shared history
-- No commits directly to `main`
+**Git Safety Protocol** (absolute — never violate): See [[git/protocol]] for the full protocol. Summary: no force push, no history rewrite on pushed branches, use `git revert` to undo, no commits directly to `main`.
 
 **Closed loop**: SA designs → SE builds → SA reviews. The same mind that designed the architecture verifies it. No context loss.
 
@@ -61,7 +57,7 @@ All feature work happens on branches. `main` is the single source of truth and r
 | `backlog/` → `in-progress/` | PO only | Before Step 2 begins; only if `Status: BASELINED` |
 | `in-progress/` → `completed/` | PO only | After Step 5 acceptance |
 
-**If an agent (SE or SA) finds no `.feature` in `in-progress/`**: update `WORK.md` `@state` to `[IDLE]` and stop. Never self-select a backlog feature.
+**If an agent (SE or SA) finds no `.feature` in `in-progress/`**: update the session file in `.flowception/` `@state` to `idle` and stop. Never self-select a backlog feature.
 
 ## Agents
 
@@ -84,15 +80,16 @@ All feature work happens on branches. `main` is the single source of truth and r
 | `refactor` | software-engineer | 3 (REFACTOR phase + preparatory refactoring) |
 | `verify` | system-architect | 4 |
 | `check-quality` | software-engineer | pre-handoff (redirects to `verify`) |
-| `version-control` | software-engineer | Step 2 (branch creation), Step 5 (merge to main), post-mortem branches |
+| `version-control` | software-engineer | Step 3 (branch creation), Step 5 (merge to main), post-mortem branches |
 | `create-pr` | system-architect | post-acceptance |
 | `git-release` | stakeholder | post-acceptance |
 | `update-docs` | system-architect | post-acceptance + on stakeholder demand |
 | `design-colors` | designer | branding, color, WCAG compliance |
 | `design-assets` | designer | SVG asset creation and updates |
-| `flow` | all agents | every session — flow protocol, state machine design, FLOW/WORK templates |
+| `flow` | all agents | every session — flow protocol, YAML flow definitions, session management |
 | `create-skill` | software-engineer | meta |
 | `create-agent` | human-user | meta |
+| `create-knowledge` | all agents | meta |
 
 **Scripts**: The `scripts/` directory contains validation and automation scripts. Before performing any validation or analysis work manually, check what's available — a script may already do it faster and more consistently. Read each script's docstring to understand its purpose and usage. Agents without bash access can request that other agents run scripts on their behalf.
 
@@ -152,7 +149,7 @@ If the stakeholder reports failure **after the PO has attempted Step 5 acceptanc
 2. **Team compiles a compact post-mortem** (`docs/post-mortem/YYYY-MM-DD-<feature-stem>-<keyword>.md`, max 15 lines, process-level root cause).
 3. **SE creates a fix branch** from the feature's original start commit: `git checkout -b fix/<stem> <start-sha>`. The post-mortem is committed as the first commit on this branch.
 4. **PO scans `docs/post-mortem/`** and selects relevant files by matching `<feature-stem>` or `<failure-keyword>`.
-5. **PO reads selected post-mortems**, then updates `WORK.md` to set `@state: STEP-2-ARCH` and `@branch: fix/<stem>` with context.
+5. **PO reads selected post-mortems**, then updates the session file in `.flowception/` to set `@state: step-2-arch` (enters arch-cycle subflow) and `@branch: fix/<stem>` with context.
 6. **SA restarts Step 2** on `fix/<stem>`, reading relevant post-mortems as input. The same feature re-enters the ARCH step.
 7. After acceptance, SE merges `fix/<stem>` to `main` with `--no-ff`.
 
@@ -174,6 +171,7 @@ docs/
     backlog/<feature-stem>.feature    ← narrative + Rules + Examples
     in-progress/<feature-stem>.feature
     completed/<feature-stem>.feature
+  flows/                              ← YAML flow definitions (feature-flow.yaml, scope-cycle.yaml, arch-cycle.yaml, tdd-cycle.yaml)
 
 tests/
   features/<feature_slug>/
@@ -181,8 +179,10 @@ tests/
   unit/
     <anything>_test.py                ← software-engineer-authored extras (no @id traceability)
 
-FLOW.md                               ← static workflow state machine (roles, prerequisites, states, transitions)
-WORK.md                               ← dynamic work tracker (active items with @id, @state, @branch)
+FLOW.md                               ← redirect: points to docs/flows/ and .flowception/
+WORK.md                               ← redirect: points to .flowception/ session files
+.flowception/                         ← session YAML files (local working state, gitignored)
+docs/flows/                           ← flow definition YAML files (versioned)
 ```
 
 Tests in `tests/unit/` are software-engineer-authored extras not covered by any `@id` criterion. Any test style is valid — plain `assert` or Hypothesis `@given`. Use Hypothesis when the test covers a **property** that holds across many inputs (mathematical invariants, parsing contracts, value object constraints). Use plain pytest for specific behaviours or single edge cases discovered during refactoring.
@@ -247,34 +247,35 @@ uv run task static-check
 uv run task doc-build
 ```
 
-## Code Quality Standards
+## Code Quality
 
-- **Principles (in priority order)**: YAGNI > KISS > DRY > SOLID > Object Calisthenics > appropriate design patterns > complex code > complicate code > failing code > no code
-- **Linting**: ruff format, ruff check, Google docstring convention, `noqa` forbidden
-- **Type checking**: pyright, 0 errors required
-- **Coverage**: enforced by `test-coverage`
-- **Function length**: ≤ 20 lines (code lines only, excluding docstrings)
-- **Class length**: ≤ 50 lines (code lines only, excluding docstrings)
-- **Max nesting**: 2 levels
-- **Instance variables**: ≤ 2 per class *(exception: dataclasses, Pydantic models, value objects, and TypedDicts are exempt — they may carry as many fields as the domain requires)*
-- **Semantic alignment**: tests must operate at the same abstraction level as the acceptance criteria they cover
+Enforced during Step 3 (TDD Loop) and Step 4 (Verification). Read `.opencode/knowledge/software-craft/code-quality.md` for standards, size limits, and quality gate priority order. Read `.opencode/knowledge/software-craft/verification-philosophy.md` for verification principles.
 
-### Software-Engineer Quality Gate Priority Order
+## Knowledge System
 
-During Step 3 (TDD Loop) and before handoff to Step 4:
+Knowledge files live in `.opencode/knowledge/` and are referenced using wikilinks. When you encounter a wikilink, read the corresponding file before proceeding with the task that requires it.
 
-1. **Design correctness** — YAGNI > KISS > DRY > SOLID > Object Calisthenics > appropriate design patterns > complex code > complicated code > failing code > no code
-2. **One test green** — the specific test under work passes, plus `test-fast` still passes
-3. **Quality tooling** — `lint`, `static-check`, full `test` with coverage run at handoff to SA
+**Wikilink formats:**
+- `[[domain/concept]]` — loads the entire file
+- `[[domain/concept#key-takeaways]]` — loads frontmatter + Key Takeaways only (~80% token savings)
+- `[[domain/concept#concepts]]` — loads frontmatter + Key Takeaways + Concepts (~65% savings)
 
-Design correctness is far more important than lint/pyright/coverage compliance. A well-designed codebase with minor lint issues is better than a lint-clean codebase with poor design.
+Fragment syntax uses lowercase with hyphens (e.g., `#key-takeaways`, `#concepts`). Extraction is cumulative: `#concepts` includes Key Takeaways.
 
-## Verification Philosophy
+**Knowledge file structure** (4 body sections):
 
-- **Automated checks** (lint, typecheck, coverage) verify **syntax-level** correctness — the code is well-formed.
-- **Human review** (semantic alignment, code review, manual testing) verifies **semantic-level** correctness — the code does what the user needs.
-- Both are required. All-green automated checks are necessary but not sufficient for APPROVED.
-- System-architect defaults to REJECTED unless correctness is proven.
+1. `## Key Takeaways` — one bullet per concept, imperative mood
+2. `## Concepts` — one paragraph per concept, same grouping as Key Takeaways
+3. `## Content` — full reference and explanation
+4. `## Related` — wikilinks to related knowledge
+
+**Correspondence rule:** Bullet N in Key Takeaways corresponds to paragraph N in Concepts and subsection(s) N in Content. Closely related Content subsections may share a bullet.
+
+- **Knowledge** = reference + explanation (what and why)
+- **Skills** = procedural instructions (when and how)
+- **Agents** = role identity (who)
+
+No knowledge is embedded in skills or agents — each piece of knowledge exists in exactly one canonical location in `.opencode/knowledge/`.
 
 ## Release Management
 
@@ -290,12 +291,11 @@ The stakeholder initiates the release process. When the stakeholder requests a r
 
 ## Session Management
 
-Every session: load `skill run-session`. Read `FLOW.md` and `WORK.md` at session start; update `WORK.md` at the end.
+Every session: load `skill run-session`. Read flow definitions from `docs/flows/` and session state from `.flowception/` at session start; update the session file at the end.
 
-- `FLOW.md` — static state machine: roles, prerequisites, states, transitions, detection rules. **Agents never modify this file.** Only the stakeholder (human) may change it, using `skill flow` as the design protocol.
-- `WORK.md` — dynamic tracker: active `@id` items with `@state` and `@branch`. Updated by the state owner at every transition.
-
-See `.opencode/skills/flow/SKILL.md` for the generic flow protocol, state machine design principles, and templates for creating new workflows.
+- **Flow definitions** (`docs/flows/*.yaml`) — static state machine definitions. **Agents never modify these files.** Only the stakeholder (human) may change them.
+- **Session files** (`.flowception/session-*.yaml`) — dynamic work tracking. Updated by the state owner at every transition.
+- **FLOW.md** and **WORK.md** — redirects pointing to `docs/flows/` and `.flowception/` respectively.
 
 ## Setup
 

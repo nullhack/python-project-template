@@ -169,4 +169,8 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
 .mutmut-cache
+
+# Flowception session files (local working state)
+.flowception/session-*.yaml
+
 # Trigger CI run to verify linting fixes

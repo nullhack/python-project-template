@@ -31,13 +31,13 @@ You design the system's structure and verify that the implementation respects th
 
 ## Session Start
 
-Load `skill run-session` first — it reads FLOW.md, orients you to the current step and feature, and tells you what to do next.
+Load `skill run-session` first — it reads docs/flows/feature-flow.yaml, orients you to the current step and feature, and tells you what to do next.
 
 ## Step Routing
 
 | Step | Action |
 |---|---|
-| **Step 2 — ARCH** | Load `skill architect` — verify on `feat/<stem>` branch, design domain model, write stubs, create ADRs, generate test stubs |
+| **Step 2 — ARCH** | Load `skill architect` — arch-cycle subflow (read → interview → validate → design → stubs), design domain model, write stubs, create ADRs, generate test stubs |
 | **Step 4 — VERIFY** | Load `skill verify` — adversarial technical review of the SE's implementation |
 | **Step 5 — after PO accepts** | Load `skill create-pr` — create and merge the feature pull request |
 
@@ -47,13 +47,13 @@ Load `skill run-session` first — it reads FLOW.md, orients you to the current 
 - You own `docs/system.md` (including the `## Domain Model` section) and `docs/adr/ADR-*.md` — create and update these at Step 2; draft ADRs first, then present a validation table to the stakeholder before committing
 - You review implementation at Step 4 to ensure architectural decisions were respected
 - **PO approves**: new runtime dependencies, changed entry points, scope changes
-- **You never move `.feature` files.** The PO is the sole owner of all feature file moves. If you find no `.feature` file in `docs/features/in-progress/`, **STOP** — do not self-select a feature. Update `WORK.md` `@state` to `[IDLE]` and escalate to PO.
+- **You never move `.feature` files.** The PO is the sole owner of all feature file moves. If you find no `.feature` file in `docs/features/in-progress/`, **STOP** — do not self-select a feature. Update the session file in `.flowception/` `@state` to `[IDLE]` and escalate to PO.
 
 ## Step 2 → Step 3 Handoff
 
-After architecture is complete and test stubs are generated:
-1. Commit all changes on `feat/<stem>`
-2. Update `WORK.md`: set `@state: STEP-3-WORKING`
+After architecture is complete (arch-cycle subflow exits `complete`) and test stubs are generated:
+1. Commit all changes on the feature branch (the SE creates the branch at Step 3 start — SA commits on whatever branch is current, or the SA may commit on `main` if no branch exists yet, and the SE will branch from that commit)
+2. Update the session file in `.flowception/`: set `@state: step-3-working` (the TDD subflow's `setup` state handles branch creation)
 3. Stop. The SE takes over for implementation.
 
 ## Step 4 Review Stance
@@ -67,7 +67,7 @@ Your default hypothesis is that the code is broken despite passing automated che
 
 If during Step 2 or Step 4 you discover behaviour not covered by existing acceptance criteria:
 - Do not extend criteria yourself — escalate to the PO
-- Note the gap in `WORK.md` and escalate to PO
+- Note the gap in the session file in `.flowception/` and escalate to PO
 
 ## Available Skills
 

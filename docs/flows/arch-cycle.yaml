@@ -1,0 +1,57 @@
+flow: arch-cycle
+params:
+  - feature_slug
+  - branch_name
+states:
+  - id: read
+    agent: system-architect
+    type: normal
+    params:
+      feature_slug: feature_slug
+      branch_name: branch_name
+    next:
+      ready: interview
+      spec-gap: blocked
+
+  - id: interview
+    agent: system-architect
+    type: normal
+    params:
+      feature_slug: feature_slug
+    next:
+      gaps-found: interview
+      adrs-drafted: validate
+
+  - id: validate
+    agent: system-architect
+    requires:
+      adrs_drafted: "true"
+    params:
+      feature_slug: feature_slug
+    next:
+      adrs-approved: design
+      adrs-rejected: interview
+
+  - id: design
+    agent: system-architect
+    requires:
+      adrs_approved: "true"
+    params:
+      feature_slug: feature_slug
+      branch_name: branch_name
+    next:
+      stubs-written: stubs
+
+  - id: stubs
+    agent: system-architect
+    requires:
+      stubs_written: "true"
+    params:
+      feature_slug: feature_slug
+      branch_name: branch_name
+    next:
+      test-fast-green: complete
+
+exits:
+  - complete
+  - blocked

@@ -13,11 +13,11 @@ Select the next most valuable, unblocked feature from the backlog using a lightw
 
 **Research basis**: Weighted Shortest Job First (WSJF) — Reinertsen *Principles of Product Development Flow* (2009); INVEST criteria — Wake (2003); Kano model — Kano (1984); Dependency analysis — PMBOK Critical Path Method. See `docs/research/requirements-elicitation.md`.
 
-**Core principle**: Cost of Delay ÷ Duration. Features with high user value and low implementation effort should start first. Features blocked by unfinished work should wait regardless of value.
+**Core principle**: Cost of Delay / Duration. Features with high user value and low implementation effort should start first. Features blocked by unfinished work should wait regardless of value.
 
 ## When to Use
 
-Load this skill when `WORK.md` `@state` is [IDLE] (or no active item) — before moving any feature to `in-progress/`.
+Load this skill when the session file in `.flowception/` `state` is `idle` (or no active item) — before moving any feature to `in-progress/`.
 
 ## Step-by-Step
 
@@ -27,9 +27,9 @@ Load this skill when `WORK.md` `@state` is [IDLE] (or no active item) — before
 ls docs/features/in-progress/
 ```
 
-- 0 files → proceed
-- 1 file → a feature is already in progress; do not start another; exit this skill
-- >1 files → WIP violation; stop and resolve before proceeding
+- 0 files -> proceed
+- 1 file -> a feature is already in progress; do not start another; exit this skill
+- >1 files -> WIP violation; stop and resolve before proceeding
 
 ### 2. List BASELINED Candidates
 
@@ -46,64 +46,42 @@ Read each `.feature` file in `docs/features/backlog/`. Check its discovery secti
 
 For each BASELINED feature, fill this table:
 
-| Feature | Value (1–5) | Effort (1–5) | Dependency (0/1) | WSJF |
+| Feature | Value (1-5) | Effort (1-5) | Dependency (0/1) | WSJF |
 |---|---|---|---|---|
-| `<name>` | | | | Value ÷ Effort |
+| `<name>` | | | | Value / Effort |
 
-**Value (1–5)** — estimate user/business impact:
-- 5: Must-have — core workflow blocked without it (Kano: basic need)
-- 4: High — significantly improves the primary use case
-- 3: Medium — useful but not blocking (Kano: performance)
-- 2: Low — nice-to-have (Kano: delighter)
-- 1: Minimal — cosmetic or out-of-scope edge case
-
-Use the number of `Must` Examples in the feature's `Rule:` blocks as a tiebreaker: more Musts → higher value.
-
-**Effort (1–5)** — estimate implementation complexity:
-- 1: Trivial — 1–2 `@id` Examples, no new domain concepts
-- 2: Small — 3–5 `@id` Examples, one new domain entity
-- 3: Medium — 6–8 `@id` Examples or cross-cutting concern
-- 4: Large — >8 Examples or multiple interacting domain entities
-- 5: Very large — spans multiple modules or has unknown complexity
-
-**Dependency (0/1)** — does this feature assume another backlog feature is already built?
-- 0: Independent — no hard prerequisite
-- 1: Blocked — requires another backlog feature to be completed first
-
-A Dependency=1 feature is **ineligible for selection** regardless of WSJF score. Apply WSJF only to Dependency=0 features.
+See [[requirements/wsjf]] for the Value, Effort, and Dependency scales, the WSJF formula, and selection rules (including tiebreaker and dependency eligibility).
 
 ### 4. Select
 
 Pick the BASELINED, Dependency=0 feature with the highest WSJF score.
 
-Ties: prefer higher Value (user impact matters more than effort optimization).
+See [[requirements/wsjf]] for selection rules including tiebreaker logic and handling all-Dependency=1 backlogs.
 
-If all BASELINED features have Dependency=1: stop and resolve the blocking dependency first — select and complete the depended-upon feature.
-
-### 5. Move Feature and Update WORK.md
+### 5. Move Feature and Update Session
 
 ```bash
 mv docs/features/backlog/<name>.feature docs/features/in-progress/<name>.feature
 ```
 
-Update `WORK.md` — add (or replace) the active item block:
+Update the session file in `.flowception/` — add (or replace) the active item block:
 
 ```markdown
 ## Active Items
 
 @id: <name>
-@state: [STEP-1-DISCOVERY] or [STEP-2-READY] — whichever is next
+@state: [STEP-1-SCOPE] or [STEP-2-ARCH] — whichever is next
 @branch: [NONE]
 ```
 
-- If the feature has no `Rule:` blocks yet → `@state: STEP-1-DISCOVERY`; `Run @product-owner — load skill define-scope and write stories`
-- If the feature has `Rule:` blocks but no `@id` Examples → `@state: STEP-1-CRITERIA`; `Run @product-owner — load skill define-scope and write acceptance criteria`
-- If the feature has `@id` Examples → `@state: STEP-2-READY`; `Run @software-engineer — load skill version-control and create feat/<name> branch`
+- If the feature has no `Rule:` blocks yet -> `@state: STEP-1-SCOPE`; `Run @product-owner — load skill define-scope and write stories`
+- If the feature has `Rule:` blocks but no `@id` Examples -> `@state: STEP-1-SCOPE`; `Run @product-owner — load skill define-scope and write acceptance criteria`
+- If the feature has `@id` Examples -> `@state: STEP-2-ARCH`; `Run @system-architect — load skill architect`
 
 ### 6. Commit
 
 ```bash
-git add docs/features/in-progress/<name>.feature WORK.md
+git add docs/features/in-progress/<name>.feature .flowception/
 git commit -m "chore: select <name> as next feature"
 ```
 
@@ -115,5 +93,5 @@ git commit -m "chore: select <name> as next feature"
 - [ ] WSJF scores filled for all candidates
 - [ ] Selected feature has highest WSJF among Dependency=0 candidates
 - [ ] Feature moved to `in-progress/`
-- [ ] `WORK.md` updated with correct `@state`
+- [ ] session file updated with correct `state`
 - [ ] Changes committed

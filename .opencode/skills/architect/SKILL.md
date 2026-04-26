@@ -11,6 +11,8 @@ workflow: feature-lifecycle
 
 Step 2: conduct the architectural interview, design the domain model, write architecture stubs, record decisions as ADRs, and generate test stubs. The system-architect owns this step entirely.
 
+This step is a subflow defined in `docs/flows/arch-cycle.yaml` with 5 states: **read → interview → validate → design → stubs**.
+
 ## When to Use
 
 Load this skill when starting Step 2 (Architecture) after the PO has moved a BASELINED feature to `in-progress/`.
@@ -27,15 +29,14 @@ Design correctness is far more important than lint/pyright/coverage compliance. 
 
 ---
 
-## Step 2 — Architecture
+## Step 2 — Architecture (arch-cycle subflow)
 
 ### Prerequisites (stop if any fail — escalate to PO)
 
-1. `docs/features/in-progress/` contains exactly one `.feature` file (not just `.gitkeep`). If none exists, **STOP** — update `WORK.md` `@state` to `[IDLE]` and stop. Never self-select or move a feature yourself.
+1. `docs/features/in-progress/` contains exactly one `.feature` file (not just `.gitkeep`). If none exists, **STOP** — update the session file in `.flowception/` `@state` to `idle` and stop. Never self-select or move a feature yourself.
 2. The feature file's discovery section has `Status: BASELINED`. If not, escalate to PO — Step 1 is incomplete.
 3. The feature file contains `Rule:` blocks with `Example:` blocks and `@id` tags. If not, escalate to PO — criteria have not been written.
 4. Package name confirmed: read `pyproject.toml` → locate `[tool.setuptools]` → confirm directory exists on disk.
-5. **Branch verification**: `git branch --show-current` must output `feat/<stem>` or `fix/<stem>`. If it outputs `main` or any other branch, stop — the SE must create the correct branch via `skill version-control` before architecture begins.
 
 ### Package Verification (mandatory — before writing any code)
 
@@ -43,7 +44,11 @@ Design correctness is far more important than lint/pyright/coverage compliance. 
 2. Confirm directory exists: `ls <name>/`
 3. All new source files go under `<name>/`
 
-**Note on feature file moves**: The PO moves `.feature` files between folders. The system-architect never moves, creates, or edits `.feature` files. Verify `WORK.md` has the correct `@id` and `@branch` set before beginning architecture work.
+**Note on feature file moves**: The PO moves `.feature` files between folders. The system-architect never moves, creates, or edits `.feature` files. Verify the session file in `.flowception/` has the correct `id` and `branch` set before beginning architecture work.
+
+---
+
+## Subflow State: `read`
 
 ### Read Phase (targeted reads only — before writing anything)
 
@@ -63,165 +68,80 @@ ADR details are available on demand: reference Key Decisions in `system.md`, the
 4. Run `tree <package>/` — understand package structure without reading every file
 5. Read **specific `.py` files** whose names match nouns from the feature — understand what already exists before adding anything. Do not read the entire package.
 
+**Transition**: `ready` → `interview` | `spec-gap` → `blocked` (escalate to PO)
+
 ---
 
-## Architectural Interview Protocol
+## Subflow State: `interview`
+
+### Architectural Interview Protocol
 
 The arch interview surfaces decisions that must be recorded as ADRs. Related questions from the interview are grouped into one ADR — multiple Q&A pairs converge on a single decision.
 
 ### Gap-Finding Techniques
 
-Three techniques surface decisions the feature file has not yet made explicit. Apply them during the domain analysis pass.
-
-**Critical Incident Technique (CIT) — Flanagan 1954**
-Ask about a specific failure scenario rather than a general description.
-- "If this entity is misused, what breaks?"
-- "Tell me about a concrete case where this boundary would be crossed."
-
-**Laddering / Means-End Chain — Reynolds & Gutman 1988**
-Climb from surface constraint to architectural consequence.
-- "Why does this need to be immutable?"
-- "What breaks if this is not behind a Protocol?"
-- Stop when the answer produces a design constraint that can be written into an ADR.
-
-**Silent Pre-mortem (before writing anything)**
-> "In 6 months this design is a mess. What mistakes did we make?"
-
-For each candidate class:
-- >2 ivars? → split
-- >1 reason to change? → isolate
-
-For each external dep:
-- Is it behind a Protocol? → if not, add
-
-For each noun:
-- Serving double duty across modules? → isolate
-
-If pattern smell detected, load `skill apply-patterns`.
+Apply gap-finding techniques (CIT, Laddering, Silent Pre-mortem) during the domain analysis pass to surface decisions the feature file has not yet made explicit. If a pattern smell is detected, load `skill apply-patterns`. See [[requirements/discovery-techniques]].
 
 ### ADR Interview Pattern
 
-For each group of related unresolved decisions identified during domain analysis:
+For each group of related unresolved decisions identified during domain analysis, follow the ADR interview pattern to frame questions, evaluate alternatives, draft ADRs, and validate with the stakeholder. See [[architecture/adr]].
 
-1. **Frame the questions**: state each decision as a clear question with known alternatives.
-   Example: "Should `FrameworkAdapter` be a `typing.Protocol` or an ABC?"
+**Do not commit ADRs yet** — ADRs must be validated with the stakeholder first (next state: `validate`).
 
-2. **State constraints**: list what is known from the feature file, glossary, and existing ADRs that constrains the answer.
-
-3. **Evaluate alternatives**: for each option, state the consequence. Apply laddering to surface hidden consequences.
-
-4. **Draft the ADR**: group related questions into one ADR using the template in `adr.md.template`.
-   - `## Context` — the situation that triggered these questions
-   - `## Interview` — Q&A table with final accepted answers (one row per question)
-   - `## Decision` — one sentence
-   - `## Reason` — one sentence
-   - `## Alternatives Considered` — rejected options with reasons
-   - `## Consequences` — (+) and (-) outcomes
-   Do **not** commit yet — ADRs require stakeholder validation first.
-
-5. **Stakeholder validation**: after all ADRs are drafted, present a validation table to the stakeholder:
-
-   | ADR | Summary | Decision | Reason | Alternatives |
-   |---|---|---|---|---|
-   | ADR-YYYY-MM-DD-<slug> | <one-line summary> | <chosen option> | <one-line reason> | <option names only> |
-
-6. **If stakeholder approves**: commit each approved ADR. `feat(<feature-stem>): add ADR-<slug>`
-
-7. **If stakeholder rejects an ADR**: expand that ADR with deeper considerations and consequences, then present the specific ADR as a targeted question with options. Iterate until the stakeholder approves, then commit.
-
-Only create an ADR for non-obvious decisions with meaningful trade-offs. Routine YAGNI choices do not need a record.
+**Transition**: `gaps-found` → `interview` (loop) | `adrs-drafted` → `validate` (contract: `adrs_drafted == "true"`)
 
 ---
 
-## Domain Analysis
+## Subflow State: `validate`
 
-From `docs/glossary.md` + Rules (Business) in the `.feature` file:
-- **Nouns** in feature/glossary language → candidate Entities, Value Objects, or Aggregates in the domain model
-- **Verbs** in feature/glossary language → candidate Actions (operations with typed signatures on an Entity, a standalone function, or a Domain Service)
-- **Datasets** → named types (not bare dict/list)
-- **Bounded Context check**: same word, different meaning across features? → module boundary
-- **Cross-feature entities** → candidate shared domain layer
+Present the ADR validation table to the stakeholder for approval. See [[architecture/adr]] for the validation table format.
+
+Commit each approved ADR: `feat(<feature-stem>): add ADR-<slug>`
+
+**Transition**: `adrs-approved` → `design` (contract: `adrs_approved == "true"`) | `adrs-rejected` → `interview` (revise and re-draft)
+
+---
+
+## Subflow State: `design`
+
+### Domain Analysis
+
+Identify nouns, verbs, datasets, and bounded contexts from the glossary and feature file, then update the domain model in `docs/system.md`. See [[architecture/domain-stubs]] for the full domain analysis process and stub writing rules.
 
 ### Update Domain Model (in `docs/system.md`)
 
-Update the `## Domain Model` section of `docs/system.md`:
-
 - **New feature, first entities**: add bounded contexts, entities, actions, and relationships to the Domain Model section.
 - **Existing feature**: append new entities and actions. Deprecate old entries if retired in favour of a newer entry — move them to a `### Deprecated` subsection. Never edit existing live entries — code depends on them.
-- Update the `## Context` section (Actors, Systems, and Interactions
-  sub-tables) if new actors, external systems, or interactions are
-  identified.
-- Update the `## Container` section (Boundary and Interactions
-  sub-tables) if new containers or container interactions are
-  identified.
+- Update the `## Context` section if new actors, external systems, or interactions are identified.
+- Update the `## Container` section if new containers or container interactions are identified.
 
 The PO reads `docs/system.md` but never writes to it.
 
 ### Architecture Smell Check (hard gate)
 
-Apply to the stub files just written:
+Apply the smell check to stub files before committing. If any check fails, fix the stubs before committing. See [[architecture/smell-check]].
 
-- [ ] No class with >2 responsibilities (SOLID-S)
-- [ ] No behavioural class with >2 instance variables (OC-8; dataclasses, Pydantic models, value objects, and TypedDicts are exempt)
-- [ ] All external deps assigned a Protocol (SOLID-D + Hexagonal) — N/A if no external dependencies identified in scope
-- [ ] No noun with different meaning across modules (DDD Bounded Context)
-- [ ] No missing Creational pattern: repeated construction without Factory/Builder
-- [ ] No missing Structural pattern: type-switching without Strategy/Visitor
-- [ ] No missing Behavioral pattern: state machine or scattered notification without State/Observer
-- [ ] Each ADR consistent with each @id AC — no contradictions
+### Write Stubs into Package
 
-If any check fails: fix the stub files before committing.
+From the domain analysis, write or extend `.py` files in `<package>/`. Follow the stub rules and file placement patterns in [[architecture/domain-stubs]].
+
+**Transition**: `stubs-written` → `stubs` (contract: `stubs_written == "true"`)
 
 ---
 
-## Write Stubs into Package
+## Subflow State: `stubs`
 
-From the domain analysis, write or extend `.py` files in `<package>/`. For each entity:
-
-- **If the file already exists**: add the new class or method signature — do not remove or alter existing code.
-- **If the file does not exist**: create it with the new signatures only.
-
-**Stub rules (strictly enforced):**
-- Method bodies must be `...` — no logic, no conditionals, no imports beyond `typing` and domain types
-- No docstrings — signatures will change; add docstrings after GREEN (lint enforces this at quality gate)
-- No inline comments, no TODO comments, no speculative code
-
-**Example — correct stub style:**
-
-```python
-from dataclasses import dataclass
-from typing import Protocol
-
-
-@dataclass(frozen=True, slots=True)
-class EmailAddress:
-    value: str
-
-    def validate(self) -> None: ...
-
-
-class UserRepository(Protocol):
-    def save(self, user: "User") -> None: ...
-    def find_by_email(self, email: EmailAddress) -> "User | None": ...
-```
-
-**File placement (common patterns, not required names):**
-- `<package>/domain/<noun>.py` — entities, value objects
-- `<package>/domain/service.py` — cross-entity operations
-
-Place stubs where responsibility dictates — do not pre-create `ports/` or `adapters/` folders unless a concrete external dependency was identified in scope. Structure follows domain analysis, not a template.
-
----
-
-## Generate Test Stubs
+### Generate Test Stubs
 
 Run `uv run task test-fast` once. It reads the in-progress `.feature` file (all `@id` tags must already be present — assigned by the PO at Step 1) and generates `tests/features/<feature_slug>/<rule_slug>_test.py` — one file per `Rule:` block, one skipped function per `@id`. Verify the files were created, then stage all changes.
 
 Commit: `feat(<feature-stem>): add architecture and test stubs`
 
+**Transition**: `test-fast-green` → `complete` (subflow exit)
+
 ### Hand off to Step 3 (TDD Loop)
 
-1. Update `WORK.md` `@state: STEP-3-WORKING`
+1. Update the session file in `.flowception/`: `state` to `step-3-working` (the TDD subflow's `setup` state handles branch creation)
 2. Provide the SE with:
    - Feature file path
    - Summary of stubs created
@@ -235,7 +155,7 @@ Commit: `feat(<feature-stem>): add architecture and test stubs`
 
 If during architecture you discover behaviour not covered by existing acceptance criteria:
 - **Do not extend criteria yourself** — escalate to PO
-- Note the gap in `WORK.md` and escalate to PO
+- Note the gap in the session file in `.flowception/` and escalate to PO
 - The PO will decide whether to add a new Example to the `.feature` file
 
 ---
