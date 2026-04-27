@@ -105,17 +105,17 @@ Step 1 has two stages:
 
 Discovery follows a block structure per session. See `skill define-scope` for the full protocol.
 
-**Block A — Session Start**: Resume check (if `IN-PROGRESS`), read `system.md` Domain Model section (existing entities), read `branding.md` (tone alignment), read `discovery.md` (consistency check), declare scope.
+**Block A — Session Start**: Resume check (if `IN-PROGRESS`), read `system.md` Domain Model section (existing entities), read `branding.md` (tone alignment), read `.feature` Changes sections (consistency check), declare scope.
 
 **Block B — General & Cross-cutting**: 5Ws, behavioural groups, bounded contexts. Active listening + reconciliation against `glossary.md` and `system.md` (Domain Model section).
 
 **Block C — Feature Discovery (per feature)**: Detailed questions, pre-mortem, create/update `.feature` files.
 
-**Block D — Session Close**: Append Q&A to `scope_journal.md`, update `glossary.md`, append synthesis to `discovery.md`, regression check on completed features, mark `COMPLETE`.
+**Block D — Session Close**: Append Q&A to `scope_journal.md`, update `glossary.md`, update `## Changes` sections in `.feature` files, regression check on completed features, mark `COMPLETE`.
 
 **Key rules**:
-- PO owns `scope_journal.md`, `discovery.md`, `glossary.md`, and `.feature` files
-- PO reads the `## Domain Model` section of `docs/system.md` but never writes to `system.md` — entity suggestions go in `discovery.md` for SA formalization at Step 2
+- PO owns `scope_journal.md`, `glossary.md`, and `.feature` files
+- PO reads the `## Domain Model` section of `docs/system.md` but never writes to `system.md` — entity suggestions go in `.feature` Changes sections for SA formalization at Step 2
 - Real-time split rule: >2 concerns or >8 candidate Examples → split immediately
 - Completed feature touched and changed → move to `backlog/`
 
@@ -160,7 +160,6 @@ Post-mortems are append-only, never edited. If a failure mode recurs, write a ne
 ```
 docs/
   scope_journal.md                    ← raw Q&A, PO appends after every session
-  discovery.md                        ← session synthesis changelog (behavioural changes only), PO appends after every session
   adr/                                ← one file per decision: ADR-YYYY-MM-DD-<slug>.md, SA creates at Step 2
   system.md                           ← SA-owned current-state snapshot: domain model + Context + Container sections + modules + constraints + key decisions; SA rewrites at Step 2
   glossary.md                         ← living glossary, PO updates after each session

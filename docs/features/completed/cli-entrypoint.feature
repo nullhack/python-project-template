@@ -77,3 +77,9 @@ Feature: CLI Entrypoint
       Given the application package is installed
       When the user runs `python -m app` with no arguments
       Then the process exits with code 0
+
+  ## Changes
+
+  | Session | Q-IDs | Change |
+  |---------|-------|--------|
+  | 2026-04-22 S1 | Q8, Q9, Q11 | Created: CLI entrypoint with --help, --version, unknown-flag handling |

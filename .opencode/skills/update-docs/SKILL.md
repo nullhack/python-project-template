@@ -22,12 +22,11 @@ The glossary is a secondary artefact derived from the code, the domain entities 
 
 | Document | Created/Updated by | Inputs read |
 |---|---|---|
-| `docs/system.md` (Context + Container sections) | SA at Step 2; `update-docs` skill (SA) updates these sections post-acceptance | `docs/discovery.md`, `docs/adr/ADR-*.md`, `docs/features/completed/` |
+| `docs/system.md` (Context + Container sections) | SA at Step 2; `update-docs` skill (SA) updates these sections post-acceptance | `.feature` `## Changes` sections, `docs/adr/ADR-*.md`, `docs/features/completed/` |
 | `docs/index.html` (dynamic sections between markers) | `update-docs` skill (SA) via `scripts/update_index_html.py` post-acceptance | `pyproject.toml`, `docs/features/`, `docs/adr/`, `docs/research/` |
 | `docs/glossary.md` | PO only (Step 1, via `define-scope` skill) | — |
-| `docs/discovery.md` | PO only (Step 1) | — |
 
-**Never edit `docs/adr/ADR-*.md` or `docs/discovery.md` in this skill.** Those files are owned by their respective agents. This skill reads them; it never writes to them.
+**Never edit `docs/adr/ADR-*.md` in this skill.** Those files are owned by their respective agents. This skill reads them; it never writes to them.
 
 ---
 
@@ -35,7 +34,7 @@ The glossary is a secondary artefact derived from the code, the domain entities 
 
 Read in this order:
 
-1. `docs/discovery.md` — project scope, feature list per session
+1. `.feature` files (`## Changes` sections) — project scope, feature list per session
 2. `docs/system.md` — all sections: domain model entities, modules, configuration, existing Context and Container tables
 3. `docs/features/completed/` — all completed `.feature` files (full text: Rules, Examples, Constraints)
 4. `docs/adr/` — all architectural decision files (containers, modules, protocols, external deps)
@@ -179,6 +178,6 @@ docs(update-docs): refresh context, container, and glossary
 - [ ] Glossary read; all table entries verified against glossary and Domain Model section of `system.md`
 - [ ] Any unrecognised term flagged to PO — not added to glossary unilaterally
 - [ ] `docs/index.html` updated via `uv run python scripts/update_index_html.py`; exit code 0
-- [ ] No edits made to ADR files or `docs/discovery.md`
+- [ ] No edits made to ADR files
 - [ ] If standalone: committed with `docs(update-docs): ...` message
 - [ ] If called from release: files staged but not committed (release process commits)

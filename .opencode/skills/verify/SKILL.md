@@ -137,7 +137,7 @@ Read the source files changed in this feature. **Do this before running lint/sta
 | Methods match glossary | New method names use terms from `docs/glossary.md` | Yes | No |
 | No invented synonyms | Same concept uses same name everywhere | Yes | No |
 
-If a new name is genuinely needed (not in domain model or glossary), the SE should have noted it in the handoff summary or in `docs/discovery.md`. If no justification exists, REJECT.
+If a new name is genuinely needed (not in domain model or glossary), the SE should have noted it in the handoff summary or in the `.feature` file's `## Changes` section. If no justification exists, REJECT.
 
 #### 6d. SOLID — any FAIL → REJECTED
 

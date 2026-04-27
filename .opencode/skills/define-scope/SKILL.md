@@ -21,7 +21,7 @@ Step 1 has two stages:
 
 | Stage | Who | Output |
 |---|---|---|
-| **Stage 1 — Discovery** | PO + stakeholder | `docs/scope_journal.md` (Q&A) + `docs/discovery.md` (synthesis) + `.feature` descriptions |
+| **Stage 1 — Discovery** | PO + stakeholder | `docs/scope_journal.md` (Q&A) + `.feature` descriptions (with `## Changes` sections) |
 | **Stage 2 — Specification** | PO alone | `Rule:` blocks + `Example:` blocks with `@id` tags in `.feature` files |
 
 Stage 1 is iterative and ongoing — sessions happen whenever the PO or stakeholder needs to discover or refine scope. Stage 2 runs per feature, only after that feature has `Status: BASELINED`.
@@ -52,15 +52,15 @@ Discovery is a continuous, iterative process. Sessions happen whenever scope nee
 |---|---|
 | `docs/scope_journal.md` | Resume check — was the previous session interrupted? |
 | `docs/system.md` § Domain Model | Check existing entities (read-only; SA-owned) |
-| `docs/discovery.md` | Consistency check — past session synthesis |
+| `.feature` files (`## Changes` sections) | Consistency check — past session changes |
 | `docs/glossary.md` | Anchor interview language in existing domain terms |
 | `docs/branding.md` | Align tone and wording with project identity |
 
 **Before asking any questions:**
 
 1. Check `docs/scope_journal.md` for the most recent session block.
-   - If the most recent block has `Status: IN-PROGRESS` → the previous session was interrupted. Resume it: check which `.feature` files need updating (compare journal Q&A against current `.feature` descriptions), write the `discovery.md` synthesis block if missing, then mark the block `Status: COMPLETE`. Only then begin a new session.
-   - If `docs/scope_journal.md` does not exist → this is the first session. Create both `docs/scope_journal.md` and `docs/discovery.md` using the templates in `scope-journal.md.template` and `discovery.md.template` in this skill's directory.
+   - If the most recent block has `Status: IN-PROGRESS` → the previous session was interrupted. Resume it: check which `.feature` files need updating (compare journal Q&A against current `.feature` descriptions), write the `## Changes` rows if missing, then mark the block `Status: COMPLETE`. Only then begin a new session.
+   - If `docs/scope_journal.md` does not exist → this is the first session. Create `docs/scope_journal.md` using the template in `scope-journal.md.template` in this skill's directory.
 2. Read the `## Domain Model` section of `docs/system.md` (if the file exists) to check existing entities. The PO reads this section but never writes to `system.md` — it is SA-owned. If `system.md` does not yet have a Domain Model section, the SA will add it at Step 2.
 3. Declare session scope to the stakeholder: announce the total groups and estimated question count (e.g., "3 groups: General (7 Q), Cross-cutting, Feature: login").
 4. Open `docs/scope_journal.md` and append a new session header:
@@ -134,7 +134,7 @@ For each feature the session touches:
 
 ### Write Confirmation Gate
 
-**Before writing ANY file:** `docs/scope_journal.md`, `.feature` files, or `docs/discovery.md`.
+**Before writing ANY file:** `docs/scope_journal.md` or `.feature` files.
 
 1. State exactly what will be written:
    > "I will now append the Q&A from this session to `docs/scope_journal.md`."
@@ -152,7 +152,6 @@ For each feature the session touches:
 **This applies to all write operations in this skill**, including:
 - `docs/scope_journal.md` (session header and Q&A)
 - `docs/features/backlog/<feature-stem>.feature` (initial description or update)
-- `docs/discovery.md` (synthesis block)
 
 ### After Questions (PO alone, same session)
 
@@ -165,13 +164,15 @@ Group headers use this format:
 - Cross-cutting group: `### <Group Name>`
 - Feature group: `### Feature: <feature-stem>`
 
-**Step B — Update glossary and discovery.md**
+**Step B — Update glossary and .feature Changes**
 
 1. Update `docs/glossary.md` **after** the session closes — batch update, not real-time during the interview. Read `glossary.md` before the session starts to anchor interview language; update it after all Q&A is complete. New or corrected definitions; edits allowed.
-2. Append to `docs/discovery.md` (use the template in `discovery.md.template`):
-   - One `## Session YYYY-MM-DD` block per session
-   - Summary paragraph (3 lines max; general/behavioural focus)
-   - `| Feature | Change | Source questions | Reason |` table — one row per `.feature` file that was created or updated this session. **Confirmations (no file change) → no row.** Source questions reference journal Q-IDs (e.g. `C4, I2`).
+2. For each `.feature` file created or updated this session, append a row to its `## Changes` section:
+   - **Session**: `YYYY-MM-DD SN` (e.g., `2026-04-22 S1`)
+   - **Q-IDs**: journal question IDs that drove the change (e.g., `Q8, Q9, Q11`)
+   - **Change**: concise summary of what changed (e.g., `Created: CLI entrypoint with --help, --version, unknown-flag handling`)
+   - If the `.feature` file has no `## Changes` section yet, add one at the bottom before appending rows.
+   - **Confirmations (no file change) → no row.**
 
 The PO does **not** write `docs/system.md`. Entity and domain model updates are SA-owned and happen at Step 2.
 
@@ -185,7 +186,7 @@ If a feature is new (just created as a stub): write its initial description now.
 
 If a `completed/` feature was touched and its description/rules changed:
 - **Move it to `backlog/`**. Description changes always imply behaviour changes; cosmetic rewrites are never performed.
-- Record the move in `discovery.md`: "Moved `<feature-stem>` from completed to backlog due to changed requirements."
+- Record the move in the `.feature` file's `## Changes` section: "Moved from completed to backlog due to changed requirements."
 
 **Step E — Mark session complete**
 
@@ -417,7 +418,6 @@ Use the template `post-mortem.md.template` in this skill's directory.
 All templates for files written by this skill live in this skill's directory:
 
 - `scope-journal.md.template` — `docs/scope_journal.md` structure
-- `discovery.md.template` — `docs/discovery.md` per-session block
 - `feature.md.template` — `.feature` file structure
 - `post-mortem.md.template` — `docs/post-mortem/YYYY-MM-DD-<feature-stem>-<keyword>.md` structure
 - `glossary.md.template` — `docs/glossary.md` initial file (pre-filled with common jargon; PO appends project-specific entries)
@@ -427,7 +427,6 @@ Relative paths in this skill (e.g., scripts/, reference/) are relative to this b
 Note: file list is sampled.
 
 <skill_files>
-<file>.opencode/skills/define-scope/discovery.md.template</file>
 <file>.opencode/skills/define-scope/feature.md.template</file>
 <file>.opencode/skills/define-scope/scope-journal.md.template</file>
 </skill_files>

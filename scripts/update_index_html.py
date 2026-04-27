@@ -41,13 +41,6 @@ _DOC_CARDS: tuple[tuple[str, str, str, str, str], ...] = (
         "Auto-generated from source docstrings via pdoc",
     ),
     (
-        "Discovery",
-        "Discovery Log",
-        "github",
-        "docs/discovery.md",
-        "Session synthesis — scope decisions and feature rationale",
-    ),
-    (
         "Quality",
         "Coverage Report",
         "local",

@@ -27,3 +27,9 @@ Feature: <Feature title>
       Given ...
       When ...
       Then ...
+
+  ## Changes
+
+  | Session | Q-IDs | Change |
+  |---------|-------|--------|
+  | YYYY-MM-DD SN | Q-IDs | Created: <summary> |

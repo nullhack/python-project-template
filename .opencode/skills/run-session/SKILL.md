@@ -35,7 +35,7 @@ Each agent reads only what is operationally necessary for their current step. Do
    - If detected state differs from session file `@state`, update the session file to match reality. **Never modify `.flowr/feature-flow.yaml`.**
 4. **Check prerequisites** — verify the Prerequisites table in `.flowr/feature-flow.yaml`. If any are unchecked, stop and report.
 5. **If you are the PO** and Step 1 (SCOPE) is active: check `docs/scope_journal.md` for the most recent session block.
-   - If the most recent block has `Status: IN-PROGRESS` → the previous session was interrupted. Resume it before starting a new session: finish updating `.feature` files and `docs/discovery.md`, then mark the block `Status: COMPLETE`.
+   - If the most recent block has `Status: IN-PROGRESS` → the previous session was interrupted. Resume it before starting a new session: finish updating `.feature` files and their `## Changes` sections, then mark the block `Status: COMPLETE`.
 6. If a feature is active at Step 2–5, read:
    - `docs/features/in-progress/<feature-stem>.feature` — feature file (Rules + Examples + @id)
    - `docs/system.md` — current system overview and constraints
