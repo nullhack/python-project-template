@@ -22,6 +22,12 @@ Feature: CLI Entrypoint
   - All production code lives in `app/__main__.py` only — no new files.
   - Version format follows the project's calver scheme (e.g. `7.2.20260423`); tests must not assume semver.
 
+  ## Changes
+
+  | Session | Q-IDs | Change |
+  |---------|-------|--------|
+  | 2026-04-22 S1 | Q8, Q9, Q11 | Created: CLI entrypoint with --help, --version, unknown-flag handling |
+
   Rule: Help output
     As a developer using the template
     I want to run `python -m app --help` and see the app name, tagline, and available options
@@ -77,9 +83,3 @@ Feature: CLI Entrypoint
       Given the application package is installed
       When the user runs `python -m app` with no arguments
       Then the process exits with code 0
-
-  ## Changes
-
-  | Session | Q-IDs | Change |
-  |---------|-------|--------|
-  | 2026-04-22 S1 | Q8, Q9, Q11 | Created: CLI entrypoint with --help, --version, unknown-flag handling |

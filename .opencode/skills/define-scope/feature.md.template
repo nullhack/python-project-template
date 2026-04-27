@@ -11,6 +11,12 @@ Feature: <Feature title>
   Constraints:
   - <Non-functional requirement specific to this feature>
 
+  ## Changes
+
+  | Session | Q-IDs | Change |
+  |---------|-------|--------|
+  | YYYY-MM-DD SN | Q-IDs | Created: <summary> |
+
   Rule: <User story title>
     As a <role>
     I want <goal>
@@ -27,9 +33,3 @@ Feature: <Feature title>
       Given ...
       When ...
       Then ...
-
-  ## Changes
-
-  | Session | Q-IDs | Change |
-  |---------|-------|--------|
-  | YYYY-MM-DD SN | Q-IDs | Created: <summary> |
