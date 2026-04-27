@@ -11,14 +11,7 @@ workflow: git-management
 
 This skill governs all Git operations during feature development. The software-engineer owns branch creation, commit hygiene, merging to `main`, and post-mortem branch management.
 
-## Git Safety Protocol (read first — never violate)
-
-These rules are absolute. Violating them risks destroying shared history or losing work.
-
-- **No force push**: `git push --force` and `git push --force-with-lease` are forbidden.
-- **No history rewrite on pushed branches**: After a branch has been pushed to `origin`, do not `git rebase -i`, `git commit --amend`, or `git reset --hard` on it. These commands rewrite history that others may have fetched.
-- **Use `git revert` to undo**: If a commit on a pushed branch must be undone, create a new revert commit. This appends history safely.
-- **No commits directly to `main`**: All feature work happens on branches. `main` receives code only via `--no-ff` merge from an approved feature branch.
+See [[git/protocol]] for the Git safety protocol, branch naming conventions, commit hygiene format, and merge strategy rules. These rules are absolute — never violate them.
 
 ---
 
@@ -27,9 +20,9 @@ These rules are absolute. Violating them risks destroying shared history or losi
 ### Normal Feature Flow
 
 ```
-main ──●────────────────────────────●─────►
-        \                          /
-         \── feat/<stem> ──●──●──●/
+main --*-----------------------------*--->
+         \                          /
+          \-- feat/<stem> --*--*--*-/
 ```
 
 1. **Create** from latest `main`
@@ -39,17 +32,17 @@ main ──●──────────────────────
 ### Post-Mortem Fix Flow
 
 ```
-main ──●─────●───────────────────────●─────►
-        \   /                        /
-         \ /                        /
-          ● (start commit)         /
-           \── fix/<stem> ──●──●──●/
+main --*-----*-----------------------*--->
+         \   /                        /
+          \ /                        /
+           * (start commit)         /
+            \-- fix/<stem> --*--*--*-/
 ```
 
 1. **Find** the feature's original start commit
 2. **Branch** `fix/<stem>` from that commit
 3. **Commit post-mortem** as the first commit on the new branch
-4. **Redo** Steps 2–5 on `fix/<stem>`
+4. **Redo** Steps 2-5 on `fix/<stem>`
 5. **Merge** back to `main` with `--no-ff`
 
 ---
@@ -71,11 +64,7 @@ git checkout -b feat/<feature-stem>
 git push -u origin feat/<feature-stem>
 ```
 
-**Branch naming**:
-- `feat/<feature-stem>` — new feature
-- `fix/<feature-stem>` — post-mortem restart of a failed feature
-- `docs/<scope>` — documentation-only changes
-- `chore/<scope>` — tooling, deps, CI
+**Branch naming**: See [[git/protocol]] for the full branch naming conventions (`feat/`, `fix/`, `docs/`, `chore/`).
 
 **If `main` has unmerged work**: The `git merge --ff-only` will fail. This means `main` is ahead of your local copy. Escalate to the PO or SA — do not resolve by merging or rebasing on your own.
 
@@ -83,19 +72,7 @@ git push -u origin feat/<feature-stem>
 
 ## 2. Commit Hygiene
 
-Every commit on a feature branch must follow conventional commits:
-
-```
-<type>(<scope>): <description>
-
-Types: feat, fix, test, refactor, chore, docs, perf, ci
-```
-
-**Forbidden commit messages** (reject immediately if you are tempted to use them):
-- `wip`, `temp`, `fix tests`, `oops`, `try again`, `asdf`
-- Any commit without a type prefix
-
-**Commit early, commit often**: A feature branch with 10 small, well-described commits is better than 1 giant commit. But do not commit broken code (tests must pass at each commit during Step 3).
+See [[git/protocol]] for the full conventional commits format, allowed types, and forbidden messages. In summary: every commit must follow `<type>(<scope>): <description>` with types from the approved list. Never commit without a type prefix.
 
 ---
 
@@ -115,9 +92,9 @@ git log main..HEAD --oneline   # expect: 1+ commits listed
 ```
 
 **If any check fails**:
-- Wrong branch → `git checkout feat/<feature-stem>` (or create it if missing)
-- Dirty working tree → commit or stash before continuing
-- No commits ahead of main → you have not started work on this branch
+- Wrong branch -> `git checkout feat/<feature-stem>` (or create it if missing)
+- Dirty working tree -> commit or stash before continuing
+- No commits ahead of main -> you have not started work on this branch
 
 ---
 
@@ -150,7 +127,7 @@ git branch -d feat/<feature-stem>
 git push origin --delete feat/<feature-stem>
 ```
 
-**Why `--no-ff`**: Fast-forward merges erase the feature boundary from history. With `--no-ff`, the merge commit groups all feature commits together, making the feature revertible as a single unit.
+See [[git/protocol#concepts]] for why `--no-ff` is required and what it preserves in project history.
 
 ---
 
@@ -177,7 +154,7 @@ git commit -m "docs(post-mortem): root cause for <feature-stem> <keyword>"
 git push -u origin fix/<feature-stem>
 ```
 
-The system-architect then begins Step 2 on `fix/<feature-stem>`, reading the post-mortem as input. All subsequent work (stubs, tests, implementation) happens on this branch. It merges to `main` with `--no-ff` after acceptance.
+The system-architect then begins Step 2 (arch-cycle subflow) on `fix/<feature-stem>`, reading the post-mortem as input. All subsequent work (stubs, tests, implementation) happens on this branch. It merges to `main` with `--no-ff` after acceptance.
 
 **Old feature branch**: Keep it for reference until the fix branch is merged. Do not delete it prematurely — it contains the history the SA may need to consult.
 

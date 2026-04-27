@@ -30,41 +30,13 @@ Stage 1 is iterative and ongoing — sessions happen whenever the PO or stakehol
 
 ## Gap-Finding Techniques
 
-Three techniques are applied across all interview sessions to surface what stakeholders have not yet said. Use them during every session, not just at the end.
-
-### Critical Incident Technique (CIT) — Flanagan 1954
-Ask about a specific past event rather than a general description. Schema-based recall ("usually we...") hides edge cases and workarounds. A concrete incident forces actual memory.
-
-- "Tell me about a specific time when [X] worked exactly as you needed."
-- "Tell me about a specific time when [X] broke down or frustrated you."
-- Probe each incident: "What task were you doing? What happened next? What made it effective / ineffective?"
-
-### Laddering / Means-End Chain — Reynolds & Gutman 1988
-Climb from surface feature to underlying consequence to terminal value. The first answer is rarely the real constraint.
-
-- "Why is that important to you?"
-- "What does that enable?"
-- "What would break if that were not available?"
-- Stop when the stakeholder reaches a value they cannot explain further.
-
-### CI Perspective Change — Fisher & Geiselman 1987
-Ask the stakeholder to describe the same situation from another actor's point of view. Peripheral details and cross-role concerns surface that the primary perspective conceals.
-
-- "What do you think the end user experiences in that situation?"
-- "What would your team lead's concern be here?"
-- "From the perspective of someone encountering this for the first time, what would they need to know?"
+See [[requirements/discovery-techniques]] for CIT, Laddering, and CI Perspective Change techniques. Apply these during every interview session to surface what stakeholders have not yet said.
 
 ---
 
 ## Active Listening Protocol
 
-Three levels of active listening apply throughout every interview session:
-
-- **Level 1 — Per answer**: immediately paraphrase each answer before moving to the next question. "So if I understand correctly, you're saying that X happens when Y?" Catches misunderstanding in the moment.
-- **Level 2 — Per group**: brief synthesis when transitioning between behaviour groups. "We've covered [area A] and [area B]. Before I ask about [area C], here is what I understood so far: [summary]. Does that capture it?" Confirms completeness, gives stakeholder a recovery point.
-- **Level 3 — End of session**: full synthesis of everything discussed. Present to stakeholder for approval. This is the accuracy gate and the input to domain modelling.
-
-Do not introduce topic labels or categories during active listening. The summary must reflect what the stakeholder said, not new framing that prompts reactions to things they haven't considered.
+See [[requirements/discovery-techniques]] for the three levels of active listening (per answer, per group, end of session). Apply throughout every interview session. Do not introduce topic labels or categories during active listening — the summary must reflect what the stakeholder said.
 
 ---
 
@@ -141,7 +113,7 @@ Ask all 7 at once:
 6. **Failure** — what does failure look like? What must never happen?
 7. **Out-of-scope** — what are we explicitly not building?
 
-Apply Level 1 active listening per answer. Apply CIT, Laddering, and CI Perspective Change per answer to surface gaps. Add new questions in the moment.
+Apply Level 1 active listening per answer. Apply gap-finding techniques (see [[requirements/discovery-techniques]]) per answer to surface gaps. Add new questions in the moment.
 
 **2. Cross-cutting questions**
 
@@ -153,7 +125,7 @@ For each feature the session touches:
 - Extract relevant nouns and verbs from `docs/glossary.md` and the `## Domain Model` section of `docs/system.md` (if it exists)
 - Generate questions from entity gaps: boundaries, edge cases, interactions, failure modes
 - Run a silent pre-mortem: "Imagine the developer builds this feature exactly as described, all tests pass, but the feature doesn't work for the user. What would be missing?"
-- Apply CIT, Laddering, and CI Perspective Change per question
+- Apply gap-finding techniques (see [[requirements/discovery-techniques]]) per question
 
 **Real-time split rule**: if, during feature questions, the PO detects >2 distinct concerns OR >8 candidate Examples for a single feature, **split immediately**:
 1. Record the split in the journal: note the original feature name and the two new names
@@ -265,32 +237,13 @@ Each `Rule:` block contains:
     So that I can select game options
 ```
 
-Good stories are:
-- **Independent**: can be delivered without other stories
-- **Negotiable**: details can be discussed
-- **Valuable**: delivers something the user cares about
-- **Estimable**: the developer can estimate effort
-- **Small**: completable in one feature cycle
-- **Testable**: can be verified with a concrete test
-
-Avoid: "As the system, I want..." (no business value). Break down stories that contain "and" into two Rules.
-
-**INVEST Gate** — verify every Rule before committing:
-
-| Letter | Question | FAIL action |
-|---|---|---|
-| **I**ndependent | Can this Rule be delivered without other Rules? | Split or reorder dependencies |
-| **N**egotiable | Are details open to discussion with the developer? | Remove over-specification |
-| **V**aluable | Does it deliver something the end user cares about? | Reframe or drop |
-| **E**stimable | Can a developer estimate the effort? | Split or add discovery questions |
-| **S**mall | Completable in one feature cycle? | Split into smaller Rules |
-| **T**estable | Can it be verified with a concrete test? | Rewrite with observable outcomes |
+See [[requirements/invest-moscow]] for INVEST criteria and characteristics of well-formed stories. Every Rule must pass all six INVEST letters before committing. Avoid "As the system, I want..." (no business value). Break down stories that contain "and" into two Rules.
 
 **Review checklist:**
 - [ ] Every Rule has a distinct user role and benefit
 - [ ] No Rule duplicates another
 - [ ] Rules collectively cover all entities in scope from the feature description
-- [ ] Every Rule passes the INVEST gate
+- [ ] Every Rule passes the INVEST gate (see [[requirements/invest-moscow#key-takeaways]])
 
 Commit: `feat(stories): write user stories for <feature-stem>`
 
@@ -330,25 +283,12 @@ All Rules must have their pre-mortems completed before any Examples are written.
 - `Given/When/Then` in plain English
 - `Then` must be a single, observable, measurable outcome — no "and"
 - **Observable means observable by the end user**, not by a test harness
-- **Declarative, not imperative** — describe behaviour, not UI steps
+- **Declarative, not imperative** — describe behaviour, not UI steps (see [[requirements/gherkin#concepts]] for the declarative vs imperative comparison)
 - Each Example must be observably distinct from every other
 
-**Declarative vs. imperative Gherkin**:
+See [[requirements/invest-moscow#concepts]] for MoSCoW triage. Classify each candidate Example as Must, Should, or Could. If Musts alone exceed 8 or the Rule spans >2 concerns, split the Rule.
 
-| Imperative (wrong) | Declarative (correct) |
-|---|---|
-| Given I type "bob" in the username field | Given a registered user Bob |
-| When I click the Login button | When Bob logs in |
-| Then I see "Welcome, Bob" on the dashboard | Then Bob sees a personalized welcome |
-
-**MoSCoW triage**: For each candidate Example, classify as Must (required for the Rule to be correct), Should (high value but deferrable), or Could (nice-to-have edge case). If Musts alone exceed 8 or the Rule spans >2 concerns, split the Rule.
-
-**Common mistakes to avoid**:
-- "Then: It works correctly" — not measurable
-- "Then: The system updates the database and sends an email" — split into two Examples
-- Multiple behaviours in one Example — split them
-- Examples that test implementation details ("Then: the Strategy pattern is used")
-- Imperative UI steps instead of declarative behaviour descriptions
+See [[requirements/gherkin]] for common mistakes to avoid when writing Examples.
 
 **Review checklist:**
 - [ ] Every `Rule:` block has at least one Example
@@ -456,8 +396,8 @@ Stakeholder reports a feature is wrong after PO acceptance attempt.
    ```
 4. **PO scans `docs/post-mortem/`**, selects relevant files by `<feature-stem>` or `<failure-keyword>` in filename.
 5. **PO reads selected post-mortems** for context before handoff.
-6. **PO updates `WORK.md`**: set `@state: STEP-2-ARCH`, `@branch: fix/<feature-stem>`.
-7. **SA begins Step 2** on `fix/<feature-stem>`, reading relevant post-mortems as input.
+6. **PO updates the session file in `.flowception/`**: set `state: step-2-arch` (enters arch-cycle subflow), `branch: fix/<feature-stem>`.
+7. **SA begins Step 2** (arch-cycle subflow) on `fix/<feature-stem>`, reading relevant post-mortems as input.
 
 ### Document Format
 

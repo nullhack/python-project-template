@@ -1,0 +1,41 @@
+flow: arch-cycle
+version: 1.0.0
+params: [feature_slug, branch_name]
+exits: [complete, blocked]
+attrs:
+  agents:
+    read: system-architect
+    interview: system-architect
+    validate: system-architect
+    design: system-architect
+    stubs: system-architect
+
+states:
+  - id: read
+    next:
+      ready: interview
+      spec-gap: blocked
+
+  - id: interview
+    next:
+      gaps-found: interview
+      adrs-drafted:
+        to: validate
+        when: { adrs_drafted: "==true" }
+
+  - id: validate
+    next:
+      adrs-approved:
+        to: design
+        when: { adrs_approved: "==true" }
+      adrs-rejected: interview
+
+  - id: design
+    next:
+      stubs-written:
+        to: stubs
+        when: { stubs_written: "==true" }
+
+  - id: stubs
+    next:
+      test-fast-green: complete
