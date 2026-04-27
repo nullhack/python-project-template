@@ -21,7 +21,6 @@ Documentation = "https://github.com/nullhack/temple8/tree/main/docs/api/"
 dev = [
     "pdoc>=14.0",
     "pytest>=9.0.3",
-    "pytest-beehave[html]>=0.1,<1",
     "pytest-cov>=6.1.1",
     "pytest-mock>=3.14.0",
     "ruff>=0.11.5",
@@ -114,7 +113,6 @@ pytest \
 """
 test-build = """\
 pytest \
-  -p no:beehave \
   --doctest-modules \
   --cov-config=pyproject.toml \
   --cov-report html:docs/coverage \
@@ -152,6 +150,3 @@ dev = [
     "gherkin-official>=39.0.0",
     "safety>=3.7.0",
 ]
-
-[tool.beehave]
-features_path = "docs/features"
