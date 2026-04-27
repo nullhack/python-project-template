@@ -28,9 +28,13 @@ last-updated: 2026-04-26
 
 ## Content
 
-### GoF Pattern Catalogue
+### Pattern Selection from Smells
 
-#### Creational
+GoF design patterns provide structural solutions to recurring code smells. Patterns are applied during REFACTOR only when a smell triggers them — never speculatively. The smell catalogue identifies the gap; the pattern provides the structural solution.
+
+#### GoF Pattern Catalogue
+
+##### Creational
 
 | Pattern | Intent |
 |---|---|
@@ -40,7 +44,7 @@ last-updated: 2026-04-26
 | Prototype | Clone existing objects instead of creating new ones from scratch |
 | Singleton | Ensure a class has only one instance (use sparingly — prefer dependency injection) |
 
-#### Structural
+##### Structural
 
 | Pattern | Intent |
 |---|---|
@@ -52,7 +56,7 @@ last-updated: 2026-04-26
 | Flyweight | Share fine-grained objects to reduce memory when many similar instances are needed |
 | Proxy | Control access to an object via a surrogate (lazy init, access control, logging) |
 
-#### Behavioral
+##### Behavioral
 
 | Pattern | Intent |
 |---|---|
@@ -68,31 +72,7 @@ last-updated: 2026-04-26
 | Template Method | Define the skeleton of an algorithm; let subclasses fill in specific steps |
 | Visitor | Separate an algorithm from the object structure it operates on |
 
-### Smell-Triggered Patterns
-
-#### Creational
-
-**Scattered Object Construction** — Same object constructed in 3+ places with slightly different arguments. Factory Method or Factory Function centralizes creation. Key change: creation knowledge moves from N call sites to one place.
-
-**Multi-Step Construction with Optional Parts** — Object requires several setup calls before valid; callers must remember sequence. Builder enforces sequence and validates completeness. Key change: invalid intermediate states become impossible.
-
-#### Structural
-
-**Type-Switching** — Function branches on a type flag, kind field, or status string. Strategy (behaviour varies per call) or Visitor (operation varies over fixed structure). Key change: Open/Closed principle restored — new variants extend without modifying existing code.
-
-**Feature Envy** — Method in class A uses data from class B more than its own. Move Function (Fowler) relocates the computation. Key change: behaviour lives next to the data it depends on.
-
-**Parallel Inheritance Hierarchies** — Two class hierarchies grow in lockstep. Bridge separates the two axes of variation. Key change: two axes become two independent hierarchies composed at runtime.
-
-#### Behavioral
-
-**Large State Machine in One Class** — Many methods branch on a status field. State pattern gives each state its own class. Key change: state-specific behaviour is co-located; the context becomes a thin delegator.
-
-**Scattered Notification / Event Fan-Out** — Source directly calls multiple downstream systems. Observer reverses coupling direction — listeners depend on the source, not the other way around. Key change: new listeners are added without touching the source.
-
-**Repeated Algorithm Skeleton** — Two functions share high-level structure but differ in one or two steps. Template Method puts invariant structure in one place. Key change: variants are isolated in named hooks.
-
-### Quick Smell to Pattern Lookup
+#### Quick Smell to Pattern Lookup
 
 | Smell | Pattern |
 |---|---|
@@ -106,11 +86,7 @@ last-updated: 2026-04-26
 | Two functions share the same algorithm skeleton, differ in one step | Template Method |
 | Subsystem is complex and callers need a simple entry point | Facade |
 
-### Core Heuristic
-
-When procedural code requires modifying existing functions to add new variants, OOP is the fix. Procedural code is open to modification; OOP closes existing code to modification and opens it to extension through new types. The smell is always the same: a place in the codebase that must change every time the domain grows.
-
-### Pattern Smell Checks (Verification)
+#### Pattern Smell Checks (Verification)
 
 | Code smell | Pattern missed | How to check |
 |---|---|---|
@@ -119,6 +95,32 @@ When procedural code requires modifying existing functions to add new variants, 
 | Callers know multiple components | Facade | Check caller coupling |
 | External dep without Protocol | Repository/Adapter | Check dependency injection |
 | 0 domain classes, many functions | Missing domain model | Count classes vs functions |
+
+### Creational Smells and Patterns
+
+**Scattered Object Construction** — Same object constructed in 3+ places with slightly different arguments. Factory Method or Factory Function centralizes creation. Key change: creation knowledge moves from N call sites to one place.
+
+**Multi-Step Construction with Optional Parts** — Object requires several setup calls before valid; callers must remember sequence. Builder enforces sequence and validates completeness. Key change: invalid intermediate states become impossible.
+
+### Structural Smells and Patterns
+
+**Type-Switching** — Function branches on a type flag, kind field, or status string. Strategy (behaviour varies per call) or Visitor (operation varies over fixed structure). Key change: Open/Closed principle restored — new variants extend without modifying existing code.
+
+**Feature Envy** — Method in class A uses data from class B more than its own. Move Function (Fowler) relocates the computation. Key change: behaviour lives next to the data it depends on.
+
+**Parallel Inheritance Hierarchies** — Two class hierarchies grow in lockstep. Bridge separates the two axes of variation. Key change: two axes become two independent hierarchies composed at runtime.
+
+### Behavioral Smells and Patterns
+
+**Large State Machine in One Class** — Many methods branch on a status field. State pattern gives each state its own class. Key change: state-specific behaviour is co-located; the context becomes a thin delegator.
+
+**Scattered Notification / Event Fan-Out** — Source directly calls multiple downstream systems. Observer reverses coupling direction — listeners depend on the source, not the other way around. Key change: new listeners are added without touching the source.
+
+**Repeated Algorithm Skeleton** — Two functions share high-level structure but differ in one or two steps. Template Method puts invariant structure in one place. Key change: variants are isolated in named hooks.
+
+### Core Heuristic
+
+When procedural code requires modifying existing functions to add new variants, OOP is the fix. Procedural code is open to modification; OOP closes existing code to modification and opens it to extension through new types. The smell is always the same: a place in the codebase that must change every time the domain grows.
 
 ## Related
 

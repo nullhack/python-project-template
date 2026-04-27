@@ -1,6 +1,6 @@
 [project]
 name = "temple8"
-version = "7.2.20260423"
+version = "0.1.0"
 description = "Python template with some awesome tools to quickstart any Python project"
 readme = "README.md"
 requires-python = ">=3.13"
@@ -126,10 +126,10 @@ pytest \
 test = "pytest --tb=short"
 test-fast = "pytest -m \"not slow\" -q --no-header --tb=no"
 test-slow = "pytest -m slow"
-ruff-check = "ruff check . --fix"
+ruff-check = "ruff check ."
 ruff-format = "ruff format ."
 ruff-format-check = "ruff format . --check"
-lint = "task ruff-check && task ruff-format"
+lint = "task ruff-check && task ruff-format-check"
 doc-serve = "pdoc ./app --host localhost --port 8080"
 doc-build = """\
 pdoc ./app -o docs/api --search && \

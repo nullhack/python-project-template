@@ -11,7 +11,7 @@ last-updated: 2026-04-26
 - Map project theme to a hue using the hue semantics table; use a complementary scheme (muted primary + pure accent) by default.
 - Any color used as a text background must achieve at least 4.5:1 contrast with white `#FFFFFF` (WCAG 2.1 AA); darken the primary until compliant if needed.
 - Convert sRGB to linear luminance using the standard formula, then calculate contrast ratio as `(L_lighter + 0.05) / (L_darker + 0.05)`.
-- Accent colors on non-text surfaces are exempt from contrast requirements.
+- Treat accent colors on non-text surfaces as exempt from contrast requirements.
 
 ## Concepts
 

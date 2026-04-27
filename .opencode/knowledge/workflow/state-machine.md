@@ -8,11 +8,13 @@ last-updated: 2026-04-26
 
 ## Key Takeaways
 
-- Flows are FSMs defined in YAML with states, transitions, guards, and exits; design principles: determinism, reachability, termination, single responsibility per state.
-- Flow definitions are static YAML in `.flowr/flows/`; session files in `.flowr/sessions/` track dynamic state; agents read flows for what to do and sessions for what is active.
-- Transitions are atomic: actor sends trigger + evidence, library validates against contracts, session updates and persists only on success.
-- The filesystem is the source of truth; if session state and filesystem disagree, update the session to match.
-- `exits` is always required — it declares a flow's contract with parent flows; `when` guards are always explicit, no inheritance.
+- Define flows as FSMs in YAML with states, transitions, guards, and exits; design principles: determinism, reachability, termination, single responsibility per state.
+- Store flow definitions as static YAML in `.flowr/flows/`; track dynamic state in `.flowr/sessions/`; agents read flows for what to do and sessions for what is active.
+- Make transitions atomic: actor sends trigger + evidence, library validates against contracts, session updates and persists only on success.
+- Treat the filesystem as the source of truth; if session state and filesystem disagree, update the session to match.
+- Declare `exits` on every flow — it declares a flow's contract with parent flows; make `when` guards always explicit, no inheritance.
+- Carry runtime metadata (`agent`, `skill`, `phase`, `gates`) in state-level `attrs`; the flow YAML is the single source of truth for *what* happens at each state; skills define *how* to execute.
+- Define gate names as flat strings mapping to definitions in knowledge files; the flow says *what* must be true, the knowledge says *how* to check it.
 
 ## Concepts
 
@@ -100,10 +102,23 @@ states:
 | `next` | yes* | Trigger → target mapping; required unless the state only references exits |
 | `flow` | no | If present, makes this state a subflow invocation |
 | `flow-version` | no | Semver constraint for the referenced flow (e.g., `"^1"`) |
-| `attrs` | no | Opaque dict for state-specific data; overrides/extends flow-level attrs |
+| `attrs` | no | Opaque dict for state-specific data; state-level attrs **replace** flow-level attrs entirely (no merge, no deep merge) |
 | `when` | no | Guard conditions on a transition (see Transition Format) |
 
 *States must have `next` or be referenced only by exit targets.
+
+### State attrs Convention
+
+Every state in the flow YAML carries `attrs` with runtime metadata. Agents read these at session start to determine which skill to load and what gates to check.
+
+| Key | Purpose | Example |
+|-----|---------|---------|
+| `agent` | Which agent runs this state (maps to `.opencode/agents/<name>.md`) | `product-owner`, `system-architect` |
+| `skill` | Which skill to load for this state | `define-scope`, `architect`, `implement` |
+| `phase` | Sub-phase within a skill (for multi-phase skills) | `reconcile`, `step-3a-functional-tdd` |
+| `gates` | Named conditions that must be true before transitioning out | `[system-glossary-consistent, design-self-declaration-complete]` |
+
+State-level `attrs` **replace** flow-level attrs entirely. Always put metadata on individual states, not at the flow level. The library ignores `attrs` — it is opaque data for agents.
 
 ### Transition Format (`next` values)
 

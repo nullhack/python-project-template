@@ -1,33 +1,36 @@
 ---
 domain: software-craft
 tags: [self-declaration, verification, quality-gate, handoff]
-last-updated: 2026-04-26
+last-updated: 2026-04-27
 ---
 
 # Self-Declaration
 
 ## Key Takeaways
 
-- Complete a 25-item declaration covering YAGNI, KISS, DRY, SOLID, Object Calisthenics, pattern smells, and semantic alignment before handing off to the system-architect.
+- Complete a 25-item design declaration covering YAGNI, KISS, DRY, SOLID, Object Calisthenics, pattern smells, and semantic alignment before handing off for Step 4 (Design Verification).
+- Complete a 4-item completion declaration covering coverage, lint, type checking, and docstrings before handing off for Step 4B (Completion Verification).
 - A DISAGREE answer is not automatic rejection; state the reason and fix before handoff.
 - The system-architect audits every claim with file:line evidence; missing or unjustified claims result in REJECT.
 - The architect also declares their adversarial stance: actively trying to find failure modes, not confirming passing.
 
 ## Concepts
 
-**The 25-Item Self-Declaration**: Before handing off to the system-architect for Step 4 verification, the software-engineer completes a 25-item checklist covering YAGNI (items 1-2), KISS (items 3-4), DRY (items 5-6), SOLID (items 7-11), Object Calisthenics (items 12-20), pattern smells (items 21-24), and semantic alignment (item 25). Each item requires AGREE or DISAGREE with a file:line reference.
+**Design Self-Declaration (Step 3A)**: Before handing off for design review, the software-engineer declares design correctness across 25 items covering YAGNI (items 1-2), KISS (items 3-4), DRY (items 5-6), SOLID (items 7-11), Object Calisthenics (items 12-20), pattern smells (items 21-24), and semantic alignment (item 25). Each item requires AGREE or DISAGREE with a file:line reference. This declaration covers design only — not lint, coverage, type checking, or docstrings.
+
+**Completion Declaration (Step 3B)**: Before handing off for completion verification, the software-engineer declares four items covering cosmetic tooling: coverage threshold met, lint clean, type checking clean, and public API documented. Each item requires AGREE or DISAGREE with evidence.
 
 **DISAGREE Is Not Automatic Rejection**: A DISAGREE answer requires a reason but is not automatic rejection. State the reason for the disagreement. If the constraint genuinely falls outside the SE's control, the disagreement is accepted. If the justification is weak or missing, it results in REJECT.
 
 **Self-Declaration Audit (Step 4)**: The system-architect audits the SE's declaration during Step 4 verification. First, a completeness check (hard gate): verify every claim is present and numbered. Then for each AGREE claim, find the file:line and verify it holds. For each DISAGREE claim, read the justification and accept or reject.
 
-**Architect Review Stance Declaration**: The system-architect writes their own declaration before the decision: adversarial stance, architecture preservation, manual trace, boundary check, semantic read, and independence. Every DISAGREE must include an inline explanation; a DISAGREE with no explanation auto-forces REJECTED. The reviewer actively tries to find failure modes, not to confirm passing.
+**Architect Review Stance Declaration**: The system-architect writes their own declaration before the decision: adversarial stance, architecture preservation, manual trace, boundary check, semantic read, and independence. Every DISAGREE must include an inline explanation; a DISAGREE with no explanation auto-forces REJECTED.
 
 ## Content
 
-### The 25-Item Self-Declaration
+### Design Self-Declaration (Step 3A handoff)
 
-Communicate verbally to the system-architect. Answer honestly for each principle:
+Communicate verbally to the system-architect at Step 3A handoff. Cover design correctness only — not lint, coverage, type checking, or docstrings.
 
 As a software-engineer I declare:
 * 1. YAGNI: no code without a failing test — AGREE/DISAGREE | file:line
@@ -47,9 +50,9 @@ As a software-engineer I declare:
 * 15. OC-4: first-class collections — AGREE/DISAGREE | file:line
 * 16. OC-5: one dot per line — AGREE/DISAGREE | file:line
 * 17. OC-6: no abbreviations — AGREE/DISAGREE | file:line
-* 18. OC-7: <=20 lines per function, <=50 per class — AGREE/DISAGREE | longest: file:line
-* 19. OC-8: <=2 instance variables per class (behavioural classes only; dataclasses, Pydantic models, value objects, and TypedDicts are exempt) — AGREE/DISAGREE | file:line
-* 20. OC-9: no getters/setters — AGREE/DISAGREE | file:line
+* 18. OC-7: ≤20 lines per function, ≤50 per class — AGREE/DISAGREE | longest: file:line
+* 19. OC-8: ≤2 instance variables per class (behavioural classes only; dataclasses, Pydantic models, value objects, and TypedDicts are exempt) — AGREE/DISAGREE | file:line
+* 20. OC-9: Tell, Don't Ask — no getters/setters, no external decision-making on another object's data — AGREE/DISAGREE | file:line
 * 21. Patterns: no good reason remains to refactor using OOP or Design Patterns — AGREE/DISAGREE | file:line
 * 22. Patterns: no creational smell — AGREE/DISAGREE | file:line
 * 23. Patterns: no structural smell — AGREE/DISAGREE | file:line
@@ -58,22 +61,35 @@ As a software-engineer I declare:
 
 A DISAGREE answer is not automatic rejection — state the reason and fix before handing off.
 
-### Self-Declaration Audit (Step 4)
+### Completion Declaration (Step 3B handoff)
 
-The system-architect audits the SE's declaration during Step 4 verification.
+Communicate verbally to the system-architect at Step 3B handoff. Cover cosmetic tooling only — design correctness was already declared at Step 3A.
 
-**Completeness check (hard gate)**: Verify that every claim is present and numbered. If any claim is missing, or the declaration is empty, REJECT immediately — do not proceed to item-level audit.
+1. Coverage threshold met — `uv run task test-coverage` exits 0 — AGREE/DISAGREE | evidence
+2. Lint clean — `uv run task lint` exits 0, no `noqa` or `type: ignore` — AGREE/DISAGREE | evidence
+3. Type checking clean — `uv run task static-check` exits 0, 0 pyright errors — AGREE/DISAGREE | evidence
+4. Public API documented — all public classes and methods have docstrings — AGREE/DISAGREE | evidence
+
+### Self-Declaration Audit (Step 4 and Step 4B)
+
+The system-architect audits the SE's Design Self-Declaration during Step 4 (Design Verification) and the Completion Declaration during Step 4B (Completion Verification).
+
+**Step 4 — Design Declaration Audit**:
+
+**Completeness check (hard gate — REJECT if failed)**: Verify that every claim is present and numbered. If any claim is missing, or the declaration is empty, REJECT immediately — do not proceed to item-level audit.
 
 For every AGREE claim:
 - Find the `file:line` — does it hold?
 
 For every DISAGREE claim:
 - Read the justification carefully.
-- If the constraint genuinely falls outside the SE's control (e.g. external library forces method chaining, dataclass/Pydantic/TypedDict exemption for OC-8): accept with a note and suggest the closest compliant alternative if one exists.
+- If the constraint genuinely falls outside the SE's control (e.g. external library forces method chaining, dataclass/Pydantic/TypedDict exemption for OC-8): accept with a note in the report and suggest the closest compliant alternative if one exists.
 - If the justification is weak, incomplete, or a best-practice alternative exists that the SE did not consider: REJECT with the specific alternative stated.
 - If there is no justification: REJECT.
 
-Undeclared violations found during semantic review result in REJECT.
+Undeclared violations found during semantic review → REJECT.
+
+**Step 4B — Completion Declaration Audit**: Verify each completion claim independently by running the commands.
 
 ### Architect Review Stance Declaration
 

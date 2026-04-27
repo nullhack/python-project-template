@@ -7,22 +7,19 @@ import re
 import sys
 from pathlib import Path
 
-VALID_STATES = {
-    "IDLE",
-    "STEP-1-BACKLOG-CRITERIA",
-    "STEP-1-DISCOVERY",
-    "STEP-1-STORIES",
-    "STEP-1-CRITERIA",
-    "STEP-2-READY",
-    "STEP-2-ARCH",
-    "STEP-3-WORKING",
-    "STEP-3-RED",
-    "STEP-4-READY",
-    "STEP-5-READY",
-    "STEP-5-MERGE",
-    "STEP-5-COMPLETE",
-    "POST-MORTEM",
-}
+
+def _load_states_from_flows(project_root: Path) -> set[str]:
+    """Load all valid state IDs from .flowr/flows/*.yaml files."""
+    flows_dir = project_root / ".flowr" / "flows"
+    states: set[str] = set()
+    if not flows_dir.exists():
+        return states
+    for f in flows_dir.glob("*.yaml"):
+        text = f.read_text()
+        states.update(
+            m.group(1) for m in re.finditer(r"^\s+-\s+id:\s+(\S+)", text, re.MULTILINE)
+        )
+    return states
 
 
 def _current_branch() -> str:
@@ -31,7 +28,6 @@ def _current_branch() -> str:
     if not git_head.exists():
         return ""
     content = git_head.read_text().strip()
-    # Format: "ref: refs/heads/<branch>" when on a branch
     if content.startswith("ref: refs/heads/"):
         return content[len("ref: refs/heads/") :]
     return ""
@@ -76,6 +72,7 @@ def parse_work_md(project_root: Path) -> tuple[list[dict], list[str]]:
 def validate_work_md(project_root: Path) -> tuple[bool, list[str]]:
     """Validate WORK.md; return (ok, errors)."""
     items, errors = parse_work_md(project_root)
+    valid_states = _load_states_from_flows(project_root)
     branch = _current_branch()
 
     if not items:
@@ -86,7 +83,7 @@ def validate_work_md(project_root: Path) -> tuple[bool, list[str]]:
             errors.append(f"missing @id in: {item['raw']}")
         if item["state"] is None:
             errors.append(f"missing @state in: {item['raw']}")
-        elif item["state"] not in VALID_STATES:
+        elif valid_states and item["state"] not in valid_states:
             errors.append(f"invalid @state '{item['state']}' in: {item['raw']}")
         if item["branch"] is None:
             errors.append(f"missing @branch in: {item['raw']}")

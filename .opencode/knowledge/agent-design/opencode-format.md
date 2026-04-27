@@ -8,10 +8,10 @@ last-updated: 2026-04-26
 
 ## Key Takeaways
 
-- Agent files live at `.opencode/agents/<name>.md` (project) or `~/.config/opencode/agents/<name>.md` (global); the filename becomes the agent name.
-- Frontmatter requires `description` and `mode` (primary/subagent/all); optional fields include model, temperature, steps, permissions, and more.
-- Body sections in order: Role, Available Skills, Instructions, Escalation; write in third person.
-- Permission values are `allow` (run immediately), `ask` (prompt user), `deny` (hidden/rejected); wildcards supported, last matching rule wins.
+- Place agent files at `.opencode/agents/<name>.md` (project) or `~/.config/opencode/agents/<name>.md` (global); the filename becomes the agent name.
+- Require `description` and `mode` (primary/subagent/all) in frontmatter; optional fields include model, temperature, steps, permissions, and more.
+- Order body sections as Role, Available Skills, Instructions, Escalation; write in third person.
+- Use `allow` (run immediately), `ask` (prompt user), `deny` (hidden/rejected) for permission values; wildcards supported, last matching rule wins.
 
 ## Concepts
 

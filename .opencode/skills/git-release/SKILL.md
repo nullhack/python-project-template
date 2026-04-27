@@ -1,7 +1,7 @@
 ---
 name: git-release
-description: Create releases with hybrid major.minor.calver versioning and optional custom release naming
-version: "1.1"
+description: Create releases with hybrid major.minor.patch+date versioning and optional custom release naming
+version: "2.0"
 author: stakeholder
 audience: stakeholder
 workflow: release-management
@@ -9,22 +9,28 @@ workflow: release-management
 
 # Git Release
 
-Create a tagged GitHub release after the PO accepts the feature (Step 5).
+## When to Use
+
+The stakeholder triggers a release after the product owner accepts a feature at Step 5. The software-engineer or system-architect loads this skill when instructed by the stakeholder to create a tagged GitHub release. Releases happen from `main` only — never from feature branches.
 
 ## Version Format
 
-`v{major}.{minor}.{YYYYMMDD}`
+`v{major}.{minor}.{patch}+{YYYYMMDD}`
 
-- **Major**: breaking changes (API changes, removed features)
-- **Minor**: new features; also incremented if two releases happen on the same day
-- **Date**: today in YYYYMMDD format
+| Location | Format | Example |
+|---|---|---|
+| `pyproject.toml` | Plain semver (no build metadata) | `0.1.0` |
+| Git tags | semver + date | `v0.1.0+20260427` |
+| CHANGELOG entries | semver + date | `## [v0.1.0+20260427]` |
 
-Examples:
-```
-v1.2.20260302  →  v1.3.20260415   (new feature, new day)
-v1.2.20260302  →  v2.0.20260415   (breaking change)
-v1.2.20260415  →  v1.3.20260415   (same-day second release)
-```
+PyPI rejects the `+` local version identifier (PEP 440), so `pyproject.toml` must contain plain semver only. The date suffix is appended when creating git tags and CHANGELOG entries — it gives humans a quick way to see when a release was made.
+
+### Bump Rules
+
+- **Patch** (`0.1.0` → `0.1.1`): bug fixes
+- **Minor** (`0.1.0` → `0.2.0`): new features
+- **Major** (`0.1.0` → `1.0.0`): breaking changes
+- **Same-day second release**: increment patch, keep same date suffix (`v0.1.0+20260427` → `v0.1.1+20260427`)
 
 ## Release Naming
 
@@ -70,23 +76,23 @@ gh pr list --state merged --limit 20 --json title,number,labels
 
 ```bash
 current_date=$(date +%Y%m%d)
-# Determine major.minor based on change type, then:
-# new_version="v{major}.{minor}.${current_date}"
+# Determine major.minor.patch based on change type, then:
+# new_version="v{major}.{minor}.{patch}+${current_date}"
 ```
 
-### 3. Update version in pyproject.toml and package __init__.py
+### 3. Update version in pyproject.toml
 
-Both must match:
+Set the plain semver version (no `+` or date suffix):
 ```bash
-# Update pyproject.toml version field
-# Update <package>/__version__ to match
+# Update pyproject.toml version field to the new plain semver (e.g. 0.2.0)
+# The date suffix is only added to git tags and CHANGELOG — never in pyproject.toml
 ```
 
 ### 4. Update CHANGELOG.md
 
 Add at the top. If a release name was generated in Step 0, include it; otherwise omit it:
 ```markdown
-## [v{version}] - {YYYY-MM-DD}[ - {Release Name}]
+## [v{semver}+{date}] - {YYYY-MM-DD}[- {Release Name}]
 
 ### Added
 - description (#PR-number)
@@ -125,9 +131,9 @@ After updating `pyproject.toml`, regenerate the lockfile — CI runs `uv sync --
 
 ```bash
 uv lock
-git add pyproject.toml <package>/__init__.py CHANGELOG.md uv.lock \
+git add pyproject.toml CHANGELOG.md uv.lock \
   docs/system.md docs/glossary.md
-git commit -m "chore(release): bump version to v{version}[ - {Release Name}]"
+git commit -m "chore(release): bump version to v{semver}+{date}[- {Release Name}]"
 # Include " - {Release Name}" only if a release name was generated in Step 0; omit otherwise.
 ```
 
@@ -137,9 +143,13 @@ Assign the SHA first so it expands correctly inside the notes string:
 
 ```bash
 SHA=$(git rev-parse --short HEAD)
-gh release create "v{version}" \
-  --title "v{version}[ - {Release Name}]" \
-  --notes "# v{version}[ - {Release Name}]
+# Construct the full tag with date suffix
+TAG_VERSION="v{semver}+$(date +%Y%m%d)"
+git tag "${TAG_VERSION}"
+git push origin "${TAG_VERSION}"
+gh release create "${TAG_VERSION}" \
+  --title "${TAG_VERSION}[- {Release Name}]" \
+  --notes "# ${TAG_VERSION}[- {Release Name}]
 
 > *\"{one-line tagline matching the release theme}\"*   ← include only if a release name was generated
 
@@ -160,7 +170,7 @@ gh release create "v{version}" \
 
 ---
 **SHA**: \`${SHA}\`"
-# Replace [ - {Release Name}] with the actual name, or omit the bracketed portion entirely if Step 0 produced no name.
+# Replace [- {Release Name}] with the actual name, or omit the bracketed portion entirely if Step 0 produced no name.
 ```
 
 ### 9. If a hotfix commit follows the release tag
@@ -169,15 +179,15 @@ If CI fails after the release (e.g. a stale lockfile) and a hotfix commit is pus
 
 ```bash
 # Delete the old tag locally and on remote
-git tag -d "v{version}"
-git push origin ":refs/tags/v{version}"
+git tag -d "${TAG_VERSION}"
+git push origin ":refs/tags/${TAG_VERSION}"
 
 # Recreate the tag on the hotfix commit
-git tag "v{version}" {hotfix-sha}
-git push origin "v{version}"
+git tag "${TAG_VERSION}" {hotfix-sha}
+git push origin "${TAG_VERSION}"
 
 # Update the GitHub release to point to the new tag
-gh release edit "v{version}" --target {hotfix-sha}
+gh release edit "${TAG_VERSION}" --target {hotfix-sha}
 ```
 
 The release notes and title do not need to change — only the target commit moves.
@@ -185,7 +195,7 @@ The release notes and title do not need to change — only the target commit mov
 ## Quality Checklist
 
 - [ ] `task release-check` passes (runs version alignment, changelog entry, lint, static-check, tests, doc-build)
-- [ ] `pyproject.toml` version updated
+- [ ] `pyproject.toml` version updated (plain semver, no `+` or date)
 - [ ] `<package>/__version__` matches `pyproject.toml` version (if present)
 - [ ] CHANGELOG.md updated
 - [ ] `update-docs` skill run — Context, Container sections, and glossary reflect the new feature

@@ -148,12 +148,34 @@ git add docs/branding.md
 git commit -m "chore(branding): initialise branding.md"
 ```
 
-## Step 6 — Done
+## Step 6 — Clean Up Template Artifacts
+
+After branding is complete, clean up template-specific files that new projects should not track:
+
+1. Add the following to `.gitignore` (append if the file exists, create if not):
+   ```
+   # Template infrastructure (not needed in derived projects)
+   .opencode/
+   .flowr/
+   AGENTS.md
+   ```
+
+2. Remove template setup defaults from the project root:
+   ```bash
+   rm -f template-config.yaml
+   ```
+
+3. Commit the cleanup:
+   ```bash
+   git add .gitignore && git commit -m "chore: add template infra to gitignore and remove setup defaults"
+   ```
+
+## Step 7 — Done
 
 Tell the user which files were changed (list them). Then show next steps:
 
 ```bash
-# Commit the setup (if not already committed per-step)
+# Commit all setup (if not already committed per-step)
 git add -A && git commit -m "chore: initialise project from temple8"
 git push -u origin main
 

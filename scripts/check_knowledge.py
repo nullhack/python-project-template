@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Check knowledge file structure, correspondence, wikilink integrity, and orphan detection.
+"""Check knowledge file structure, correspondence, wikilinks, and orphans.
 
-Validates that every .md file under .opencode/knowledge/ follows the 3-tier format:
+Validates that every .md file under .opencode/knowledge/ follows:
 1. YAML frontmatter with required keys (domain, tags, last-updated), no 'purpose' key
 2. Body sections in order: Key Takeaways, Concepts, Content, Related
 3. Correspondence: N bullets in Key Takeaways == N paragraphs in Concepts
@@ -24,10 +24,8 @@ WIKILINK_RE = re.compile(r"\[\[([a-z0-9-]+/[a-z0-9-]+)(?:#([a-z0-9-]+))?\]\]")
 
 
 def _strip_code(text: str) -> str:
-    """Remove fenced code blocks and inline code so parsing ignores template content."""
-    text = re.sub(r"```[\s\S]*?```", "", text)
-    text = re.sub(r"`[^`]+`", "", text)
-    return text
+    """Remove fenced code blocks and inline code."""
+    return re.sub(r"`[^`]+`", "", re.sub(r"```[\s\S]*?```", "", text))
 
 
 def _parse_frontmatter(text: str) -> tuple[dict[str, str], str]:
@@ -90,28 +88,24 @@ def _count_concept_paragraphs(text: str) -> int:
 
 
 def _extract_wikilinks(text: str) -> set[str]:
-    """Extract [[domain/concept]] and [[domain/concept#fragment]] references.
+    """Extract [[domain/concept]] and [[domain/concept#fragment]] refs.
 
-    Skips wikilinks inside fenced code blocks and those with template placeholders (<...>).
+    Skips wikilinks inside fenced code blocks and template placeholders.
     """
     cleaned = _strip_code(text)
     links: set[str] = set()
     for m in WIKILINK_RE.finditer(cleaned):
-        link = m.group(0)
         inner = m.group(1)
         if "<" in inner or ">" in inner:
             continue
-        links.add(link)
+        links.add(m.group(0))
     return links
 
 
 def _resolve_wikilink(link: str, knowledge_root: Path) -> Path | None:
-    """Resolve a [[domain/concept]] or [[domain/concept#fragment]] to a file path."""
+    """Resolve a [[domain/concept]] or [[domain/concept#fragment]] to a path."""
     inner = link[2:-2]
-    if "#" in inner:
-        path_part = inner.split("#", 1)[0]
-    else:
-        path_part = inner
+    path_part = inner.split("#", 1)[0] if "#" in inner else inner
     parts = path_part.split("/")
     if len(parts) != 2:
         return None
@@ -127,6 +121,88 @@ def _collect_skill_wikilinks(skills_dir: Path) -> set[str]:
     for f in skills_dir.rglob("*.md"):
         links.update(_extract_wikilinks(f.read_text()))
     return links
+
+
+def _check_frontmatter(
+    keys: dict[str, str], rel: Path, errors: list[str], stats: dict[str, int]
+) -> None:
+    """Validate frontmatter keys."""
+    for required in ("domain", "tags", "last-updated"):
+        if required not in keys:
+            errors.append(f"{rel}: missing required frontmatter key '{required}'")
+            stats["frontmatter_issues"] += 1
+    if "purpose" in keys:
+        errors.append(
+            f"{rel}: 'purpose' key — routing is handled by skills, tags, Key Takeaways"
+        )
+        stats["frontmatter_issues"] += 1
+
+
+def _check_sections(
+    sections: list[tuple[str, str]], rel: Path, errors: list[str], stats: dict[str, int]
+) -> None:
+    """Validate section structure and correspondence."""
+    section_names = [s[0] for s in sections]
+    if section_names != VALID_SECTIONS:
+        errors.append(f"{rel}: sections {section_names} != expected {VALID_SECTIONS}")
+        stats["section_issues"] += 1
+    if "Purpose" in section_names:
+        errors.append(f"{rel}: has ## Purpose — remove it (routing via skills/tags)")
+        stats["section_issues"] += 1
+
+    kt_text = ""
+    concepts_text = ""
+    for name, content in sections:
+        if name == "Key Takeaways":
+            kt_text = content
+        elif name == "Concepts":
+            concepts_text = content
+
+    bullet_count = _count_bullets(kt_text)
+    paragraph_count = _count_concept_paragraphs(concepts_text)
+
+    if bullet_count == 0:
+        errors.append(f"{rel}: Key Takeaways has no bullets")
+        stats["correspondence_issues"] += 1
+    elif paragraph_count == 0:
+        errors.append(f"{rel}: Concepts has no paragraphs")
+        stats["correspondence_issues"] += 1
+    elif bullet_count != paragraph_count:
+        errors.append(
+            f"{rel}: mismatch — {bullet_count} bullets vs {paragraph_count} paragraphs"
+        )
+        stats["correspondence_issues"] += 1
+
+
+def _check_wikilinks(
+    text: str,
+    rel: Path,
+    knowledge_root: Path,
+    errors: list[str],
+    stats: dict[str, int],
+    all_wikilinks: set[str],
+    all_referenced: set[str],
+) -> None:
+    """Validate wikilinks within a file."""
+    file_wikilinks = _extract_wikilinks(text)
+    all_wikilinks.update(file_wikilinks)
+    for link in file_wikilinks:
+        inner = link[2:-2]
+        fragment = None
+        if "#" in inner:
+            path_part, fragment = inner.split("#", 1)
+        else:
+            path_part = inner
+
+        target = _resolve_wikilink(link, knowledge_root)
+        if target is None or not target.exists():
+            errors.append(f"{rel}: broken wikilink {link}")
+            stats["wikilink_issues"] += 1
+        elif fragment is not None and fragment not in VALID_FRAGMENTS:
+            errors.append(f"{rel}: invalid fragment #{fragment} in {link}")
+            stats["wikilink_issues"] += 1
+
+        all_referenced.add(path_part)
 
 
 def check_knowledge(project_root: Path) -> tuple[bool, list[str], dict]:
@@ -146,9 +222,9 @@ def check_knowledge(project_root: Path) -> tuple[bool, list[str], dict]:
     if not knowledge_root.exists():
         return False, [f"knowledge directory not found: {knowledge_root}"], stats
 
-    all_wikilinks_in_files: set[str] = set()
+    all_wikilinks: set[str] = set()
     skill_wikilinks = _collect_skill_wikilinks(skills_dir)
-    all_referenced_paths: set[str] = set()
+    all_referenced: set[str] = set()
 
     knowledge_files = sorted(knowledge_root.rglob("*.md"))
     stats["files_checked"] = len(knowledge_files)
@@ -157,88 +233,27 @@ def check_knowledge(project_root: Path) -> tuple[bool, list[str], dict]:
         rel = f.relative_to(project_root)
         text = f.read_text()
 
-        # 1. Frontmatter checks
         keys, body = _parse_frontmatter(text)
         if not keys:
             errors.append(f"{rel}: missing or invalid frontmatter")
             stats["frontmatter_issues"] += 1
             continue
 
-        for required in ("domain", "tags", "last-updated"):
-            if required not in keys:
-                errors.append(f"{rel}: missing required frontmatter key '{required}'")
-                stats["frontmatter_issues"] += 1
+        _check_frontmatter(keys, rel, errors, stats)
 
-        if "purpose" in keys:
-            errors.append(
-                f"{rel}: 'purpose' key in frontmatter — routing is handled by skills, tags, and Key Takeaways"
-            )
-            stats["frontmatter_issues"] += 1
-
-        # 2. Section structure checks
         sections = _extract_sections(body)
-        section_names = [s[0] for s in sections]
+        _check_sections(sections, rel, errors, stats)
 
-        if section_names != VALID_SECTIONS:
-            errors.append(
-                f"{rel}: sections {section_names} != expected {VALID_SECTIONS}"
-            )
-            stats["section_issues"] += 1
+        _check_wikilinks(
+            text,
+            rel,
+            knowledge_root,
+            errors,
+            stats,
+            all_wikilinks,
+            all_referenced,
+        )
 
-        if "Purpose" in section_names:
-            errors.append(
-                f"{rel}: has ## Purpose section — remove it (routing is handled by skills, tags, and Key Takeaways)"
-            )
-            stats["section_issues"] += 1
-
-        # 3. Correspondence checks
-        kt_text = ""
-        concepts_text = ""
-        for name, content in sections:
-            if name == "Key Takeaways":
-                kt_text = content
-            elif name == "Concepts":
-                concepts_text = content
-
-        bullet_count = _count_bullets(kt_text)
-        paragraph_count = _count_concept_paragraphs(concepts_text)
-
-        if bullet_count == 0:
-            errors.append(f"{rel}: Key Takeaways has no bullets")
-            stats["correspondence_issues"] += 1
-        elif paragraph_count == 0:
-            errors.append(f"{rel}: Concepts has no paragraphs")
-            stats["correspondence_issues"] += 1
-        elif bullet_count != paragraph_count:
-            errors.append(
-                f"{rel}: correspondence mismatch — {bullet_count} Key Takeaway bullets vs {paragraph_count} Concept paragraphs"
-            )
-            stats["correspondence_issues"] += 1
-
-        # 4. Wikilink integrity (within this file)
-        file_wikilinks = _extract_wikilinks(text)
-        all_wikilinks_in_files.update(file_wikilinks)
-        for link in file_wikilinks:
-            inner = link[2:-2]
-            fragment = None
-            if "#" in inner:
-                path_part, fragment = inner.split("#", 1)
-            else:
-                path_part = inner
-
-            target = _resolve_wikilink(link, knowledge_root)
-            if target is None or not target.exists():
-                errors.append(f"{rel}: broken wikilink {link} — target file not found")
-                stats["wikilink_issues"] += 1
-            elif fragment is not None and fragment not in VALID_FRAGMENTS:
-                errors.append(
-                    f"{rel}: invalid fragment #{fragment} in {link} — valid: {sorted(VALID_FRAGMENTS)}"
-                )
-                stats["wikilink_issues"] += 1
-
-            all_referenced_paths.add(path_part)
-
-    # 5. Orphan detection
     for f in knowledge_files:
         rel = f.relative_to(knowledge_root)
         domain = rel.parts[0]
@@ -246,8 +261,7 @@ def check_knowledge(project_root: Path) -> tuple[bool, list[str], dict]:
         path_key = f"{domain}/{concept}"
 
         referenced = False
-
-        for link in skill_wikilinks | all_wikilinks_in_files:
+        for link in skill_wikilinks | all_wikilinks:
             inner = link[2:-2]
             if "#" in inner:
                 inner = inner.split("#", 1)[0]
@@ -256,9 +270,7 @@ def check_knowledge(project_root: Path) -> tuple[bool, list[str], dict]:
                 break
 
         if not referenced:
-            errors.append(
-                f"{f.relative_to(project_root)}: orphan — not referenced by any skill or knowledge file"
-            )
+            errors.append(f"{f.relative_to(project_root)}: orphan — not referenced")
             stats["orphan_issues"] += 1
 
     ok = not errors

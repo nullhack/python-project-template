@@ -9,6 +9,7 @@ last-updated: 2026-04-26
 ## Key Takeaways
 
 - Extract nouns from feature/glossary language as candidate Entities, Value Objects, or Aggregates; verbs as candidate Actions; datasets as named types.
+- Update the Domain Model section of system.md after domain analysis: add bounded contexts, entities, and actions for new features; deprecate old entries rather than editing live ones.
 - Write stubs with `...` bodies only — no logic, no conditionals, no docstrings, no imports beyond `typing` and domain types.
 - Assign a Protocol for every external dependency (SOLID-D + Hexagonal); if no external dependencies exist, SOLID-D is N/A.
 - Place stubs where responsibility dictates; do not pre-create `ports/` or `adapters/` folders unless a concrete external dependency was identified.
@@ -17,11 +18,13 @@ last-updated: 2026-04-26
 
 **Domain Analysis Process**: From `docs/glossary.md` and Rules (Business) in the `.feature` file, nouns become candidate Entities/Value Objects/Aggregates, verbs become candidate Actions, datasets become named types. A bounded context check identifies module boundaries: same word, different meaning across features indicates a boundary. Cross-feature entities become candidates for a shared domain layer.
 
+**Updating the Domain Model**: After domain analysis, update the `## Domain Model` section of `docs/system.md`. For a new feature with first entities, add bounded contexts, entities, actions, and relationships. For an existing feature, append new entities and actions; deprecate old entries by moving them to a `### Deprecated` subsection — never edit existing live entries because code depends on them. Update `## Context` if new actors or external systems are identified. Update `## Container` if new containers or interactions are identified. The PO reads `docs/system.md` but never writes to it; the SA owns this file.
+
 **Stub Rules**: Method bodies must be `...` only — no logic, no conditionals, no imports beyond `typing` and domain types. No docstrings (signatures will change; add after GREEN). No inline comments, no TODO comments, no speculative code. Stubs define the shape of the domain; GREEN fills in the behaviour.
 
 **Protocol Pattern for External Dependencies**: All external dependencies must be assigned a Protocol (SOLID-D + Hexagonal architecture). A Protocol defines the interface; concrete implementations live in adapter modules. If no external dependencies exist in scope, the SOLID-D check is N/A.
 
-**File Placement Patterns**: Place domain entities and value objects in `<package>/domain/<noun>.py`, cross-entity operations in `<package>/domain/service.py`. Place stubs where responsibility dictates. Do not pre-create `ports/` or `adapters/` folders unless a concrete external dependency was identified. Structure follows domain analysis, not a template.
+**File Placement Patterns**: Place domain entities and value objects in `<package>/domain/<noun>.py`, cross-entity operations in `<package>/domain/service.py`. Place stubs where responsibility dictates. Do not pre-create `ports/` or `adapters/` folders unless a concrete external dependency was identified in scope. Structure follows domain analysis, not a template.
 
 ## Content
 

@@ -1,0 +1,37 @@
+# Product Definition: <project-name>
+
+> **Status: ELICITING**
+> Fill in each section during Step 1 Discovery. Replace placeholders with project-specific content.
+
+---
+
+## What <project-name> IS
+
+- <A [category] that [distinguishes it from others in that category]>
+- <A [category] that [distinguishes it from others in that category]>
+- <A [category] that [distinguishes it from others in that category]>
+
+## What <project-name> IS NOT
+
+- Does NOT <boundary that prevents scope creep>
+- Does NOT <boundary that prevents scope creep>
+- Does NOT <boundary that prevents scope creep>
+
+## Why does this exist
+
+<2–4 sentences: the problem, the gap in existing solutions, and the value this project delivers.>
+
+## Users
+
+- **<Persona A>** — <what they use the product for>
+- **<Persona B>** — <what they use the product for>
+
+## Out of Scope
+
+- <Explicit non-goal>
+- <Explicit non-goal>
+
+## Delivery Order
+
+<Numbered list showing dependency chain between features. Update as features are discovered.>
+1 → 2 (<reason for dependency>)

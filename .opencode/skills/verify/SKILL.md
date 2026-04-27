@@ -1,7 +1,7 @@
 ---
 name: verify
-description: Step 4 — run all verification commands, review code quality, and produce a written report
-version: "6.0"
+description: Step 4 — adversarial design review and Step 4B — completion verification
+version: "7.0"
 author: system-architect
 audience: system-architect
 workflow: feature-lifecycle
@@ -9,34 +9,32 @@ workflow: feature-lifecycle
 
 # Verify
 
-This skill guides the system-architect through Step 4: adversarial verification that the feature works correctly and respects the architecture designed in Step 2. The output is a written report with a clear APPROVED or REJECTED decision.
+Two-phase adversarial verification. The system-architect reviews design (Step 4) and completion (Step 4B) as separate passes with separate handoffs.
 
-**Your default hypothesis is that the code is broken despite passing automated checks. You designed the architecture; you know what should have been preserved. Your job is to find the failure mode. If you cannot find one after thorough investigation, APPROVE. If you find one, REJECTED.**
+## Critical Rules
 
-**Every PASS/FAIL cell must have evidence.** Empty evidence = UNCHECKED = REJECTED.
-
-**You never move, create, or edit `.feature` files.** After producing an APPROVED report: update the session file in `.flowr/sessions/` `state` to `step-5-ready` then stop. The PO accepts the feature and moves the file.
-
-The system-architect produces one written report (see template below) that includes: all gate results, the SE Self-Declaration Audit, the **Architect Review Stance Declaration**, and the final APPROVED/REJECTED verdict. Do not start until the software-engineer has committed all work and communicated the Self-Declaration verbally in the handoff message.
+1. **Fail-fast**: Stop at the first failure. Write a minimal REJECTED report. Do not accumulate issues.
+2. **SA never fixes code**: The only outputs are APPROVED or REJECTED reports. Never edit, create, or modify any file.
+3. **Priority order**: Design correctness > self-declaration audit > feature verification > coverage > quality tooling
 
 ## When to Use
 
-Load this skill when the software-engineer signals Step 3 complete and hands off for review (Step 4). Do not load it earlier.
+Load this skill when the software-engineer signals Step 3A complete (design review) or Step 3B complete (completion verification).
 
-## Step-by-Step
+---
+
+## Step 4 — Design Verification
 
 ### 1. Read the Feature Docs
-
-**Required reads**:
 
 | Read | Why |
 |---|---|
 | In-progress `.feature` file | All `@id` tags, Example titles, interaction model |
 | `docs/system.md` | Current-state overview and Domain Model — verify naming consistency |
 | `docs/glossary.md` | Verify domain terms are used correctly |
-| SE Self-Declaration | Communicated verbally in the handoff message |
+| SE Design Self-Declaration | Communicated verbally in the handoff message |
 
-Read specific ADR files on demand only — reference Key Decisions in `system.md` first, then read individual ADRs when a decision needs deeper scrutiny.
+Read specific ADR files on demand only — reference Key Decisions in `system.md` first.
 
 ### 2. pyproject.toml Gate
 
@@ -44,126 +42,110 @@ Read specific ADR files on demand only — reference Key Decisions in `system.md
 git diff main -- pyproject.toml
 ```
 
-Any change → REJECT immediately. The software-engineer must revert and get stakeholder approval.
+Any change → REJECT immediately.
 
 ### 3. Branch Gate
 
 ```bash
-git branch --show-current
+git branch --show-current    # must be feat/<stem> or fix/<stem>
+git log main..HEAD --oneline  # must show 1+ commits
+git merge-tree $(git merge-base HEAD main) HEAD main  # must be empty (no conflicts)
 ```
 
-- Must output `feat/<stem>` or `fix/<stem>`. If `main` → REJECT immediately — the SE is working on the wrong branch.
-
-```bash
-git log main..HEAD --oneline
-```
-
-- Must show 1+ commits. If empty → REJECT — nothing was committed on this branch.
-
-```bash
-git merge-tree $(git merge-base HEAD main) HEAD main
-```
-
-- Empty output = clean merge possible. Non-empty output = conflicts exist → REJECT — the SE must resolve conflicts on the feature branch before handoff.
-
-### 4. Check Commit History
+### 4. Commit History
 
 ```bash
 git log --oneline -20
 git status
 ```
 
-Verify:
-- Commits follow conventional commit format
-- No "fix tests", "wip", "temp" commits
-- No uncommitted changes: `git status` should be clean
+Verify: conventional commit format, no "fix tests" / "wip" / "temp" commits, no uncommitted changes.
 
-### 5. Production-Grade Gate
+### 5. Feature Verification
 
-Run before semantic review. If any row is FAIL, stop immediately with REJECTED.
+Choose the appropriate check for the feature type:
 
-| Check | How to check | PASS | FAIL | Fix |
-|---|---|---|---|---|
-| App exits cleanly | `timeout 10s uv run task run` | Exit 0 or non-124 | Exit 124 (timeout/hang) | Fix the hang |
-| Output changes when input changes | Run app, change an input or condition, observe output | Output changes accordingly | Output is static | Implement real logic |
+| Feature Type | Verification |
+|---|---|
+| CLI | `timeout 10s uv run task run` — must exit 0 or non-124; output must change when input changes |
+| Library | `uv run python -c "import <package>; <public_api_call>"` — must import and call without error |
+| Mixed | Both CLI and library checks |
+
+If any check FAILS → REJECT immediately.
 
 ### 6. Self-Declaration Audit
 
-**Completeness check (hard gate — REJECT if failed)**: Verify that every claim in the SE's Self-Declaration is present and numbered. If any claim is missing, or the declaration is empty, REJECT immediately — do not proceed to item-level audit.
+**Completeness check (hard gate)**: Verify every claim is present and numbered. Missing or empty → REJECT immediately.
 
-Read the software-engineer's Self-Declaration from the handoff message.
+For every AGREE claim: find the `file:line` and verify it holds.
+For every DISAGREE claim: read the justification. Accept if outside SE's control; REJECT if weak or missing.
 
-For every **AGREE** claim:
-- Find the `file:line` — does it hold?
+See [[software-craft/self-declaration]] for the full audit protocol.
 
-For every **DISAGREE** claim:
-- Read the justification carefully.
-- If the constraint genuinely falls outside the SE's control (e.g. external library forces method chaining, dataclass/Pydantic/TypedDict exemption for ≤2 ivars): accept with a note in the report and suggest the closest compliant alternative if one exists.
-- If the justification is weak, incomplete, or a best-practice alternative exists that the SE did not consider: REJECT with the specific alternative stated.
-- If there is no justification: REJECT.
+### 7. Design Review
 
-Undeclared violations found during semantic review → REJECT.
-
-See [[software-craft/self-declaration]] for the full Self-Declaration audit checklist.
-
-### 7. Code Review
-
-Read the source files changed in this feature. **Do this before running lint/static-check/test** — if semantic review finds a design problem, commands will need to re-run after the fix anyway.
+Read the source files changed in this feature. **Do this before running any commands.**
 
 **Stop on first failure category — do not accumulate issues.**
 
-#### 6a. Correctness — any FAIL → REJECTED
+See [[software-craft/verification-philosophy]] for adversarial review principles.
 
-| Check | How to check | PASS | FAIL | Fix |
-|---|---|---|---|---|
-| No dead code | Read for unreachable statements, unused variables, impossible branches | None found | Any found | Remove or fix |
-| No duplicate logic (DRY) | Search for repeated blocks doing the same thing | None found | Duplication found | Extract to shared function |
-| No over-engineering (YAGNI) | Check for abstractions with no current use | None found | Unused abstraction | Remove unused code |
+#### 7a. Correctness
 
-#### 6b. Simplicity (KISS) — any FAIL → REJECTED
+| Check | PASS | FAIL |
+|---|---|---|
+| No dead code | None found | Any found → remove or fix |
+| No duplicate logic (DRY) | None found | Duplication found → extract |
+| No over-engineering (YAGNI) | None found | Unused abstraction → remove |
 
-| Check | How to check | PASS | FAIL | Fix |
-|---|---|---|---|---|
-| Functions do one thing | Read each function; can you describe it without `and`? | Yes | No | Split into focused functions |
-| Nesting ≤ 2 levels | Count indent levels in each function | ≤ 2 | > 2 | Extract inner block |
-| Functions ≤ 20 lines | Count lines | ≤ 20 | > 20 | Extract helper |
-| Classes ≤ 50 lines | Count lines | ≤ 50 | > 50 | Split class |
+#### 7b. Simplicity (KISS)
 
-#### 6c. Naming Consistency — any FAIL → REJECTED
+| Check | PASS | FAIL |
+|---|---|---|
+| Functions do one thing | Can describe without "and" | Split |
+| Nesting ≤ 2 levels | ≤ 2 | > 2 → extract |
+| Functions ≤ 20 lines | ≤ 20 | > 20 → extract |
+| Classes ≤ 50 lines | ≤ 50 | > 50 → split |
 
-| Check | How to check | PASS | FAIL |
-|---|---|---|---|
-| Classes match domain model | New class names appear in the `## Domain Model` section of `docs/system.md` or are justified | Yes | No |
-| Methods match glossary | New method names use terms from `docs/glossary.md` | Yes | No |
-| No invented synonyms | Same concept uses same name everywhere | Yes | No |
+#### 7c. Naming Consistency
 
-If a new name is genuinely needed (not in domain model or glossary), the SE should have noted it in the handoff summary or in the `.feature` file's `## Changes` section. If no justification exists, REJECT.
+| Check | PASS | FAIL |
+|---|---|---|
+| Classes match domain model | New names appear in `system.md` or justified | REJECT |
+| Methods match glossary | Terms from `glossary.md` used | REJECT |
+| No invented synonyms | Same concept uses same name everywhere | REJECT |
 
-#### 6d. SOLID — any FAIL → REJECTED
+#### 7d. SOLID — see [[software-craft/solid]]
 
-See [[software-craft/solid]] for the SOLID review checklist.
+#### 7e. Object Calisthenics — see [[software-craft/object-calisthenics]]
 
-#### 6e. Object Calisthenics — any FAIL → REJECTED
+For OC-9 (Tell, Don't Ask): run `grep -rn "@property\|def get_\|def set_" <package>/` to find getter/setter patterns, then manually review for Ask-pattern violations. "No getter/setter patterns found" is a conclusion, not evidence.
 
-Load `skill apply-patterns` and apply the full OC checklist (9 rules). Record a PASS/FAIL with `file:line` evidence for each rule. Rules 1 and 7 (nesting and entity size) share thresholds with 6b above.
+#### 7f. Design Patterns — see [[software-craft/design-patterns]]
 
-See [[software-craft/object-calisthenics]] for the full OC rules.
+#### 7g. Tests — see [[software-craft/test-conventions]] and [[software-craft/test-design]]
 
-#### 6f. Design Patterns — any FAIL → REJECTED
+### Design Review Decision
 
-See [[software-craft/design-patterns]] for the pattern smell checklist.
+If any check in 7a–7g FAILS → **REJECTED**. Back to Step 3A.
 
-#### 6g. Tests — any FAIL → REJECTED
+If all checks PASS → **APPROVED**. Signal `step-3b-ready` and update the session file in `.flowr/sessions/`.
 
-See [[software-craft/test-conventions]] for the test review checklist.
+---
 
-See [[software-craft/test-design]] for refactor-safe test design principles — tests must not be coupled to implementation details.
+## Step 4B — Completion Verification
 
-#### 6h. Code Quality — any FAIL → REJECTED
+Start only after Step 4 (Design Verification) is APPROVED and Step 3B (Completion) handoff is received.
 
-See [[software-craft/code-quality]] for the code quality checklist.
+### 8. Coverage Gate
 
-### 8. Run Verification Commands
+```bash
+uv run task test-coverage
+```
+
+Must meet the threshold configured in `pyproject.toml`. If below → REJECT: instruct SE to add `tests/unit/` tests for uncovered branches (NOT `@id` tests).
+
+### 9. Run Verification Commands
 
 ```bash
 uv run task lint
@@ -171,20 +153,51 @@ uv run task static-check
 uv run task test
 ```
 
-Expected for each: exit 0, no errors. Record exact output on failure.
+Expected: exit 0, no errors. Record exact output on failure. If a command fails, stop and REJECT immediately.
 
-If a command fails, stop and REJECT immediately. Do not run subsequent commands.
+### 10. Interactive Verification
 
-### 9. Interactive Verification
+If the feature involves user interaction: run the app, provide real input, verify output changes. Record input and output.
 
-If the feature involves user interaction: run the app, provide real input, verify output changes.
-
-Record what input was given and what output was observed.
-
-### 10. Write the Report
+### 11. Write the Report
 
 ```markdown
-## Step 4 Verification Report — <feature-stem>
+## Step 4B Completion Verification Report — <feature-stem>
+
+### Coverage Gate
+| Check | Result | Notes |
+|---|---|---|
+| Coverage threshold met | PASS / FAIL | % |
+
+### Commands
+| Command | Result | Notes |
+|---|---|---|
+| uv run task lint | PASS / FAIL | |
+| uv run task static-check | PASS / FAIL | |
+| uv run task test | PASS / FAIL | |
+
+### Interactive Verification
+| Check | Result | Notes |
+|---|---|---|
+| (if applicable) | PASS / FAIL / N/A | |
+
+### Decision
+**APPROVED** — all gates passed
+OR
+**REJECTED** — fix the following:
+1. `<file>:<line>` — <specific, actionable fix>
+
+### Next Steps
+**If APPROVED**: Run `@product-owner` — accept the feature at Step 5.
+**If REJECTED**: Run `@software-engineer` — apply the fixes, re-run Quality Gate B, update Completion Declaration, then signal Step 4B again.
+```
+
+---
+
+## Step 4 Report Template (Design Review)
+
+```markdown
+## Step 4 Design Verification Report — <feature-stem>
 
 ### pyproject.toml Gate
 | Check | Result | Notes |
@@ -198,48 +211,35 @@ Record what input was given and what output was observed.
 | Commits ahead of main | PASS / FAIL | |
 | No merge conflicts with main | PASS / FAIL | |
 
-### Production-Grade Gate
-| Check | Result | Notes |
+### Feature Verification
+| Feature Type | Result | Notes |
 |---|---|---|
-| App exits cleanly | PASS / FAIL / TIMEOUT | |
-| Output driven by input | PASS / FAIL | |
-
-### Commands
-| Command | Result | Notes |
-|---------|--------|-------|
-| uv run task lint | PASS / FAIL | |
-| uv run task static-check | PASS / FAIL | |
-| uv run task test-coverage | PASS / FAIL | |
-
-### Naming Consistency
-| Check | Result | Notes |
-|---|---|---|
-| Classes match domain model | PASS / FAIL | |
-| Methods match glossary | PASS / FAIL | |
-| No invented synonyms | PASS / FAIL | |
+| (CLI/Library/Mixed) | PASS / FAIL | |
 
 ### Self-Declaration Audit
-See [[software-craft/self-declaration]] for the full checklist. Record each claim with SE verdict and reviewer verdict with evidence.
+Completeness: PASS / FAIL
+(See [[software-craft/self-declaration]] for the full checklist)
+
+### Design Review
+(Report each sub-check: 7a through 7g)
 
 ### Architect Review Stance Declaration
 
-Write this block **before** the Decision. Every `DISAGREE` must include an inline explanation. A `DISAGREE` with no explanation auto-forces `REJECTED`.
-
 As a system-architect I declare:
-* Adversarial: I actively tried to find a failure mode, not just confirm passing — AGREE/DISAGREE | note:
-* Architecture preservation: I verified that stubs, Protocols, and ADR decisions from Step 2 were respected — AGREE/DISAGREE | violations:
-* Manual trace: I traced at least one execution path manually beyond automated output — AGREE/DISAGREE | path:
-* Boundary check: I checked the boundary conditions and edge cases of every Rule — AGREE/DISAGREE | gaps:
-* Semantic read: I read each test against its AC and confirmed it tests the right observable behaviour — AGREE/DISAGREE | mismatches:
-* Independence: my verdict was not influenced by how much effort has already been spent — AGREE/DISAGREE
+* Adversarial: I actively tried to find a failure mode — AGREE/DISAGREE | note:
+* Architecture preservation: stubs, Protocols, and ADR decisions respected — AGREE/DISAGREE | violations:
+* Manual trace: I traced at least one execution path manually — AGREE/DISAGREE | path:
+* Boundary check: I checked edge cases of every Rule — AGREE/DISAGREE | gaps:
+* Semantic read: tests match their ACs — AGREE/DISAGREE | mismatches:
+* Independence: verdict not influenced by effort spent — AGREE/DISAGREE
 
 ### Decision
-**APPROVED** — all gates passed, no undeclared violations
+**APPROVED** — all design checks passed, signal `step-3b-ready`
 OR
 **REJECTED** — fix the following:
 1. `<file>:<line>` — <specific, actionable fix>
 
 ### Next Steps
-**If APPROVED**: Run `@product-owner` — accept the feature at Step 5.
-**If REJECTED**: Run `@software-engineer` — apply the fixes listed above, re-run quality gate, update Self-Declaration, then signal Step 4 again.
+**If APPROVED**: Signal `step-3b-ready`. SE proceeds to Step 3B (Completion).
+**If REJECTED**: SE returns to Step 3A TDD loop to address failures.
 ```

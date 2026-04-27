@@ -10,6 +10,12 @@
 
 <3–5 sentence description of what the system currently does, who uses it, and its primary boundaries.>
 
+## Delivery
+
+**Mechanism**: CLI | Web | API | Desktop | <other>
+
+The mechanism by which users interact with the system. Set by the SA during Step 2 and reconciled against the discovery Q&A. If the template scaffolding does not match this mechanism, the SA must record the pivot as an ADR before designing stubs.
+
 ---
 
 ## Context

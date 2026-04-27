@@ -6,34 +6,55 @@ Product definition: `docs/product-definition.md`
 
 ## Workflow Overview
 
-Features flow through 5 steps with a WIP limit of 1 feature at a time. The filesystem enforces WIP:
+Features flow through a multi-step workflow with a WIP limit of 1 feature at a time. The filesystem enforces WIP:
 - `docs/features/backlog/<feature-stem>.feature` — features waiting to be worked on
 - `docs/features/in-progress/<feature-stem>.feature` — exactly one feature being built right now
 - `docs/features/completed/<feature-stem>.feature` — accepted and shipped features
 
 ```
-STEP 1: SCOPE          (product-owner)     → discovery + Gherkin stories + criteria (subflow: backlog-criteria → discovery → stories → criteria)
-STEP 2: ARCH           (system-architect)  → read system.md + glossary.md + in-progress feature + targeted package files; arch interview (gap-finding + ADR drafting); stakeholder ADR validation; domain stubs + model; update ## Domain Model section in system.md; commit approved ADRs as docs/adr/ADR-YYYY-MM-DD-<slug>.md; system.md rewritten; test stubs generated (subflow: read → interview → validate → design → stubs)
-STEP 3: TDD LOOP       (software-engineer) → create/switch feature branch; RED → GREEN → REFACTOR, one @id at a time (subflow: setup → red → green → refactor)
-STEP 4: VERIFY         (system-architect)  → run all commands, review code against architecture
-STEP 5: ACCEPT         (product-owner)     → demo, validate, SE merges branch to main with --no-ff, move .feature to completed/ (PO only)
+STEP 1:   SCOPE         (product-owner)    → discovery + Gherkin stories + criteria (subflow: backlog-criteria → discovery → stories → criteria)
+STEP 2:   ARCH          (system-architect) → read + interview + validate + design + stubs (subflow: read → interview → validate → design → stubs)
+RECONCILE:               (product-owner)    → cross-check all docs for consistency; inconsistencies → back to Step 1
+READY:                   (product-owner)    → feature is scoped, architected, and reconciled; PO decides to build or shelve
+SELECT:                  (product-owner)    → PO picks the next feature to develop from reconciled backlog
+STEP 3A:  FUNCTIONAL TDD (software-engineer) → RED → GREEN → REFACTOR (design only); Quality Gate A: test-fast + feature-type run (subflow: setup → red → green → refactor)
+STEP 4:   DESIGN REVIEW (system-architect)  → adversarial design review; fail-fast; APPROVED → Step 3B, REJECTED → Step 3A
+STEP 3B:  COMPLETION     (software-engineer) → coverage + lint + types + docstrings; Quality Gate B: full tooling
+STEP 4B:  COMPLETION VER. (system-architect) → coverage + lint + types verification; APPROVED → Step 5, REJECTED → Step 3B
+STEP 5:   ACCEPT         (product-owner)    → demo, validate; if accepted → merge → update docs → create PR → archive .feature
 ```
+
+### Flow State Metadata
+
+Every state in `.flowr/flows/` carries `attrs` with runtime metadata:
+
+| attr | Purpose |
+|------|---------|
+| `agent` | Which agent runs this state (maps to `.opencode/agents/<name>.md`) |
+| `skill` | Which skill to load for this state |
+| `phase` | Sub-phase within a skill (e.g., `reconcile`, `step-3a-functional-tdd`) |
+| `gates` | Named conditions that must be true before transitioning out (flat list; definitions live in knowledge files) |
+
+Agents read `attrs` at session start to determine which skill to load and what gates to check. This makes the flow YAML the single source of truth for *what* happens at each state, while skills define *how* to execute.
 
 ### Branch Model
 
 All feature work happens on branches. `main` is the single source of truth and receives code only via `--no-ff` merge from an approved feature branch.
 
 **Normal flow**:
-1. SE creates `feat/<stem>` from latest `main` at Step 3 start
-2. All commits live on `feat/<stem>` through Steps 3–4
-3. After PO acceptance (Step 5), SE merges `feat/<stem>` to `main` with `--no-ff`
-4. SE deletes the feature branch
+1. PO moves feature from `backlog/` to `in-progress/` and runs Step 1 (scope) + Step 2 (arch) + Reconcile
+2. PO marks feature as `READY` (scoped, architected, reconciled) or shelves back to backlog
+3. PO selects a ready feature for development
+4. SE creates `feat/<stem>` from latest `main` at Step 3A start
+5. All commits live on `feat/<stem>` through Steps 3A–4B
+6. After PO acceptance (Step 5), SE merges `feat/<stem>` to `main` with `--no-ff`
+7. SE deletes the feature branch
 
 **Post-mortem flow** (failed feature restart):
 1. Find the feature's original start commit
 2. SE creates `fix/<stem>` from that commit
 3. Post-mortem is committed as the first commit on `fix/<stem>`
-4. Steps 2–5 rerun on `fix/<stem>`, then merge to `main` with `--no-ff`
+4. Reconciliation reruns on `fix/<stem>`, then Steps 3A–5 rerun
 
 **Git Safety Protocol** (absolute — never violate): See [[git/protocol]] for the full protocol. Summary: no force push, no history rewrite on pushed branches, use `git revert` to undo, no commits directly to `main`.
 
@@ -41,7 +62,7 @@ All feature work happens on branches. `main` is the single source of truth and r
 
 **PO picks the next feature from backlog. No agent self-selects.**
 
-**Verification is adversarial.** The system-architect's job is to try to break the feature, not to confirm it works. The default hypothesis is "it might be broken despite green checks; prove otherwise."
+**Verification is adversarial and fail-fast.** The system-architect's job is to try to break the feature, not to confirm it works. The default hypothesis is "it might be broken despite green checks; prove otherwise." Stop at the first failure and write a minimal REJECTED report — do not accumulate issues. The SA never edits code; the only outputs are APPROVED or REJECTED reports.
 
 ## Roles
 
@@ -74,14 +95,14 @@ All feature work happens on branches. `main` is the single source of truth and r
 | Skill | Used By | Step |
 |---|---|---|
 | `run-session` | all agents | every session |
-| `select-feature` | product-owner | between features (idle state) |
-| `define-scope` | product-owner | 1 |
+| `select-feature` | product-owner | after reconciliation (selecting next feature to build) |
+| `define-scope` | product-owner | 1, reconcile, post-mortem |
 | `architect` | system-architect | 2 |
-| `implement` | software-engineer | 3 |
+| `implement` | software-engineer | 3A, 3B |
 | `apply-patterns` | system-architect, software-engineer | 2, 3 (on-demand, when GoF pattern needed) |
 | `refactor` | software-engineer | 3 (REFACTOR phase + preparatory refactoring) |
-| `verify` | system-architect | 4 |
-| `check-quality` | software-engineer | pre-handoff (redirects to `verify`) |
+| `verify` | system-architect | 4 (design), 4B (completion) |
+| `check-quality` | software-engineer | 3A (pre-design-review), 3B (pre-completion-review) |
 | `version-control` | software-engineer | Step 3 (branch creation), Step 5 (merge to main), post-mortem branches |
 | `create-pr` | system-architect | post-acceptance |
 | `git-release` | stakeholder | post-acceptance |
@@ -90,6 +111,7 @@ All feature work happens on branches. `main` is the single source of truth and r
 | `design-assets` | designer | SVG asset creation and updates |
 | `flow` | all agents | every session — flow protocol, YAML flow definitions, session management |
 | `create-skill` | software-engineer | meta |
+| `create-knowledge` | all agents | meta |
 | `create-agent` | human-user | meta |
 | `create-knowledge` | all agents | meta |
 
@@ -137,6 +159,37 @@ Commit: `feat(criteria): write acceptance criteria for <name>`
 
 **Criteria are frozen**: no `Example:` changes after commit. Adding a new Example with a new `@id` replaces old.
 
+### Reconcile — Document Consistency (PO, after Step 2)
+
+After SA completes architecture (Step 2), the PO cross-checks all generated documents for consistency before any development begins. Inconsistencies are caught here, not carried into TDD.
+
+**Reconciliation checks**:
+- `system.md` ↔ `glossary.md` — terms consistent
+- `system.md` ↔ `.feature` file — requirements match domain model
+- `docs/adr/` ↔ `.feature` file — decisions match requirements
+- `glossary.md` ↔ `.feature` file — terms match
+- `scope_journal.md` ↔ `product-definition.md` — scope matches product boundaries
+
+**Outcomes**:
+- **Reconciled** → feature is marked `READY`; PO decides to build or shelve
+- **Inconsistencies found** → back to Step 1 (scope) to fix the source of the inconsistency
+
+No agent other than the PO performs reconciliation. The PO owns the domain language and is the only agent who can spot mismatches between scope documents and architecture documents.
+
+### READY — Build or Shelve (PO decision)
+
+After reconciliation, the feature is scoped, architected, and reconciled. The PO decides:
+- **Build now** → transition to `select-feature` state, then Step 3A
+- **Shelve** → feature stays in `backlog/` as "ready to build"; PO can pick it up later without redoing scope or arch
+
+Shelving is not failure — it is scheduling. A shelved feature can re-enter development at `select-feature` without repeating Steps 1–2 or reconciliation.
+
+### SELECT — Pick Next Feature to Build (PO)
+
+After reconciliation (or when resuming a shelved ready-feature), the PO selects which feature to develop next. This is the only point where development begins — all prior steps are preparation.
+
+Commit per selection: `feat(select): <feature-stem>`
+
 ### Bug Handling
 
 When a defect is reported:
@@ -151,8 +204,8 @@ If the stakeholder reports failure **after the PO has attempted Step 5 acceptanc
 2. **Team compiles a compact post-mortem** (`docs/post-mortem/YYYY-MM-DD-<feature-stem>-<keyword>.md`, max 15 lines, process-level root cause).
 3. **SE creates a fix branch** from the feature's original start commit: `git checkout -b fix/<stem> <start-sha>`. The post-mortem is committed as the first commit on this branch.
 4. **PO scans `docs/post-mortem/`** and selects relevant files by matching `<feature-stem>` or `<failure-keyword>`.
-5. **PO reads selected post-mortems**, then updates the session file in `.flowr/sessions/` to set `@state: step-2-arch` (enters arch-cycle subflow) and `@branch: fix/<stem>` with context.
-6. **SA restarts Step 2** on `fix/<stem>`, reading relevant post-mortems as input. The same feature re-enters the ARCH step.
+5. **PO reads selected post-mortems**, then updates the session file in `.flowr/sessions/` to set `@state: reconcile` (enters reconciliation subflow) and `@branch: fix/<stem>` with context.
+6. **PO reconciles** on `fix/<stem>`, reading relevant post-mortems as input. If inconsistencies are found, the feature goes back to Step 1 (scope) on the fix branch.
 7. After acceptance, SE merges `fix/<stem>` to `main` with `--no-ff`.
 
 Post-mortems are append-only, never edited. If a failure mode recurs, write a new file referencing the old one.
@@ -169,6 +222,19 @@ docs/
   branding.md                         ← project identity, colors, release naming, wording (stakeholder owns; designer proposes)
   assets/                             ← logo.svg, banner.svg, and other visual assets (designer owns)
   post-mortem/                        ← compact post-mortems, PO-owned, append-only
+  research/                           ← domain research files (architecture, testing, DDD, etc.)
+  templates/                          ← living document templates (project-owned, not skill-owned)
+    adr/
+      adr.md.template                 ← ADR file structure
+    features/
+      feature.md.template             ← .feature file structure
+    post-mortem/
+      post_mortem.md.template          ← post-mortem file structure
+    branding.md.template              ← branding file structure
+    glossary.md.template              ← glossary file structure (pre-filled with common jargon)
+    product_definition.md.template    ← product definition file structure
+    scope_journal.md.template         ← scope journal file structure
+    system.md.template                ← system.md file structure
   features/
     backlog/<feature-stem>.feature    ← narrative + Rules + Examples
     in-progress/<feature-stem>.feature
@@ -253,7 +319,11 @@ uv run task doc-build
 
 ## Code Quality
 
-Enforced during Step 3 (TDD Loop) and Step 4 (Verification). Read `.opencode/knowledge/software-craft/code-quality.md` for standards, size limits, and quality gate priority order. Read `.opencode/knowledge/software-craft/verification-philosophy.md` for verification principles.
+Enforced in two phases. Read `.opencode/knowledge/software-craft/code-quality.md` for standards, size limits, and the two-phase quality gate priority order. Read `.opencode/knowledge/software-craft/verification-philosophy.md` for verification principles.
+
+**Phase 1 (Step 3A → Step 4)**: Design correctness only — YAGNI through patterns, verified by `test-fast` and feature-type run. No lint, coverage, or type checking during this phase.
+
+**Phase 2 (Step 3B → Step 4B)**: Cosmetic tooling — coverage threshold, lint, pyright, docstrings. Only run after design is approved by the system-architect at Step 4.
 
 ## Knowledge System
 
@@ -283,11 +353,23 @@ No knowledge is embedded in skills or agents — each piece of knowledge exists 
 
 ## Release Management
 
-Version format: `v{major}.{minor}.{YYYYMMDD}`
+Version format: `v{major}.{minor}.{patch}+{YYYYMMDD}` (git tags and CHANGELOG)
 
-- Minor bump for new features; major bump for breaking changes
-- Same-day second release: increment minor, keep same date
-- Release name: defined by `docs/branding.md > Release Naming > Convention`; absent or blank defaults to version string only (no name)
+| Location | Format | Example |
+|---|---|---|
+| `pyproject.toml` | Plain semver (no build metadata) | `0.1.0` |
+| Git tags | semver + date | `v0.1.0+20260427` |
+| CHANGELOG entries | semver + date | `## [v0.1.0+20260427]` |
+
+PyPI rejects the `+` local version identifier, so `pyproject.toml` must contain plain semver only. The date suffix is appended when creating git tags and CHANGELOG entries.
+
+Bump rules:
+- **Patch** (`0.1.0` → `0.1.1`): bug fixes
+- **Minor** (`0.1.0` → `0.2.0`): new features
+- **Major** (`0.1.0` → `1.0.0`): breaking changes
+- Same-day second release: increment patch, keep same date suffix
+
+Release name: defined by `docs/branding.md > Release Naming > Convention`; absent or blank defaults to version string only (no name)
 
 **Releases happen from `main` only.** The SE ensures `main` is up to date with `origin/main` before creating a release. No releases from feature branches.
 

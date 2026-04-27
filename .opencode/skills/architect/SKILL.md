@@ -68,6 +68,19 @@ ADR details are available on demand: reference Key Decisions in `system.md`, the
 4. Run `tree <package>/` — understand package structure without reading every file
 5. Read **specific `.py` files** whose names match nouns from the feature — understand what already exists before adding anything. Do not read the entire package.
 
+### Delivery Mechanism Checkpoint (mandatory — before `interview`)
+
+Before proceeding to the interview state, the SA must explicitly answer:
+
+1. **What delivery mechanism does the discovery Q&A specify?** Read the `.feature` file's discovery section and `docs/system.md` `Delivery` field.
+2. **What delivery mechanism does the current codebase implement?** Inspect `__main__.py`, entry points, and any web/app scaffolding.
+3. **Do they match?** If there is a mismatch (e.g., discovery says "browser-based" but the codebase is CLI-only), the SA must:
+   - Record the mismatch as an ADR before designing anything else
+   - Make the architecture pivot explicit: the domain model and stubs must reflect the correct delivery mechanism
+   - If the mismatch requires stakeholder input, escalate to PO
+
+This checkpoint prevents the SA from inheriting template bias (e.g., CLI scaffolding) when the product requires a different delivery mechanism (e.g., web, API, desktop).
+
 **Transition**: `ready` → `interview` | `spec-gap` → `blocked` (escalate to PO)
 
 ---
@@ -162,10 +175,10 @@ If during architecture you discover behaviour not covered by existing acceptance
 
 ## Templates
 
-Templates for files written by this skill live in this skill's directory (`architect/`):
+Templates for living documents live in `docs/templates/` (project-owned, not skill-owned):
 
-- `system.md.template` — `docs/system.md` structure (domain model + Context + Container sections included; markdown table format)
-- `adr.md.template` — ADR file structure (Status, Context, Interview Q&A table, Decision, Reason, Alternatives Considered, Consequences)
+- `docs/templates/adr/adr.md.template` — ADR file structure (Status, Context, Interview Q&A table, Decision, Reason, Alternatives Considered, Consequences)
+- `docs/templates/system.md.template` — `docs/system.md` structure
 
 Base directory for this skill: `.opencode/skills/architect/`
 Relative paths in this skill (e.g., scripts/, reference/) are relative to this base directory.

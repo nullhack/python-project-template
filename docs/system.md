@@ -15,6 +15,14 @@ package (`app`) with no runtime dependencies beyond the Python stdlib.
 
 ---
 
+## Delivery
+
+**Mechanism**: CLI
+
+The system is a command-line tool accessed via `python -m app` with `--help` and `--version` flags.
+
+---
+
 ## Context
 
 ### Actors
@@ -102,7 +110,7 @@ package (`app`) with no runtime dependencies beyond the Python stdlib.
 
 - Zero new runtime dependencies — all CLI and metadata functionality uses Python stdlib only
 - All production code lives in `app/__main__.py` — no new source files
-- Version format is calver (`major.minor.YYYYMMDD`); tests must not assume semver
+- Version format is semver (`major.minor.patch`); git tags and CHANGELOG add a `+YYYYMMDD` date suffix
 
 ---
 
@@ -123,9 +131,9 @@ See `docs/adr/` for the full decision record.
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| `project.name` | string | `"temple8"` | Application name; read from installed package metadata |
-| `project.description` | string | `"Python template with some awesome tools to quickstart any Python project"` | Package description from `pyproject.toml`; set as `argparse` description |
-| `project.version` | string | `"7.2.20260423"` | Calver version; read at runtime via `importlib.metadata` |
+| `project.name` | string | *(read from package metadata)* | Application name; read from installed package metadata |
+| `project.description` | string | *(read from package metadata)* | Package description from `pyproject.toml`; set as `argparse` description |
+| `project.version` | string | *(read from package metadata at runtime)* | Semver version; read at runtime via `importlib.metadata` |
 
 ---
 

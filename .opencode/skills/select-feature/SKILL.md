@@ -1,7 +1,7 @@
 ---
 name: select-feature
 description: Score and select the next backlog feature by value, effort, and dependencies
-version: "1.0"
+version: "2.0"
 author: product-owner
 audience: product-owner
 workflow: feature-lifecycle
@@ -17,7 +17,7 @@ Select the next most valuable, unblocked feature from the backlog using a lightw
 
 ## When to Use
 
-Load this skill when the session file in `.flowr/sessions/` `state` is `idle` (or no active item) — before moving any feature to `in-progress/`.
+Load this skill when the feature is READY (scoped, architected, and reconciled) and the PO has decided to build — the session state is at `select-feature` in the feature flow.
 
 ## Step-by-Step
 

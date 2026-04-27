@@ -1,56 +1,128 @@
 flow: feature-flow
-version: 1.0.0
+version: 3.1.0
 params: [feature_slug, branch_name]
 exits: [complete, blocked]
-attrs:
-  agents:
-    idle: product-owner
-    step-1-scope: product-owner
-    step-2-arch: system-architect
-    step-3-working: software-engineer
-    step-4-ready: system-architect
-    step-5-ready: product-owner
-    step-5-merge: software-engineer
-    step-5-complete: product-owner
-    post-mortem: product-owner
 
 states:
   - id: idle
+    attrs:
+      agent: product-owner
+      skill: run-session
+      phase: idle
     next:
-      select-feature: step-1-scope
-      discover: step-1-scope
+      prepare: step-1-scope
+      build: select-feature
 
   - id: step-1-scope
     flow: flows/scope-cycle.yaml
-    flow_version: "^1"
+    flow-version: "^1"
+    attrs:
+      agent: product-owner
+      skill: define-scope
+      phase: scope
     next:
       complete: step-2-arch
       blocked: idle
 
   - id: step-2-arch
     flow: flows/arch-cycle.yaml
-    flow_version: "^1"
+    flow-version: "^1"
+    attrs:
+      agent: system-architect
+      skill: architect
+      phase: architecture
     next:
-      complete: step-3-working
+      complete: reconcile
       blocked: step-1-scope
 
-  - id: step-3-working
-    flow: flows/tdd-cycle.yaml
-    flow_version: "^1"
+  - id: reconcile
+    attrs:
+      agent: product-owner
+      skill: define-scope
+      phase: reconcile
+      gates:
+        - system-glossary-consistent
+        - system-feature-consistent
+        - adrs-feature-consistent
+        - glossary-feature-consistent
+        - scope-product-consistent
     next:
-      complete:
-        to: step-4-ready
-        when: { all_tests_pass: "==true" }
+      reconciled: ready
+      inconsistencies: step-1-scope
+
+  - id: ready
+    attrs:
+      agent: product-owner
+      skill: run-session
+      phase: ready
+    next:
+      build-now: select-feature
+      shelve: idle
+
+  - id: select-feature
+    attrs:
+      agent: product-owner
+      skill: select-feature
+      phase: select
+    next:
+      feature-selected: step-3a-working
+
+  - id: step-3a-working
+    flow: flows/tdd-cycle.yaml
+    flow-version: "^3"
+    attrs:
+      agent: software-engineer
+      skill: implement
+      phase: step-3a-functional-tdd
+    next:
+      design-review-ready: step-4-ready
       blocked: step-1-scope
 
   - id: step-4-ready
+    attrs:
+      agent: system-architect
+      skill: verify
+      phase: step-4-design
+      gates:
+        - test-fast-green
+        - feature-type-run-passes
+        - design-self-declaration-complete
     next:
-      approved:
-        to: step-5-ready
-        when: { review_approved: "==true" }
-      rejected: step-3-working
+      design-approved: step-3b-working
+      design-rejected: step-3a-working
+
+  - id: step-3b-working
+    attrs:
+      agent: software-engineer
+      skill: implement
+      phase: step-3b-completion
+      gates:
+        - lint-clean
+        - static-check-clean
+        - completion-declaration-complete
+    next:
+      completion-ready: step-4b-ready
+      blocked: step-1-scope
+
+  - id: step-4b-ready
+    attrs:
+      agent: system-architect
+      skill: verify
+      phase: step-4b-completion
+      gates:
+        - test-coverage-passes
+        - lint-clean
+        - static-check-clean
+        - completion-declaration-complete
+    next:
+      approved: step-5-ready
+      rejected: step-3b-working
 
   - id: step-5-ready
+    attrs:
+      agent: product-owner
+      skill: define-scope
+      phase: accept
     next:
       accepted:
         to: step-5-merge
@@ -58,15 +130,43 @@ states:
       failed: post-mortem
 
   - id: step-5-merge
+    attrs:
+      agent: software-engineer
+      skill: version-control
+      phase: merge
     next:
       merged:
-        to: step-5-complete
+        to: step-5-update-docs
         when: { merge_complete: "==true" }
 
+  - id: step-5-update-docs
+    attrs:
+      agent: system-architect
+      skill: update-docs
+      phase: post-acceptance
+    next:
+      docs-updated: step-5-pr
+
+  - id: step-5-pr
+    attrs:
+      agent: system-architect
+      skill: create-pr
+      phase: post-acceptance
+    next:
+      pr-created: step-5-complete
+
   - id: step-5-complete
+    attrs:
+      agent: product-owner
+      skill: define-scope
+      phase: archive
     next:
       feature-archived: idle
 
   - id: post-mortem
+    attrs:
+      agent: product-owner
+      skill: define-scope
+      phase: post-mortem
     next:
-      restart: step-2-arch
+      restart: reconcile

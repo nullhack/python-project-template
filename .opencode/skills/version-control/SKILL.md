@@ -9,6 +9,10 @@ workflow: git-management
 
 # Version Control
 
+## When to Use
+
+The software-engineer loads this skill at two points in the feature workflow: at Step 3A start to create the `feat/<stem>` branch from `main`, and at Step 5 after PO acceptance to merge the feature branch back to `main` with `--no-ff`. It is also loaded when creating a post-mortem `fix/<stem>` branch after acceptance failure.
+
 This skill governs all Git operations during feature development. The software-engineer owns branch creation, commit hygiene, merging to `main`, and post-mortem branch management.
 
 See [[git/protocol]] for the Git safety protocol, branch naming conventions, commit hygiene format, and merge strategy rules. These rules are absolute — never violate them.

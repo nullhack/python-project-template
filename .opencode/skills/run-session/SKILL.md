@@ -9,6 +9,10 @@ workflow: session-management
 
 # Session Workflow
 
+## When to Use
+
+Every agent loads this skill at the start of every session, regardless of role or step. It is the first skill loaded before any other work begins. The session protocol ensures that state is read before work starts and written before the session ends, so any agent can resume from where the last session stopped.
+
 Every session starts by reading state. Every session ends by writing state. This makes any agent able to continue from where the last session stopped.
 
 State is tracked across two locations: `.flowr/flows/feature-flow.yaml` (static flow definition — never modified by agents) and `.flowr/sessions/session.yaml` (dynamic session state — updated every session). Agents read `.flowr/flows/feature-flow.yaml` to understand the workflow; they read and update `.flowr/sessions/session.yaml` to track the active feature.
@@ -27,10 +31,9 @@ Each agent reads only what is operationally necessary for their current step. Do
 ## Session Start
 
 1. **Read session file from `.flowr/sessions/`** — read the session YAML: `@id`, `@state`, `@branch`.
-   - If no session file exists in `.flowr/sessions/`, create one from `.opencode/skills/flow/session.yaml.template`
+- If no session file exists in `.flowr/sessions/`, create a minimal session file with `active_items: []`
 2. **Read flow definition from `.flowr/flows/feature-flow.yaml`** — understand the static workflow (roles, states, detection rules, transitions).
-   - If `.flowr/flows/feature-flow.yaml` does not exist, create it from `.opencode/skills/flow/feature-flow.yaml.template`
-   - If `.flowr/flows/feature-flow.yaml` exists but is empty or malformed, recreate from template
+    - If `.flowr/flows/feature-flow.yaml` does not exist, stop and report — flow definitions are versioned and must not be recreated by agents
 3. **Run `detect-state`** — execute the auto-detection rules from `.flowr/flows/feature-flow.yaml` to determine the actual workflow state from filesystem and git state.
    - If detected state differs from session file `@state`, update the session file to match reality. **Never modify `.flowr/flows/feature-flow.yaml`.**
 4. **Check prerequisites** — verify the Prerequisites table in `.flowr/flows/feature-flow.yaml`. If any are unchecked, stop and report.
@@ -91,7 +94,7 @@ active_items:
 3. Never leave uncommitted changes — commit as WIP if needed
 4. One step per session where possible; do not start Step N+1 in the same session as Step N
 5. When a step completes, update the session file in `.flowr/sessions/` and commit **before** any further work
-6. If `.flowr/flows/feature-flow.yaml` is missing, create it from `.opencode/skills/flow/feature-flow.yaml.template` before doing any other work
+6. If `.flowr/flows/feature-flow.yaml` is missing, stop and report — flow definitions are versioned and must not be recreated by agents
 7. If detected state differs from session file `@state`, trust the detected state and update the session file. **Never modify `.flowr/flows/feature-flow.yaml`.**
 8. Output is minimal-signal: findings, status, decisions, blockers only. Use the fewest, least verbose tool calls necessary. Report results, not process. No redundant prose.
 

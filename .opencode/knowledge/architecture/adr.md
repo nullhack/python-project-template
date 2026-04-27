@@ -10,8 +10,8 @@ last-updated: 2026-04-26
 
 - Only create ADRs for non-obvious decisions with meaningful trade-offs; routine YAGNI choices don't need records.
 - Frame each decision as a clear question with known alternatives; evaluate consequences and draft ADRs before stakeholder validation.
-- ADRs are append-only: never edit a committed ADR; if a decision changes, write a new ADR that supersedes the old one.
-- Present a validation table to the stakeholder for approval; commit only after stakeholder approval.
+- ADRs follow a specific document format: Context, Interview, Decision, Reason, Alternatives Considered, and Consequences.
+- ADRs are append-only and require stakeholder validation: never edit a committed ADR; if a decision changes, write a new ADR that supersedes the old one; commit only after stakeholder approval.
 
 ## Concepts
 
@@ -21,7 +21,7 @@ last-updated: 2026-04-26
 
 **ADR Document Format**: File `docs/adr/ADR-YYYY-MM-DD-<slug>.md` with sections: Context (the situation that triggered these questions), Interview (Q&A table with final accepted answers), Decision (one sentence), Reason (one sentence), Alternatives Considered (rejected options with reasons), and Consequences (+/- outcomes).
 
-**ADR Rules**: ADRs are append-only — never edit a committed ADR. If a decision changes, write a new ADR that supersedes the old one.
+**ADR Rules**: ADRs are append-only — never edit a committed ADR. If a decision changes, write a new ADR that supersedes the old one. ADRs require stakeholder validation before commit; do not commit ADRs that have not been validated.
 
 ## Content
 

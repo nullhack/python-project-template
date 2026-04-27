@@ -9,19 +9,19 @@ last-updated: 2026-04-26
 ## Key Takeaways
 
 - Verify SOLID-S (one responsibility), OC-8 (≤2 instance variables), SOLID-D + Hexagonal (all external deps have Protocols), and bounded context (no noun with different meaning across modules).
-- Check for missing creational patterns (Factory/Builder for repeated complex construction), structural patterns (Strategy/Visitor for type-switching), and behavioral patterns (State/Observer for state machines and notifications).
+- Check for missing creational patterns (Factory/Builder), structural patterns (Strategy/Visitor), and behavioral patterns (State/Observer); when a pattern smell is detected, load `skill apply-patterns` for the structural solution.
 - Verify ADR consistency: each ADR must be consistent with each acceptance criterion — no contradictions.
-- Fix any failing check before committing stubs; re-run the smell check; only commit when all 8 checks pass.
+- Fix any failing check before committing stubs; apply the smell check at the end of Step 2 only — not during Step 3 or Step 4.
 
 ## Concepts
 
 **Verify structural and architectural constraints**: The smell check verifies SOLID-S (one responsibility per class), OC-8 (≤2 instance variables per behavioural class), SOLID-D + Hexagonal (all external deps have Protocols), and DDD Bounded Context (no noun with different meaning across modules).
 
-**Check for missing design patterns**: Verify creational patterns (Factory/Builder for repeated complex construction), structural patterns (Strategy/Visitor for type-switching), and behavioral patterns (State/Observer for state machines and notifications).
+**Check for missing design patterns**: Verify creational patterns (Factory/Builder for repeated complex construction), structural patterns (Strategy/Visitor for type-switching), and behavioral patterns (State/Observer for state machines and notifications). If a pattern smell is detected during the smell check, load `skill apply-patterns` for the appropriate GoF pattern catalogue entry. The smell check identifies the gap; the pattern skill provides the structural solution.
 
 **Verify ADR consistency**: Each ADR must be consistent with each acceptance criterion — no contradictions between architectural decisions and specified behaviour.
 
-**Fix before committing**: If any check fails, fix the stub files before committing, re-run the smell check, and only commit when all 8 checks pass.
+**Fix before committing**: If any check fails, fix the stub files before committing, re-run the smell check, and only commit when all 8 checks pass. The smell check is applied at the end of Step 2, before committing stubs and ADRs. It is not applied during Step 3 (TDD loop) or Step 4 (Verification) — those phases have their own quality gates.
 
 ## Content
 

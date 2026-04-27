@@ -11,7 +11,9 @@ workflow: git-management
 
 ## When to Use
 
-Load this skill after the system-architect approves the feature (Step 4 APPROVED) and the PO has accepted it (Step 5). Use it to create and merge the feature pull request.
+Load this skill after the system-architect approves the feature at Step 4B (Completion Verification APPROVED) and the PO has accepted it (Step 5). Use it to create and merge the feature pull request.
+
+> **Feature-type verification**: Before creating a PR, confirm the feature-type run passed during Step 3B. See [[software-craft/code-quality#key-takeaways]] for the feature-type verification table (CLI/Library/Mixed).
 
 ## Step-by-Step
 
@@ -60,10 +62,12 @@ gh pr create \
 - [x] `@id:<hex>`: <description>
 
 ## Testing
-- All tests pass: `task test`
-- Linting clean: `task lint`
-- Type checking clean: `task static-check`
-- Application runs: `timeout 10s task run` (exit 124 = hung = fix it)
+- Step 3A: `task test-fast` passes
+- Step 3A: Feature-type run passes
+- Step 3B: `task lint` clean
+- Step 3B: `task static-check` clean
+- Step 3B: `task test-coverage` passes
+- Step 4 + 4B: SA APPROVED
 
 ## Reviewer Notes
 <Any context the system-architect needs>
@@ -75,10 +79,13 @@ EOF
 
 - [ ] Branch is up to date with main (`git rebase main`)
 - [ ] All commits follow conventional commit format
-- [ ] `task lint` exits 0
-- [ ] `task static-check` exits 0
-- [ ] `task test` exits 0, coverage passes
-- [ ] `timeout 10s task run` exits with code ≠ 124
+- [ ] Step 3A: `task test-fast` exits 0
+- [ ] Step 3A: Feature-type run passes (`timeout 10s task run` for CLI features)
+- [ ] Step 4: SA design review APPROVED
+- [ ] Step 3B: `task lint` exits 0
+- [ ] Step 3B: `task static-check` exits 0
+- [ ] Step 3B: `task test-coverage` passes threshold
+- [ ] Step 4B: SA completion review APPROVED
 - [ ] PR description includes all `@id` acceptance criteria
 
 ## Merging

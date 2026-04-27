@@ -14,6 +14,8 @@ This skill defines how to **operate** a state machine workflow using YAML flow d
 - **Flow definitions** (`.flowr/flows/*.yaml`) — static state machine definitions (never change during execution)
 - **Session files** (`.flowr/sessions/session.yaml`) — dynamic work trackers (updated by agents at every transition)
 
+## When to Use
+
 The project's current workflow is defined in `.flowr/flows/`. Load this skill when:
 - Starting any session (to understand the operating protocol)
 - Creating a new workflow from scratch
@@ -66,8 +68,23 @@ Key v1 format rules:
 - `exits` is always required — it declares the flow's contract with parent flows
 - `flow` on a state makes it a subflow (no `type` field needed)
 - Guard conditions use `when` on transitions, not `requires` on states — no inheritance, always explicit
-- `attrs` holds project-specific data (agents, params, descriptions) at flow or state level; the library ignores it
+- `attrs` holds project-specific data at state level only (flow-level attrs are not used); the library ignores it entirely
 - `version` is required (semver)
+
+### State attrs Convention
+
+Every state in the flow YAML carries `attrs` with runtime metadata. Agents read these at session start to determine which skill to load and what gates to check. This makes the flow YAML the single source of truth for *what* happens at each state.
+
+| attr | Purpose | Example |
+|------|---------|---------|
+| `agent` | Which agent runs this state (maps to `.opencode/agents/<name>.md`) | `product-owner`, `system-architect`, `software-engineer` |
+| `skill` | Which skill to load for this state | `define-scope`, `architect`, `implement`, `verify` |
+| `phase` | Sub-phase within a skill (for multi-phase skills) | `reconcile`, `step-3a-functional-tdd`, `step-4-design` |
+| `gates` | Named conditions that must be true before transitioning out of this state | `[system-glossary-consistent, design-self-declaration-complete]` |
+
+Gate names are flat strings that map to definitions in knowledge files. The flow says *what* must be true; the knowledge defines *how* to check it.
+
+When `attrs` is set on a state, it **replaces** any flow-level `attrs` (no merge, no deep merge). Always put metadata on individual states, not at the flow level.
 
 ---
 

@@ -1,22 +1,23 @@
 flow: arch-cycle
-version: 1.0.0
+version: 1.1.0
 params: [feature_slug, branch_name]
 exits: [complete, blocked]
-attrs:
-  agents:
-    read: system-architect
-    interview: system-architect
-    validate: system-architect
-    design: system-architect
-    stubs: system-architect
 
 states:
   - id: read
+    attrs:
+      agent: system-architect
+      skill: architect
+      phase: read
     next:
       ready: interview
       spec-gap: blocked
 
   - id: interview
+    attrs:
+      agent: system-architect
+      skill: architect
+      phase: interview
     next:
       gaps-found: interview
       adrs-drafted:
@@ -24,6 +25,10 @@ states:
         when: { adrs_drafted: "==true" }
 
   - id: validate
+    attrs:
+      agent: system-architect
+      skill: architect
+      phase: validate
     next:
       adrs-approved:
         to: design
@@ -31,11 +36,19 @@ states:
       adrs-rejected: interview
 
   - id: design
+    attrs:
+      agent: system-architect
+      skill: architect
+      phase: design
     next:
       stubs-written:
         to: stubs
         when: { stubs_written: "==true" }
 
   - id: stubs
+    attrs:
+      agent: system-architect
+      skill: architect
+      phase: stubs
     next:
       test-fast-green: complete

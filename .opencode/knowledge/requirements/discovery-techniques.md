@@ -12,6 +12,7 @@ last-updated: 2026-04-26
 - Use Laddering to climb from surface features to underlying consequences and terminal values; stop when the answer produces a design constraint.
 - Use CI Perspective Change to ask stakeholders to describe the same situation from another actor's viewpoint; peripheral details and cross-role concerns surface.
 - Apply three levels of active listening: per answer (paraphrase), per group (synthesis), end of session (full synthesis for approval).
+- Use silent pre-mortem before writing any design or stub: ask "In 6 months this design is a mess — what mistakes did we make?" to surface hidden risks early.
 
 ## Concepts
 
@@ -22,6 +23,8 @@ last-updated: 2026-04-26
 **CI Perspective Change**: Ask the stakeholder to describe the same situation from another actor's point of view. Peripheral details and cross-role concerns surface that the primary perspective conceals. Ask "What do you think the end user experiences?", "What would your team lead's concern be?", "From the perspective of someone encountering this for the first time, what would they need to know?"
 
 **Active Listening Protocol**: Three levels apply throughout every interview session. Level 1 (per answer): immediately paraphrase each answer. Level 2 (per group): brief synthesis when transitioning between behaviour groups. Level 3 (end of session): full synthesis for stakeholder approval. Do not introduce topic labels or categories during active listening.
+
+**Silent Pre-mortem**: Before writing any design or stub, ask "In 6 months this design is a mess. What mistakes did we make?" For each candidate class, check for >2 instance variables (split) or >1 reason to change (isolate). For each external dependency, check if it is behind a Protocol. For each noun, check if it serves double duty across modules (isolate). This technique surfaces hidden risks before they become architectural problems.
 
 ## Content
 

@@ -45,36 +45,19 @@ jobs:
         run: uv python install 3.13
         
       - name: Install dependencies
-        run: uv sync --locked --dev
+        run: uv sync --locked --all-extras --dev
         
       - name: Run safety check
-        run: |
-          # Install safety for vulnerability scanning
-          uv add --dev safety
-          uv run safety check --json --output safety-report.json
+        run: uv run safety check --json
         continue-on-error: true
         
-      - name: Upload safety report
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
-        if: always()
-        with:
-          name: safety-security-report
-          path: safety-report.json
-          
       - name: Security Summary
         if: always()
         run: |
           echo "## 🔒 Dependency Security Summary" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          
-          if [ -f "safety-report.json" ]; then
-            echo "### Safety Vulnerability Scan" >> $GITHUB_STEP_SUMMARY
-            echo "Detailed report uploaded as artifact." >> $GITHUB_STEP_SUMMARY
-          else
-            echo "### ✅ Safety Vulnerability Scan" >> $GITHUB_STEP_SUMMARY
-            echo "No known vulnerabilities found in dependencies." >> $GITHUB_STEP_SUMMARY
-          fi
-          
+          echo "### Safety Vulnerability Scan" >> $GITHUB_STEP_SUMMARY
+          echo "Completed — check safety output above for details." >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "### Dependency Review Features" >> $GITHUB_STEP_SUMMARY
           echo "- ✅ License compliance checking" >> $GITHUB_STEP_SUMMARY

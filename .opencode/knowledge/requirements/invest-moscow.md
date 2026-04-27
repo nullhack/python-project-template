@@ -15,7 +15,7 @@ last-updated: 2026-04-26
 
 ## Concepts
 
-**INVEST Criteria**: Every Rule (user story) must pass all six letters before committing. Independent means deliverable without other Rules. Negotiable means details open to discussion. Valuable means delivers something the user cares about. Estimable means a developer can estimate effort. Small means completable in one feature cycle. Testable means verifiable with a concrete test.
+**INVEST Criteria**: Every Rule (user story) must pass all six letters before committing. Independent means deliverable without other Rules. Negotiable means details open to discussion. Valuable means delivers something the user cares about. Estimable means a software-engineer can estimate effort. Small means completable in one feature cycle. Testable means verifiable with a concrete test.
 
 **MoSCoW Triage**: For each candidate Example, classify priority as Must (required for correctness, without it the feature is wrong), Should (high value but deferrable, the feature works without it but is diminished), or Could (nice-to-have edge case, low risk if deferred).
 
@@ -32,9 +32,9 @@ Every Rule (user story) must pass all six letters before committing:
 | Letter | Question | FAIL action |
 |---|---|---|
 | **I**ndependent | Can this Rule be delivered without other Rules? | Split or reorder dependencies |
-| **N**egotiable | Are details open to discussion with the developer? | Remove over-specification |
+| **N**egotiable | Are details open to discussion with the software-engineer? | Remove over-specification |
 | **V**aluable | Does it deliver something the end user cares about? | Reframe or drop |
-| **E**stimable | Can a developer estimate the effort? | Split or add discovery questions |
+| **E**stimable | Can a software-engineer estimate the effort? | Split or add discovery questions |
 | **S**mall | Completable in one feature cycle? | Split into smaller Rules |
 | **T**estable | Can it be verified with a concrete test? | Rewrite with observable outcomes |
 
@@ -43,7 +43,7 @@ Every Rule (user story) must pass all six letters before committing:
 - **Independent**: can be delivered without other stories
 - **Negotiable**: details can be discussed
 - **Valuable**: delivers something the user cares about
-- **Estimable**: the developer can estimate effort
+- **Estimable**: the software-engineer can estimate effort
 - **Small**: completable in one feature cycle
 - **Testable**: can be verified with a concrete test
 

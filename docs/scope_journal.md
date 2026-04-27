@@ -1,5 +1,9 @@
 # Scope Journal: temple8
 
+> Append-only record of all discovery session Q&A.
+> Written by the product-owner. Read by the product-owner for resume checks.
+> Never edit past entries — append new session blocks only.
+
 ---
 
 ## 2026-04-22 — Session 1

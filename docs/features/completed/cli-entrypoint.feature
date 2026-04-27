@@ -20,7 +20,7 @@ Feature: CLI Entrypoint
   Constraints:
   - Zero new dependencies (argparse and importlib.metadata are stdlib).
   - All production code lives in `app/__main__.py` only — no new files.
-  - Version format follows the project's calver scheme (e.g. `7.2.20260423`); tests must not assume semver.
+  - Version format follows the project's semver scheme (e.g. `0.1.0`); tests must not assume a specific version format beyond reading from package metadata.
 
   ## Changes
 

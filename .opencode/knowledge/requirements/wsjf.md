@@ -8,7 +8,7 @@ last-updated: 2026-04-26
 
 ## Key Takeaways
 
-- WSJF = Value / Effort; higher score means higher priority for selection.
+- Calculate WSJF as Value divided by Effort; select features with higher scores first.
 - Value (1-5) maps to Kano categories: 5=Must-have (core workflow blocked), 4=High, 3=Medium (performance), 2=Low (delighter), 1=Minimal (cosmetic).
 - Effort (1-5) maps to @id count: 1=Trivial (1-2), 2=Small (3-5), 3=Medium (6-8), 4=Large (>8), 5=Very large (spans modules).
 - Dependency=1 features are ineligible regardless of WSJF score; ties broken by Value; if all features have Dependency=1, resolve the blocking dependency first.

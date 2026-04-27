@@ -14,6 +14,7 @@ last-updated: 2026-04-26
 - Use Hypothesis for invariants that hold regardless of implementation, not for exercising specific code paths.
 - Reach internal code through the public interface; if a path is unreachable, it's dead code — remove it.
 - Keep the public interface small via Interface Segregation and OC-8 to minimise test coupling.
+- When a test breaks during refactoring, diagnose first: if it tests internal structure, rewrite it; if it tests observable behaviour, the "refactoring" is a feature change — revert and run RED-GREEN-REFACTOR explicitly.
 
 ## Concepts
 
@@ -28,6 +29,8 @@ last-updated: 2026-04-26
 **Achieving 100% Coverage Without Coupling**: Coverage and coupling are independent dimensions. The target is high coverage with weak coupling. Reach internal code through the public interface. Use Hypothesis `@given` for branch coverage. Add targeted edge-case tests in `tests/unit/` for specific boundary values. If a code path is unreachable through the public interface, it's dead code — remove it.
 
 **Keep the Public Interface Small**: Fewer public methods means fewer tests depend on the contract. Interface Segregation (SOLID-I) splits wide interfaces into narrow ones. OC-8 (≤2 instance variables per behavioural class) keeps classes small. The Facade pattern provides simplified entry points for complex subsystems.
+
+**Diagnostic for Breaking Tests**: When a test breaks during refactoring, diagnose before deleting. If the test is coupled to internal structure (private methods, call chains, concrete types), rewrite it to use the public interface and re-apply the refactoring. If the test is coupled to observable behaviour, the "refactoring" changed observable behaviour — it is a feature change. Revert the step, put on the feature hat, and run RED-GREEN-REFACTOR explicitly. Never delete a failing test without diagnosing it first.
 
 ## Content
 

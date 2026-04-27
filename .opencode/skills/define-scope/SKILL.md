@@ -9,7 +9,7 @@ workflow: feature-lifecycle
 
 # Scope
 
-This skill guides the PO through Step 1 of the feature lifecycle: interviewing the stakeholder, discovering requirements, and writing Gherkin specifications precise enough for a developer to write tests without asking questions.
+This skill guides the PO through Step 1 of the feature lifecycle: interviewing the stakeholder, discovering requirements, and writing Gherkin specifications precise enough for a software-engineer to write tests without asking questions.
 
 ## When to Use
 
@@ -60,7 +60,7 @@ Discovery is a continuous, iterative process. Sessions happen whenever scope nee
 
 1. Check `docs/scope_journal.md` for the most recent session block.
    - If the most recent block has `Status: IN-PROGRESS` → the previous session was interrupted. Resume it: check which `.feature` files need updating (compare journal Q&A against current `.feature` descriptions), write the `## Changes` rows if missing, then mark the block `Status: COMPLETE`. Only then begin a new session.
-   - If `docs/scope_journal.md` does not exist → this is the first session. Create `docs/scope_journal.md` using the template in `scope-journal.md.template` in this skill's directory.
+   - If `docs/scope_journal.md` does not exist → this is the first session. Create `docs/scope_journal.md` using the template in `docs/templates/scope_journal.md.template`.
 2. Read the `## Domain Model` section of `docs/system.md` (if the file exists) to check existing entities. The PO reads this section but never writes to `system.md` — it is SA-owned. If `system.md` does not yet have a Domain Model section, the SA will add it at Step 2.
 3. Declare session scope to the stakeholder: announce the total groups and estimated question count (e.g., "3 groups: General (7 Q), Cross-cutting, Feature: login").
 4. Open `docs/scope_journal.md` and append a new session header:
@@ -124,7 +124,7 @@ Target behaviour groups, bounded contexts, integration points, lifecycle events,
 For each feature the session touches:
 - Extract relevant nouns and verbs from `docs/glossary.md` and the `## Domain Model` section of `docs/system.md` (if it exists)
 - Generate questions from entity gaps: boundaries, edge cases, interactions, failure modes
-- Run a silent pre-mortem: "Imagine the developer builds this feature exactly as described, all tests pass, but the feature doesn't work for the user. What would be missing?"
+- Run a silent pre-mortem: "Imagine the software-engineer builds this feature exactly as described, all tests pass, but the feature doesn't work for the user. What would be missing?"
 - Apply gap-finding techniques (see [[requirements/discovery-techniques]]) per question
 
 **Real-time split rule**: if, during feature questions, the PO detects >2 distinct concerns OR >8 candidate Examples for a single feature, **split immediately**:
@@ -180,7 +180,7 @@ The PO does **not** write `docs/system.md`. Entity and domain model updates are 
 
 For each feature touched in this session: rewrite the `.feature` file description to reflect the current state of understanding. Only touched features are updated; all others remain exactly as-is.
 
-If a feature is new (just created as a stub): write its initial description now. Use the template in `feature.md.template`.
+If a feature is new (just created as a stub): write its initial description now. Use the template in `docs/templates/features/feature.md.template`.
 
 **Step D — Completed feature regression check**
 
@@ -330,6 +330,43 @@ Commit: `feat(criteria): write acceptance criteria for <feature-stem>`
 
 ---
 
+## Reconcile — Document Consistency (PO, after Step 2)
+
+After SA completes architecture (Step 2), the PO cross-checks all generated documents for consistency before any development begins. Inconsistencies are caught here, not carried into TDD.
+
+This phase uses the `define-scope` skill with `phase: reconcile` (as indicated by the flow `attrs`).
+
+**Required reads** (all of the following, before starting reconciliation):
+
+| Read | Why |
+|---|---|
+| `docs/system.md` | SA-rewritten current-state snapshot; check Domain Model terms |
+| `docs/glossary.md` | PO-owned living glossary; check term definitions |
+| `docs/features/in-progress/<feature-stem>.feature` | Requirements; check against domain model and ADRs |
+| `docs/adr/ADR-*.md` | Architecture decisions; check against requirements |
+| `docs/scope_journal.md` | Raw Q&A; check against product boundaries |
+| `docs/product-definition.md` | Product boundaries; check scope alignment |
+
+**Reconciliation checks** (every check must pass):
+
+| Check | What to verify |
+|---|---|
+| `system-glossary-consistent` | Every term defined in `glossary.md` matches how it is used in `system.md` Domain Model section |
+| `system-feature-consistent` | Every entity, action, and relationship in `system.md` Domain Model matches the requirements in the `.feature` file |
+| `adrs-feature-consistent` | Every ADR decision aligns with the `.feature` requirements (no ADR contradicts a requirement) |
+| `glossary-feature-consistent` | Every domain term in the `.feature` file matches the definition in `glossary.md` |
+| `scope-product-consistent` | The scope recorded in `scope_journal.md` stays within the boundaries declared in `product-definition.md` |
+
+**Outcomes**:
+- **Reconciled** → all five checks pass; PO marks the feature as `READY` in session state and decides whether to build now or shelve
+- **Inconsistencies found** → PO documents the inconsistencies, updates session state to route back to Step 1 (scope), and the feature re-enters discovery to fix the source of the inconsistency
+
+**No agent other than the PO performs reconciliation.** The PO owns the domain language and is the only agent who can spot mismatches between scope documents and architecture documents.
+
+Commit per reconciliation: `feat(reconcile): <feature-stem> reconciled` or `feat(reconcile): <feature-stem> inconsistencies found — back to scope`
+
+---
+
 ## Bug Handling
 
 When a defect is reported against a completed or in-progress feature:
@@ -355,7 +392,7 @@ When a defect is reported against a completed or in-progress feature:
 
 Each feature is a single `.feature` file. The description block contains the feature description and Status. All Q&A belongs in `docs/scope_journal.md`; all architectural decisions belong in `docs/adr/ADR-YYYY-MM-DD-<slug>.md`.
 
-See `feature.md.template` in this skill's directory for the full template.
+See `docs/templates/features/feature.md.template` for the full template.
 
 The **Rules (Business)** section captures business rules that hold across multiple Examples. Identifying rules first prevents redundant or contradictory Examples.
 
@@ -397,14 +434,14 @@ Stakeholder reports a feature is wrong after PO acceptance attempt.
    ```
 4. **PO scans `docs/post-mortem/`**, selects relevant files by `<feature-stem>` or `<failure-keyword>` in filename.
 5. **PO reads selected post-mortems** for context before handoff.
-6. **PO updates the session file in `.flowr/sessions/`**: set `state: step-2-arch` (enters arch-cycle subflow), `branch: fix/<feature-stem>`.
-7. **SA begins Step 2** (arch-cycle subflow) on `fix/<feature-stem>`, reading relevant post-mortems as input.
+6. **PO updates the session file in `.flowr/sessions/`**: set `state: reconcile` (enters reconciliation subflow), `branch: fix/<feature-stem>`.
+7. **PO reconciles** on `fix/<feature-stem>`, reading relevant post-mortems as input. If inconsistencies are found, the feature goes back to Step 1 (scope) on the fix branch.
 
 ### Document Format
 
 File: `docs/post-mortem/YYYY-MM-DD-<feature-stem>-<failure-keyword>.md`
 
-Use the template `post-mortem.md.template` in this skill's directory.
+Use the template in `docs/templates/post-mortem/post_mortem.md.template`.
 
 ### Rules
 - One file per incident. Never edit an existing post-mortem.
@@ -415,18 +452,16 @@ Use the template `post-mortem.md.template` in this skill's directory.
 
 ## Templates
 
-All templates for files written by this skill live in this skill's directory:
+Templates for living documents live in `docs/templates/` (project-owned, not skill-owned):
 
-- `scope-journal.md.template` — `docs/scope_journal.md` structure
-- `feature.md.template` — `.feature` file structure
-- `post-mortem.md.template` — `docs/post-mortem/YYYY-MM-DD-<feature-stem>-<keyword>.md` structure
-- `glossary.md.template` — `docs/glossary.md` initial file (pre-filled with common jargon; PO appends project-specific entries)
+- `docs/templates/scope_journal.md.template` — `docs/scope_journal.md` structure
+- `docs/templates/features/feature.md.template` — `.feature` file structure
+- `docs/templates/post-mortem/post_mortem.md.template` — `docs/post-mortem/YYYY-MM-DD-<feature-stem>-<keyword>.md` structure
+- `docs/templates/glossary.md.template` — `docs/glossary.md` initial file (pre-filled with common jargon; PO appends project-specific entries)
 
 Base directory for this skill: `.opencode/skills/define-scope/`
 Relative paths in this skill (e.g., scripts/, reference/) are relative to this base directory.
 Note: file list is sampled.
 
 <skill_files>
-<file>.opencode/skills/define-scope/feature.md.template</file>
-<file>.opencode/skills/define-scope/scope-journal.md.template</file>
 </skill_files>

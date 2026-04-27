@@ -39,6 +39,8 @@ Wear one hat at a time. Never mix the feature hat (RED-GREEN) and the refactorin
 
 After GREEN: `test-fast` passes for the current `@id`. Now restructure.
 
+**Step 3A REFACTOR is design-only.** Apply structural transformations (SOLID, OC, DRY, KISS, pattern catalogue entries). Do NOT apply cosmetic fixes (import ordering, docstring additions, type annotations, format changes) — those belong in Step 3B after design approval.
+
 ### 2. Preparatory refactoring (before RED)
 
 When the current structure would make the next `@id` awkward to implement:

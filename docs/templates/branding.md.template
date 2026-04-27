@@ -1,0 +1,52 @@
+# Branding — <project-name>
+
+> *<One-line tagline>*
+
+Agents read this file before generating release names, C4 diagrams, README banners, or any document with visual or copy identity. All fields are optional; absent or blank fields fall back to defaults (adjective-animal release names, Mermaid default colors, no wording constraints).
+
+**Ownership**: The stakeholder owns this file. The designer proposes changes (color palettes, visual assets, wording updates); the stakeholder approves them. No other agent edits this file.
+
+---
+
+## Identity
+
+- **Project name:** <name>
+- **Tagline:** <one-line tagline>
+- **Mission:** <one sentence — what this project exists to accomplish>
+- **Vision:** <one sentence — the future state this project moves toward>
+- **Tone of voice:** <adjective, adjective, adjective>. <One sentence elaborating the tone.>
+
+## Visual
+
+<Describe the colour palette and design rationale. Each colour should state its purpose (legibility, accent, structural).>
+
+- **Background:** `<hex>` — <purpose>
+- **Primary text:** `<hex>` — <purpose>
+- **Accent:** `<hex>` — <purpose>
+- **Secondary:** `<hex>` — <purpose>
+- **Logo:** `docs/assets/logo.svg`
+- **Banner:** `docs/assets/banner.svg`
+
+> <WCAG contrast note: state the primary text on background contrast ratio and compliance level.>
+
+### Logo
+
+<Description of logo geometry, symbolism, colours, and transparent background.>
+
+### Banner
+
+<Description of banner layout, typography, colour zones, and decorative elements.>
+
+## Release Naming
+
+- **Convention:** <pattern, e.g. `adjective-animal`, `adjective-greek-figure`, `codename`>
+- **Theme:** <thematic domain constraining name choices>
+- **Rationale:** <why this theme fits the project identity>
+- **Excluded words:** <words to avoid, or "none">
+
+## Wording
+
+<Principles for language used in docs, commit messages, and release notes.>
+
+- **Avoid:** <words that conflict with project tone>
+- **Prefer:** <words that embody project tone>

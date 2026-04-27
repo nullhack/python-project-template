@@ -8,21 +8,18 @@ last-updated: 2026-04-26
 
 ## Key Takeaways
 
-- Knowledge, skills, and agents are separate concerns with one canonical location each; never duplicate knowledge across files.
-- Three research-backed failure modes (instruction conflict, positional attention degradation, redundancy interference) justify keeping knowledge in its own files.
+- Knowledge, skills, and agents are separate concerns with one canonical location each; three research-backed failure modes (instruction conflict, positional attention degradation, redundancy interference) justify this separation; never duplicate knowledge across files.
 - Knowledge files use a 4-section body structure (Key Takeaways, Concepts, Content, Related) with strict correspondence between tiers.
-- Wikilinks reference knowledge on demand using `[[domain/concept]]` or `[[domain/concept#section]]` with cumulative extraction.
+- Wikilinks reference knowledge on demand using `[[domain/concept]]` or `[[domain/concept#section]]` with cumulative extraction; skills are the authoritative routing mechanism.
 - Knowledge files contain reference and explanation only; procedural instructions belong in skills.
 
 ## Concepts
 
-**Separation of concerns**: Knowledge, skills, and agents each have exactly one canonical location. Knowledge files hold reference and explanation; skills hold procedural instructions; agents hold role identity. No knowledge is embedded in skills or agents — they reference it via wikilinks. This prevents instruction conflict (Entry #24), positional attention degradation (Entry #25), and redundancy interference (Entry #26).
+**Separation of concerns**: Knowledge, skills, and agents each have exactly one canonical location. Knowledge files hold reference and explanation; skills hold procedural instructions; agents hold role identity. No knowledge is embedded in skills or agents — they reference it via wikilinks. Three research-backed failure modes justify this separation: instruction conflict (Entry #24 — LLMs cannot reliably resolve conflicting instructions from multiple sources), positional attention degradation (Entry #25 — content in the middle of long contexts receives less attention), and redundancy interference (Entry #26 — redundant content creates competing attention targets).
 
 **Three-tier progressive disclosure**: Every knowledge file has four body sections ordered by depth: Key Takeaways (bullets), Concepts (paragraphs), Content (full reference), and Related (wikilinks). Each bullet in Key Takeaways corresponds to exactly one paragraph in Concepts and one or more subsections in Content. Closely related Content subsections may share a bullet and paragraph. This structure lets agents load only the depth they need via wikilink fragments.
 
-**Wikilink routing**: Skills are the authoritative routing mechanism — they say when to load a knowledge file. Tags categorize files for pre-filtering without reading the body. Key Takeaways provide a relevance signal for agents scanning a file. There is no separate "purpose" section or frontmatter key; routing is handled by these three mechanisms.
-
-**Fragment-based extraction**: Wikilinks support a `#section-name` fragment for cumulative extraction. `[[domain/concept#key-takeaways]]` loads frontmatter + Key Takeaways only (~80% token savings). `[[domain/concept#concepts]]` loads through Concepts (~65% savings). No fragment loads the full file. Section names use lowercase with hyphens (e.g., `#key-takeaways`, not `#Key Takeaways`).
+**Wikilink routing and extraction**: Skills are the authoritative routing mechanism — they say when to load a knowledge file. Tags categorize files for pre-filtering without reading the body. Key Takeaways provide a relevance signal for agents scanning a file. Wikilinks support a `#section-name` fragment for cumulative extraction: `[[domain/concept#key-takeaways]]` loads frontmatter + Key Takeaways only (~80% token savings), `[[domain/concept#concepts]]` loads through Concepts (~65% savings), and no fragment loads the full file. Section names use lowercase with hyphens (e.g., `#key-takeaways`, not `#Key Takeaways`). There is no separate "purpose" section or frontmatter key; routing is handled by skills, tags, and Key Takeaways.
 
 **Reference and explanation only**: Knowledge files contain reference and explanation content (the "what" and "why"). Procedural instructions (the "when" and "how") belong in skills. This separation follows the Diátaxis framework: knowledge serves the Reference and Explanation modes, skills serve the How-to and Tutorial modes.
 

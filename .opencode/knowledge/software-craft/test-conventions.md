@@ -8,9 +8,9 @@ last-updated: 2026-04-26
 
 ## Key Takeaways
 
-- Test files live in `tests/features/<feature_slug>/<rule_slug>_test.py`; function names follow `test_<feature_slug>_<@id>()`.
-- New tests start as skipped stubs with Gherkin steps in docstrings; remove `@pytest.mark.skip` when implementing.
-- Use `@pytest.mark.slow` for Hypothesis `@given` tests and any test with I/O; use `@pytest.mark.deprecated` for replaced Examples.
+- Place test files in `tests/features/<feature_slug>/<rule_slug>_test.py`; name functions `test_<feature_slug>_<@id>()`.
+- Start new tests as skipped stubs with Gherkin steps in docstrings; remove `@pytest.mark.skip` when implementing.
+- Apply `@pytest.mark.slow` to Hypothesis `@given` tests and any test with I/O; apply `@pytest.mark.deprecated` to replaced Examples.
 - Test at the same abstraction level as the acceptance criteria (semantic alignment); never test internal implementation details.
 - Use Hypothesis for properties that hold across many inputs; use plain pytest for specific behaviours or single edge cases.
 

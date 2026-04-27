@@ -8,10 +8,10 @@ last-updated: 2026-04-26
 
 ## Key Takeaways
 
-- Skills live in `.opencode/skills/<name>/SKILL.md` (project-level) or `~/.config/opencode/skills/<name>/SKILL.md` (global); project-level takes precedence.
-- Frontmatter requires `name` (1-64 chars, kebab-case, must match directory) and `description` (1-1024 chars); optional fields include `license`, `compatibility`, `metadata`, `permission`.
-- Body sections in order: Title (H1), When to Use, Step-by-Step, Checklist (optional); write in third person.
-- Permission configuration supports wildcards; last matching rule wins; control skill access per agent.
+- Place skills in `.opencode/skills/<name>/SKILL.md` (project-level) or `~/.config/opencode/skills/<name>/SKILL.md` (global); project-level takes precedence.
+- Require `name` (1-64 chars, kebab-case, must match directory) and `description` (1-1024 chars) in frontmatter; optional fields include `license`, `compatibility`, `metadata`, `permission`.
+- Order body sections as Title (H1), When to Use, Step-by-Step, Checklist (optional); write in third person.
+- Use wildcards in permission configuration; last matching rule wins; control skill access per agent.
 
 ## Concepts
 
