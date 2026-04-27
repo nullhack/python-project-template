@@ -171,7 +171,6 @@ docs/
     backlog/<feature-stem>.feature    ← narrative + Rules + Examples
     in-progress/<feature-stem>.feature
     completed/<feature-stem>.feature
-  flows/                              ← YAML flow definitions (feature-flow.yaml, scope-cycle.yaml, arch-cycle.yaml, tdd-cycle.yaml)
 
 tests/
   features/<feature_slug>/
@@ -179,10 +178,10 @@ tests/
   unit/
     <anything>_test.py                ← software-engineer-authored extras (no @id traceability)
 
-FLOW.md                               ← redirect: points to docs/flows/ and .flowception/
+FLOW.md                               ← redirect: points to .flowr/ and .flowception/
 WORK.md                               ← redirect: points to .flowception/ session files
 .flowception/                         ← session YAML files (local working state, gitignored)
-docs/flows/                           ← flow definition YAML files (versioned)
+.flowr/                           ← flow definition YAML files (versioned)
 ```
 
 Tests in `tests/unit/` are software-engineer-authored extras not covered by any `@id` criterion. Any test style is valid — plain `assert` or Hypothesis `@given`. Use Hypothesis when the test covers a **property** that holds across many inputs (mathematical invariants, parsing contracts, value object constraints). Use plain pytest for specific behaviours or single edge cases discovered during refactoring.
@@ -291,11 +290,11 @@ The stakeholder initiates the release process. When the stakeholder requests a r
 
 ## Session Management
 
-Every session: load `skill run-session`. Read flow definitions from `docs/flows/` and session state from `.flowception/` at session start; update the session file at the end.
+Every session: load `skill run-session`. Read flow definitions from `.flowr/` and session state from `.flowception/` at session start; update the session file at the end.
 
-- **Flow definitions** (`docs/flows/*.yaml`) — static state machine definitions. **Agents never modify these files.** Only the stakeholder (human) may change them.
+- **Flow definitions** (`.flowr/*.yaml`) — static state machine definitions. **Agents never modify these files.** Only the stakeholder (human) may change them.
 - **Session files** (`.flowception/session-*.yaml`) — dynamic work tracking. Updated by the state owner at every transition.
-- **FLOW.md** and **WORK.md** — redirects pointing to `docs/flows/` and `.flowception/` respectively.
+- **FLOW.md** and **WORK.md** — redirects pointing to `.flowr/` and `.flowception/` respectively.
 
 ## Setup
 

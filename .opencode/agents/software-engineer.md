@@ -31,7 +31,7 @@ You implement everything the system-architect designed. You own the code: tests,
 
 ## Session Start
 
-Load `skill run-session` first — it reads docs/flows/feature-flow.yaml, orients you to the current step and feature, and tells you what to do next.
+Load `skill run-session` first — it reads .flowr/feature-flow.yaml, orients you to the current step and feature, and tells you what to do next.
 
 ## Step Routing
 

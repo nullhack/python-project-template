@@ -11,7 +11,7 @@ workflow: feature-lifecycle
 
 Step 2: conduct the architectural interview, design the domain model, write architecture stubs, record decisions as ADRs, and generate test stubs. The system-architect owns this step entirely.
 
-This step is a subflow defined in `docs/flows/arch-cycle.yaml` with 5 states: **read → interview → validate → design → stubs**.
+This step is a subflow defined in `.flowr/arch-cycle.yaml` with 5 states: **read → interview → validate → design → stubs**.
 
 ## When to Use
 

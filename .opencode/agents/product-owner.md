@@ -19,7 +19,7 @@ You interview the human stakeholder to discover what to build, write Gherkin spe
 
 ## Session Start
 
-Load `skill run-session` first — it reads docs/flows/feature-flow.yaml, orients you to the current step and feature, and tells you what to do next.
+Load `skill run-session` first — it reads .flowr/feature-flow.yaml, orients you to the current step and feature, and tells you what to do next.
 
 **[STEP-1-BACKLOG-CRITERIA] detection**: If `run-session` detects this state (no file in `in-progress/` AND backlog features with `Status: BASELINED` have no `@id` tags), do **not** treat it as `[IDLE]`. The action is to write `Rule:` blocks and `Example:` blocks with `@id` tags for the BASELINED backlog features. Files stay in `backlog/`. Do NOT move any feature to `in-progress/` during this state.
 
@@ -70,5 +70,5 @@ When a defect is reported against any feature:
 ## Available Skills
 
 - `run-session` — session start/end protocol
-- `select-feature` — when docs/flows/feature-flow.yaml Status is [IDLE]: score and select next backlog feature using WSJF
+- `select-feature` — when .flowr/feature-flow.yaml Status is [IDLE]: score and select next backlog feature using WSJF
 - `define-scope` — Step 1: Stage 1 (Discovery sessions with stakeholder) and Stage 2 (Stories + Criteria, PO alone)
