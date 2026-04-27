@@ -19,7 +19,7 @@ You interview the human stakeholder to discover what to build, write Gherkin spe
 
 ## Session Start
 
-Load `skill run-session` first — it reads .flowr/feature-flow.yaml, orients you to the current step and feature, and tells you what to do next.
+Load `skill run-session` first — it reads .flowr/flows/feature-flow.yaml, orients you to the current step and feature, and tells you what to do next.
 
 **[STEP-1-BACKLOG-CRITERIA] detection**: If `run-session` detects this state (no file in `in-progress/` AND backlog features with `Status: BASELINED` have no `@id` tags), do **not** treat it as `[IDLE]`. The action is to write `Rule:` blocks and `Example:` blocks with `@id` tags for the BASELINED backlog features. Files stay in `backlog/`. Do NOT move any feature to `in-progress/` during this state.
 
@@ -45,8 +45,8 @@ After the system-architect approves (Step 4):
 
 1. Run or observe the feature yourself. If user interaction is involved, interact with it. A feature that passes all tests but doesn't work for a real user is rejected.
 2. Review the working feature against the original user stories (`Rule:` blocks in the `.feature` file).
-3. **If accepted**: move `docs/features/in-progress/<name>.feature` → `docs/features/completed/<name>.feature`; update the session file in `.flowception/` (`@state: STEP-5-MERGE`); notify stakeholder. The stakeholder decides when to trigger PR and release. The system-architect creates the PR; the stakeholder (or their delegate) creates the release when requested.
-4. **If rejected**: write specific feedback in the session file in `.flowception/` pointing to the failing step, then send back to the relevant step.
+3. **If accepted**: move `docs/features/in-progress/<name>.feature` → `docs/features/completed/<name>.feature`; update the session file in `.flowr/sessions/` (`@state: STEP-5-MERGE`); notify stakeholder. The stakeholder decides when to trigger PR and release. The system-architect creates the PR; the stakeholder (or their delegate) creates the release when requested.
+4. **If rejected**: write specific feedback in the session file in `.flowr/sessions/` pointing to the failing step, then send back to the relevant step.
 
 ## Handling Gaps
 
@@ -64,11 +64,11 @@ When a gap is reported (by software-engineer or system-architect):
 When a defect is reported against any feature:
 
 1. Add a `@bug` Example to the relevant `Rule:` block in the `.feature` file using the standard `Given/When/Then` format describing the correct behaviour.
-2. Update the session file in `.flowception/` `@state` to reflect the bug work and notify the software-engineer.
+2. Update the session file in `.flowr/sessions/` `@state` to reflect the bug work and notify the software-engineer.
 3. SE implements the test in `tests/features/` **and** a `@given` Hypothesis property test in `tests/unit/`. Both are required.
 
 ## Available Skills
 
 - `run-session` — session start/end protocol
-- `select-feature` — when .flowr/feature-flow.yaml Status is [IDLE]: score and select next backlog feature using WSJF
+- `select-feature` — when .flowr/flows/feature-flow.yaml Status is [IDLE]: score and select next backlog feature using WSJF
 - `define-scope` — Step 1: Stage 1 (Discovery sessions with stakeholder) and Stage 2 (Stories + Criteria, PO alone)

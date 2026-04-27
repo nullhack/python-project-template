@@ -17,7 +17,7 @@ Select the next most valuable, unblocked feature from the backlog using a lightw
 
 ## When to Use
 
-Load this skill when the session file in `.flowception/` `state` is `idle` (or no active item) — before moving any feature to `in-progress/`.
+Load this skill when the session file in `.flowr/sessions/` `state` is `idle` (or no active item) — before moving any feature to `in-progress/`.
 
 ## Step-by-Step
 
@@ -64,7 +64,7 @@ See [[requirements/wsjf]] for selection rules including tiebreaker logic and han
 mv docs/features/backlog/<name>.feature docs/features/in-progress/<name>.feature
 ```
 
-Update the session file in `.flowception/` — add (or replace) the active item block:
+Update the session file in `.flowr/sessions/` — add (or replace) the active item block:
 
 ```markdown
 ## Active Items
@@ -81,7 +81,7 @@ Update the session file in `.flowception/` — add (or replace) the active item 
 ### 6. Commit
 
 ```bash
-git add docs/features/in-progress/<name>.feature .flowception/
+git add docs/features/in-progress/<name>.feature .flowr/sessions/session.yaml
 git commit -m "chore: select <name> as next feature"
 ```
 

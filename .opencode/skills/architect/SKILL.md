@@ -11,7 +11,7 @@ workflow: feature-lifecycle
 
 Step 2: conduct the architectural interview, design the domain model, write architecture stubs, record decisions as ADRs, and generate test stubs. The system-architect owns this step entirely.
 
-This step is a subflow defined in `.flowr/arch-cycle.yaml` with 5 states: **read → interview → validate → design → stubs**.
+This step is a subflow defined in `.flowr/flows/arch-cycle.yaml` with 5 states: **read → interview → validate → design → stubs**.
 
 ## When to Use
 
@@ -33,7 +33,7 @@ Design correctness is far more important than lint/pyright/coverage compliance. 
 
 ### Prerequisites (stop if any fail — escalate to PO)
 
-1. `docs/features/in-progress/` contains exactly one `.feature` file (not just `.gitkeep`). If none exists, **STOP** — update the session file in `.flowception/` `@state` to `idle` and stop. Never self-select or move a feature yourself.
+1. `docs/features/in-progress/` contains exactly one `.feature` file (not just `.gitkeep`). If none exists, **STOP** — update the session file in `.flowr/sessions/` `@state` to `idle` and stop. Never self-select or move a feature yourself.
 2. The feature file's discovery section has `Status: BASELINED`. If not, escalate to PO — Step 1 is incomplete.
 3. The feature file contains `Rule:` blocks with `Example:` blocks and `@id` tags. If not, escalate to PO — criteria have not been written.
 4. Package name confirmed: read `pyproject.toml` → locate `[tool.setuptools]` → confirm directory exists on disk.
@@ -44,7 +44,7 @@ Design correctness is far more important than lint/pyright/coverage compliance. 
 2. Confirm directory exists: `ls <name>/`
 3. All new source files go under `<name>/`
 
-**Note on feature file moves**: The PO moves `.feature` files between folders. The system-architect never moves, creates, or edits `.feature` files. Verify the session file in `.flowception/` has the correct `id` and `branch` set before beginning architecture work.
+**Note on feature file moves**: The PO moves `.feature` files between folders. The system-architect never moves, creates, or edits `.feature` files. Verify the session file in `.flowr/sessions/` has the correct `id` and `branch` set before beginning architecture work.
 
 ---
 
@@ -141,7 +141,7 @@ Commit: `feat(<feature-stem>): add architecture and test stubs`
 
 ### Hand off to Step 3 (TDD Loop)
 
-1. Update the session file in `.flowception/`: `state` to `step-3-working` (the TDD subflow's `setup` state handles branch creation)
+1. Update the session file in `.flowr/sessions/`: `state` to `step-3-working` (the TDD subflow's `setup` state handles branch creation)
 2. Provide the SE with:
    - Feature file path
    - Summary of stubs created
@@ -155,7 +155,7 @@ Commit: `feat(<feature-stem>): add architecture and test stubs`
 
 If during architecture you discover behaviour not covered by existing acceptance criteria:
 - **Do not extend criteria yourself** — escalate to PO
-- Note the gap in the session file in `.flowception/` and escalate to PO
+- Note the gap in the session file in `.flowr/sessions/` and escalate to PO
 - The PO will decide whether to add a new Example to the `.feature` file
 
 ---

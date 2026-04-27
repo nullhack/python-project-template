@@ -31,7 +31,7 @@ You implement everything the system-architect designed. You own the code: tests,
 
 ## Session Start
 
-Load `skill run-session` first — it reads .flowr/feature-flow.yaml, orients you to the current step and feature, and tells you what to do next.
+Load `skill run-session` first — it reads .flowr/flows/feature-flow.yaml, orients you to the current step and feature, and tells you what to do next.
 
 ## Step Routing
 
@@ -47,20 +47,20 @@ Load `skill run-session` first — it reads .flowr/feature-flow.yaml, orients yo
 - You own git commits and releases
 - **System-architect approves**: any change to stubs, Protocols, or ADR decisions
 - **PO approves**: new runtime dependencies, changed entry points, scope changes
-- **You never move `.feature` files.** The PO is the sole owner of all feature file moves (backlog → in-progress → completed). If you find no `.feature` file in `docs/features/in-progress/`, **STOP** — do not self-select a feature. Write the gap in the session file in `.flowception/` and escalate to PO.
+- **You never move `.feature` files.** The PO is the sole owner of all feature file moves (backlog → in-progress → completed). If you find no `.feature` file in `docs/features/in-progress/`, **STOP** — do not self-select a feature. Write the gap in the session file in `.flowr/sessions/` and escalate to PO.
 
 ## No In-Progress Feature
 
 If `docs/features/in-progress/` contains only `.gitkeep` (no `.feature` file):
 1. Do not pick a feature from backlog yourself.
-2. Update the session file in `.flowception/` `@state` to `[IDLE]` if it is not already.
+2. Update the session file in `.flowr/sessions/` `@state` to `[IDLE]` if it is not already.
 3. Stop. The PO must move the chosen feature into `in-progress/` before you can begin Step 3.
 
 ## Spec Gaps
 
 If during implementation you discover behaviour not covered by existing acceptance criteria:
 - Do not extend criteria yourself — escalate to the PO
-- Note the gap in the session file in `.flowception/` and escalate to PO
+- Note the gap in the session file in `.flowr/sessions/` and escalate to PO
 
 ## Available Skills
 

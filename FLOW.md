@@ -8,23 +8,23 @@ This file is a redirect. The workflow state machine is now defined as YAML flow 
 
 | Artifact | Location | Description |
 |---|---|---|
-| Flow definitions | `.flowr/*.yaml` | Static state machine definitions (YAML) |
-| Session state | `.flowception/session-*.yaml` | Dynamic work tracking (YAML) |
+| Flow definitions | `.flowr/flows/*.yaml` | Static state machine definitions (YAML) |
+| Session state | `.flowr/sessions/session.yaml` | Dynamic work tracking (YAML) |
 | Workflow knowledge | [[workflow/state-machine]] | FSM fundamentals, YAML format, contracts, session protocol |
 
 ## Active Flows
 
 | Flow | File | Description |
 |---|---|---|
-| `feature-flow` | `.flowr/feature-flow.yaml` | Full feature development lifecycle (7 states + 3 subflows) |
-| `scope-cycle` | `.flowr/scope-cycle.yaml` | Scope subflow: backlog-criteria → discovery → stories → criteria (4 states) |
-| `arch-cycle` | `.flowr/arch-cycle.yaml` | Architecture subflow: read → interview → validate → design → stubs (5 states) |
-| `tdd-cycle` | `.flowr/tdd-cycle.yaml` | TDD subflow: setup → red → green → refactor (4 states) |
+| `feature-flow` | `.flowr/flows/feature-flow.yaml` | Full feature development lifecycle (7 states + 3 subflows) |
+| `scope-cycle` | `.flowr/flows/scope-cycle.yaml` | Scope subflow: backlog-criteria → discovery → stories → criteria (4 states) |
+| `arch-cycle` | `.flowr/flows/arch-cycle.yaml` | Architecture subflow: read → interview → validate → design → stubs (5 states) |
+| `tdd-cycle` | `.flowr/flows/tdd-cycle.yaml` | TDD subflow: setup → red → green → refactor (4 states) |
 
 ## Quick Reference
 
-Read `.flowr/feature-flow.yaml` for state definitions, transitions, and contracts.
-Read `.flowception/session-*.yaml` for current work state.
+Read `.flowr/flows/feature-flow.yaml` for state definitions, transitions, and contracts.
+Read `.flowr/sessions/session.yaml` for current work state.
 Read [[workflow/state-machine]] for FSM theory, YAML schema, and transition protocol.
 
 ## Detection Rules
@@ -53,8 +53,8 @@ All must be satisfied before starting any session. If any are missing, stop and 
 | Role: product-owner | `test -f .opencode/agents/product-owner.md` |
 | Role: system-architect | `test -f .opencode/agents/system-architect.md` |
 | Role: software-engineer | `test -f .opencode/agents/software-engineer.md` |
-| Flow definition | `test -f .flowr/feature-flow.yaml` |
-| Session file | `ls .flowception/session-*.yaml 2>/dev/null` |
+| Flow definition | `test -f .flowr/flows/feature-flow.yaml` |
+| Session file | `ls .flowr/sessions/session.yaml 2>/dev/null` |
 | Tool: uv | `command -v uv` |
 | Tool: git | `command -v git` |
 | Dir: docs/features/ | `test -d docs/features/backlog` |

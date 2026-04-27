@@ -1,6 +1,6 @@
 ---
 domain: workflow
-tags: [fsm, state-machine, flow, work-tracking, yaml, flowception]
+tags: [fsm, state-machine, flow, work-tracking, yaml, flowr]
 last-updated: 2026-04-26
 ---
 
@@ -9,7 +9,7 @@ last-updated: 2026-04-26
 ## Key Takeaways
 
 - Flows are FSMs defined in YAML with states, transitions, guards, and exits; design principles: determinism, reachability, termination, single responsibility per state.
-- Flow definitions are static YAML in `.flowr/`; session files in `.flowception/` track dynamic state; agents read flows for what to do and sessions for what is active.
+- Flow definitions are static YAML in `.flowr/flows/`; session files in `.flowr/sessions/` track dynamic state; agents read flows for what to do and sessions for what is active.
 - Transitions are atomic: actor sends trigger + evidence, library validates against contracts, session updates and persists only on success.
 - The filesystem is the source of truth; if session state and filesystem disagree, update the session to match.
 - `exits` is always required — it declares a flow's contract with parent flows; `when` guards are always explicit, no inheritance.
@@ -18,7 +18,7 @@ last-updated: 2026-04-26
 
 **FSM Fundamentals**: A finite state machine consists of states, transitions, guards, and exits. Design principles: determinism, reachability, termination, single responsibility per state. Every `next` target resolves to either a state id (internal transition) or an exit name (subflow exit). The library validates this at load time.
 
-**YAML Flow and Session Pattern**: Flow definitions are static YAML files in `.flowr/` — only the stakeholder may modify them. Session files in `.flowception/` are dynamic work trackers updated by agents at every transition. Agents read flow files to know what to do, read session files to know what is active, and write only to session files during normal operation.
+**YAML Flow and Session Pattern**: Flow definitions are static YAML files in `.flowr/flows/` — only the stakeholder may modify them. Session files in `.flowr/sessions/` are dynamic work trackers updated by agents at every transition. Agents read flow files to know what to do, read session files to know what is active, and write only to session files during normal operation.
 
 **Transition Protocol**: Transitions are atomic. The actor sends a trigger plus evidence. The library validates: transition exists from current state, evidence keys match, each `when` condition is satisfied. Valid transitions update session state and persist. Invalid transitions return a warning with no state change.
 

@@ -11,10 +11,10 @@ workflow: session-management
 
 This skill defines how to **operate** a state machine workflow using YAML flow definitions and session tracking.
 
-- **Flow definitions** (`.flowr/*.yaml`) — static state machine definitions (never change during execution)
-- **Session files** (`.flowception/session-*.yaml`) — dynamic work trackers (updated by agents at every transition)
+- **Flow definitions** (`.flowr/flows/*.yaml`) — static state machine definitions (never change during execution)
+- **Session files** (`.flowr/sessions/session.yaml`) — dynamic work trackers (updated by agents at every transition)
 
-The project's current workflow is defined in `.flowr/`. Load this skill when:
+The project's current workflow is defined in `.flowr/flows/`. Load this skill when:
 - Starting any session (to understand the operating protocol)
 - Creating a new workflow from scratch
 - Modifying an existing workflow
@@ -27,8 +27,8 @@ See [[workflow/state-machine]] for FSM fundamentals, YAML flow format, and trans
 
 ### Session Start (all agents)
 
-1. Read the active flow definition from `.flowr/feature-flow.yaml`
-2. Read the active session from `.flowception/session-*.yaml` — note current flow, state, and params
+1. Read the active flow definition from `.flowr/flows/feature-flow.yaml`
+2. Read the active session from `.flowr/sessions/session.yaml` — note current flow, state, and params
 3. Run auto-detection to verify the session state matches the filesystem
 4. If detected state differs from the session file, update the session file to match reality (filesystem wins)
 5. Check prerequisites from the flow definition — if any missing, stop and report
@@ -41,7 +41,7 @@ See [[workflow/state-machine]] for FSM fundamentals, YAML flow format, and trans
    - Set current state to the new state
 2. Commit session file update before any further work:
    ```bash
-   git add .flowception/ && git commit -m "chore: transition to <state>"
+   git add .flowr/sessions/session.yaml && git commit -m "chore: transition to <state>"
    ```
 3. Commit any remaining work as WIP if not fully complete:
    ```bash
@@ -60,7 +60,7 @@ If the session file and auto-detection disagree, the filesystem is the source of
 
 ## Designing a Workflow
 
-Flow definitions are YAML files in `.flowr/`. Use the flowception v1 format. See `.flowr/feature-flow.yaml` as an example. See [[workflow/state-machine]] for the full schema, contract syntax, and state definition fields.
+Flow definitions are YAML files in `.flowr/flows/`. Use the flowception v1 format. See `.flowr/flows/feature-flow.yaml` as an example. See [[workflow/state-machine]] for the full schema, contract syntax, and state definition fields.
 
 Key v1 format rules:
 - `exits` is always required — it declares the flow's contract with parent flows
@@ -73,14 +73,14 @@ Key v1 format rules:
 
 ## Session Format
 
-Session files live in `.flowception/` and track the active flow, current state, parameter namespace, and transition history. See [[workflow/state-machine]] for the full session schema.
+Session files live in `.flowr/sessions/` and track the active flow, current state, parameter namespace, and transition history. See [[workflow/state-machine]] for the full session schema.
 
 ---
 
 ## Creating a New Workflow
 
 Steps:
-1. Create a new YAML file in `.flowr/` following the flowception v1 format
+1. Create a new YAML file in `.flowr/flows/` following the flowception v1 format
 2. Define `flow`, `version`, `exits`, and `states` (minimum required fields)
 3. Use `when` dicts for guarded transitions, `flow` + `flow-version` for subflows
 4. Put project-specific data (agents, descriptions) in `attrs`

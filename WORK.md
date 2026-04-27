@@ -1,8 +1,8 @@
 # WORK — Active Work Tracking
 
-This file is a redirect. Dynamic work state is now tracked in flowception session files.
+This file is a redirect. Dynamic work state is now tracked in session files within `.flowr/sessions/`.
 
-**Read `.flowception/session-*.yaml`** for the current session state.
+**Read `.flowr/sessions/session.yaml`** for the current session state.
 
 Each session tracks:
 - `current.flow` — which flow is active (e.g. `feature-flow`)
@@ -15,7 +15,7 @@ Each session tracks:
 
 ## Active Items
 
-<!-- This section is kept for backwards compatibility. The authoritative source is .flowception/session-*.yaml -->
+<!-- This section is kept for backwards compatibility. The authoritative source is .flowr/sessions/session.yaml -->
 
 - @id: [IDLE]
   @state: idle

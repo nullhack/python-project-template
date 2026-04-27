@@ -170,7 +170,7 @@ cython_debug/
 #.idea/
 .mutmut-cache
 
-# Flowception session files (local working state)
-.flowception/session-*.yaml
+# Session files (local working state)
+.flowr/sessions/session.yaml
 
 # Trigger CI run to verify linting fixes

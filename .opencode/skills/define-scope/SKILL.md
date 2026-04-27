@@ -397,7 +397,7 @@ Stakeholder reports a feature is wrong after PO acceptance attempt.
    ```
 4. **PO scans `docs/post-mortem/`**, selects relevant files by `<feature-stem>` or `<failure-keyword>` in filename.
 5. **PO reads selected post-mortems** for context before handoff.
-6. **PO updates the session file in `.flowception/`**: set `state: step-2-arch` (enters arch-cycle subflow), `branch: fix/<feature-stem>`.
+6. **PO updates the session file in `.flowr/sessions/`**: set `state: step-2-arch` (enters arch-cycle subflow), `branch: fix/<feature-stem>`.
 7. **SA begins Step 2** (arch-cycle subflow) on `fix/<feature-stem>`, reading relevant post-mortems as input.
 
 ### Document Format

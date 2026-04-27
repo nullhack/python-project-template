@@ -11,7 +11,7 @@ workflow: session-management
 
 Every session starts by reading state. Every session ends by writing state. This makes any agent able to continue from where the last session stopped.
 
-State is tracked across two locations: `.flowr/feature-flow.yaml` (static flow definition — never modified by agents) and `.flowception/session-*.yaml` (dynamic session state — updated every session). Agents read `.flowr/feature-flow.yaml` to understand the workflow; they read and update `.flowception/session-*.yaml` to track the active feature.
+State is tracked across two locations: `.flowr/flows/feature-flow.yaml` (static flow definition — never modified by agents) and `.flowr/sessions/session.yaml` (dynamic session state — updated every session). Agents read `.flowr/flows/feature-flow.yaml` to understand the workflow; they read and update `.flowr/sessions/session.yaml` to track the active feature.
 
 ## Read Policy
 
@@ -19,21 +19,21 @@ Each agent reads only what is operationally necessary for their current step. Do
 
 | Agent | Reads |
 |---|---|
-| PO (Step 1) | `.flowception/session-*.yaml`, `.flowr/feature-flow.yaml`, `scope_journal.md` (resume check), `system.md` (Domain Model section, read-only), `glossary.md`, `docs/post-mortem/` (selective scan), in-progress `.feature` |
-| SA (Step 2) | `.flowception/session-*.yaml`, `.flowr/feature-flow.yaml`, `system.md`, `glossary.md`, in-progress `.feature`, targeted `.py` files |
-| SE (Step 3) | `.flowception/session-*.yaml`, `.flowr/feature-flow.yaml`, `system.md`, `glossary.md`, in-progress `.feature`, targeted `.py` files |
-| SA (Step 4) | `.flowception/session-*.yaml`, `.flowr/feature-flow.yaml`, `system.md`, `glossary.md`, in-progress `.feature`, ADR files referenced in `system.md` |
+| PO (Step 1) | `.flowr/sessions/session.yaml`, `.flowr/flows/feature-flow.yaml`, `scope_journal.md` (resume check), `system.md` (Domain Model section, read-only), `glossary.md`, `docs/post-mortem/` (selective scan), in-progress `.feature` |
+| SA (Step 2) | `.flowr/sessions/session.yaml`, `.flowr/flows/feature-flow.yaml`, `system.md`, `glossary.md`, in-progress `.feature`, targeted `.py` files |
+| SE (Step 3) | `.flowr/sessions/session.yaml`, `.flowr/flows/feature-flow.yaml`, `system.md`, `glossary.md`, in-progress `.feature`, targeted `.py` files |
+| SA (Step 4) | `.flowr/sessions/session.yaml`, `.flowr/flows/feature-flow.yaml`, `system.md`, `glossary.md`, in-progress `.feature`, ADR files referenced in `system.md` |
 
 ## Session Start
 
-1. **Read session file from `.flowception/`** — find the active session YAML: `@id`, `@state`, `@branch`.
-   - If no session file exists in `.flowception/`, create one from `.opencode/skills/flow/session.yaml.template`
-2. **Read flow definition from `.flowr/feature-flow.yaml`** — understand the static workflow (roles, states, detection rules, transitions).
-   - If `.flowr/feature-flow.yaml` does not exist, create it from `.opencode/skills/flow/feature-flow.yaml.template`
-   - If `.flowr/feature-flow.yaml` exists but is empty or malformed, recreate from template
-3. **Run `detect-state`** — execute the auto-detection rules from `.flowr/feature-flow.yaml` to determine the actual workflow state from filesystem and git state.
-   - If detected state differs from session file `@state`, update the session file to match reality. **Never modify `.flowr/feature-flow.yaml`.**
-4. **Check prerequisites** — verify the Prerequisites table in `.flowr/feature-flow.yaml`. If any are unchecked, stop and report.
+1. **Read session file from `.flowr/sessions/`** — read the session YAML: `@id`, `@state`, `@branch`.
+   - If no session file exists in `.flowr/sessions/`, create one from `.opencode/skills/flow/session.yaml.template`
+2. **Read flow definition from `.flowr/flows/feature-flow.yaml`** — understand the static workflow (roles, states, detection rules, transitions).
+   - If `.flowr/flows/feature-flow.yaml` does not exist, create it from `.opencode/skills/flow/feature-flow.yaml.template`
+   - If `.flowr/flows/feature-flow.yaml` exists but is empty or malformed, recreate from template
+3. **Run `detect-state`** — execute the auto-detection rules from `.flowr/flows/feature-flow.yaml` to determine the actual workflow state from filesystem and git state.
+   - If detected state differs from session file `@state`, update the session file to match reality. **Never modify `.flowr/flows/feature-flow.yaml`.**
+4. **Check prerequisites** — verify the Prerequisites table in `.flowr/flows/feature-flow.yaml`. If any are unchecked, stop and report.
 5. **If you are the PO** and Step 1 (SCOPE) is active: check `docs/scope_journal.md` for the most recent session block.
    - If the most recent block has `Status: IN-PROGRESS` → the previous session was interrupted. Resume it before starting a new session: finish updating `.feature` files and their `## Changes` sections, then mark the block `Status: COMPLETE`.
 6. If a feature is active at Step 2–5, read:
@@ -54,7 +54,7 @@ Each agent reads only what is operationally necessary for their current step. Do
 
 ## Session End
 
-1. Update session file in `.flowception/`:
+1. Update session file in `.flowr/sessions/`:
    - Set `@state` to the detected state
 2. Commit any uncommitted work (even WIP):
    ```bash
@@ -67,10 +67,10 @@ Each agent reads only what is operationally necessary for their current step. Do
 
 When a step completes within a session:
 
-1. Update the session file in `.flowception/` to reflect the completed step before doing any other work.
+1. Update the session file in `.flowr/sessions/` to reflect the completed step before doing any other work.
 2. Commit the session file update:
    ```bash
-   git add .flowception/
+   git add .flowr/sessions/session.yaml
    git commit -m "chore: complete step <N> for <feature-stem>"
    ```
 3. Only then begin the next step (in a new session where possible — see Rule 4).
@@ -86,13 +86,13 @@ active_items:
 
 ## Rules
 
-1. Never skip reading the session file in `.flowception/` and `.flowr/feature-flow.yaml` at session start
-2. Never end a session without updating the session file in `.flowception/`
+1. Never skip reading the session file in `.flowr/sessions/` and `.flowr/flows/feature-flow.yaml` at session start
+2. Never end a session without updating the session file in `.flowr/sessions/`
 3. Never leave uncommitted changes — commit as WIP if needed
 4. One step per session where possible; do not start Step N+1 in the same session as Step N
-5. When a step completes, update the session file in `.flowception/` and commit **before** any further work
-6. If `.flowr/feature-flow.yaml` is missing, create it from `.opencode/skills/flow/feature-flow.yaml.template` before doing any other work
-7. If detected state differs from session file `@state`, trust the detected state and update the session file. **Never modify `.flowr/feature-flow.yaml`.**
+5. When a step completes, update the session file in `.flowr/sessions/` and commit **before** any further work
+6. If `.flowr/flows/feature-flow.yaml` is missing, create it from `.opencode/skills/flow/feature-flow.yaml.template` before doing any other work
+7. If detected state differs from session file `@state`, trust the detected state and update the session file. **Never modify `.flowr/flows/feature-flow.yaml`.**
 8. Output is minimal-signal: findings, status, decisions, blockers only. Use the fewest, least verbose tool calls necessary. Report results, not process. No redundant prose.
 
 ## Output Style

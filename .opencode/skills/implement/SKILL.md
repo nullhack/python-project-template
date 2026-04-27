@@ -11,7 +11,7 @@ workflow: feature-lifecycle
 
 Step 3: RED → GREEN → REFACTOR, one @id at a time. The software-engineer owns this step entirely.
 
-This step is a subflow defined in `.flowr/tdd-cycle.yaml` with 4 states: **setup → red → green → refactor**. The `setup` state creates or switches to the feature branch.
+This step is a subflow defined in `.flowr/flows/tdd-cycle.yaml` with 4 states: **setup → red → green → refactor**. The `setup` state creates or switches to the feature branch.
 
 ## When to Use
 

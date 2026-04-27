@@ -59,7 +59,7 @@ All feature work happens on branches. `main` is the single source of truth and r
 | `backlog/` → `in-progress/` | PO only | Before Step 2 begins; only if `Status: BASELINED` |
 | `in-progress/` → `completed/` | PO only | After Step 5 acceptance |
 
-**If an agent (SE or SA) finds no `.feature` in `in-progress/`**: update the session file in `.flowception/` `@state` to `idle` and stop. Never self-select a backlog feature.
+**If an agent (SE or SA) finds no `.feature` in `in-progress/`**: update the session file in `.flowr/sessions/` `@state` to `idle` and stop. Never self-select a backlog feature.
 
 ## Agents
 
@@ -151,7 +151,7 @@ If the stakeholder reports failure **after the PO has attempted Step 5 acceptanc
 2. **Team compiles a compact post-mortem** (`docs/post-mortem/YYYY-MM-DD-<feature-stem>-<keyword>.md`, max 15 lines, process-level root cause).
 3. **SE creates a fix branch** from the feature's original start commit: `git checkout -b fix/<stem> <start-sha>`. The post-mortem is committed as the first commit on this branch.
 4. **PO scans `docs/post-mortem/`** and selects relevant files by matching `<feature-stem>` or `<failure-keyword>`.
-5. **PO reads selected post-mortems**, then updates the session file in `.flowception/` to set `@state: step-2-arch` (enters arch-cycle subflow) and `@branch: fix/<stem>` with context.
+5. **PO reads selected post-mortems**, then updates the session file in `.flowr/sessions/` to set `@state: step-2-arch` (enters arch-cycle subflow) and `@branch: fix/<stem>` with context.
 6. **SA restarts Step 2** on `fix/<stem>`, reading relevant post-mortems as input. The same feature re-enters the ARCH step.
 7. After acceptance, SE merges `fix/<stem>` to `main` with `--no-ff`.
 
@@ -180,10 +180,10 @@ tests/
   unit/
     <anything>_test.py                ← software-engineer-authored extras (no @id traceability)
 
-FLOW.md                               ← redirect: points to .flowr/ and .flowception/
-WORK.md                               ← redirect: points to .flowception/ session files
-.flowception/                         ← session YAML files (local working state, gitignored)
-.flowr/                           ← flow definition YAML files (versioned)
+FLOW.md                               ← redirect: points to .flowr/flows/ and .flowr/sessions/
+WORK.md                               ← redirect: points to .flowr/sessions/ session files
+.flowr/flows/                         ← flow definition YAML files (versioned)
+.flowr/sessions/                     ← session YAML files (local working state, gitignored)
 ```
 
 Tests in `tests/unit/` are software-engineer-authored extras not covered by any `@id` criterion. Any test style is valid — plain `assert` or Hypothesis `@given`. Use Hypothesis when the test covers a **property** that holds across many inputs (mathematical invariants, parsing contracts, value object constraints). Use plain pytest for specific behaviours or single edge cases discovered during refactoring.
@@ -295,11 +295,11 @@ The stakeholder initiates the release process. When the stakeholder requests a r
 
 ## Session Management
 
-Every session: load `skill run-session`. Read flow definitions from `.flowr/` and session state from `.flowception/` at session start; update the session file at the end.
+Every session: load `skill run-session`. Read flow definitions from `.flowr/flows/` and session state from `.flowr/sessions/` at session start; update the session file at the end.
 
-- **Flow definitions** (`.flowr/*.yaml`) — static state machine definitions. **Agents never modify these files.** Only the stakeholder (human) may change them.
-- **Session files** (`.flowception/session-*.yaml`) — dynamic work tracking. Updated by the state owner at every transition.
-- **FLOW.md** and **WORK.md** — redirects pointing to `.flowr/` and `.flowception/` respectively.
+- **Flow definitions** (`.flowr/flows/*.yaml`) — static state machine definitions. **Agents never modify these files.** Only the stakeholder (human) may change them.
+- **Session files** (`.flowr/sessions/session.yaml`) — dynamic work tracking. Updated by the state owner at every transition.
+- **FLOW.md** and **WORK.md** — redirects pointing to `.flowr/flows/` and `.flowr/sessions/` respectively.
 
 ## Setup
 
