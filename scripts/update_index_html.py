@@ -20,6 +20,13 @@ type SectionMap = dict[str, str]
 _FEATURE_DIRS: tuple[str, ...] = ("completed", "in-progress", "backlog")
 _DOC_CARDS: tuple[tuple[str, str, str, str, str], ...] = (
     (
+        "Product",
+        "Product Definition",
+        "github",
+        "docs/product-definition.md",
+        "Product boundaries, users, and scope",
+    ),
+    (
         "Architecture",
         "System Overview",
         "github",
@@ -32,6 +39,13 @@ _DOC_CARDS: tuple[tuple[str, str, str, str, str], ...] = (
         "github",
         "docs/glossary.md",
         "Living domain glossary — append-only, source-traced definitions",
+    ),
+    (
+        "Scope",
+        "Scope Journal",
+        "github",
+        "docs/scope_journal.md",
+        "Raw Q&A from discovery sessions",
     ),
     (
         "Reference",

@@ -12,8 +12,8 @@ Exit 1 on missing tags, duplicate IDs, or write failures.
 
 from __future__ import annotations
 
-import random
 import re
+import secrets
 import sys
 from pathlib import Path
 
@@ -27,7 +27,7 @@ FEATURE_STAGES: tuple[str, ...] = ("backlog", "in-progress", "completed")
 def _generate_id(existing_ids: set[str]) -> str:
     """Generate a unique 8-char hex ID not in existing_ids."""
     while True:
-        new_id = f"{random.randint(0, 0xFFFFFFFF):08x}"
+        new_id = f"{secrets.randbelow(0x100000000):08x}"
         if new_id not in existing_ids:
             return new_id
 
@@ -54,13 +54,10 @@ def _assign_ids_in_file(feature_path: Path, existing_ids: set[str]) -> list[str]
 
         if _EXAMPLE_RE.match(line):
             has_id = False
-            tag_line_idx = None
 
-            if i > 0 and _TAG_LINE_RE.match(lines[i - 1]):
-                for m in _ID_RE.finditer(lines[i - 1]):
-                    has_id = True
-                    break
-                tag_line_idx = i - 1
+            prev_has_tag = i > 0 and _TAG_LINE_RE.match(lines[i - 1])
+            if prev_has_tag and _ID_RE.search(lines[i - 1]):
+                has_id = True
 
             if not has_id:
                 new_id = _generate_id(existing_ids)

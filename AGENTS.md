@@ -2,6 +2,8 @@
 
 A Python template to quickstart any project with a production-ready workflow, quality tooling, and AI-assisted development.
 
+Product definition: `docs/product-definition.md`
+
 ## Workflow Overview
 
 Features flow through 5 steps with a WIP limit of 1 feature at a time. The filesystem enforces WIP:
@@ -159,6 +161,7 @@ Post-mortems are append-only, never edited. If a failure mode recurs, write a ne
 
 ```
 docs/
+  product-definition.md              ← product boundaries, users, scope, delivery order
   scope_journal.md                    ← raw Q&A, PO appends after every session
   adr/                                ← one file per decision: ADR-YYYY-MM-DD-<slug>.md, SA creates at Step 2
   system.md                           ← SA-owned current-state snapshot: domain model + Context + Container sections + modules + constraints + key decisions; SA rewrites at Step 2
