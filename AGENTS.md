@@ -232,6 +232,9 @@ uv run task test-fast
 # Assign @id tags to untagged Examples (PO runs at Step 1 Criteria)
 uv run task assign-ids
 
+# Validate flow YAML definitions against the flowr specification
+uv run task validate-flows
+
 # Run full test suite with coverage
 uv run task test
 

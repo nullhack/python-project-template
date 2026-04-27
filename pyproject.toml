@@ -28,6 +28,7 @@ dev = [
     "hypothesis>=6.148.4",
     "pyright>=1.1.407",
     "ghp-import>=2.1.0",
+    "flowr>=0.3",
 ]
 
 [tool.setuptools]
@@ -143,6 +144,7 @@ pytest \
 doc-publish = "task doc-build && ghp-import -n -p -f docs"
 static-check = "pyright app tests"
 assign-ids = "python scripts/assign_ids.py"
+validate-flows = "python -m flowr validate .flowr/feature-flow.yaml && python -m flowr validate .flowr/scope-cycle.yaml && python -m flowr validate .flowr/arch-cycle.yaml && python -m flowr validate .flowr/tdd-cycle.yaml"
 release-check = "python scripts/check_version.py && task lint && task static-check && task test && task doc-build"
 
 [dependency-groups]
