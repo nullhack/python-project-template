@@ -30,7 +30,6 @@
       min-height: 100vh;
     }
 
-    /* ── Gold border bands ── */
     body::before, body::after {
       content: "";
       display: block;
@@ -38,7 +37,6 @@
       background: linear-gradient(90deg, var(--gold) 0%, var(--gold-light) 50%, var(--gold) 100%);
     }
 
-    /* ── Header ── */
     header {
       display: flex;
       align-items: center;
@@ -66,14 +64,12 @@
       margin-top: 0.2rem;
     }
 
-    /* ── Main layout ── */
     main {
       max-width: 960px;
       margin: 0 auto;
       padding: 2.5rem 3rem 4rem;
     }
 
-    /* ── Section titles ── */
     .section-title {
       font-size: 0.7rem;
       font-weight: normal;
@@ -96,7 +92,14 @@
       flex-shrink: 0;
     }
 
-    /* ── Generated docs grid ── */
+    .role-label {
+      font-size: 0.65rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.15rem;
+    }
+
     .docs-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -137,137 +140,6 @@
       line-height: 1.5;
     }
 
-    /* ── Features section ── */
-    .features-section { margin-bottom: 3rem; }
-    .features-tabs {
-      display: flex;
-      gap: 0;
-      margin-bottom: 1.25rem;
-      border-bottom: 2px solid var(--stone-mid);
-    }
-    .tab-btn {
-      background: none;
-      border: none;
-      padding: 0.6rem 1.2rem;
-      font-family: inherit;
-      font-size: 0.8rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      cursor: pointer;
-      color: var(--stone-dark);
-      border-bottom: 2px solid transparent;
-      margin-bottom: -2px;
-      transition: color 0.15s, border-color 0.15s;
-    }
-    .tab-btn:hover { color: var(--brown); }
-    .tab-btn.active { color: var(--brown-deep); border-bottom-color: var(--gold); }
-    .tab-pane { display: none; }
-    .tab-pane.active { display: block; }
-
-    .feature-list { list-style: none; }
-    .feature-item {
-      display: flex;
-      align-items: baseline;
-      gap: 0.75rem;
-      padding: 0.6rem 0;
-      border-bottom: 1px solid var(--parchment-mid);
-      font-size: 0.9rem;
-    }
-    .feature-item:last-child { border-bottom: none; }
-    .feature-stem {
-      font-family: "Courier New", monospace;
-      font-size: 0.8rem;
-      color: var(--aegean-deep);
-      background: var(--stone);
-      padding: 0.1rem 0.4rem;
-      border-radius: 3px;
-      flex-shrink: 0;
-    }
-    .feature-title { color: var(--brown-deep); flex: 1; }
-    .feature-status {
-      font-size: 0.7rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      padding: 0.15rem 0.5rem;
-      border-radius: 3px;
-      flex-shrink: 0;
-    }
-    .status-completed { background: #e8f5e9; color: #2e7d32; }
-    .status-in-progress { background: #fff3e0; color: #e65100; }
-    .status-backlog { background: var(--stone); color: var(--stone-dark); }
-    .empty-note {
-      font-size: 0.85rem;
-      color: var(--stone-dark);
-      font-style: italic;
-      padding: 0.8rem 0;
-    }
-
-    /* ── ADR list ── */
-    .adr-list { list-style: none; margin-bottom: 3rem; }
-    .adr-item {
-      display: flex;
-      align-items: baseline;
-      gap: 0.75rem;
-      padding: 0.55rem 0;
-      border-bottom: 1px solid var(--parchment-mid);
-      font-size: 0.88rem;
-    }
-    .adr-item:last-child { border-bottom: none; }
-    .adr-date {
-      font-family: "Courier New", monospace;
-      font-size: 0.78rem;
-      color: var(--stone-dark);
-      flex-shrink: 0;
-    }
-    .adr-slug { color: var(--brown-deep); flex: 1; }
-    .adr-status {
-      font-size: 0.68rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--gold);
-      flex-shrink: 0;
-    }
-
-    /* ── Research list ── */
-    .research-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-      gap: 0.75rem;
-      margin-bottom: 3rem;
-    }
-    .research-item {
-      background: var(--stone);
-      border: 1px solid var(--stone-mid);
-      border-radius: 3px;
-      padding: 0.75rem 1rem;
-      font-size: 0.82rem;
-    }
-    .research-item-title { color: var(--brown); margin-bottom: 0.2rem; font-style: italic; }
-    .research-item-meta { color: var(--stone-dark); font-size: 0.75rem; }
-
-    a.research-item {
-      text-decoration: none;
-      color: inherit;
-      transition: border-color 0.15s, box-shadow 0.15s;
-    }
-    a.research-item:hover {
-      border-color: var(--aegean);
-      box-shadow: 0 2px 8px rgba(59,36,16,0.07);
-    }
-    a.feature-stem {
-      text-decoration: none;
-      color: var(--aegean-deep);
-      background: var(--stone);
-      padding: 0.1rem 0.4rem;
-      border-radius: 3px;
-      font-family: "Courier New", monospace;
-      font-size: 0.8rem;
-      flex-shrink: 0;
-      transition: background 0.15s;
-    }
-    a.feature-stem:hover { background: var(--stone-mid); }
-
-    /* ── Footer ── */
     footer {
       border-top: 1px solid var(--stone-mid);
       padding: 1.5rem 3rem;
@@ -284,14 +156,12 @@
 
     @media (max-width: 600px) {
       header, main, footer { padding-left: 1.25rem; padding-right: 1.25rem; }
-      .workflow-steps { grid-template-columns: 1fr 1fr; }
       .docs-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
 
-  <!-- ── Header ── -->
   <header>
     <div class="logo-wrap">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" role="img" aria-label="temple8 logo">
@@ -329,39 +199,55 @@
 
   <main>
 
-    <!-- ── Generated Documentation ── -->
-    <p class="section-title">Generated Documentation</p>
-    <!-- BEGIN:DOC_CARDS -->
+    <p class="section-title">Stakeholder</p>
     <div class="docs-grid">
-      <a class="doc-card" href="https://github.com/nullhack/temple8/blob/main/docs/product-definition.md">
+      <a class="doc-card" href="https://github.com/nullhack/temple8/blob/main/docs/spec/product_definition.md">
         <div class="doc-card-label">Product</div>
         <div class="doc-card-title">Product Definition</div>
-        <div class="doc-card-desc">Product boundaries, users, and scope</div>
+        <div class="doc-card-desc">What the product is, who it's for, and scope boundaries</div>
       </a>
-      <a class="doc-card" href="https://github.com/nullhack/temple8/blob/main/docs/system.md">
-        <div class="doc-card-label">Architecture</div>
-        <div class="doc-card-title">System Overview</div>
-        <div class="doc-card-desc">Current-state snapshot — domain model, context/container tables, ADR index</div>
-      </a>
-      <a class="doc-card" href="https://github.com/nullhack/temple8/blob/main/docs/glossary.md">
+      <a class="doc-card" href="https://github.com/nullhack/temple8/blob/main/docs/spec/glossary.md">
         <div class="doc-card-label">Language</div>
         <div class="doc-card-title">Glossary</div>
         <div class="doc-card-desc">Living domain glossary — append-only, source-traced definitions</div>
       </a>
-      <a class="doc-card" href="https://github.com/nullhack/temple8/blob/main/docs/scope_journal.md">
-        <div class="doc-card-label">Scope</div>
-        <div class="doc-card-title">Scope Journal</div>
-        <div class="doc-card-desc">Raw Q&amp;A from discovery sessions</div>
+    </div>
+
+    <p class="section-title">Architect</p>
+    <div class="docs-grid">
+      <a class="doc-card" href="https://github.com/nullhack/temple8/blob/main/docs/spec/system.md">
+        <div class="doc-card-label">Architecture</div>
+        <div class="doc-card-title">System Overview</div>
+        <div class="doc-card-desc">Current-state snapshot — domain model, context/container tables, ADR index</div>
       </a>
+      <a class="doc-card" href="https://github.com/nullhack/temple8/blob/main/docs/spec/technical_design.md">
+        <div class="doc-card-label">Architecture</div>
+        <div class="doc-card-title">Technical Design</div>
+        <div class="doc-card-desc">Architectural style, stack, module structure, contracts, and C4 diagrams</div>
+      </a>
+      <a class="doc-card" href="https://github.com/nullhack/temple8/blob/main/docs/spec/context_map.md">
+        <div class="doc-card-label">Architecture</div>
+        <div class="doc-card-title">Context Map</div>
+        <div class="doc-card-desc">Bounded context relationships, integration points, and anti-corruption layers</div>
+      </a>
+      <a class="doc-card" href="https://github.com/nullhack/temple8/blob/main/docs/spec/domain_model.md">
+        <div class="doc-card-label">Architecture</div>
+        <div class="doc-card-title">Domain Model</div>
+        <div class="doc-card-desc">Entities, relationships, and aggregate boundaries</div>
+      </a>
+    </div>
+
+    <p class="section-title">Engineer</p>
+    <div class="docs-grid">
       <a class="doc-card" href="api/app.html">
         <div class="doc-card-label">Reference</div>
         <div class="doc-card-title">API Docs</div>
-        <div class="doc-card-desc">Auto-generated from source docstrings via pdoc</div>
+        <div class="doc-card-desc">Auto-generated from source docstrings</div>
       </a>
       <a class="doc-card" href="coverage/index.html">
         <div class="doc-card-label">Quality</div>
         <div class="doc-card-title">Coverage Report</div>
-        <div class="doc-card-desc">Line-by-line test coverage — must hold at 100%</div>
+        <div class="doc-card-desc">Line-by-line test coverage</div>
       </a>
       <a class="doc-card" href="tests/report.html">
         <div class="doc-card-label">Quality</div>
@@ -369,120 +255,13 @@
         <div class="doc-card-desc">Full pytest run — results, durations, and pass/fail breakdown</div>
       </a>
     </div>
-<!-- END:DOC_CARDS -->
-
-    <!-- ── Features ── -->
-    <p class="section-title">Features</p>
-    <!-- BEGIN:FEATURES -->
-    <div class="features-section">
-      <div class="features-tabs">
-        <button class="tab-btn active" onclick="switchTab(event,'completed')">Completed</button>
-        <button class="tab-btn" onclick="switchTab(event,'in-progress')">In Progress</button>
-        <button class="tab-btn" onclick="switchTab(event,'backlog')">Backlog</button>
-      </div>
-      <div id="tab-completed" class="tab-pane active">
-        <ul class="feature-list">
-          <li class="feature-item">
-            <a class="feature-stem" href="https://github.com/nullhack/temple8/blob/main/docs/features/completed/cli-entrypoint.feature">cli-entrypoint</a>
-            <span class="feature-title">CLI Entrypoint</span>
-            <span class="feature-status status-completed">Accepted</span>
-          </li>
-        </ul>
-      </div>
-      <div id="tab-in-progress" class="tab-pane">
-        <p class="empty-note">No feature currently in progress.</p>
-      </div>
-      <div id="tab-backlog" class="tab-pane">
-        <p class="empty-note">Backlog is empty — ready for the next feature.</p>
-      </div>
-    </div>
-<!-- END:FEATURES -->
-
-    <!-- ── Architecture Decisions ── -->
-    <p class="section-title">Architecture Decisions</p>
-    <!-- BEGIN:ADRS -->
-    <ul class="adr-list">
-      <li class="adr-item">
-        <span class="adr-date">2026-04-22</span>
-        <span class="adr-slug">parser-library</span>
-        <span class="adr-status">Accepted</span>
-      </li>
-      <li class="adr-item">
-        <span class="adr-date">2026-04-22</span>
-        <span class="adr-slug">source</span>
-        <span class="adr-status">Accepted</span>
-      </li>
-    </ul>
-<!-- END:ADRS -->
-
-    <!-- ── Research Library ── -->
-    <p class="section-title">Research Library</p>
-    <!-- BEGIN:RESEARCH -->
-    <div class="research-grid">
-      <a class="research-item" href="https://github.com/nullhack/temple8/blob/main/docs/research/ai-agents.md">
-        <div class="research-item-title">Scientific Research — AI Agent Design</div>
-        <div class="research-item-meta">Foundations for the agent architecture, file structure, and context management decisions in this template.</div>
-      </a>
-      <a class="research-item" href="https://github.com/nullhack/temple8/blob/main/docs/research/architecture.md">
-        <div class="research-item-title">Scientific Research — Architecture</div>
-        <div class="research-item-meta">Foundations for the architectural decisions and patterns used in this template.</div>
-      </a>
-      <a class="research-item" href="https://github.com/nullhack/temple8/blob/main/docs/research/cognitive-science.md">
-        <div class="research-item-title">Scientific Research — Cognitive Science</div>
-        <div class="research-item-meta">Mechanisms from cognitive and social psychology that justify workflow design decisions in this template.</div>
-      </a>
-      <a class="research-item" href="https://github.com/nullhack/temple8/blob/main/docs/research/documentation.md">
-        <div class="research-item-title">Scientific Research — Documentation</div>
-        <div class="research-item-meta">Foundations for living documentation, docs-as-code, information architecture, and post-mortem practices used in this template.</div>
-      </a>
-      <a class="research-item" href="https://github.com/nullhack/temple8/blob/main/docs/research/domain-modeling.md">
-        <div class="research-item-title">Scientific Research — Domain Modeling</div>
-        <div class="research-item-meta">Foundations for bounded context identification, ubiquitous language, and feature decomposition used in this template.</div>
-      </a>
-      <a class="research-item" href="https://github.com/nullhack/temple8/blob/main/docs/research/oop-design.md">
-        <div class="research-item-title">Scientific Research — OOP Design</div>
-        <div class="research-item-meta">Foundations for object-oriented design principles used in this template.</div>
-      </a>
-      <a class="research-item" href="https://github.com/nullhack/temple8/blob/main/docs/research/refactoring-empirical.md">
-        <div class="research-item-title">Scientific Research — Refactoring (Empirical)</div>
-        <div class="research-item-meta">Empirical studies on code smells, refactoring prioritization, and OOP complexity used in this template.</div>
-      </a>
-      <a class="research-item" href="https://github.com/nullhack/temple8/blob/main/docs/research/requirements-elicitation.md">
-        <div class="research-item-title">Scientific Research — Requirements Elicitation</div>
-        <div class="research-item-meta">Foundations for the PO interview structure, Gherkin criteria, and feature discovery in this template.</div>
-      </a>
-      <a class="research-item" href="https://github.com/nullhack/temple8/blob/main/docs/research/software-economics.md">
-        <div class="research-item-title">Scientific Research — Software Economics</div>
-        <div class="research-item-meta">Foundations for the shift-left, early defect detection, and workflow ordering decisions in this template.</div>
-      </a>
-      <a class="research-item" href="https://github.com/nullhack/temple8/blob/main/docs/research/testing.md">
-        <div class="research-item-title">Scientific Research — Testing</div>
-        <div class="research-item-meta">Foundations for test design, TDD, BDD, and property-based testing used in this template.</div>
-      </a>
-      <a class="research-item" href="https://github.com/nullhack/temple8/blob/main/docs/research/version-control.md">
-        <div class="research-item-title">Version Control &amp; Branching Strategies</div>
-        <div class="research-item-meta">**Source**: Chacon, S., &amp; Straub, B. (2014). *Pro Git* (2nd ed.). Apress. Free online: https://git-scm.com/book</div>
-      </a>
-    </div>
-<!-- END:RESEARCH -->
 
   </main>
 
-  <!-- BEGIN:FOOTER -->
   <footer>
-    <span>Built with pdoc · pytest-cov · pytest-html</span>
+    <span>Generated documentation</span>
     <span>temple8 &nbsp;·&nbsp; <a href="https://github.com/nullhack/temple8">github.com/nullhack/temple8</a></span>
   </footer>
-<!-- END:FOOTER -->
-
-  <script>
-    function switchTab(e, name) {
-      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-      document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
-      e.currentTarget.classList.add('active');
-      document.getElementById('tab-' + name).classList.add('active');
-    }
-  </script>
 
 </body>
 </html>
