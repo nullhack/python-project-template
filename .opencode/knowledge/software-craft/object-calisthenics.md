@@ -1,49 +1,50 @@
 ---
 domain: software-craft
-tags: [object-calisthenics, oop, design, constraints]
-last-updated: 2026-04-26
+tags: [object-calisthenics, oc, design-constraints, code-quality]
+last-updated: 2026-04-30
 ---
 
 # Object Calisthenics
 
 ## Key Takeaways
 
-- One indent level per method (OC-1); no `else` after `return` (OC-2); wrap all primitives with domain meaning (OC-3).
-- Wrap collections with domain meaning (OC-4); one dot per line — no message chains (OC-5); no abbreviations (OC-6).
-- Keep methods ≤20 lines and classes ≤50 lines (OC-7); ≤2 instance variables per behavioural class (OC-8); no getters/setters (OC-9).
-- Dataclasses, Pydantic models, value objects, and TypedDicts are exempt from OC-8 — they are data containers, not behavioural classes.
+- OC-1: Use only one level of indentation per method — deep nesting signals mixed concerns.
+- OC-2: Do not use the `else` keyword — early returns and guard clauses eliminate branching.
+- OC-3: Wrap all primitives and strings in small domain-specific types — `Age` instead of `int`, `Email` instead of `str`.
+- OC-4: Use only one dot per line — `a.b.c` is a Law of Demeter violation; the middle object should handle the request.
+- OC-5: Do not abbreviate names — if a name is long, the scope is too broad or the concept is unclear.
+- OC-6: Keep all entities small — classes ≤ 50 lines, methods ≤ 5 lines, packages with ≤ 10 classes.
+- OC-7: Do not use more than two instance variables per class — more signals the class has multiple responsibilities (Bay, 2008).
+- OC-8: Use first-class collections — a class that holds a collection should hold no other instance variables.
+- OC-9: Do not use getters, setters, or properties — tell objects to do work rather than asking for their data (Tell, Don't Ask).
 
 ## Concepts
 
-**OC-1 and OC-2 — Structure**: One indent level per method (OC-1) eliminates deep nesting. No `else` after `return` (OC-2) flattens conditional logic — each exit condition is an early return, the happy path stays at the left margin.
+**OC-1: One Level of Indentation** — Nested `if`/`for`/`try` blocks indicate that a method is doing too many things. Extract each nested block into its own method with a descriptive name. The result is a sequence of guard clauses and early returns, each expressing a single decision.
 
-**OC-3 through OC-6 — Vocabulary**: Wrap all primitives with domain meaning (OC-3) — `UserId` instead of `int`. Wrap collections with domain meaning (OC-4) — `OrderCollection` instead of `list[Order]`. One dot per line, no message chains (OC-5) — `obj.repo.find(id).name` violates this. No abbreviations (OC-6) — every name must spell out its intent.
+**OC-2: No Else** — Every `else` branch can be replaced by an early return (guard clause), a ternary expression, or polymorphism. Early returns eliminate the cognitive load of tracking which branch you are in. Polymorphism replaces conditional branching with type-driven dispatch.
 
-**OC-7, OC-8, OC-9 — Size and Encapsulation**: Keep methods ≤20 lines and classes ≤50 lines (OC-7). Limit behavioural classes to ≤2 instance variables (OC-8). No getters/setters (OC-9) — expose behaviour, not state.
+**OC-3: Wrap Primitives** — A bare `int` could be an age, a quantity, a score, or an ID. Wrapping primitives in domain-specific types (`Age`, `Quantity`, `Score`, `ID`) gives the type system enforcement power, prevents invalid combinations (you cannot add an `Age` to a `Score`), and attaches behaviour to the data it describes.
 
-**OC-8 Exemption**: Dataclasses, Pydantic models, value objects, and TypedDicts are exempt from the two-instance-variable limit. These types exist to hold data, not to encapsulate behaviour. The constraint applies only to behavioural classes — classes whose purpose is to coordinate logic.
+**OC-4: One Dot Per Line** — `a.b.c` means the caller knows about the internal structure of `a.b`. This violates encapsulation and the Law of Demeter. The fix: ask `a` to perform the operation, delegating through `b` internally. Each object should talk to its immediate neighbours, not their neighbours.
 
-## Content
+**OC-5: No Abbreviations** — Abbreviations obscure meaning and create ambiguity. `usr` could mean user, usual, or USB. If a name is too long to type, the method or class is probably doing too much — extract until the name is naturally short.
 
-| Rule | Constraint | Violation signal |
-|---|---|---|
-| OC-1 | One indent level per method | `for` inside `if` inside a method body |
-| OC-2 | No `else` after `return` | `if cond: return x` then `else: return y` |
-| OC-3 | Wrap primitives with domain meaning | `def process(user_id: int)` instead of `UserId` |
-| OC-4 | Wrap collections with domain meaning | `list[Order]` passed around instead of `OrderCollection` |
-| OC-5 | One dot per line | `obj.repo.find(id).name` |
-| OC-6 | No abbreviations | `usr`, `mgr`, `cfg`, `val`, `tmp` |
-| OC-7 | Classes <= 50 lines, methods <= 20 lines | Any method requiring scrolling |
-| OC-8 | <= 2 instance variables per class (behavioural classes only) | `__init__` with 3+ `self.x =` assignments in a behavioural class |
-| OC-9 | No getters/setters | `def get_name(self)` / `def set_name(self, v)` |
+**OC-6: Small Entities** — A class longer than 50 lines is doing too many things. A method longer than 5 lines is mixing levels of abstraction. A package with more than 10 classes lacks a clear boundary. These thresholds force decomposition toward single-responsibility objects.
 
-### OC-8 Exemption
+**OC-7: Two Instance Variables** (Bay, 2008) — More than two instance variables means the class is holding multiple responsibilities. Each variable represents a cohesive cluster; three or more clusters signal the need to extract collaborators. This is the most impactful constraint: it directly prevents god-objects and forces distribution of behaviour.
 
-Dataclasses, Pydantic models, value objects, and TypedDicts are exempt from the two-instance-variable limit. These types exist to hold data, not to encapsulate behaviour. The constraint applies only to behavioural classes — classes whose purpose is to coordinate logic.
+**OC-8: First-Class Collections** — When a class contains a collection (list, dict, set), that collection should be the only instance variable. The class becomes the collection's behaviour: filtering, mapping, validating, computing aggregates. This prevents a collection from being one of five variables in a class that also holds configuration, state, and identifiers.
+
+**OC-9: Tell, Don't Ask** — Calling `obj.get_x()` then making a decision based on the result means the caller owns the decision. Instead, `obj.do_thing()` lets the object own its own behaviour. Getters expose internal structure and invite misuse; telling objects to act preserves encapsulation and keeps behaviour where the data lives.
 
 ## Related
 
-- [[software-craft/solid]] — SOLID principles overlap with OC-1 (SRP) and OC-5 (DIP)
-- [[software-craft/smell-catalogue]] — OC violations are detectable as specific smells
-- [[software-craft/self-declaration]] — OC items 12-20 in the declaration checklist
-- [[software-craft/tdd]] — OC rules are checked during the REFACTOR phase
+- [[software-craft/tdd]] — design principle priority includes OC
+- [[software-craft/code-review]] — self-declaration checks include OC
+- [[software-craft/smell-catalogue]] — OC violations overlap with smell signals
+- [[software-craft/design-patterns]] — patterns complement OC rules
+- [[software-craft/refactoring-techniques]] — OC violations signal specific refactoring opportunities
+- [[software-craft/solid]] — OC rules overlap with SOLID (OC-7 enforces SRP, OC-4 enforces DIP)
+- [[software-craft/refactoring]] — when and how to refactor, clean code, technical debt
+- [[requirements/pre-mortem]] — pre-mortem checks include OC-7 (two instance variables)

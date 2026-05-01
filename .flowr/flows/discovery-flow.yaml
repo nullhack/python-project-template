@@ -1,0 +1,101 @@
+flow: discovery-flow
+version: 3.0.0
+exits:
+  - complete
+
+states:
+  - id: stakeholder-interview
+    attrs:
+      description: "PO interviews stakeholders to understand pain points, business goals, and domain terms, then decides how much discovery is needed"
+      owner: PO
+      skills:
+        - conduct-interview
+      in:
+        - interview-notes/*.md
+      out:
+        - interview-notes/<session>.md:
+            - pain_points
+            - business_goals
+            - terms_to_define
+            - quality_attributes
+    next:
+      needs_full_discovery: event-storming
+      needs_scope_only: scope-boundary
+      already_known: complete
+
+  - id: event-storming
+    attrs:
+      description: "DE facilitates an event storming workshop to surface domain events, commands, and aggregate candidates"
+      owner: DE
+      skills:
+        - facilitate-event-storming
+      in:
+        - interview-notes/*.md
+      out:
+        - domain_model.md:
+            - event_map
+            - context_candidates
+            - aggregate_candidates
+    next:
+      done: language-definition
+      needs_reinterview: stakeholder-interview
+
+  - id: language-definition
+    attrs:
+      description: "DE formalizes the ubiquitous language by defining domain terms into a glossary"
+      owner: DE
+      skills:
+        - define-ubiquitous-language
+      in:
+        - interview-notes/*.md
+        - domain_model.md
+      out:
+        - glossary.md
+    next:
+      done: domain-modeling
+      needs_restorming: event-storming
+
+  - id: domain-modeling
+    attrs:
+      description: "DE formalizes candidates into proper bounded contexts, entities, relationships, and aggregate boundaries"
+      owner: DE
+      skills:
+        - model-domain
+      in:
+        - glossary.md
+        - domain_model.md
+      out:
+        - domain_model.md:
+            - bounded_contexts
+            - entities
+            - relationships
+            - aggregate_boundaries
+            - summary
+        - glossary.md
+    next:
+      done: scope-boundary
+      contradiction_found: language-definition
+      needs_reinterview: stakeholder-interview
+
+  - id: scope-boundary
+    attrs:
+      description: "PO defines what the product IS and IS NOT, who the users are, and the delivery order"
+      owner: PO
+      skills:
+        - define-product-scope
+      in:
+        - domain_model.md
+        - glossary.md
+      out:
+        - product_definition.md:
+            - what_is
+            - what_is_not
+            - why
+            - users
+            - out_of_scope
+            - delivery_order
+            - quality_attributes
+            - deployment
+    next:
+      done: complete
+      needs_reinterview: stakeholder-interview

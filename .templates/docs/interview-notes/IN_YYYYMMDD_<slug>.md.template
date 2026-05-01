@@ -1,0 +1,59 @@
+# IN_YYYYMMDD_<slug> — <short-description>
+
+> **Status:** IN-PROGRESS | COMPLETE
+> **Interviewer:** PO
+> **Participant(s):** <stakeholder name(s)>
+> **Session type:** Initial discovery | Domain deep-dive | Scope refinement | Feature specification
+
+---
+
+## General
+
+| ID | Question | Answer |
+|----|----------|--------|
+| Q1 | Who are the users? | ... |
+| Q2 | What does the product do at a high level? | ... |
+| Q3 | Why does it exist — what problem does it solve? | ... |
+| Q4 | When and where is it used? | ... |
+| Q5 | Success — what does "done" look like? | ... |
+| Q6 | Failure — what must never happen? | ... |
+| Q7 | Out-of-scope — what are we explicitly not building? | ... |
+
+## <Group Name>
+
+| ID | Question | Answer |
+|----|----------|--------|
+| Q8 | ... | ... |
+
+## Feature: <feature-stem>
+
+| ID | Question | Answer |
+|----|----------|--------|
+| Q9 | ... | ... |
+
+---
+
+## Quality Attributes
+
+| ID | Attribute | Scenario | Target | Priority |
+|----|-----------|----------|--------|----------|
+| QA1 | <e.g. Performance / Availability / Security> | <stimulus-response: "When X happens, the system responds within Y"> | <measurable threshold> | <Must / Should / Nice> |
+| QA2 | ... | ... | ... | ... |
+
+---
+
+## Pain Points Identified
+
+- <Pain point from this session>
+
+## Business Goals Identified
+
+- <Goal from this session>
+
+## Terms to Define (for glossary)
+
+- <Term heard during interview that needs a glossary entry>
+
+## Action Items
+
+- [ ] <Follow-up action from this session>

@@ -1,0 +1,131 @@
+# Product Definition: <project-name>
+
+> **Status:** ELICITING | BASELINED (YYYY-MM-DD)
+> Fill in each section during Discovery. Replace placeholders with project-specific content.
+> This document is the single source of truth for project scope and conventions.
+
+---
+
+## What <project-name> IS
+
+- <A [category] that [distinguishes it from others in that category]>
+- <A [category] that [distinguishes it from others in that category]>
+- <A [category] that [distinguishes it from others in that category]>
+
+## What <project-name> IS NOT
+
+- Does NOT <boundary that prevents scope creep>
+- Does NOT <boundary that prevents scope creep>
+- Does NOT <boundary that prevents scope creep>
+
+## Why does this exist
+
+<2–4 sentences: the problem, the gap in existing solutions, and the value this project delivers.>
+
+## Users
+
+- **<Persona A>** — <what they use the product for>
+- **<Persona B>** — <what they use the product for>
+
+## Quality Attributes
+
+<Measurable quality attribute scenarios that drive architectural decisions. Each scenario follows the form: stimulus → response → measure. **Rows are ordered by priority — the first row is the highest priority attribute.** This ordering must be consistent across all spec documents.>
+
+| Attribute | Scenario | Target | Priority |
+|-----------|----------|--------|----------|
+| <e.g. Performance> | <When X happens, the system responds within Y> | <measurable threshold> | <Must / Should / Nice> |
+| <e.g. Availability> | <If a component fails, the system remains available for Z> | <measurable threshold> | <Must / Should / Nice> |
+| <e.g. Security> | <Unauthorized access is prevented by mechanism M> | <measurable threshold> | <Must / Should / Nice> |
+
+---
+
+## Out of Scope
+
+- <Explicit non-goal>
+- <Explicit non-goal>
+
+## Delivery Order
+
+<Numbered list showing dependency chain between features. Update as features are discovered.>
+
+1 → 2 (<reason for dependency>)
+
+---
+
+## Project Conventions
+
+### Definition of Done
+
+All criteria must be met before a feature is considered done.
+
+**Development:**
+
+- [ ] All BDD scenarios from the .feature file pass
+- [ ] Quality Gate passes all three tiers (Design → Structure → Conventions)
+- [ ] Test coverage meets project threshold (≥ <X>%)
+- [ ] No test coupling — tests verify behavior, not structure
+- [ ] Production code follows priority order: YAGNI > DRY > KISS > OC > SOLID > Design Patterns
+- [ ] Code uses ubiquitous language from glossary.md
+
+**Review:**
+
+- [ ] CI pipeline passes all three tiers (Design → Structure → Conventions)
+- [ ] Code Review approved by R (independent reviewer, not the SE who wrote the code)
+- [ ] Acceptance Testing passed — PO verifies BDD scenarios behave as expected
+
+**Deployment:**
+
+- [ ] Release Verification checklist completed
+- [ ] Staging deployment healthy (if applicable)
+- [ ] CHANGELOG.md updated
+
+### Deployment
+
+<Define the deployment type and checklist for this project. Choose the relevant sections below and remove the rest. This section evolves as the project grows.>
+
+**Deployment type:** CLI | Web | API | Library | Desktop
+
+#### Common (all deployment types)
+
+- [ ] Version bumped in pyproject.toml
+- [ ] CHANGELOG.md updated with version and delivered scenarios
+- [ ] Git tag created (format: `v<semver>`)
+
+#### CLI / Library
+
+- [ ] Package builds without errors (`python -m build`)
+- [ ] Package published to PyPI (`twine upload dist/*`)
+- [ ] Installable from PyPI in clean environment
+
+#### Web / API
+
+- [ ] Environment variables set for target environment
+- [ ] Secrets rotated or verified (no secrets in code)
+- [ ] Database migrations tested against staging data
+- [ ] Rollback migration tested
+- [ ] Application starts without errors
+- [ ] Health endpoint responds
+- [ ] Staging deployment successful
+- [ ] Smoke tests pass against staging
+- [ ] BDD scenarios pass against staging
+- [ ] Production deployment successful
+- [ ] Error rate within normal bounds
+- [ ] Monitoring alerts configured
+
+#### Rollback Plan
+
+<Rollback procedure specific to this project's deployment type.>
+
+### Branch Strategy
+
+- **Convention:** Trunk-based (short-lived feature branches from trunk, PR before merge)
+- **Branch naming:** `<type>/<PROJ-123>-<short-description>` (e.g., `feature/PROJ-123-add-payment`)
+- **Merge policy:** Squash merge to trunk after approval
+
+---
+
+## Scope Changes
+
+| Date | Session | Change | Reason |
+|------|---------|--------|--------|
+| YYYY-MM-DD | <session ref> | <what changed> | <why> |

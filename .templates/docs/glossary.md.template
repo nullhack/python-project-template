@@ -1,0 +1,36 @@
+# Glossary: <project-name>
+
+> Living glossary of domain terms used in this project.
+> Written and maintained by the Domain Expert during Discovery.
+> Append-only: never edit or remove past entries. If a term changes, mark it retired in favor of the new entry and write a new entry.
+> Code and tests take precedence over this glossary — if they diverge, refactor the code, not this file.
+
+---
+
+## Entry Format
+
+```
+## <Term>
+
+**Definition:** <one sentence — genus + differentia: "A [category] that [distinguishes it from others in that category]">
+
+**Aliases:** <deprecated synonyms the team should stop using, or "none">
+
+**Example:** <one sentence showing the term in use in this project; optional but encouraged>
+
+**Source:** <feature stem or discovery session date>
+```
+
+Entries are sorted alphabetically.
+
+---
+
+## <Term>
+
+**Definition:** <one sentence — "A [category] that [distinguishes it from others in that category]">
+
+**Aliases:** <deprecated synonyms, or "none">
+
+**Example:** <one sentence showing the term in use in this project; optional>
+
+**Source:** <feature stem (e.g. `display-version`) or discovery session date (e.g. `2025-01-15`)>

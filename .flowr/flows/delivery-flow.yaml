@@ -1,0 +1,81 @@
+flow: delivery-flow
+version: 4.0.0
+
+exits:
+  - next-feature
+  - rejected
+  - needs_development
+  - cancelled
+
+states:
+  - id: acceptance
+    attrs:
+      description: "PO validates business behavior against BDD scenarios and quality attributes"
+      owner: PO
+      skills:
+        - accept-feature
+        - verify-traceability
+      in:
+        - features/<feature_name>.feature
+        - product_definition.md
+      out:
+        - acceptance_evidence
+        - approval_record
+    conditions:
+      feature_accepted:
+        feature_status: ==ACCEPTED
+    next:
+      approved:
+        to: local-merge
+        when: feature_accepted
+      rejected: rejected
+
+  - id: local-merge
+    attrs:
+      description: "SE squash-merges feature commits into local main and resolves any conflicts"
+      owner: SE
+      skills:
+        - merge-local
+      in:
+        - feature_commits
+        - approval_record
+        - features/<feature_name>.feature
+      out:
+        - merged_commits
+    next:
+      merged: publish-decision
+      conflict: needs_development
+
+  - id: publish-decision
+    attrs:
+      description: "PO decides whether to publish the accumulated batch as a PR or continue accumulating features on local main"
+      owner: PO
+      skills:
+        - decide-batch-action
+      in:
+        - merged_commits
+      out: []
+    next:
+      accumulate: next-feature
+      publish: pr-creation
+
+  - id: pr-creation
+    attrs:
+      description: "SE creates an administrative PR for changes already on local main"
+      owner: SE
+      skills:
+        - create-pr
+      in:
+        - merged_commits
+        - features/<feature_name>.feature
+      out: []
+    conditions:
+      merged:
+        ci_passes: ==true
+        no_changes_requested: ==true
+    next:
+      approved:
+        to: next-feature
+        when: merged
+      changes_requested: needs_development
+      cancelled: cancelled

@@ -1,6 +1,6 @@
 [project]
 name = "temple8"
-version = "7.2.20260423"
+version = "8.0.0"
 description = "Python template with some awesome tools to quickstart any Python project"
 readme = "README.md"
 requires-python = ">=3.13"
@@ -29,6 +29,8 @@ dev = [
     "pyright>=1.1.407",
     "ghp-import>=2.1.0",
     "flowr>=0.3",
+    "gherkin-official>=39.0.0",
+    "safety>=3.7.0",
 ]
 
 [tool.setuptools]
@@ -90,7 +92,6 @@ addopts = """
 testpaths = ["tests"]
 python_files = ["*_test.py"]
 python_functions = ["test_*"]
-render_collapsed = "all"
 
 [tool.coverage.report]
 fail_under = 100
@@ -143,12 +144,8 @@ pytest \
 """
 doc-publish = "task doc-build && ghp-import -n -p -f docs"
 static-check = "pyright app tests"
-assign-ids = "python scripts/assign_ids.py"
-validate-flows = "python -m flowr validate .flowr/flows/feature-flow.yaml && python -m flowr validate .flowr/flows/scope-cycle.yaml && python -m flowr validate .flowr/flows/arch-cycle.yaml && python -m flowr validate .flowr/flows/tdd-cycle.yaml"
-release-check = "python scripts/check_version.py && task lint && task static-check && task test && task doc-build"
+validate-flows = "bash -c 'for f in .flowr/flows/*.yaml; do python -m flowr validate \"$f\"; done'"
+regenerate-flowviz = "python .flowr/viz/generate-flowviz-data.py"
+release-check = "task lint && task static-check && task test && task doc-build"
 
-[dependency-groups]
-dev = [
-    "gherkin-official>=39.0.0",
-    "safety>=3.7.0",
-]
+

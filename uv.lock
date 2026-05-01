@@ -1042,12 +1042,13 @@ wheels = [
 
 [[package]]
 name = "temple8"
-version = "7.2.20260423"
+version = "8.0.0"
 source = { virtual = "." }
 
 [package.optional-dependencies]
 dev = [
     { name = "flowr" },
+    { name = "gherkin-official" },
     { name = "ghp-import" },
     { name = "hypothesis" },
     { name = "pdoc" },
@@ -1056,18 +1057,14 @@ dev = [
     { name = "pytest-cov" },
     { name = "pytest-mock" },
     { name = "ruff" },
-    { name = "taskipy" },
-]
-
-[package.dev-dependencies]
-dev = [
-    { name = "gherkin-official" },
     { name = "safety" },
+    { name = "taskipy" },
 ]
 
 [package.metadata]
 requires-dist = [
     { name = "flowr", marker = "extra == 'dev'", specifier = ">=0.3" },
+    { name = "gherkin-official", marker = "extra == 'dev'", specifier = ">=39.0.0" },
     { name = "ghp-import", marker = "extra == 'dev'", specifier = ">=2.1.0" },
     { name = "hypothesis", marker = "extra == 'dev'", specifier = ">=6.148.4" },
     { name = "pdoc", marker = "extra == 'dev'", specifier = ">=14.0" },
@@ -1076,15 +1073,10 @@ requires-dist = [
     { name = "pytest-cov", marker = "extra == 'dev'", specifier = ">=6.1.1" },
     { name = "pytest-mock", marker = "extra == 'dev'", specifier = ">=3.14.0" },
     { name = "ruff", marker = "extra == 'dev'", specifier = ">=0.11.5" },
+    { name = "safety", marker = "extra == 'dev'", specifier = ">=3.7.0" },
     { name = "taskipy", marker = "extra == 'dev'", specifier = ">=1.14.1" },
 ]
 provides-extras = ["dev"]
-
-[package.metadata.requires-dev]
-dev = [
-    { name = "gherkin-official", specifier = ">=39.0.0" },
-    { name = "safety", specifier = ">=3.7.0" },
-]
 
 [[package]]
 name = "tenacity"

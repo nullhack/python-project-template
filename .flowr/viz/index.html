@@ -1,0 +1,386 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>FlowViz</title>
+    <style>
+      :root {
+        /* Light, clean UI chrome; node palette stays the same. */
+        --bg: #f7f8fb;
+        --panel: #ffffff;
+        --panel2: #f3f4f7;
+        --text: #111827;
+        --muted: #4b5563;
+        --stroke: #e5e7eb;
+        --accent: #f57c00;
+        --accent-soft: rgba(245, 124, 0, 0.22);
+        --state-fill: #e3f2fd;
+        --state-stroke: #1976d2;
+        --subflow-fill: #fff3e0;
+        --subflow-stroke: #f57c00;
+        --exit-fill: #ffffff;
+        --exit-stroke: #424242;
+        --edge: #6b7280;
+      }
+
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        background: radial-gradient(900px 520px at 12% 0%, rgba(245, 124, 0, 0.10), transparent 55%),
+          linear-gradient(180deg, #ffffff, var(--bg));
+        color: var(--text);
+        font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      }
+
+      .app {
+        display: grid;
+        grid-template-rows: auto 1fr;
+        min-height: 100vh;
+      }
+
+      header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 14px 18px;
+        border-bottom: 1px solid var(--stroke);
+        background: rgba(255, 255, 255, 0.82);
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        backdrop-filter: blur(10px);
+      }
+
+      .left {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        min-width: 420px;
+      }
+
+      .brand {
+        font-weight: 700;
+        letter-spacing: 0.2px;
+      }
+
+      .controls {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+
+      select, button {
+        background: var(--panel2);
+        color: var(--text);
+        border: 1px solid var(--stroke);
+        border-radius: 10px;
+        padding: 8px 10px;
+        font-size: 13px;
+      }
+
+      select:hover {
+        border-color: rgba(245, 124, 0, 0.45);
+      }
+
+      button {
+        cursor: pointer;
+        border-color: rgba(245, 124, 0, 0.35);
+      }
+
+      button:hover {
+        border-color: rgba(245, 124, 0, 0.6);
+        background: rgba(245, 124, 0, 0.08);
+      }
+
+      select:focus-visible,
+      button:focus-visible {
+        outline: none;
+        box-shadow: 0 0 0 3px var(--accent-soft);
+        border-color: rgba(245, 124, 0, 0.75);
+      }
+
+      .crumbs {
+        color: var(--muted);
+        font-size: 12px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 46vw;
+      }
+
+      .crumbs a {
+        color: #a24d00;
+        text-decoration: none;
+        border-bottom: 1px dotted rgba(245, 124, 0, 0.55);
+      }
+
+      .crumbs a:hover {
+        border-bottom-color: rgba(245, 124, 0, 1);
+      }
+
+      main {
+        display: grid;
+        grid-template-columns: 1fr 280px;
+        gap: 14px;
+        padding: 14px;
+      }
+
+      .canvas {
+        background: var(--panel);
+        border: 1px solid var(--stroke);
+        border-radius: 16px;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .sidebar {
+        background: var(--panel);
+        border: 1px solid var(--stroke);
+        border-radius: 16px;
+        padding: 12px;
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.4;
+      }
+
+      .sidebar h3 {
+        margin: 6px 0 8px;
+        color: var(--text);
+        font-size: 14px;
+      }
+
+      .hint {
+        margin-top: 10px;
+        padding: 10px;
+        background: rgba(255, 243, 224, 0.9);
+        border: 1px solid rgba(245, 124, 0, 0.25);
+        border-radius: 12px;
+      }
+
+      .legend {
+        display: grid;
+        gap: 10px;
+        margin-top: 10px;
+      }
+
+      .legend-item {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+      }
+
+      .swatch {
+        width: 16px;
+        height: 12px;
+        border-radius: 4px;
+        border: 2px solid;
+      }
+
+      .error {
+        position: absolute;
+        left: 12px;
+        bottom: 12px;
+        right: 12px;
+        padding: 10px 12px;
+        border-radius: 12px;
+        background: rgba(120, 0, 0, 0.25);
+        border: 1px solid rgba(255, 80, 80, 0.45);
+        color: #ffd7d7;
+        font-size: 12px;
+        display: none;
+      }
+
+      svg {
+        width: 100%;
+        height: 100%;
+        display: block;
+      }
+
+      .edge-path {
+        fill: none;
+        stroke: var(--edge);
+        stroke-width: 2.2;
+        opacity: 0.95;
+      }
+
+      .edge-path.exit {
+        stroke-dasharray: 6 5;
+        opacity: 0.75;
+      }
+
+      .edge-label {
+        font-size: 11px;
+        fill: #374151;
+        text-anchor: middle;
+        dominant-baseline: middle;
+        paint-order: stroke;
+        stroke: rgba(255, 255, 255, 0.9);
+        stroke-width: 4px;
+        stroke-linejoin: round;
+      }
+
+      .node rect {
+        rx: 10px;
+        ry: 10px;
+        stroke-width: 2.5;
+      }
+
+      .node.state rect {
+        fill: var(--state-fill);
+        stroke: var(--state-stroke);
+      }
+
+      .node.subflow rect {
+        fill: var(--subflow-fill);
+        stroke: var(--subflow-stroke);
+        stroke-width: 3.5;
+      }
+
+      .node.exit rect {
+        fill: var(--exit-fill);
+        stroke: var(--exit-stroke);
+      }
+
+      .start-node circle.outer {
+        fill: #ffffff;
+        stroke: #9ca3af;
+        stroke-width: 2;
+      }
+
+      .start-node circle.inner {
+        fill: #9ca3af;
+        stroke: #9ca3af;
+        stroke-width: 1.5;
+      }
+
+      .start-edge {
+        fill: none;
+        stroke: #6b7280;
+        stroke-width: 2;
+        marker-end: url(#arrow);
+      }
+
+      .node text {
+        font-size: 12px;
+        font-weight: 650;
+        fill: #111318;
+        user-select: none;
+        text-anchor: middle;
+        dominant-baseline: middle;
+      }
+
+      .node.subflow text {
+        font-weight: 750;
+      }
+
+      .node:hover rect {
+        filter: drop-shadow(0 6px 14px rgba(0,0,0,0.35));
+      }
+
+      .node.subflow:hover rect {
+        filter: drop-shadow(0 8px 18px rgba(245,124,0,0.35));
+      }
+
+      .tooltip {
+        position: fixed;
+        pointer-events: none;
+        z-index: 100;
+        background: rgba(17, 24, 39, 0.92);
+        color: #f3f4f6;
+        padding: 8px 12px;
+        border-radius: 8px;
+        font-size: 12px;
+        line-height: 1.5;
+        max-width: 320px;
+        display: none;
+        box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+      }
+
+      .tooltip .tt-title {
+        font-weight: 700;
+        margin-bottom: 4px;
+      }
+
+      .tooltip .tt-attr {
+        color: #d1d5db;
+      }
+
+      .tooltip .tt-edge {
+        color: #9ca3af;
+      }
+
+      .tooltip .tt-edge .tt-edge-label {
+        color: var(--accent);
+        font-weight: 600;
+      }
+
+      @media (max-width: 980px) {
+        main {
+          grid-template-columns: 1fr;
+        }
+        .left {
+          min-width: 0;
+          flex: 1;
+        }
+        .crumbs { max-width: 90vw; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app">
+      <header>
+        <div class="left">
+          <div class="brand">FlowViz</div>
+          <div class="crumbs" id="crumbs"></div>
+        </div>
+        <div class="controls">
+          <label>
+            <select id="flowSelect" aria-label="Select flow"></select>
+          </label>
+          <button id="backBtn" type="button">Back</button>
+          <button id="fitBtn" type="button">Fit</button>
+          <button id="resetBtn" type="button">Reset</button>
+        </div>
+      </header>
+      <main>
+        <section class="canvas">
+          <svg id="svg" role="img" aria-label="Flow graph"></svg>
+          <div class="error" id="error"></div>
+          <div class="tooltip" id="tooltip"></div>
+        </section>
+        <aside class="sidebar">
+          <h3>Flow</h3>
+          <div id="flowMeta">Select a flow.</div>
+          <div class="hint">
+            Click an orange node (subflow) to drill down. Use Back or the breadcrumb trail to go up.
+          </div>
+          <div class="legend">
+            <div class="legend-item">
+              <span class="swatch" style="background: var(--state-fill); border-color: var(--state-stroke);"></span>
+              <span>State</span>
+            </div>
+            <div class="legend-item">
+              <span class="swatch" style="background: var(--subflow-fill); border-color: var(--subflow-stroke); border-width: 3px;"></span>
+              <span>Subflow (drill down)</span>
+            </div>
+            <div class="legend-item">
+              <span class="swatch" style="background: var(--exit-fill); border-color: var(--exit-stroke);"></span>
+              <span>Exit</span>
+            </div>
+          </div>
+        </aside>
+      </main>
+    </div>
+
+    <!-- Layout engine (dagre) and renderer (d3) -->
+    <script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dagre@0.8.5/dist/dagre.min.js"></script>
+
+    <!-- Data bundle and app code -->
+    <script src="data.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,61 @@
+flow: branding-flow
+version: 2.0.0
+exits:
+  - branded
+  - cancelled
+
+states:
+  - id: setup-branding
+    attrs:
+      description: "Interview stakeholder to establish brand identity: personality, visual metaphor, wording, and release naming"
+      owner: Design Agent
+      skills:
+        - setup-branding
+      in: []
+      out:
+        - branding.md:
+            - identity
+            - release_naming
+            - wording
+    next:
+      confirmed: design-colors
+      cancelled: cancelled
+
+  - id: design-colors
+    attrs:
+      description: "Select and validate a colour palette with WCAG contrast, dark-mode counterparts, and hue semantics"
+      owner: Design Agent
+      skills:
+        - design-colors
+      in:
+        - branding.md
+      out:
+        - branding.md:
+            - visual
+    next:
+      approved: design-assets
+      revise: design-colors
+      cancelled: cancelled
+
+  - id: design-assets
+    attrs:
+      description: "Create logo and banner using favicon-first, monochrome-first, progressive-simplification process"
+      owner: Design Agent
+      skills:
+        - design-assets
+      in:
+        - branding.md
+      out:
+        - docs/assets/logo.svg
+        - docs/assets/banner.svg
+    conditions:
+      monochrome_passed:
+        logo_monochrome: ==true
+      scalability_passed:
+        logo_scalability: ==true
+      blur_passed:
+        logo_blur_test: ==true
+    next:
+      approved: branded
+      revise: design-assets
+      cancelled: cancelled

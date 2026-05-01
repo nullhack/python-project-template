@@ -1,0 +1,2 @@
+# Ignore SVG files (regeneratable from mermaid)
+*.svg

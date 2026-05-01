@@ -1,0 +1,139 @@
+# Technical Design: <project-name>
+
+> Technical design document for the current feature or initiative.
+> Updated by the Software Architect when stack, contracts, or interfaces change.
+> Contract-first design: API and event schemas are defined here before implementation begins.
+
+---
+
+## Feature
+
+<Reference to the .feature file(s) this design serves.>
+
+---
+
+## Architectural Style
+
+**Style:** <Monolithic / Microservices / Event-Driven / Hexagonal / Serverless / Layered>
+
+**Rationale:** <why this style fits the quality attributes and domain constraints>
+
+---
+
+## Quality Attributes
+
+| Attribute | Architectural Decision | ADR Ref |
+|-----------|----------------------|---------|
+| <e.g. Performance> | <which part of the design addresses this> | <ADR-YYYY-MM-DD-slug> |
+
+---
+
+## Stack
+
+| Layer | Technology | Version | Rationale |
+|-------|-----------|---------|-----------|
+| Language | Python | 3.x | <why> |
+| Framework | <name> | <version> | <why> |
+| Database | <name> | <version> | <why> |
+| Messaging | <name> | <version> | <why> |
+
+---
+
+## Module Structure
+
+```
+src/
+  <bounded-context>/
+    domain/         # Entities, value objects, aggregates, domain services
+    application/    # Use cases, application services
+    infrastructure/ # Repositories, external service adapters
+    api/            # Entry points (CLI, REST, gRPC)
+```
+
+---
+
+## API Contracts
+
+### <Endpoint/Command Name>
+
+**Method:** GET | POST | PUT | DELETE | <command>
+
+**Path:** `/<path>`
+
+**Request:**
+```json
+{
+  "field": "type"
+}
+```
+
+**Response:**
+```json
+{
+  "field": "type"
+}
+```
+
+**Errors:**
+| Code | Meaning |
+|------|---------|
+| <code> | <description> |
+
+---
+
+## Event Contracts
+
+### <Event Name>
+
+**Schema:**
+```json
+{
+  "event_type": "<EventName>",
+  "aggregate_id": "uuid",
+  "payload": {}
+}
+```
+
+**Produced by:** `<module>/<service>`
+**Consumed by:** `<module>/<service>`
+
+---
+
+## Interface Definitions
+
+### <Interface Name>
+
+```python
+class <InterfaceName>(Protocol):
+    def <method>(self, <param>: <type>) -> <return_type>: ...
+```
+
+---
+
+## C4 Diagrams
+
+<Reference or embed C4 diagrams. These may overlap with system.md — this document focuses on the current feature's technical design, system.md focuses on the overall system state.>
+
+---
+
+## Dependencies
+
+| Dependency | What it provides | Why not replaced |
+|------------|------------------|-----------------|
+| `<dep>` | <purpose> | <reason> |
+
+---
+
+## Configuration Keys
+
+| Key | Type | Default | Description |
+|-----|------|---------|-------------|
+| `<key>` | string | `"<default>"` | <description> |
+
+---
+
+## Changes
+
+| Date | Source | Change | Reason |
+|------|--------|--------|--------|
+| YYYY-MM-DD | <ADR or feature ref> | <what changed> | <why> |

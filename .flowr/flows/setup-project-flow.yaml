@@ -1,0 +1,89 @@
+flow: setup-project-flow
+version: 2.0.0
+exits: [initialized, cancelled]
+
+states:
+  - id: assess-requirements
+    attrs:
+      description: "Interview user to understand project needs and assess parameters"
+      owner: Setup Agent
+      skills:
+        - setup-assess
+      in: []
+      out:
+        - requirements_assessment
+    next:
+      assessed: configure-parameters
+      cancelled: cancelled
+
+  - id: configure-parameters
+    attrs:
+      description: "Gather and confirm project parameters based on assessment"
+      owner: Setup Agent
+      skills:
+        - setup-configure
+      in:
+        - requirements_assessment
+      out:
+        - template-config.yaml
+    conditions:
+      template_files_exist:
+        pyproject_toml: ==true
+        readme_md: ==true
+        github_workflows_ci_yml: ==true
+        license: ==true
+        tests_unit_main_test_py: ==true
+        app_directory: ==true
+    next:
+      confirmed:
+        to: apply-substitutions
+        when: template_files_exist
+      missing_files: cancelled
+
+  - id: apply-substitutions
+    attrs:
+      description: "Apply all text substitutions, rename package, reset version"
+      owner: Setup Agent
+      skills:
+        - setup-apply
+      in:
+        - template-config.yaml
+      out:
+        - pyproject.toml
+        - README.md
+        - tests/unit/main_test.py
+        - .github/workflows/ci.yml
+        - LICENSE
+        - template-config.yaml
+        - package_directory
+    conditions:
+      substitutions_successful:
+        no_stale_app_imports: ==true
+        package_renamed: ==true
+        version_reset: ==true
+    next:
+      applied:
+        to: verify-and-finalize
+        when: substitutions_successful
+      failed: cancelled
+
+  - id: verify-and-finalize
+    attrs:
+      description: "Verify transformations, clean template artifacts, finalize project"
+      owner: Setup Agent
+      skills:
+        - setup-verify
+      in:
+        - package_directory
+      out:
+        - git_remote
+    conditions:
+      verification_passed:
+        tests_pass: ==true
+        imports_valid: ==true
+        artifacts_cleaned: ==true
+    next:
+      initialized:
+        to: initialized
+        when: verification_passed
+      failed: cancelled

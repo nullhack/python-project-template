@@ -1,0 +1,156 @@
+flow: planning-flow
+version: 4.0.0
+exits:
+  - complete
+  - needs_architecture
+  - no_features
+
+states:
+  - id: feature-selection
+    attrs:
+      description: "PO picks the next feature to develop based on business priority and delivery order, verifying that architecture covers it"
+      owner: PO
+      skills:
+        - select-feature
+      in:
+        - product_definition.md
+        - technical_design.md
+      out: []
+    next:
+      selected: feature-specification
+      needs_architecture: needs_architecture
+      no_features: no_features
+
+  - id: feature-specification
+    attrs:
+      description: "PO conducts a targeted conversation with stakeholders to capture feature-specific behavioral rules, scenarios, and acceptance criteria"
+      owner: PO
+      skills:
+        - specify-feature
+      in:
+        - product_definition.md
+        - domain_model.md
+        - glossary.md
+        - technical_design.md
+      out:
+        - interview-notes/<session>.md
+    next:
+      done: feature-breakdown
+      needs_architecture: needs_architecture
+
+  - id: feature-breakdown
+    attrs:
+      description: "PO decomposes the selected feature into Rule blocks (user stories) within the feature file based on specification interview and domain constraints"
+      owner: PO
+      skills:
+        - break-down-feature
+      in:
+        - features/<feature_name>.feature
+        - product_definition.md
+        - technical_design.md
+        - interview-notes/*.md
+      out:
+        - features/<feature_name>.feature:
+            - rules
+    conditions:
+      invest_passed:
+        independent: ==true
+        negotiable: ==true
+        valuable: ==true
+        estimable: ==true
+        small: ==true
+        testable: ==true
+    next:
+      done:
+        to: bdd-features
+        when: invest_passed
+      needs_respecification: feature-specification
+
+  - id: bdd-features
+    attrs:
+      description: "PO writes concrete Given/When/Then Example blocks for each Rule in the feature file using ubiquitous language from the glossary"
+      owner: PO
+      skills:
+        - write-bdd-features
+      in:
+        - features/<feature_name>.feature
+        - product_definition.md
+        - domain_model.md
+        - glossary.md
+      out:
+        - features/<feature_name>.feature:
+            - examples
+    conditions:
+      examples_have_ids:
+        all_examples_have_ids: ==true
+      examples_have_gherkin:
+        all_examples_have_gherkin: ==true
+      premortem_done:
+        premortem_done: ==true
+      decomposition_valid:
+        concerns: <=2
+        must_examples: <=8
+      examples_complete:
+        all_examples_have_ids: ==true
+        all_examples_have_gherkin: ==true
+        premortem_done: ==true
+        concerns: <=2
+        must_examples: <=8
+    next:
+      done:
+        to: create-py-stubs
+        when: examples_complete
+      needs_respecification: feature-specification
+
+  - id: create-py-stubs
+    attrs:
+      description: "SA creates minimum typed stubs and test stubs as domain model breadcrumbs for the current feature"
+      owner: SA
+      skills:
+        - create-py-stubs
+      in:
+        - features/<feature_name>.feature
+        - technical_design.md
+        - domain_model.md
+        - glossary.md
+      out:
+        - typed_source_stubs
+        - test_skeletons
+    conditions:
+      stubs_traceable:
+        all_ids_have_stubs: ==true
+    next:
+      done: definition-of-done
+
+  - id: definition-of-done
+    attrs:
+      description: "PO tailors the definition of done criteria based on the specific feature's requirements"
+      owner: PO
+      skills:
+        - define-done
+      in:
+        - features/<feature_name>.feature
+        - product_definition.md
+      out:
+        - product_definition.md:
+            - definition_of_done
+    next:
+      done: ready
+
+  - id: ready
+    attrs:
+      description: "PO confirms all planning artifacts are complete and the feature is ready for development"
+      owner: PO
+      skills:
+        - confirm-baseline
+      in:
+        - features/<feature_name>.feature
+        - product_definition.md
+      out: []
+    conditions:
+      feature_baselined:
+        feature_status: ==BASELINED
+    next:
+      done:
+        to: complete
+        when: feature_baselined

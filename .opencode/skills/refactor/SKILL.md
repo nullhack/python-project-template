@@ -1,127 +1,28 @@
 ---
 name: refactor
-description: Safe refactoring protocol for TDD — green bar rule, two-hats discipline, preparatory refactoring, and smell catalogue
-version: "2.0"
-author: software-engineer
-audience: software-engineer
-workflow: feature-lifecycle
+description: "Improve code structure while keeping all tests passing, then cycle to the next example or exit"
 ---
 
 # Refactor
 
-Load this skill when entering the REFACTOR phase of a TDD cycle, or before starting RED on a new `@id` when preparatory refactoring is needed.
+Load [[software-craft/tdd]], [[software-craft/refactoring]], [[software-craft/object-calisthenics]], [[software-craft/smell-catalogue]], and [[software-craft/refactoring-techniques]] before starting. 
 
-Sources: Fowler *Refactoring* 2nd ed. (2018); Beck *Canon TDD* (2023); Beck *Tidy First?* (2023); Martin *SOLID* (2000); Bay *Object Calisthenics* (2005); Shvets *Refactoring.Guru* (2014–present). See `docs/research/oop-design.md` entries 33–36 and `docs/research/refactoring-empirical.md`.
-
----
-
-## The Definition
-
-A refactoring is a **behaviour-preserving** transformation of internal structure. If the transformation changes observable behaviour, it is not a refactoring — it is a feature change, and requires its own RED-GREEN-REFACTOR cycle. See [[software-craft/tdd]] for the full definition and rules.
-
----
-
-## The Green Bar Rule (absolute)
-
-Refactoring is only permitted while all existing tests pass. Every individual refactoring step must leave `test-fast` green. There are no exceptions. See [[software-craft/tdd]] for the full rule.
-
----
-
-## The Two-Hats Rule
-
-Wear one hat at a time. Never mix the feature hat (RED-GREEN) and the refactoring hat (REFACTOR) in the same step. If you discover a refactoring is needed while making a test pass, note it — finish GREEN first, then switch hats. See [[software-craft/tdd]] for the full rule.
-
----
-
-## When to Use
-
-### 1. REFACTOR phase (opportunistic)
-
-After GREEN: `test-fast` passes for the current `@id`. Now restructure.
-
-### 2. Preparatory refactoring (before RED)
-
-When the current structure would make the next `@id` awkward to implement:
-- Put on the **refactoring hat first**
-- Refactor until the feature is easy to add
-- Commit the preparatory refactoring separately (see Commit Discipline)
-- Then put on the feature hat and run RED-GREEN-REFACTOR normally
-
-Beck: *"For each desired change, make the change easy (warning: this may be hard), then make the easy change."*
-
----
-
-## Step-by-Step
-
-### Step 1 — Identify the smell
-
-Run the smell checklist from your Self-Declaration or from the Architecture Smell Check. See [[software-craft/smell-catalogue]] for the full smell catalogue (Bloaters, OO Abusers, Change Preventers, Dispensables, Couplers) with signals and likely catalogue entries.
-
-If pattern smell detected: load `skill apply-patterns` and see [[software-craft/design-patterns#concepts]] for pattern selection guidance.
-
-### Step 2 — Apply one catalogue entry at a time
-
-Apply a **single** catalogue entry, then run `test-fast` before moving to the next.
-
-Never batch multiple catalogue entries into one step — you lose the ability to pinpoint which step broke something.
-
-### Step 3 — Run after each step
-
-```bash
-uv run task test-fast
-```
-
-All tests green → proceed to next catalogue entry.
-Any test red → see "When a Refactoring Breaks a Test" below.
-
-### Step 4 — Commit when smell-free
-
-Once no smells remain and `test-fast` is green:
-
-```bash
-uv run task test-fast   # must pass
-```
-
-Commit (see Commit Discipline below).
-
----
-
-## When a Refactoring Breaks a Test
-
-A refactoring that breaks a test is **not a refactoring**. Stop. Diagnose using the flow in [[software-craft/tdd]]. Never delete a failing test without diagnosing it first.
-
-If the test is coupled to implementation details (private methods, internal state, specific call chains, concrete types), rewrite the test to use the public interface. See [[software-craft/test-design]] for refactor-safe test design patterns and the refactor-safety spectrum.
-
----
-
-## Commit Discipline
-
-Refactoring commits are always **separate** from feature commits. See [[software-craft/tdd]] for the full commit message format table.
-
-Never mix a structural cleanup with a behaviour addition in one commit. This keeps history bisectable and CI green at every commit.
-
----
-
-## Self-Declaration Check (before exiting REFACTOR)
-
-Before marking the `@id` complete, verify all items in the 25-item Self-Declaration. Each failed item is a smell — apply the catalogue entry, run `test-fast`, then re-check. See [[software-craft/self-declaration]] for the full checklist.
-
-### Green Bar
-- [ ] `test-fast` passes
-- [ ] No smell from the checklist in Step 1 remains
-
-### Object Calisthenics
-See [[software-craft/object-calisthenics]] for all nine rules and violation signals.
-
-### SOLID
-See [[software-craft/solid]] for all five principles, checks, and violation signals.
-
-### Law of Demeter / Tell, Don't Ask / CQS
-See [[software-craft/tdd]] for these principles and their violation signals.
-
-### Design Clarity Signals
-See [[software-craft/code-quality]] for the full set of design clarity principles.
-
-### Type and documentation hygiene
-- [ ] Type annotations present on all public signatures
-- [ ] Documentation present on all public classes and methods
+1. Review the code for improvement opportunities while keeping all tests passing per [[software-craft/tdd#concepts]].
+2. Refactor only if there is a test that would break if the refactoring is wrong per [[software-craft/tdd#key-takeaways]].
+3. Apply small steps: one refactoring at a time, tests green after each step, no new functionality per [[software-craft/refactoring#key-takeaways]].
+4. Apply design-only transformations per [[software-craft/tdd#concepts]] — YAGNI > KISS > DRY > OC > SOLID > patterns. Do not apply convention compliance (docstrings, type hints, import ordering, format changes) — those belong in the Conventions Phase.
+5. IF a class has >2 instance variables → split per [[software-craft/object-calisthenics#key-takeaways]].
+6. IF a method uses `else` → replace with early return or guard clause per [[software-craft/object-calisthenics#key-takeaways]].
+7. IF code calls `obj.get_x()` then decides → replace with Tell, Don't Ask per [[software-craft/object-calisthenics#key-takeaways]].
+8. IF Long Method → Extract Method per [[software-craft/smell-catalogue#concepts]].
+9. IF Switch Statements or repeated `if/elif` on type → Replace Conditional with Polymorphism per [[software-craft/smell-catalogue#concepts]].
+10. IF Feature Envy → Move Method per [[software-craft/smell-catalogue#concepts]].
+11. IF Primitive Obsession → Replace Data Value with Object per [[software-craft/smell-catalogue#concepts]].
+12. IF Data Clumps → Introduce Parameter Object per [[software-craft/smell-catalogue#concepts]].
+13. IF Shotgun Surgery or Divergent Change → Extract Class per [[software-craft/smell-catalogue#concepts]].
+14. IF no improvement is needed → skip refactoring and proceed to the next test.
+15. IF a spec gap or inconsistency is discovered during refactoring → do NOT modify specification documents (domain_model.md, technical_design.md, glossary.md, product_definition.md, system.md, context_map.md, ADRs, feature files). Flag it in output notes. The SE may ONLY modify production code and test code.
+16. Commit refactor changes separately from feature changes per [[software-craft/git-conventions#concepts]].
+17. Run `task test-fast` to confirm all tests remain green after refactoring.
+18. Write results to artifacts listed in the current state's `out` attrs. If findings affect artifacts outside the `out` contract, flag them in output notes for the appropriate step.
+19. Advance the flow with necessary evidence, choosing the appropriate next state based on the work completed.

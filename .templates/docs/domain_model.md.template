@@ -1,0 +1,96 @@
+# Domain Model: <project-name>
+
+> Current understanding of the business domain.
+> Updated by the Domain Expert when domain understanding evolves.
+> This document captures what code cannot express: WHY entities exist, HOW aggregates are bounded, and WHAT business capabilities each context serves.
+>
+> **Evolving document:** Event Storming fills the Event Map, Aggregate Candidates, and Context Candidates sections (workshop draft). Domain Modeling then formalizes them into Entities, Relationships, and Aggregate Boundaries.
+
+---
+
+## Summary
+
+<3–5 sentence description of the domain, its core concepts, and primary business capabilities.>
+
+---
+
+## Event Map
+
+### Domain Events
+
+| Event | Description | Trigger | Bounded Context |
+|-------|-------------|---------|-----------------|
+| `<EventName>` | <what happened> | <what causes it> | <Context> |
+
+### Commands
+
+| Command | Description | Produces Event | Actor |
+|---------|-------------|----------------|-------|
+| `<CommandName>` | <what it does> | `<EventName>` | <who triggers it> |
+
+### Read Models
+
+| Read Model | Description | Consumes Event | Used By |
+|------------|-------------|----------------|---------|
+| `<ReadModel>` | <what it shows> | `<EventName>` | <who reads it> |
+
+---
+
+## Context Candidates
+
+> Filled during Event Storming. Formalized in Bounded Contexts section below by Domain Modeling.
+
+| Candidate | Responsibility | Grouped Aggregates | Notes |
+|-----------|---------------|--------------------|-------|
+| `<ContextName>` | <what this context owns> | `<Aggregate1>`, `<Aggregate2>` | <why this boundary was suggested> |
+
+---
+
+## Aggregate Candidates
+
+> Filled during Event Storming. Formalized in Aggregate Boundaries section below by Domain Modeling.
+
+| Candidate | Events Grouped | Tentative Root Entity | Notes |
+|-----------|---------------|-----------------------|-------|
+| `<AggregateName>` | `<Event1>`, `<Event2>` | `<EntityName>` | <why these events share a transactional boundary> |
+
+---
+
+## Bounded Contexts
+
+| Context | Responsibility | Key Entities | Integration Points |
+|---------|----------------|--------------|-------------------|
+| `<Context>` | <responsibility> | `<Entity1>`, `<Entity2>` | <how it connects to other contexts> |
+
+---
+
+## Entities
+
+| Name | Type | Description | Bounded Context | Aggregate Root? |
+|------|------|-------------|-----------------|-----------------|
+| `<Name>` | Entity | <description> | <Context> | Yes / No |
+| `<Name>` | Value Object | <description> | <Context> | — |
+
+---
+
+## Relationships
+
+| Subject | Relation | Object | Cardinality | Notes |
+|---------|----------|--------|-------------|-------|
+| `<A>` | <has / uses / emits> | `<B>` | <1:1 / 1:N / M:N> | <notes> |
+
+---
+
+## Aggregate Boundaries
+
+| Aggregate | Root Entity | Invariants | Bounded Context |
+|-----------|-------------|------------|-----------------|
+| `<Aggregate>` | `<RootEntity>` | <business rules this aggregate enforces> | <Context> |
+
+---
+
+## Changes
+
+| Date | Source | Change | Reason |
+|------|--------|--------|--------|
+| YYYY-MM-DD | <session or feature ref> | <what changed> | <why> |

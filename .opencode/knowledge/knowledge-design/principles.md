@@ -1,7 +1,7 @@
 ---
 domain: knowledge-design
-tags: [knowledge, wikilinks, diataxis, architecture, research-backed]
-last-updated: 2026-04-26
+tags: [knowledge, wikilinks, diataxis, architecture, progressive-disclosure]
+last-updated: 2026-04-29
 ---
 
 # Knowledge Design Principles
@@ -9,77 +9,36 @@ last-updated: 2026-04-26
 ## Key Takeaways
 
 - Knowledge, skills, and agents are separate concerns with one canonical location each; never duplicate knowledge across files.
-- Three research-backed failure modes (instruction conflict, positional attention degradation, redundancy interference) justify keeping knowledge in its own files.
 - Knowledge files use a 4-section body structure (Key Takeaways, Concepts, Content, Related) with strict correspondence between tiers.
-- Wikilinks reference knowledge on demand using `[[domain/concept]]` or `[[domain/concept#section]]` with cumulative extraction.
+- Wikilinks reference knowledge on demand using `[[domain/concept]]` or `[[domain/concept#section]]` with cumulative extraction; skills are the authoritative routing mechanism.
 - Knowledge files contain reference and explanation only; procedural instructions belong in skills.
+- Maximum ~150 lines per file to avoid positional attention degradation (Liu et al., 2023); small focused files may omit the Content section.
 
 ## Concepts
 
-**Separation of concerns**: Knowledge, skills, and agents each have exactly one canonical location. Knowledge files hold reference and explanation; skills hold procedural instructions; agents hold role identity. No knowledge is embedded in skills or agents — they reference it via wikilinks. This prevents instruction conflict (Entry #24), positional attention degradation (Entry #25), and redundancy interference (Entry #26).
+**Separation of Concerns**: Knowledge, skills, and agents each have exactly one canonical location. Knowledge files hold reference and explanation; skills hold procedural instructions; agents hold role identity. The flow YAML holds routing, artifacts, and transitions. No knowledge is embedded in skills or agents — they reference it via wikilinks. Three failure modes observed in LLM context windows justify this separation: conflicting instructions from multiple sources (each concern gets one file), positional attention degradation (Liu et al., 2023 — middle content receives less attention; keep files short), and redundant content creating competing attention targets (each fact in one location).
 
-**Three-tier progressive disclosure**: Every knowledge file has four body sections ordered by depth: Key Takeaways (bullets), Concepts (paragraphs), Content (full reference), and Related (wikilinks). Each bullet in Key Takeaways corresponds to exactly one paragraph in Concepts and one or more subsections in Content. Closely related Content subsections may share a bullet and paragraph. This structure lets agents load only the depth they need via wikilink fragments.
+**Three-Tier Progressive Disclosure**: Every knowledge file has four body sections ordered by depth: Key Takeaways (bullets), Concepts (paragraphs), Content (full reference), and Related (wikilinks). Each bullet in Key Takeaways corresponds to exactly one paragraph in Concepts and one or more subsections in Content. Small focused files may omit the Content section if bullets and concepts are sufficient.
 
-**Wikilink routing**: Skills are the authoritative routing mechanism — they say when to load a knowledge file. Tags categorize files for pre-filtering without reading the body. Key Takeaways provide a relevance signal for agents scanning a file. There is no separate "purpose" section or frontmatter key; routing is handled by these three mechanisms.
+**Wikilink Routing and Extraction**: Skills are the authoritative routing mechanism — they say when to load a knowledge file. Wikilinks support a `#section-name` fragment for cumulative extraction: `[[domain/concept#key-takeaways]]` loads frontmatter + Key Takeaways only (approximately 80% token savings), `[[domain/concept#concepts]]` loads through Concepts (approximately 65% savings), and no fragment loads the full file. Use `sed '/^## SectionName/Q' file.md` to extract up to but not including the next section header.
 
-**Fragment-based extraction**: Wikilinks support a `#section-name` fragment for cumulative extraction. `[[domain/concept#key-takeaways]]` loads frontmatter + Key Takeaways only (~80% token savings). `[[domain/concept#concepts]]` loads through Concepts (~65% savings). No fragment loads the full file. Section names use lowercase with hyphens (e.g., `#key-takeaways`, not `#Key Takeaways`).
+**Reference and Explanation Only**: Knowledge files contain reference and explanation content (the what and why). Procedural instructions (the when and how) belong in skills. This separation follows the Diátaxis framework (Procida, 2021): knowledge serves the Reference and Explanation modes, skills serve the How-to and Tutorial modes.
 
-**Reference and explanation only**: Knowledge files contain reference and explanation content (the "what" and "why"). Procedural instructions (the "when" and "how") belong in skills. This separation follows the Diátaxis framework: knowledge serves the Reference and Explanation modes, skills serve the How-to and Tutorial modes.
+**Size Limit**: Maximum ~150 lines per file to avoid positional attention degradation (Liu et al., 2023). Files that exceed this should be split into separate knowledge files. Small focused topics may use only Key Takeaways and Concepts, omitting the Content section entirely.
 
 ## Content
 
 ### Philosophy
 
-**Knowledge is what. Skills are when and how. Agents are who.**
-
-Each concern has exactly one canonical location:
+**Knowledge is what. Skills are when and how. Agents are who. Flows are where.**
 
 | Concern | Location | Loaded When | Diátaxis Type |
 |---|---|---|---|
-| Project conventions | `AGENTS.md` | Every session | Reference |
+| Project navigation | `AGENTS.md` | Every session | Reference |
 | Role identity | `.opencode/agents/*.md` | When role invoked | Tutorial |
 | Procedural instructions | `.opencode/skills/*/SKILL.md` | On demand | How-to guide |
 | Domain knowledge | `.opencode/knowledge/*/` | On demand, referenced by skill | Reference + Explanation |
-
-No knowledge is embedded in skills or agents. They reference it via wikilinks.
-
-### Why Separate Knowledge
-
-Three research-backed failure modes justify the separation:
-
-1. **Instruction conflict** (Entry #24): LLMs cannot reliably resolve conflicting instructions from multiple sources. When the same knowledge appears in two places with divergent details, the model selects based on statistical priors, not prompt structure.
-
-2. **Positional attention degradation** (Entry #25): Content in the middle of long contexts receives less attention. Duplicating knowledge across always-loaded files increases total context length, pushing other content into lower-attention positions.
-
-3. **Redundancy interference** (Entry #26): Redundant content across prompt sections creates competing attention targets. De-duplication concentrates relevant signal in one canonical location.
-
-### Wikilink Convention
-
-Knowledge is referenced using wikilinks in the format `[[domain/concept]]` or `[[domain/concept#section-name]]`.
-
-**Resolution rule**: When you encounter `[[domain/concept]]` in any file, read `.opencode/knowledge/{domain}/{concept}.md` to load that knowledge before proceeding with the task that requires it. When a fragment is specified, use cumulative extraction to read only the requested depth.
-
-**Fragment syntax**: `#section-name` uses lowercase with hyphens (matching MediaWiki and HTML anchor conventions). Fragments are cumulative:
-
-| Fragment | Loads | Approximate token savings |
-|---|---|---|
-| `#key-takeaways` | Frontmatter + Key Takeaways | ~80% |
-| `#concepts` | Frontmatter + Key Takeaways + Concepts | ~65% |
-| (no fragment) | Entire file | 0% |
-
-**Extraction method**: `sed '/^## NextSection/Q' file.md` — reads from line 1 up to (but not including) the next `## ` heading. Frontmatter is always included.
-
-Examples:
-- `[[agent-design/principles]]` → full file `.opencode/knowledge/agent-design/principles.md`
-- `[[software-craft/solid#key-takeaways]]` → frontmatter + Key Takeaways of `software-craft/solid.md`
-- `[[skill-design/opencode-format#concepts]]` → frontmatter + Key Takeaways + Concepts of `skill-design/opencode-format.md`
-
-Wikilinks appear in:
-- **Skills**: "Before verifying code quality, read [[software-craft/code-quality]]"
-- **Knowledge files**: "See [[agent-design/principles]] for agent design guidelines"
-- **Agents**: "Load [[agent-design/principles]] when creating new agents"
-
-Wikilinks do NOT appear in `AGENTS.md` (always-loaded) except to document the convention itself. AGENTS.md should contain brief references, not wikilinks to knowledge that would need to be resolved during every session.
+| Routing, artifacts, transitions | `.flowr/flows/*.yaml` | Via `flowr status` | — |
 
 ### Knowledge File Format
 
@@ -113,45 +72,50 @@ Subsections correspond to Key Takeaway bullets (1:1 or N:1 grouping).>
 - [[domain/other-concept]]
 ```
 
-#### Format Rules
+### Format Rules
 
 1. **One concept per file** — each file covers exactly one topic
-2. **Max ~150 lines** — avoid positional attention degradation (Entry #25)
-3. **Self-contained** — understandable without reading linked files (Entry #10)
+2. **Max ~150 lines** — avoid positional attention degradation (Liu et al., 2023)
+3. **Self-contained** — understandable without reading linked files
 4. **Key Takeaways first** — one bullet per concept, imperative mood, enables fast relevance scanning
 5. **Concepts expand Key Takeaways** — one paragraph per bullet, same order and grouping
 6. **Correspondence rule** — bullet N in Key Takeaways corresponds to paragraph N in Concepts and subsection(s) N in Content
-7. **No procedural instructions** — how-to content belongs in skills (Diátaxis)
-8. **Reference + Explanation only** — knowledge serves these two Diátaxis modes
-9. **YAML frontmatter** — `domain`, `tags`, `last-updated` for search and filtering; no `purpose` key needed
-10. **No `## Purpose` section** — routing is handled by skills, tags, and Key Takeaways
+7. **No procedural instructions** — how-to content belongs in skills (Diátaxis — Procida, 2021)
+8. **YAML frontmatter** — `domain`, `tags`, `last-updated` for search and filtering
+9. **Small files may omit Content** — focused topics with rules that fit in bullets and concepts need no expansion
 
-#### Directory Structure
+### Wikilink Convention
+
+Wikilinks reference knowledge using the format `[[domain/concept]]` or `[[domain/concept#section-name]]`.
+
+**Resolution rule**: When you encounter `[[domain/concept]]` in any file, read `.opencode/knowledge/{domain}/{concept}.md` to load that knowledge before proceeding.
+
+**Fragment syntax**: `#section-name` uses lowercase with hyphens. Fragments are cumulative:
+
+| Fragment | Loads | Bash Command | Token Savings |
+|---|---|---|---|
+| `#key-takeaways` | Frontmatter + Key Takeaways | `sed '/^## Concepts/Q' file.md` | ~80% |
+| `#concepts` | Frontmatter + Key Takeaways + Concepts | `sed '/^## Content/Q' file.md` | ~65% |
+| (no fragment) | Entire file | `cat file.md` | 0% |
+
+Wikilinks appear in skills, knowledge files, and agents. Wikilinks do NOT appear in `AGENTS.md` (always-loaded) except to document the convention itself.
+
+### Directory Structure
 
 ```
 .opencode/knowledge/
+  requirements/
   agent-design/
-    principles.md
-    opencode-format.md
   skill-design/
-    principles.md
-    opencode-format.md
   knowledge-design/
-    principles.md
-  software-craft/
-    code-quality.md
-    solid.md
-    object-calisthenics.md
-  ...
+  workflow/
 ```
 
 Domain directories organize related concepts. Subdirectories within domains are allowed for deep hierarchies.
 
 ### Knowledge Graph
 
-The knowledge graph emerges from wikilinks in the `## Related` sections. No separate edge file is needed. A validation script can extract `[[...]]` patterns and check:
-- No broken links (target file must exist, fragment must resolve to a valid section)
-- No orphaned files (every file should be referenced by at least one other file or skill)
+The knowledge graph emerges from wikilinks in the `## Related` sections. No separate edge file is needed. Validation can extract `[[...]]` patterns and check that target files exist and fragments resolve to valid sections.
 
 ## Related
 

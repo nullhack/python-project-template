@@ -1,86 +1,57 @@
 ---
 domain: software-craft
-tags: [solid, principles, oop, design]
-last-updated: 2026-04-26
+tags: [solid, design-principles, oop, code-quality]
+last-updated: 2026-04-30
 ---
 
 # SOLID Principles
 
 ## Key Takeaways
 
-- Keep each class to one reason to change; count distinct concerns to detect SRP violations.
-- Design for extension without modification; `if/elif` chains that require editing are the violation signal.
-- Ensure subtypes honour the full base contract; `NotImplementedError` stubs signal LSP violations.
-- Split wide interfaces so no client depends on methods it doesn't use; stubbed methods signal ISP violations.
-- Depend on abstractions, not concrete I/O; direct imports of database/file/network classes signal DIP violations.
+- SRP: A class should have only one reason to change — multiple responsibilities mean multiple change axes that conflict (Martin, 2000).
+- OCP: Software entities should be open for extension but closed for modification — add new behaviour by adding new code, not by changing existing code.
+- LSP: Subtypes must be substitutable for their base types — a subclass that breaks the contract of its superclass violates Liskov Substitution.
+- ISP: Clients should not be forced to depend on interfaces they do not use — split fat interfaces into smaller, cohesive ones.
+- DIP: Depend on abstractions, not concretions — high-level modules should not depend on low-level modules; both should depend on abstractions.
 
 ## Concepts
 
-**Single Responsibility Principle**: A class should have exactly one reason to change. When a class handles data + formatting, or business logic + persistence, it has more than one concern. Extract Class by axis of change to resolve.
+**Single Responsibility Principle (SRP)** — A class with more than one reason to change has more than one responsibility. When requirements change, a class that handles multiple responsibilities must change in multiple unrelated ways, creating coupling between unrelated concerns. The fix: extract each responsibility into its own class. A class with >2 instance variables often has >1 responsibility (OC-7 overlap).
 
-**Open/Closed Principle**: Software entities should be open for extension but closed for modification. If adding a case requires editing an `if/elif` chain inside the class, the class is not closed for modification. Apply Replace Conditional with Polymorphism, Strategy, or State.
+**Open-Closed Principle (OCP)** — When new variants are added to a system, existing code should not be modified. Instead, new behaviour is added by creating new types that implement existing interfaces. Type-switching (`if/elif` on a kind field) is an OCP violation — each new variant requires modifying every switch statement. The fix: Replace Conditional with Polymorphism, Strategy, or State.
 
-**Liskov Substitution Principle**: Subtypes must be substitutable for their base types without altering program correctness. A subclass that raises on an inherited method or narrows a precondition breaks polymorphic code silently. Push Down Method/Field or Replace Inheritance with Delegation.
+**Liskov Substitution Principle (LSP)** — If a function expects a base type, it must work correctly with any subtype. A subclass that overrides methods to do nothing, throws `NotImplementedError`, or narrows pre-conditions violates LSP. Refused Bequest is the corresponding smell. The fix: Replace Inheritance with Delegation, or Push Down Method to isolate the problematic inheritance.
 
-**Interface Segregation Principle**: No client should be forced to depend on methods it does not use. When implementors stub out methods they don't need or raise `NotImplementedError`, the interface is too wide. Extract Superclass, unify via Protocol, or split the interface.
+**Interface Segregation Principle (ISP)** — A fat interface forces all clients to depend on methods they do not use. When a client depends on an interface with 10 methods but only calls 2, any change to the other 8 methods triggers a recompile or retest. The fix: Extract Interface into smaller, cohesive interfaces, each serving one client role.
 
-**Dependency Inversion Principle**: High-level modules should not depend on low-level modules. Both should depend on abstractions. When domain code directly imports a database, file, or network class, unit testing becomes impossible. Introduce Protocol for external dependency; apply Repository/Adapter pattern.
+**Dependency Inversion Principle (DIP)** — High-level policy should not depend on low-level detail; both should depend on abstractions. A module that imports a concrete database adapter is tightly coupled to that adapter's implementation. The fix: define a Protocol (abstract interface) and inject the adapter via dependency injection. External dependencies should always be behind a Protocol.
 
 ## Content
 
-### S — Single Responsibility Principle
+### SOLID Violation Smell Mapping
 
-A class should have exactly one reason to change.
+| Principle | Smell | Signal | Fix |
+|---|---|---|---|
+| SRP | Divergent Change | One class changes for multiple unrelated reasons | Extract Class by axis of change |
+| SRP | Large Class | Class has too many instance variables or methods | Extract Class, Extract Subclass |
+| OCP | Switch Statements | `if/elif` on type/kind/status that must change for each new variant | Replace Conditional with Polymorphism, Strategy, State |
+| OCP | Shotgun Surgery | Adding one variant requires modifying many call sites | Move dispatch to type hierarchy |
+| LSP | Refused Bequest | Subclass overrides methods to do nothing or raises NotImplementedError | Push Down Method, Replace Inheritance with Delegation |
+| LSP | Alternative Classes with Different Interfaces | Two classes doing the same thing with different signatures | Extract Superclass, unify via Protocol |
+| ISP | Fat Interface | Client depends on methods it does not use | Extract Interface per client role |
+| ISP | Temporary Field | Interface forces fields that are only set in some code paths | Extract Class, Introduce Null Object |
+| DIP | Direct Dependency on Concrete | Module imports a concrete class instead of an abstraction | Define Protocol, inject via constructor |
+| DIP | Hard-coded Construction | `__init__` creates concrete dependencies | Replace Constructor with Factory Method, inject dependencies |
 
-**Check**: Does this class have exactly one reason to change?
+### SOLID in the Design Principle Priority
 
-**Violation signal**: Class handles data + formatting, or business logic + persistence. Count distinct concerns — if more than one, the class violates SRP.
-
-**Catalogue entry**: Extract Class (split by axis of change).
-
-### O — Open/Closed Principle
-
-Software entities should be open for extension but closed for modification.
-
-**Check**: Can new behaviour be added without editing this class?
-
-**Violation signal**: Adding a case requires editing an `if/elif` chain inside the class. Every new variant forces a modification to existing code.
-
-**Catalogue entry**: Replace Conditional with Polymorphism; Strategy; State.
-
-### L — Liskov Substitution Principle
-
-Subtypes must be substitutable for their base types without altering program correctness.
-
-**Check**: Do all subtypes honour the full contract of their base type?
-
-**Violation signal**: Subclass raises on an inherited method, or narrows a precondition. Subtypes that cannot stand in for their base break polymorphic code silently.
-
-**Catalogue entry**: Push Down Method/Field; Replace Inheritance with Delegation.
-
-### I — Interface Segregation Principle
-
-No client should be forced to depend on methods it does not use.
-
-**Check**: Does every implementor use every method in the interface?
-
-**Violation signal**: Implementors stub out methods they don't need, or raise `NotImplementedError` for interface methods they don't care about. The interface is too wide.
-
-**Catalogue entry**: Extract Superclass; unify via Protocol; split the interface.
-
-### D — Dependency Inversion Principle
-
-High-level modules should not depend on low-level modules. Both should depend on abstractions.
-
-**Check**: Does domain code depend only on abstractions, not concrete I/O?
-
-**Violation signal**: Domain class directly imports a database, file, or network class. Concrete I/O in domain code makes unit testing impossible.
-
-**Catalogue entry**: Introduce Protocol for external dependency; Repository/Adapter pattern.
+The design principle priority in TDD is: YAGNI > KISS > DRY > OC > SOLID > Design Patterns. SOLID principles are checked during REFACTOR only when a smell triggers them. They are not applied speculatively.
 
 ## Related
 
-- [[software-craft/object-calisthenics]] — complementary structural constraints
-- [[software-craft/smell-catalogue]] — smells that trigger SOLID violations
-- [[software-craft/design-patterns]] — patterns that resolve SOLID violations
-- [[software-craft/self-declaration]] — SOLID items 7-11 in the declaration checklist
+- [[software-craft/smell-catalogue]] — each SOLID violation maps to specific smells
+- [[software-craft/design-patterns]] — patterns resolve SOLID violations (e.g., Strategy resolves OCP violations)
+- [[software-craft/refactoring-techniques]] — refactoring techniques fix SOLID violations
+- [[software-craft/refactoring]] — when and how to refactor, clean code, technical debt
+- [[software-craft/object-calisthenics]] — OC rules overlap with SOLID (OC-7 enforces SRP, OC-4 enforces DIP)
+- [[software-craft/tdd]] — SOLID is part of the design principle priority in REFACTOR

@@ -1,93 +1,100 @@
 ---
 domain: agent-design
-tags: [agents, best-practices, ownership, context-isolation, research-backed]
-last-updated: 2026-04-26
+tags: [agents, identity, subagents, separation-of-concerns]
+last-updated: 2026-04-29
 ---
 
 # Agent Design Principles
 
 ## Key Takeaways
 
-- Define the smallest agent that can own a clear task; add agents only for separate ownership, different instructions, different tool surface, or different approval policy.
-- Use subagents for investigation tasks that rapidly exhaust context; they quarantine token cost and prevent anchoring bias.
-- Maintain a three-file separation (AGENTS.md, agents, skills) to prevent instruction conflict, positional attention degradation, and redundancy interference.
-- Embed specific IF-THEN triggers at decision points, not vague references; error-specific feedback is actionable, vague feedback is not.
+- Agents contain identity only (who I am, what I decide); the flow YAML is the source of truth for routing, skills, and artifacts.
+- Use subagents for investigation tasks that rapidly exhaust context; they quarantine token cost and prevent anchoring bias (Tversky & Kahneman, 1974).
+- Maintain a three-file separation (AGENTS.md, agents, skills) to prevent conflicting instructions from competing sources, positional attention degradation (Liu et al., 2023), and redundant content creating competing attention targets.
+- Agents are minimal — the flow determines which skill to load, the skill determines how to do the work, the knowledge provides the reference material.
+- AGENTS.md must discover, not enumerate — provide discovery commands and naming conventions, never file inventories that go stale.
 
 ## Concepts
 
-**Minimal-Scope Agent Design**: Define the smallest agent that can own a clear task. Add more agents only for separate ownership, different instructions (not just more detail), different tool surface, or different approval policy. The split criterion is ownership boundary, not instruction volume. Anti-pattern: creating agents just to organize instructions.
+**Agent = Identity Only**: The agent file defines who the agent is and what it decides. It does NOT contain skill lists, ownership tables, routing logic, artifact paths, or knowledge references. The flow YAML is the single source of truth for routing (owner, skills, transitions, artifacts). Duplicating any of these in the agent creates a second source of truth that will drift.
 
-**Context Isolation via Subagents**: Subagents run in their own context windows and report back summaries. This keeps the primary conversation clean for implementation. Every file read in a subagent burns tokens in a child window, not the primary window. Context window is the primary performance constraint for LLM agents. A fresh context also prevents anchoring bias from prior conversation state.
+**Three-File Separation**: Three failure modes observed in LLM context windows produce a three-file split:
+- **Conflicting instructions** from multiple sources — each concern has one file
+- **Positional attention degradation** (Liu et al., 2023 — middle content receives less attention) — keep files short
+- **Redundant content** creating competing attention targets — each fact in one location
 
-**Three-File Separation**: Three failure modes (instruction conflict, positional attention degradation, redundancy interference) produce a three-file split with defined content rules: AGENTS.md (every session, project conventions), agents (when role invoked, role identity), skills (on demand, procedural instructions), and knowledge (on demand, reference + explanation only).
+| Concern | File | Purpose | Loaded When |
+|---|---|---|---|
+| Navigation | `AGENTS.md` | Where files live, how to resolve wikilinks | Every session |
+| Identity | `.opencode/agents/*.md` | Who I am, what I decide | When role invoked |
+| Procedure | `.opencode/skills/*/SKILL.md` | Step-by-step instructions | On demand |
+| Reference | `.opencode/knowledge/*/` | What and why | On demand, via wikilinks |
 
-**Effective Instruction Writing and Tool Permission Design**: Specific triggers at decision points are 2-3x more likely to execute than general intentions. Error-specific feedback like "FAIL: function > 20 lines at file:47" is actionable; "Apply function length rules" is not. Agent-Computer Interface design is as important as Human-Computer Interface design: start with bash for breadth, promote to dedicated tools for security, structured output, or audit patterns.
+**Subagents for Investigation**: When a task requires extensive reading (auditing code, researching decisions), use a subagent with read-only or restricted permissions. Subagents quarantine token cost and prevent anchoring bias from the main conversation context.
+
+**Effective Instruction Writing**: Specific IF-THEN triggers at decision points are 2-3x more likely to execute than general intentions (Gollwitzer, 1999). But these triggers belong in the skill steps at the decision point, NOT in the agent file. The agent file is too far from the work context for triggers to be effective.
+
+**Discover, Don't Enumerate**: AGENTS.md must never enumerate files that can go stale. Instead, it provides discovery commands (`ls`, `find`) and file naming conventions so agents discover what exists at runtime. This prevents drift between documentation and reality — an inventory that lists 30 skills will be wrong the moment a skill is added or removed, but a discovery command is always correct.
+
+**Naming Distinction**: `AGENTS.md` (project root) is the navigation file loaded every session. `.opencode/agents/*.md` are agent identity files loaded on demand. Despite the similar names, they serve different purposes: AGENTS.md tells you where things are; agent files tell you who you are.
+
+**Research Notes Are Consultable, Not Session-Loaded**: Research notes in `docs/research/` are source material cited by knowledge files. They are not loaded every session. An agent consults them only when a knowledge file references them and more detail is needed.
 
 ## Content
 
-### Minimal-Scope Agent Design
+### Agent File Format
 
-Define the smallest agent that can own a clear task. Add more agents only when you need:
-- **Separate ownership** — different domain responsibility
-- **Different instructions** — not just more detail, but fundamentally different guidance
-- **Different tool surface** — distinct actions and permissions
-- **Different approval policy** — different escalation rules
+```markdown
+---
+description: "<role> — <one-line summary>"
+mode: subagent
+temperature: <0.3-0.7>
+---
 
-The split criterion is **ownership boundary**, not instruction volume. A single agent with more tools is usually better than multiple agents that share the same domain. (Source: OpenAI Agents SDK, 2024; research entry #21.)
+# <Role Name>
 
-Anti-pattern: Creating agents just to organize instructions. If two agents need the same knowledge and perform similar actions, they should be one agent with skill-based differentiation.
+You are the <Role Name>. <One-sentence identity>.
+<One-sentence decision authority>.
+```
 
-### Context Isolation via Subagents
+That is the entire agent. No skill lists, no ownership tables, no IF-THEN triggers, no knowledge references, no routing.
 
-Subagents run in their own context windows and report back summaries. This keeps the primary conversation clean for implementation. Every file read in a subagent burns tokens in a child window, not the primary window.
+### What NOT to Put in an Agent File
 
-Context window is the primary performance constraint for LLM agents. Investigation tasks rapidly exhaust context if done inline. Delegating to a subagent quarantines that cost; the primary agent receives only the distilled result. A fresh context also prevents anchoring bias from prior conversation state. (Source: Anthropic, 2025; research entry #22.)
+- **Skill lists** — the flow `skills` field determines which skill to load
+- **Ownership tables** — the flow `input/edited/output_artifacts` defines what each state reads and writes
+- **Routing logic** — the flow `next` field defines transitions
+- **Knowledge references** — the skill's `## Load` section handles knowledge loading
+- **Step procedures** — skills contain procedure, agents contain identity
+- **Quality gates** — the flow `conditions` field defines gate conditions
 
-### Three-File Separation
+### AGENTS.md Is Navigation Only
 
-Three failure modes converge to produce a three-file split with defined content rules:
+AGENTS.md is loaded every session. It should contain ONLY:
+- Where files live (project structure)
+- How to resolve wikilinks
+- Session protocol (use `flowr status`, `flowr advance`)
+- File naming conventions
+- Discovery commands (not file inventories)
 
-| Failure Mode | Source | Prevention |
+It must NOT contain quality gates, priority orders, step procedures, knowledge content, or file enumerations.
+
+### Naming Conventions
+
+| Path | Purpose | Loaded When |
 |---|---|---|
-| Instruction conflict on drift | Entry #24 — LLMs cannot reliably resolve conflicting instructions | Single source of truth per concern |
-| Positional attention degradation | Entry #25 — Middle content gets less attention | Keep always-loaded files lean |
-| Redundancy interference | Entry #26 — Redundant content creates competing attention targets | De-duplicate across all files |
+| `/AGENTS.md` | Root navigation (where things are, how to discover them) | Every session |
+| `.opencode/agents/{role}.md` | Agent identity (who I am, what I decide) | When role invoked |
+| `.opencode/skills/{skill}/SKILL.md` | Skill procedure (step-by-step instructions) | On demand |
+| `.opencode/knowledge/{domain}/{concept}.md` | Knowledge reference (progressive disclosure) | On demand, via wikilinks |
+| `.templates/{path}.template` | Artifact templates | When creating artifacts |
+| `docs/research/{domain}/{concept}.md` | Research source notes (cited by knowledge files) | When knowledge file references them |
+| `docs/adr/ADR_YYYYMMDD_{slug}.md` | Architecture decision records | When referenced |
 
-| File | When Loaded | Contains | Must NOT Contain |
-|---|---|---|---|
-| `AGENTS.md` | Every session | Project conventions, commands, formats | Step procedures, role-specific rules, knowledge |
-| `.opencode/agents/*.md` | When role invoked | Role identity, skill loads, permissions, escalation | Workflow details, knowledge content |
-| `.opencode/skills/*/SKILL.md` | On demand | Procedural instructions, self-contained | Duplication of `AGENTS.md` or other skills |
-| `.opencode/knowledge/` | On demand | Reference + explanation only | Procedural instructions, step-by-step workflows |
-
-### Effective Instruction Writing
-
-- **Specific triggers**: "Load skill X when condition Y" not "use judgment"
-- **Clear actions**: Every step corresponds to a specific output
-- **Concrete examples**: Include before/after code where helpful (one is enough)
-- **Verification criteria**: How does the agent know it's done?
-- **Implementation intentions**: "If X then Y" plans are 2–3x more likely to execute than general intentions (Source: Gollwitzer, 1999; entry #2.)
-- **Error-specific feedback**: "FAIL: function > 20 lines at file:47" is actionable; "Apply function length rules" is not (Source: Hattie & Timperley, 2007; entry #9.)
-
-### Tool Permission Design (ACI)
-
-Agent-Computer Interface design is as important as Human-Computer Interface design. More time was spent optimizing tools than prompts in SWE-bench work. (Source: Anthropic Engineering Blog, 2024.)
-
-- Start with bash for breadth
-- Promote to dedicated tools when you need to: gate security-sensitive actions, render structured output, audit usage patterns
-- Poka-yoke your tools: make the right action easy and the wrong action hard
-- Give agents enough tokens to think — truncating tool descriptions to save tokens often costs more in misunderstandings
-
-### Adversarial Verification
-
-The reviewer's job is to try to break the feature, not to confirm it works. Default hypothesis: "it might be broken despite green checks; prove otherwise."
-
-Highest-quality thinking emerges when parties hold different hypotheses and are charged with finding flaws in each other's reasoning. (Source: Mellers, Hertwig, & Kahneman, 2001; entry #5.)
-
-Accountability to an unknown audience improves reasoning quality. Structured PASS/FAIL tables with evidence columns create commitment-device effects. (Source: Cialdini, 2001; entry #3; Tetlock, 1983; entry #6.)
+Note: Despite similar names, `AGENTS.md` (root navigation) and `.opencode/agents/` (identity files) serve different purposes.
 
 ## Related
 
-- [[agent-design/opencode-format]]
 - [[skill-design/principles]]
 - [[knowledge-design/principles]]
+- [[workflow/flowr-spec]]

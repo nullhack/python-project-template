@@ -1,0 +1,114 @@
+# System Overview: <project-name>
+
+> Current-state description of the production system.
+> Updated by the Software Architect when domain understanding changes (rare).
+> Contains only completed features — nothing from backlog or in-progress.
+> This document captures what code cannot express: WHY contexts exist, HOW they relate, WHAT the aggregate boundaries are and why.
+
+---
+
+## Summary
+
+<3–5 sentence description of what the system currently does, who uses it, and its primary boundaries.>
+
+---
+
+## Delivery
+
+**Mechanism:** CLI | Web | API | Desktop | <other>
+
+<The mechanism by which users interact with the system. Reconcile against the discovery Q&A.>
+
+---
+
+## Context (C4 Level 1)
+
+### Actors
+
+| Actor | Description |
+|-------|-------------|
+| `<role>` | <description> |
+
+### Systems
+
+| System | Kind | Description |
+|--------|------|-------------|
+| `<name>` | Internal / External | <description> |
+
+### Interactions
+
+| Interaction | Behaviour | Technology |
+|-------------|-----------|------------|
+| `<from> → <to>` | <behaviour description> | <technology> |
+
+---
+
+## Container (C4 Level 2)
+
+### Boundary: <system-name>
+
+| Container | Technology | Responsibility |
+|-----------|------------|----------------|
+| `<name>` | <technology> | <responsibility> |
+
+### Interactions
+
+| Interaction | Behaviour |
+|-------------|-----------|
+| `<from> → <to>` | <behaviour description> |
+
+---
+
+## Module Structure
+
+| Module | Responsibility | Bounded Context |
+|--------|----------------|-----------------|
+| `<module>` | <responsibility> | <Context> |
+
+---
+
+## Domain Model Documentation
+
+### Why Each Context Exists
+
+| Bounded Context | Business Capability | Why It's Separate |
+|-----------------|---------------------|-------------------|
+| `<Context>` | <what business need it serves> | <why it can't be merged with another context> |
+
+### Aggregate Boundary Rationale
+
+| Aggregate | Why These Entities Are Grouped | Transactional Invariant |
+|-----------|-------------------------------|------------------------|
+| `<Aggregate>` | <business reason for the boundary> | <what must always be true within this aggregate> |
+
+---
+
+## Active Constraints
+
+- <system-wide constraint from ADRs or completed features>
+
+---
+
+## Key Decisions
+
+- <system-wide decision from ADRs — one bullet per decision>
+
+---
+
+## ADRs
+
+See `docs/adr/` for the full decision record.
+
+---
+
+## Completed Features
+
+See `docs/features/` for accepted features.
+
+---
+
+## Changes
+
+| Date | Source | Change | Reason |
+|------|--------|--------|--------|
+| YYYY-MM-DD | <ADR or feature ref> | <what changed> | <why> |
