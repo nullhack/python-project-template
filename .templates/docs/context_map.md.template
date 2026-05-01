@@ -1,0 +1,47 @@
+# Context Map: <project-name>
+
+> DDD context map showing relationships between bounded contexts.
+> Updated by the Software Architect when contexts or relationships change.
+> Follows the DDD strategic design patterns for inter-context relationships.
+
+---
+
+## Context Relationships
+
+| Upstream Context | Downstream Context | Relationship Pattern | Translation / Anti-Corruption Layer |
+|-----------------|-------------------|---------------------|-------------------------------------|
+| `<Upstream>` | `<Downstream>` | <Customer-Supplier / Conformist / Anti-Corruption Layer / Open-Host Service / Published Language / Shared Kernel / Separate Ways> | <description of translation or ACL> |
+
+---
+
+## Context Map Diagram
+
+```mermaid
+graph LR
+    ContextA[Context A] -->|Customer-Supplier| ContextB[Context B]
+    ContextB -->|ACL| ContextC[Context C]
+```
+
+---
+
+## Integration Points
+
+| Integration | From | To | Mechanism | Contract |
+|-------------|------|----|-----------|----------|
+| <name> | <Context> | <Context> | <Sync API / Async Event / Shared DB / File> | <reference to API schema or event schema> |
+
+---
+
+## Anti-Corruption Layers
+
+| ACL | Protects Context | From Context | Translation Rules |
+|-----|-----------------|--------------|-------------------|
+| `<ACL Name>` | `<Protected>` | `<External>` | <how models are translated> |
+
+---
+
+## Changes
+
+| Date | Source | Change | Reason |
+|------|--------|--------|--------|
+| YYYY-MM-DD | <ADR ref or feature ref> | <what changed> | <why> |

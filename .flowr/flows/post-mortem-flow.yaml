@@ -1,0 +1,66 @@
+flow: post-mortem-flow
+version: 2.0.0
+exits:
+  - complete
+  - needs_architecture
+  - no_action
+
+states:
+  - id: root-cause-analysis
+    attrs:
+      description: "R investigates why the PR was rejected, identifying the failure point and missed gate"
+      owner: R
+      skills:
+        - analyze-root-cause
+      in: []
+      out:
+        - root_cause_analysis
+    next:
+      issues_found: document-findings
+      no_issues_found: no_action
+
+  - id: document-findings
+    attrs:
+      description: "R records what failed, why, and which quality gate was missed"
+      owner: R
+      skills:
+        - document-post-mortem
+      in:
+        - root_cause_analysis
+      out:
+        - post-mortem/PM_YYYYMMDD_<slug>.md:
+            - failed_at
+            - root_cause
+            - missed_gate
+    next:
+      done: extract-lessons
+
+  - id: extract-lessons
+    attrs:
+      description: "R determines the corrective fix and updates the post-mortem with remediation steps"
+      owner: R
+      skills:
+        - extract-lessons
+      in:
+        - post-mortem/PM_YYYYMMDD_<slug>.md
+      out:
+        - post-mortem/PM_YYYYMMDD_<slug>.md:
+            - fix
+    next:
+      done: action-items
+
+  - id: action-items
+    attrs:
+      description: "R determines whether the feature needs replanning, architecture changes, or should be abandoned"
+      owner: R
+      skills:
+        - determine-action-items
+      in:
+        - post-mortem/PM_YYYYMMDD_<slug>.md
+      out:
+        - post-mortem/PM_YYYYMMDD_<slug>.md:
+            - restart_check
+    next:
+      replan: complete
+      architecture_issue: needs_architecture
+      abandon: no_action

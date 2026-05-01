@@ -24,8 +24,10 @@ jobs:
       - name: Extract version from pyproject.toml
         id: version
         run: |
+          # Extract semver core (major.minor.patch) from pyproject.toml
           VERSION=$(grep '^version' pyproject.toml | head -1 | sed 's/version = "\(.*\)"/\1/')
           echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
+          # Build metadata (+YYYYMMDD) is appended at tag time, not stored in pyproject.toml
           echo "tag=v${VERSION}" >> "$GITHUB_OUTPUT"
 
       - name: Check if tag already exists
@@ -64,9 +66,11 @@ jobs:
           GIT_COMMITTER_NAME: github-actions[bot]
           GIT_COMMITTER_EMAIL: github-actions[bot]@users.noreply.github.com
         run: |
-          git tag "${{ steps.version.outputs.tag }}"
-          git push origin "${{ steps.version.outputs.tag }}"
-          echo "Created tag ${{ steps.version.outputs.tag }} at $(git rev-parse HEAD)"
+          DATE=$(date +%Y%m%d)
+          TAG="v${{ steps.version.outputs.version }}+${DATE}"
+          git tag "$TAG"
+          git push origin "$TAG"
+          echo "Created tag $TAG at $(git rev-parse HEAD)"
 
       - name: Skip (tag already exists)
         if: steps.check.outputs.exists == 'true'

@@ -1,0 +1,51 @@
+flow: tdd-cycle-flow
+version: 2.0.0
+exits:
+  - all_green
+  - blocked
+
+states:
+  - id: red
+    attrs:
+      description: "SE writes a failing test body for one BDD example, specifying expected behavior before implementation exists"
+      owner: SE
+      skills:
+        - write-test
+      in:
+        - test_skeletons
+        - typed_source_stubs
+      out:
+        - test_implementations
+    next:
+      test_written: green
+      blocked: blocked
+
+  - id: green
+    attrs:
+      description: "SE writes the minimum production code needed to make the failing test pass"
+      owner: SE
+      skills:
+        - implement-minimum
+      in:
+        - test_implementations
+        - typed_source_stubs
+      out:
+        - source_implementations
+    next:
+      test_passes: refactor
+
+  - id: refactor
+    attrs:
+      description: "SE improves code structure while keeping all tests passing, then cycles to the next example or exits when all pass"
+      owner: SE
+      skills:
+        - refactor
+      in:
+        - source_implementations
+        - test_implementations
+      out:
+        - source_implementations
+        - refactored_source
+    next:
+      next_example: red
+      all_examples_pass: all_green

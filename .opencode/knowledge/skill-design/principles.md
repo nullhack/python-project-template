@@ -1,90 +1,107 @@
 ---
 domain: skill-design
-tags: [skills, on-demand-loading, context-budget, research-backed]
-last-updated: 2026-04-26
+tags: [skills, on-demand-loading, context-budget, diataxis]
+last-updated: 2026-04-29
 ---
 
 # Skill Design Principles
 
 ## Key Takeaways
 
-- Skills load into context only when invoked; every token in an always-loaded file competes for attention against the task prompt — keep skills lean.
-- Skills are how-to guides (Diátaxis): task-oriented, step-by-step instructions; reference and explanation belong in knowledge files.
-- Cut without hesitation: exhaustive examples (one is enough), reference documentation (use wikilinks), boilerplate configuration, and knowledge content (extract to knowledge files).
-- Embed IF-THEN triggers at the decision point, not in a separate reference document; prospective memory cues are 2-3x more likely to execute.
+- Skills are procedure only (HOW); the flow defines routing (WHEN), artifacts (WHAT), and transitions (WHERE TO NEXT).
+- Skills load into context only when invoked; keep them lean — target under 150 lines.
+- Skills reference knowledge via wikilinks and never inline knowledge content.
+- Embed IF-THEN triggers (Gollwitzer, 1999) at the decision point within steps, not in a separate section.
+- Skills are how-to guides (Diátaxis — Procida, 2021): step-by-step instructions for achieving a specific outcome.
 
 ## Concepts
 
-**On-Demand Loading**: Skills load into context only when the `skill` tool is invoked. Bloated always-loaded files cause LLMs to ignore critical instructions. Every token in an unconditionally-loaded file competes for attention against the task prompt. Skills must be self-contained when loaded but must not duplicate content that already exists in `AGENTS.md` or other skills.
+**Skill = Procedure Only**: The flow YAML is the single source of truth for owner, skills, input_artifacts, output_artifacts, and next transitions. The skill contains only the procedure for doing the work. Do not duplicate artifact paths, routing decisions, or "when to use" sections — those come from the flow.
 
-**Skill as How-To Guide (Diátaxis)**: In the Diátaxis framework, skills serve as how-to guides: task-oriented, step-by-step instructions for achieving a specific outcome. Tutorials (learning a role) belong in agent files. Reference and explanation (looking something up, understanding why) belong in knowledge files. Mixing these in one file is the failure mode Diátaxis warns against.
+**On-Demand Loading**: Skills load into context only when invoked. Bloated always-loaded files cause LLMs to ignore critical instructions (Liu et al., 2023). Every token in an unconditionally-loaded file competes for attention. Skills must be self-contained when loaded but must not duplicate content in `AGENTS.md` or other skills.
 
-**Lean Skill Design**: Skills consume context tokens. Target lengths: <150 lines for focused workflow skills, <250 lines for complex multi-phase skills, <500 lines absolute maximum. Cut without hesitation: exhaustive examples when one is enough, reference documentation (use wikilinks), boilerplate configuration (belongs in project files), knowledge content (extract to knowledge files).
+**Skill as How-To Guide (Diátaxis — Procida, 2021)**: In the Diátaxis framework, skills serve as how-to guides: task-oriented, step-by-step instructions. Tutorials (learning a role) belong in agent files. Reference and explanation belong in knowledge files.
 
-**Prospective Memory Cues and De-Duplication**: Memory for intended actions is better when cues are embedded at the decision point, not in a separate reference document. Include the IF-THEN trigger and the knowledge reference at the point of decision. Redundant content across prompt sections creates competing attention targets — de-duplicate by referencing one canonical knowledge file instead of embedding copies.
+**Reference Knowledge, Never Inline**: When a skill needs domain knowledge (e.g., INVEST criteria, Gherkin format), it must reference the knowledge file via wikilink rather than embedding the content. This prevents duplication and ensures the knowledge file remains the single source of truth.
+
+**Prospective Memory Cues** (Gollwitzer, 1999; McDaniel & Einstein, 2000): Memory for intended actions is better when cues are embedded at the decision point. Include the IF-THEN trigger and the knowledge reference at the point of decision, not in a separate reference document.
+
+**Lean Skill Design**: Target lengths: under 150 lines for focused skills, under 250 lines for complex multi-phase skills. Cut without hesitation: exhaustive examples (one is enough), reference documentation (use wikilinks), boilerplate configuration (belongs in project files), knowledge content (extract to knowledge files).
 
 ## Content
 
+### Skill = Procedure Only (No Duplication)
+
+The flow YAML defines everything the agent needs to know about context:
+
+| Concern | Source | What the skill does |
+|---|---|---|
+| Which agent? | Flow `owner` | Agent identifies itself |
+| Which skill? | Flow `skills` | Agent loads it via `flowr status` |
+| Which transitions? | Flow `next` | Agent checks via `flowr status` |
+| Which artifacts? | Flow `input/edited/output_artifacts` | Skill says "write to output artifacts" |
+| How to do the work? | Skill steps + knowledge | Skill loads knowledge via wikilinks |
+
+The skill never hardcodes artifact paths, transition names, or "when to use" conditions.
+
+### Skill Body Structure
+
+```markdown
+---
+name: <skill-name>
+description: "<one-line description of what this skill does>"
+---
+
+# <Skill Title>
+
+Load [[domain/concept]] before starting.  ← Only if the skill references domain concepts
+
+1. <procedural step>
+2. <step referencing knowledge per [[domain/concept]]>  ← Link at point of use
+3. Write results to output artifacts.
+4. Check flow transitions to determine next state.
+```
+
+**When to include "Load" section:**
+- Include if the skill uses domain concepts, techniques, or criteria from knowledge files
+- Omit if the skill is pure mechanical procedure (e.g., "create git branch", "run tests")
+
+**When to reference knowledge in steps:**
+- Reference knowledge when applying a technique: "Apply pre-mortem per [[requirements/pre-mortem]]"
+- Reference knowledge when using criteria: "Validate each Rule per [[requirements/invest]]"
+- Do NOT inline knowledge content: Wrong: "split if >8 examples", Right: "per [[requirements/decomposition]]"
+
+**Standard final steps:**
+- "Write results to output artifacts" — the flow defines what these are
+- "Check flow transitions to determine next state" — the flow defines available transitions
+
+**What NOT to include:**
+- Lists of specific artifact names (these come from flow)
+- "Review input artifacts" as step 1 (flow already defines inputs)
+- Routing logic or transition conditions (flow owns this)
+- Knowledge content (reference via wikilinks only)
+
 ### On-Demand Loading
 
-Skills load into context only when the `skill` tool is invoked. Bloated always-loaded files cause LLMs to ignore critical instructions. Every token in an unconditionally-loaded file competes for attention against the task prompt. Long always-loaded files push important instructions beyond effective attention range, causing silent non-compliance. (Source: Anthropic, 2025; research entry #23.)
-
-**Implication**: Skills must be self-contained when loaded, but must not duplicate content that already exists in `AGENTS.md` or other skills. Each piece of knowledge belongs in exactly one canonical location.
-
-### Skill = How-To (Diátaxis)
-
-In the Diátaxis framework, skills serve as **how-to guides**: task-oriented, step-by-step instructions for achieving a specific outcome. A skill tells you *when to do what*, not *why things work the way they do*.
-
-| Diátaxis Type | Our File | Purpose | Reader's Mental State |
-|---|---|---|---|
-| Tutorial | Agent | "Who am I and what do I own?" | Learning a role |
-| How-to guide | Skill | "Step-by-step: when X, do Y" | Doing a task |
-| Reference | Knowledge | "Here are the facts about SOLID" | Looking something up |
-| Explanation | Knowledge | "Why does SOLID matter?" | Understanding |
-
-Mixing these in one file is exactly the failure mode Diátaxis warns against. (Source: Procida, 2021; research entry #61.)
-
-### Lean Skill Design
-
-Skills consume context tokens. Long skills push other content into lower-attention positions. (Source: Entry #25.)
-
-Target lengths:
-- < 150 lines for focused workflow skills
-- < 250 lines for complex multi-phase skills
-- < 500 lines absolute maximum (Anthropic recommendation)
-
-**Cut without hesitation:**
-- Exhaustive examples when one is enough
-- Reference documentation — reference knowledge files instead: `[[domain/concept]]`
-- Boilerplate configuration — belongs in project files, not skills
-- Knowledge content — extract to `.opencode/knowledge/` and reference with `[[domain/concept]]`
+Skills load into context only when invoked. Skills must be self-contained when loaded but must not duplicate content that already exists in `AGENTS.md` or other skills.
 
 ### Prospective Memory Cues
 
-Memory for intended actions is better when cues are embedded at the point of action, not in a separate reference document. (Source: McDaniel & Einstein, 2000; entry #10.)
+Include the IF-THEN trigger and the knowledge reference at the decision point:
 
-**Implication for skills**: Include the IF-THEN trigger and the knowledge reference at the decision point:
-
-```markdown
-# Good: cue + reference at point of action
-If a class has more than one reason to change, read [[software-craft/solid]]
-and apply the Single Responsibility Principle.
-
-# Bad: cue without reference (agent may not know the details)
-Apply SOLID principles.
-
-# Bad: reference without cue (agent may not know when to load it)
-See [[software-craft/solid]] for design principles.
 ```
+If a class has more than one reason to change, read [[software-craft/tdd#concepts]]
+and apply the Single Responsibility Principle.
+```
+
+Not just "Apply SOLID principles" (no cue for when) or just "See [[software-craft/tdd#concepts]]" (no cue for when to load).
 
 ### De-Duplication
 
-Redundant content across prompt sections creates competing attention targets. De-duplication concentrates relevant signal in one canonical location per concern. (Source: Sharma & Henley, 2026; entry #26.)
-
-When two skills need the same knowledge, both should reference the same knowledge file rather than each embedding a copy.
+When two skills need the same knowledge, both should reference the same knowledge file rather than each embedding a copy. Each piece of knowledge belongs in exactly one canonical location.
 
 ## Related
 
-- [[skill-design/opencode-format]]
 - [[knowledge-design/principles]]
 - [[agent-design/principles]]
+- [[workflow/flowr-spec]]

@@ -1,56 +1,21 @@
 ---
 name: design-colors
-description: Select and validate a project color palette with WCAG contrast compliance
-version: "1.0"
-author: designer
-audience: designer
-workflow: branding
+description: "Select and validate a colour palette with WCAG contrast, dark-mode counterparts, and hue semantics"
 ---
 
-# Design Colors
+# Design Colours
 
-Select a color palette for the project and validate it for accessibility. Propose the result for `docs/branding.md` — changes require stakeholder approval.
+Load [[design/color-systems#key-takeaways]] before starting. 
 
-## When to Use
-
-- Stakeholder provides a theme word or asks for a color palette
-- `docs/branding.md` exists but has no colors yet
-- Stakeholder requests a color change
-
-## Step-by-Step
-
-### 1. Read branding context
-
-Read `docs/branding.md`. If colors are already set and the stakeholder has not asked to change them, stop — do not overwrite.
-
-### 2. Select primary hue
-
-Map the project theme or mission to a hue. See [[branding/wcag-colors]] for the hue semantics table mapping themes to hues and their semantic meanings.
-
-### 3. Build the palette
-
-Use a complementary scheme by default — a muted primary plus a pure complementary accent. See [[branding/wcag-colors]] for the complementary color scheme theory, primary/accent definitions, and when alternative schemes are appropriate.
-
-### 4. Validate WCAG 2.1 AA
-
-Any color used as a text background must achieve at least 4.5:1 contrast with white `#FFFFFF`. See [[branding/wcag-colors]] for the WCAG 2.1 AA contrast formula and calculation steps. If contrast is below 4.5:1, darken the primary until compliant. Accent colors on non-text surfaces are exempt.
-
-### 5. Propose to branding
-
-Update `docs/branding.md` under `## Visual` (requires stakeholder approval):
-
-```markdown
-- **Primary color:** `#XXXXXX`  — <hue> (<semantic rationale>)
-- **Accent color:** `#XXXXXX`   — <hue> (<semantic rationale>)
-
-> Colors meet WCAG 2.1 AA (X.X:1 contrast) when white text is placed on the primary.
-```
-
-## Checklist
-
-- [ ] Existing colors checked before proceeding
-- [ ] Hue chosen from theme/mission semantics
-- [ ] Primary is muted/deep (not pure saturated)
-- [ ] Accent is complementary or stakeholder-specified
-- [ ] White-on-primary contrast >= 4.5:1 calculated and reported
-- [ ] `docs/branding.md` updated with hex codes, rationale, and contrast note
+1. Read `docs/branding.md` and extract the personality adjectives from the Identity section.
+2. Propose a primary hue based on the hue-semantics table in [[design/color-systems#content]]. The primary must reinforce the personality adjectives.
+3. Determine the saturation and value for the primary using the saturation–value personality map in [[design/color-systems#concepts]]. The same hue expresses different personalities at different saturation/value levels (e.g., blue at high saturation = "tech/digital"; blue at low saturation, dark value = "corporate/authoritative").
+4. Select a harmony type based on the desired emotional effect per [[design/color-systems#concepts]]: complementary for vibrancy, split-complementary for balanced contrast, analogous for calm unity. For 2-colour brand marks, use complementary or split-complementary.
+5. Propose an accent colour using the selected harmony type. Maximum 2 colours in the logo mark.
+6. Propose background, text-primary, and text-secondary colours.
+7. For each colour pair (text on background, accent on background, dark-mode primary on dark background), calculate the WCAG contrast ratio using the formula in [[design/color-systems#concepts]]. Every text–background pair must meet ≥4.5:1 (AA). Every large-text pair must meet ≥3:1.
+8. Balance visual weight in the composition using Itten's contrast of extension per [[design/color-systems#content]] — verify that accent and primary areas follow the visual weight ratios (yellow:violet ≈ 1:3, orange:blue ≈ 1:2, red:green ≈ 1:1).
+9. Propose dark-mode counterparts for each colour. Do not simply invert — use off-white (#e0e0e0 or similar) on dark backgrounds, and adjust accent saturation for dark contexts per [[design/color-systems#key-takeaways]].
+10. Present the full palette to the stakeholder as a table: colour role, hex value, RGB, dark-mode hex, WCAG ratio on primary background, and the Itten visual weight ratio.
+11. IF stakeholder approves → write the Visual section of `docs/branding.md`. IF stakeholder requests changes → revise and re-verify contrast ratios (go to step 2).
+12. Advance the flow with necessary evidence, choosing the appropriate next state based on the work completed.

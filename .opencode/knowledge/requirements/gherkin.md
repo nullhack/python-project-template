@@ -1,34 +1,34 @@
 ---
 domain: requirements
-tags: [gherkin, acceptance-criteria, specification, examples]
-last-updated: 2026-04-26
+tags: [gherkin, acceptance-criteria, specification, examples, bdd]
+last-updated: 2026-04-29
 ---
 
 # Gherkin Specification Format
 
 ## Key Takeaways
 
-- Write declarative Examples that describe behaviour, not UI steps; use `Example:` not `Scenario:`.
-- Each Example must have an `@id` tag (8-char hex, assigned by `uv run task assign-ids`) and be observably distinct from every other Example.
+- Write declarative Examples that describe behaviour, not UI steps; use `Example:` not `Scenario:` (BDD — North, 2006).
+- Each Example must have an `@id` tag (format `@id:<unique-id>`) for traceability from test to acceptance criterion.
 - `Then` must be a single, observable, measurable outcome; no "and" combining multiple behaviours in one `Then`.
 - Bug Examples use `@bug` and require both a specific feature test and a Hypothesis property test.
 - After criteria commit, Examples are frozen; changes require `@deprecated` on the old Example and a new Example with a new `@id`.
 
 ## Concepts
 
-**Declarative vs Imperative Gherkin**: Declarative Examples describe behaviour, not UI steps. "Given a registered user Bob / When Bob logs in / Then Bob sees a personalized welcome" is correct. "Given I type 'bob' in the username field / When I click the Login button / Then I see 'Welcome, Bob'" is imperative and wrong.
+**Declarative vs Imperative Gherkin**: Declarative Examples describe behaviour, not UI steps (BDD — North, 2006). "Given a registered user Bob / When Bob logs in / Then Bob sees a personalized welcome" is correct. "Given I type 'bob' in the username field / When I click the Login button / Then I see 'Welcome, Bob'" is imperative and wrong. Declarative Examples express what the user observes, not how the system implements it.
 
-**Example Format and @id Tags**: Each Example uses the `Example:` keyword (not `Scenario:`), includes `Given/When/Then` in plain English, and must have an `@id` tag (8-character hex, assigned by `uv run task assign-ids`). Each Example must be observably distinct from every other Example in the same Rule.
+**Example Format and @id Tags**: Each Example uses the `Example:` keyword (not `Scenario:`), includes `Given/When/Then` in plain English, and must have an `@id` tag for traceability. The format is `@id:<unique-id>` where the unique ID is assigned when the feature is baselined. Each Example must be observably distinct from every other Example in the same Rule.
 
-**Single Observable Outcome per Then**: `Then` must be a single, observable, measurable outcome. No "and" combining multiple behaviours in one `Then` — split into separate Examples instead.
+**Single Observable Outcome per Then**: `Then` must be a single, observable, measurable outcome. No "and" combining multiple behaviours in one `Then` — split into separate Examples instead. Observable means observable by the end user, not by a test harness.
 
-**Bug Examples**: When a defect is reported, the PO adds an `@bug` Example. The SE implements both a specific `@id` test in `tests/features/` and a Hypothesis `@given` property test in `tests/unit/`. Both are required.
+**Frozen Examples**: After criteria commit, Examples are frozen. Changes require `@deprecated` on the old Example and a new Example with a new `@id`. No editing or deleting committed Examples. This prevents scope creep and maintains traceability from test to acceptance criterion.
 
-**Frozen Examples**: After criteria commit, Examples are frozen. Changes require `@deprecated` on the old Example and a new Example with a new `@id`. No editing or deleting committed Examples.
+**Bug Examples**: When a defect is reported, add an `@bug` Example. Implement both a specific `@id` test and a Hypothesis property test covering the whole class of inputs. Both are required.
 
 ## Content
 
-### Declarative vs Imperative Gherkin
+### Declarative vs Imperative
 
 | Imperative (wrong) | Declarative (correct) |
 |---|---|
@@ -36,50 +36,39 @@ last-updated: 2026-04-26
 | When I click the Login button | When Bob logs in |
 | Then I see "Welcome, Bob" on the dashboard | Then Bob sees a personalized welcome |
 
-Declarative Examples describe behaviour, not UI steps. They express what the user observes, not how the system implements it.
-
 ### Example Format Rules
 
 - `Example:` keyword (not `Scenario:`)
 - `Given/When/Then` in plain English
 - `Then` must be a single, observable, measurable outcome — no "and"
-- **Observable means observable by the end user**, not by a test harness
-- **Declarative, not imperative** — describe behaviour, not UI steps
+- Observable means observable by the end user, not by a test harness
+- Declarative, not imperative — describe behaviour, not UI steps
 - Each Example must be observably distinct from every other
 
-### Feature File Format Overview
+### @id Tag Format
 
-Each feature is a single `.feature` file containing:
-
-1. **Description block** — narrative description and Status
-2. **Rules (Business)** — business rules that hold across multiple Examples
-3. **Constraints** — non-functional requirements
-4. **Rule blocks** — each with a user story header and Example blocks
-
-```gherkin
-Rule: Wall bounce
-  As a game engine
-  I want balls to bounce off walls
-  So that gameplay feels physical
-
-  @id:a3f2b1c4
-  Example: Ball bounces off top wall
-    Given a ball moving upward reaches y=0
-    When the physics engine processes the next frame
-    Then the ball velocity y-component becomes positive
-```
-
-### @id Tag Format and Purpose
-
-- Format: `@id:XXXXXXXX` (8-character hex)
-- Assigned by running `uv run task assign-ids`
-- Globally unique across all `.feature` files
+- Format: `@id:<unique-id>`
+- Assigned when the feature is baselined
+- Globally unique across all feature files
 - Enables traceability from test to acceptance criterion
-- After criteria commit, Examples are frozen — changes require `@deprecated` on the old Example and a new Example with a new `@id`
 
-### Bug Handling Example Format
+### Frozen Examples Rule
 
-When a defect is reported, the PO adds a `@bug` Example:
+After criteria commit, Examples are frozen. This rule is stated explicitly in the feature template and enforced by the `bdd-features` conditions in the planning flow:
+
+- `all_examples_have_ids: ==true`
+- `all_examples_have_gherkin: ==true`
+- `premortem_done: ==true`
+
+Any change to committed Examples requires:
+1. `@deprecated` on the old Example
+2. A new Example with a new `@id`
+
+No editing or deleting committed Examples.
+
+### Bug Example Format
+
+When a defect is reported:
 
 ```gherkin
 @bug
@@ -89,9 +78,9 @@ Example: <what the bug is>
   Then <correct behaviour>
 ```
 
-The SE implements both:
+Implement both:
 1. The specific `@id` test in `tests/features/<feature_slug>/`
-2. A `@given` Hypothesis property test in `tests/unit/` covering the whole class of inputs
+2. A Hypothesis property test covering the whole class of inputs
 
 ### Common Mistakes
 
@@ -101,8 +90,25 @@ The SE implements both:
 - Examples that test implementation details ("Then: the Strategy pattern is used")
 - Imperative UI steps instead of declarative behaviour descriptions
 
+### Feature File Path Convention
+
+Feature files are located at `features/<file>.feature`. The flow works on one feature at a time, so `<file>.feature` refers to a single feature file, not a glob pattern.
+
+### Test Path Convention
+
+Tests follow the pattern `tests/features/<feature_slug>/<rule_slug>_test.py` with function names `test_<feature_stem>_<id>`.
+
+### Feature Test vs Unit Test Boundary
+
+`tests/features/` contains only BDD scenario tests with `@id` traceability to the feature file. Coverage-boosting tests that exercise implementation branches not covered by any `@id` example are unit contract tests and belong in `tests/unit/`, not `tests/features/`. Adding a test to `tests/features/` without a corresponding `@id` tag violates the traceability contract.
+
+### Two-Dimensional Traceability
+
+Traceability is two-dimensional: **structural** (every @id has a test function) and **semantic** (every @id test exercises the entry point the AC describes). Structural traceability without semantic depth creates a false sense of coverage — tests exist for every example but don't verify the actual user-facing behavior. If the AC describes a command-line invocation with flags, the test must invoke the command handler with those flags; calling domain methods directly satisfies structural traceability but fails semantic depth.
+
 ## Related
 
-- [[requirements/invest-moscow]] — story quality and prioritization criteria
-- [[requirements/discovery-techniques]] — surfacing requirements before writing Gherkin
-- [[architecture/domain-stubs]] — translating Gherkin into domain stubs
+- [[requirements/invest]] — story quality criteria applied before writing Examples
+- [[requirements/moscow]] — prioritizing Examples as Must/Should/Could
+- [[requirements/decomposition]] — splitting Rules with too many Examples
+- [[requirements/pre-mortem]] — finding hidden failure modes before writing Examples

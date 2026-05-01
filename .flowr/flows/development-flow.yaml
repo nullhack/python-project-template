@@ -1,0 +1,72 @@
+flow: development-flow
+version: 4.0.0
+exits:
+  - done
+  - needs_planning
+
+states:
+  - id: project-structuring
+    attrs:
+      description: "SA creates the project skeleton — branch, package structure, port interfaces, aggregate root signatures — before any feature-specific stubs"
+      owner: SA
+      skills:
+        - structure-project
+      in:
+        - features/<feature_name>.feature
+        - technical_design.md
+        - domain_model.md
+        - glossary.md
+        - context_map.md
+        - adr/*.md
+        - product_definition.md
+      out:
+        - git_branch
+    next:
+      ready: tdd-cycle
+      needs_planning: needs_planning
+
+  - id: tdd-cycle
+    attrs:
+      description: "SE implements the feature through repeated RED-GREEN-REFACTOR cycles until all BDD examples pass"
+    flow: tdd-cycle-flow
+    flow-version: "^2"
+    conditions:
+      design_declared:
+        yagni: ==true
+        kiss: ==true
+        dry: ==true
+        oc: ==true
+        solid: ==true
+        patterns: ==true
+    next:
+      all_green:
+        to: review-gate
+        when: design_declared
+      blocked: project-structuring
+
+  - id: review-gate
+    attrs:
+      description: "R independently verifies implementation across three tiers — design, structure, and conventions — before commit"
+    flow: review-gate-flow
+    flow-version: "^2"
+    next:
+      pass: commit
+      fail: tdd-cycle
+
+  - id: commit
+    attrs:
+      description: "SE commits the reviewed, passing implementation with traceability to feature files"
+      owner: SE
+      skills:
+        - commit-implementation
+      in:
+        - test_implementations
+        - source_implementations
+        - design_review_evidence
+        - structure_review_evidence
+        - conventions_review_evidence
+        - features/<feature_name>.feature
+      out:
+        - feature_commits
+    next:
+      done: done

@@ -1,0 +1,145 @@
+flow: architecture-flow
+version: 4.0.0
+exits:
+  - complete
+  - needs_discovery
+
+states:
+  - id: architecture-assessment
+    attrs:
+      description: "SA evaluates whether the feature requires new architecture or fits the existing system, potentially overriding deployment decisions"
+      owner: SA
+      skills:
+        - assess-architecture
+      in:
+        - product_definition.md
+        - domain_model.md
+        - system.md
+        - technical_design.md
+        - context_map.md
+      out:
+        - product_definition.md:
+            - deployment
+            - quality_attributes
+    conditions:
+      architecture_complete:
+        system_md: ==true
+        technical_design_md: ==true
+        context_map_md: ==true
+        deployment_matches_codebase: ==true
+      architecture_exists:
+        system_md: ==true
+        technical_design_md: ==true
+        context_map_md: ==true
+      no_architecture_exists:
+        technical_design_md: ==false
+        context_map_md: ==false
+    next:
+      no_architecture_needed:
+        to: complete
+        when: architecture_complete
+      needs_context_update:
+        to: context-mapping
+        when: architecture_exists
+      needs_technical_design:
+        to: technical-design
+        when: architecture_exists
+      greenfield:
+        to: context-mapping
+        when: no_architecture_exists
+      delivery_mismatch_unresolvable: needs_discovery
+      needs_discovery: needs_discovery
+
+  - id: context-mapping
+    attrs:
+      description: "SA maps bounded context relationships, integration points, and anti-corruption layers"
+      owner: SA
+      skills:
+        - map-contexts
+      in:
+        - domain_model.md
+        - product_definition.md
+        - glossary.md
+      out:
+        - context_map.md:
+            - context_relationships
+            - context_map_diagram
+            - integration_points
+            - anti_corruption_layers
+    next:
+      done: technical-design
+      needs_discovery: needs_discovery
+
+  - id: technical-design
+    attrs:
+      description: "SA designs the technical solution — architectural style, stack, module structure, API/event contracts, interface definitions — and updates the system overview"
+      owner: SA
+      skills:
+        - design-technical-solution
+      in:
+        - context_map.md
+        - domain_model.md
+        - glossary.md
+        - system.md
+        - product_definition.md
+      out:
+        - technical_design.md:
+            - architectural_style
+            - quality_attributes
+            - stack
+            - module_structure
+            - api_contracts
+            - event_contracts
+            - interface_definitions
+            - c4_diagrams
+            - dependencies
+            - configuration_keys
+        - system.md:
+            - context
+            - container
+            - module_structure
+            - delivery
+    next:
+      done: review-signoff
+      needs_decisions: adr-draft
+
+  - id: adr-draft
+    attrs:
+      description: "SA documents architecturally significant decisions as ADRs and records key decisions and active constraints in system.md"
+      owner: SA
+      skills:
+        - draft-adr
+      in:
+        - technical_design.md
+        - context_map.md
+        - domain_model.md
+        - product_definition.md
+        - glossary.md
+        - system.md
+      out:
+        - system.md:
+            - key_decisions
+            - active_constraints
+        - adr/<slug>.md
+    next:
+      done: review-signoff
+
+  - id: review-signoff
+    attrs:
+      description: "R independently verifies architecture alignment with domain model and requirements, and cross-document consistency, before implementation begins"
+      owner: R
+      skills:
+        - review-architecture
+      in:
+        - context_map.md
+        - technical_design.md
+        - system.md
+        - adr/*.md
+        - product_definition.md
+        - domain_model.md
+        - glossary.md
+      out: []
+    next:
+      approved: complete
+      inconsistent: architecture-assessment
+      needs_discovery: needs_discovery

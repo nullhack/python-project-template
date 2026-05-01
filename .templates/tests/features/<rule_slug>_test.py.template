@@ -1,0 +1,11 @@
+import pytest
+
+
+@pytest.mark.skip(reason="not yet implemented")
+def test_<feature_stem>_<id>() -> None:
+    """
+    Given <initial context>
+    When <event or action>
+    Then <observable outcome>
+    """
+    raise NotImplementedError

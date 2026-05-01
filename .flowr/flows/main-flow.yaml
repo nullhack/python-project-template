@@ -1,0 +1,31 @@
+flow: main-flow
+version: 7.0.0
+exits: [completed, cancelled]
+
+states:
+  - id: discovery
+    attrs:
+      description: "Understand the domain, define scope, and establish ubiquitous language through stakeholder interviews and domain modeling"
+    flow: discovery-flow
+    flow-version: "^3"
+    next:
+      complete: architecture
+
+  - id: architecture
+    attrs:
+      description: "Design technical architecture, context boundaries, and API contracts for the entire project"
+    flow: architecture-flow
+    flow-version: "^4"
+    next:
+      complete: feature-development
+      needs_discovery: discovery
+
+  - id: feature-development
+    attrs:
+      description: "Feature-level loop: Planning → Development → Acceptance → Delivery per feature"
+    flow: feature-development-flow
+    flow-version: "^6"
+    next:
+      needs_architecture: architecture
+      cancelled: cancelled
+      completed: completed

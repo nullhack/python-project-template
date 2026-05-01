@@ -1,0 +1,64 @@
+flow: review-gate-flow
+version: 2.0.0
+exits:
+  - pass
+  - fail
+
+states:
+  - id: design-review
+    attrs:
+      description: "R verifies implementation aligns with domain model, follows DDD patterns, and respects architectural decisions"
+      owner: R
+      skills:
+        - review-design
+      in:
+        - domain_model.md
+        - glossary.md
+        - technical_design.md
+        - context_map.md
+        - system.md
+        - product_definition.md
+        - adr/*.md
+        - refactored_source
+      out:
+        - design_review_evidence
+    next:
+      pass: structure-review
+      fail: fail
+
+  - id: structure-review
+    attrs:
+      description: "R verifies test coverage, BDD example pass rate, test coupling, and behavior-vs-structure testing"
+      owner: R
+      skills:
+        - review-structure
+        - verify-traceability
+      in:
+        - coverage_reports
+        - test_output
+        - refactored_source
+        - features/<feature_name>.feature
+        - domain_model.md
+        - glossary.md
+      out:
+        - structure_review_evidence
+    next:
+      pass: conventions-review
+      fail: fail
+
+  - id: conventions-review
+    attrs:
+      description: "R verifies formatting, docstrings, type hints, import ordering, and lint rules unrelated to design"
+      owner: R
+      skills:
+        - review-conventions
+      in:
+        - linter_output
+        - refactored_source
+        - product_definition.md
+        - glossary.md
+      out:
+        - conventions_review_evidence
+    next:
+      pass: pass
+      fail: fail

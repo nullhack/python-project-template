@@ -54,7 +54,10 @@ substitutions:
     - old: "pdoc ./app"
       new: "pdoc ./{package_name}"
       count: 2
-    # Version: set to 0.1.YYYYMMDD using today's date (agent action, not text substitution)
+    - old: 'version = "8.0.0"'
+      new: 'version = "0.1.0"'
+      count: 1
+    # Version: set to 0.1.0 in pyproject.toml (pure semver, no date — see [[software-craft/versioning]])
 
   README.md:
     - old: "nullhack"
@@ -72,47 +75,6 @@ substitutions:
     - old: "import app"
       new: "import {package_name}"
       count: 2
-
-  Dockerfile:
-    - old: "# Simplified Dockerfile for temple8"
-      new: "# Simplified Dockerfile for {project_name}"
-      count: 1
-    - old: "CMD python -m app || exit 1"
-      new: "CMD python -m {package_name} || exit 1"
-      count: 1
-    - old: 'CMD ["python", "-m", "app"]'
-      new: 'CMD ["python", "-m", "{package_name}"]'
-      count: 1
-    - old: 'LABEL maintainer="eol"'
-      new: 'LABEL maintainer="{author_name}"'
-      count: 1
-    - old: '"Python template with some awesome tools to quickstart any Python project"'
-      new: '"{project_description}"'
-      count: 1
-    - old: "https://github.com/nullhack/temple8"
-      new: "https://github.com/{github_username}/{project_name}"
-      count: 1
-
-  docker-compose.yml:
-    - old: "# Docker Compose for temple8"
-      new: "# Docker Compose for {project_name}"
-      count: 1
-    - old: "./app:/app/app"
-      new: "./{package_name}:/app/{package_name}"
-      count: 1
-    - old: "python -m app"
-      new: "python -m {package_name}"
-      count: 1
-    - old: "./app:/app/app:ro"
-      new: "./{package_name}:/app/{package_name}:ro"
-      count: 1
-
-  .dockerignore:
-    - old: "# Docker ignore file for temple8"
-      new: "# Docker ignore file for {project_name}"
-      count: 1
-
-  docs/index.html:
     - old: 'href="api/app.html"'
       new: 'href="api/{package_name}.html"'
       count: 1
@@ -122,10 +84,13 @@ substitutions:
       new: "Copyright (c) 2026, {author_name}"
       count: 1
 
-  tests/unit/app_test.py:
+  tests/unit/main_test.py:
     - old: "from app.__main__ import"
       new: "from {package_name}.__main__ import"
       count: 1
+
+  CHANGELOG.md:
+    note: "Overwrite entire file from .templates/CHANGELOG.md.template, replacing {project_name} and {YYYYMMDD} tokens. No find-replace substitutions — the template replaces all content."
 
   template-config.yaml:
     - old: "github_username: nullhack"

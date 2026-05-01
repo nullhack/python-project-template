@@ -1,0 +1,40 @@
+flow: feature-development-flow
+version: 6.0.0
+
+exits:
+  - needs_architecture
+  - cancelled
+  - completed
+
+states:
+  - id: planning
+    flow: planning-flow
+    flow-version: "^4"
+    next:
+      complete: development
+      needs_architecture: needs_architecture
+      no_features: completed
+
+  - id: development
+    flow: development-flow
+    flow-version: "^4"
+    next:
+      done: delivery
+      needs_planning: planning
+
+  - id: delivery
+    flow: delivery-flow
+    flow-version: "^4"
+    next:
+      next-feature: planning
+      rejected: post-mortem
+      needs_development: development
+      cancelled: cancelled
+
+  - id: post-mortem
+    flow: post-mortem-flow
+    flow-version: "^2"
+    next:
+      complete: planning
+      needs_architecture: needs_architecture
+      no_action: cancelled
