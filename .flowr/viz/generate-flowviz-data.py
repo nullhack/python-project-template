@@ -239,8 +239,6 @@ def main() -> int:
     js = "window.FLOWVIZ_DATA = " + json.dumps(bundle, indent=2, sort_keys=True) + ";\n"
     OUT_FILE.write_text(js, encoding="utf-8")
 
-    print(f"Wrote {OUT_FILE}")
-    print(f"Flows: {', '.join(sorted(flows.keys()))}")
     return 0
 
 

@@ -22,6 +22,7 @@ dev = [
     "pdoc>=14.0",
     "pytest>=9.0.3",
     "pytest-cov>=6.1.1",
+    "pytest-html>=4.0.0",
     "pytest-mock>=3.14.0",
     "ruff>=0.11.5",
     "taskipy>=1.14.1",
