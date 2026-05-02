@@ -5,7 +5,7 @@ description: "Facilitate an event storming workshop to surface domain events, co
 
 # Facilitate Event Storming
 
-Load [[domain-modeling/event-storming#key-takeaways]] before starting. 
+Available knowledge: [[domain-modeling/event-storming#key-takeaways]]. `in` artifacts: discover and read on demand as needed.
 
 1. Identify domain events (past-tense verbs) from interview data per [[domain-modeling/event-storming#key-takeaways]].
 2. Chronologically order events on a timeline.

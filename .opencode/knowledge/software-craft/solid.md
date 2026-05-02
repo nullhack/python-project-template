@@ -45,7 +45,7 @@ last-updated: 2026-04-30
 
 ### SOLID in the Design Principle Priority
 
-The design principle priority in TDD is: YAGNI > KISS > DRY > OC > SOLID > Design Patterns. SOLID principles are checked during REFACTOR only when a smell triggers them. They are not applied speculatively.
+The design principle priority in TDD is: YAGNI > KISS > DRY > ObjCal > Smells > SOLID > Design Patterns. SOLID principles are checked during REFACTOR only when a smell triggers them. They are not applied speculatively.
 
 ## Related
 
@@ -53,5 +53,5 @@ The design principle priority in TDD is: YAGNI > KISS > DRY > OC > SOLID > Desig
 - [[software-craft/design-patterns]] — patterns resolve SOLID violations (e.g., Strategy resolves OCP violations)
 - [[software-craft/refactoring-techniques]] — refactoring techniques fix SOLID violations
 - [[software-craft/refactoring]] — when and how to refactor, clean code, technical debt
-- [[software-craft/object-calisthenics]] — OC rules overlap with SOLID (OC-7 enforces SRP, OC-4 enforces DIP)
+- [[software-craft/object-calisthenics]] — Object Calisthenics rules overlap with SOLID (ObjCal-7 enforces SRP, ObjCal-4 enforces DIP)
 - [[software-craft/tdd]] — SOLID is part of the design principle priority in REFACTOR

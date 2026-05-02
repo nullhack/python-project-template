@@ -5,12 +5,12 @@ description: "Improve code structure while keeping all tests passing, then cycle
 
 # Refactor
 
-Load [[software-craft/tdd]], [[software-craft/refactoring]], [[software-craft/object-calisthenics]], [[software-craft/smell-catalogue]], and [[software-craft/refactoring-techniques]] before starting. 
+Available knowledge: [[software-craft/tdd]], [[software-craft/refactoring]], [[software-craft/object-calisthenics]], [[software-craft/smell-catalogue]], [[software-craft/refactoring-techniques]]. `in` artifacts: discover and read on demand as needed. 
 
 1. Review the code for improvement opportunities while keeping all tests passing per [[software-craft/tdd#concepts]].
 2. Refactor only if there is a test that would break if the refactoring is wrong per [[software-craft/tdd#key-takeaways]].
 3. Apply small steps: one refactoring at a time, tests green after each step, no new functionality per [[software-craft/refactoring#key-takeaways]].
-4. Apply design-only transformations per [[software-craft/tdd#concepts]] — YAGNI > KISS > DRY > OC > SOLID > patterns. Do not apply convention compliance (docstrings, type hints, import ordering, format changes) — those belong in the Conventions Phase.
+4. Apply design-only transformations per [[software-craft/tdd#concepts]] — YAGNI > KISS > DRY > ObjCal > Smells > SOLID > patterns. Do not apply convention compliance (docstrings, type hints, import ordering, format changes) — those belong in the Conventions Phase.
 5. IF a class has >2 instance variables → split per [[software-craft/object-calisthenics#key-takeaways]].
 6. IF a method uses `else` → replace with early return or guard clause per [[software-craft/object-calisthenics#key-takeaways]].
 7. IF code calls `obj.get_x()` then decides → replace with Tell, Don't Ask per [[software-craft/object-calisthenics#key-takeaways]].

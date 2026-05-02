@@ -22,8 +22,14 @@ states:
         - refactored_source
       out:
         - design_review_evidence
+    conditions:
+      design_approved:
+        alignment: ==domain_model_verified
+        adr_compliance: ==adrs_respected
     next:
-      pass: structure-review
+      pass:
+        to: structure-review
+        when: design_approved
       fail: fail
 
   - id: structure-review
@@ -42,8 +48,15 @@ states:
         - glossary.md
       out:
         - structure_review_evidence
+    conditions:
+      structure_approved:
+        coverage: ==threshold_met
+        traceability: ==all_ids_covered
+        coupling: ==behavior_not_implementation
     next:
-      pass: conventions-review
+      pass:
+        to: conventions-review
+        when: structure_approved
       fail: fail
 
   - id: conventions-review
@@ -59,6 +72,12 @@ states:
         - glossary.md
       out:
         - conventions_review_evidence
+    conditions:
+      conventions_approved:
+        formatting: ==clean
+        naming: ==domain_language
     next:
-      pass: pass
+      pass:
+        to: pass
+        when: conventions_approved
       fail: fail

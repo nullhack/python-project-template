@@ -5,7 +5,7 @@ description: "Determine the corrective fix and update the post-mortem with remed
 
 # Extract Lessons
 
-Load [[requirements/post-mortem#key-takeaways]] before starting. 
+Available knowledge: [[requirements/post-mortem#key-takeaways]]. `in` artifacts: discover and read on demand as needed.
 
 1. Determine the corrective fix per [[requirements/post-mortem#key-takeaways]].
 2. Update the post-mortem with remediation steps.

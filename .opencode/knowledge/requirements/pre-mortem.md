@@ -54,7 +54,7 @@ For each noun:
 
 ### Implementation Pre-Mortem
 
-Before the TDD cycle, the design self-declaration covers YAGNI, KISS, DRY, SOLID per [[software-craft/solid#key-takeaways]], Object Calisthenics per [[software-craft/object-calisthenics#key-takeaways]], pattern smells per [[software-craft/smell-catalogue#key-takeaways]], and semantic alignment. This is the TDD-stage pre-mortem, encoded as the `design_declared` condition on `tdd-cycle.all_green`.
+Before the TDD cycle, the design self-declaration covers YAGNI, KISS, DRY, Object Calisthenics per [[software-craft/object-calisthenics#key-takeaways]], smells per [[software-craft/smell-catalogue#key-takeaways]], SOLID per [[software-craft/solid#key-takeaways]], and semantic alignment. This is the TDD-stage pre-mortem, encoded as the `design_declared` condition on `tdd-cycle.all_green`.
 
 ## Related
 
@@ -62,6 +62,6 @@ Before the TDD cycle, the design self-declaration covers YAGNI, KISS, DRY, SOLID
 - [[requirements/invest]] — story quality criteria that pre-mortem findings may affect
 - [[requirements/gherkin]] — writing Examples after pre-mortem analysis
 - [[software-craft/tdd]] — design self-declaration subsumes the implementation pre-mortem
-- [[software-craft/object-calisthenics]] — OC-7 (two instance variables) checked in architecture pre-mortem
+- [[software-craft/object-calisthenics]] — ObjCal-7 (two instance variables) checked in architecture pre-mortem
 - [[software-craft/smell-catalogue]] — pattern smells checked in implementation pre-mortem
 - [[software-craft/solid]] — SOLID checks in implementation pre-mortem

@@ -5,7 +5,7 @@ description: "Map bounded context relationships, integration points, and anti-co
 
 # Map Contexts
 
-Load [[domain-modeling/context-mapping#key-takeaways]] before starting. 
+Available knowledge: [[domain-modeling/context-mapping#key-takeaways]]. `in` artifacts: discover and read on demand as needed.
 
 1. For each pair of interacting bounded contexts, select a relationship pattern
    per [[domain-modeling/context-mapping#concepts]].

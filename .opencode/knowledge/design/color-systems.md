@@ -59,7 +59,7 @@ For 2-colour brand marks, use complementary or split-complementary. Analogous pa
 2. **Complementary contrast**: Opposite hues placed together (red–green, blue–orange). Maximum visual tension and vibrancy. Risk: at similar saturation, complements vibrate uncomfortably. Mitigation: vary the value (one lighter/darker) or desaturate one.
 3. **Saturation contrast**: A vivid colour next to a muted one. The vivid colour appears to glow. This is the primary tool for accent hierarchy — a saturated accent on a desaturated primary draws the eye precisely without requiring hue contrast.
 
-The other four (cold-warm, simultaneous, hue, extension) are documented in the research (see `docs/research/design/visual/itten_1961.md`) and are useful for advanced palette refinement.
+The other four (cold-warm, simultaneous, hue, extension) are documented by Itten (1961) and are useful for advanced palette refinement.
 
 **Complementary Palette Construction**: A brand palette has 5 roles: (1) primary — the dominant colour; (2) accent — a contrasting highlight; (3) background — the surface colour; (4) text-primary — the main text colour; (5) text-secondary — muted text. Primary and accent are typically complementary or split-complementary. Background and text colours must achieve ≥4.5:1 contrast (WCAG AA).
 

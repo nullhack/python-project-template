@@ -5,7 +5,7 @@ description: "Record what failed, why, and which quality gate was missed"
 
 # Document Post-Mortem
 
-Load [[requirements/post-mortem]] before starting. 
+Available knowledge: [[requirements/post-mortem]]. `in` artifacts: discover and read on demand as needed.
 
 1. Record what failed, why, and which quality gate was missed per [[requirements/post-mortem#key-takeaways]].
 2. Write results to artifacts listed in the current state's `out` attrs. If findings affect artifacts outside the `out` contract, flag them in output notes for the appropriate step.

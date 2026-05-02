@@ -40,11 +40,11 @@ last-updated: 2026-04-30
 
 ## Related
 
-- [[software-craft/tdd]] — design principle priority includes OC
-- [[software-craft/code-review]] — self-declaration checks include OC
-- [[software-craft/smell-catalogue]] — OC violations overlap with smell signals
-- [[software-craft/design-patterns]] — patterns complement OC rules
-- [[software-craft/refactoring-techniques]] — OC violations signal specific refactoring opportunities
-- [[software-craft/solid]] — OC rules overlap with SOLID (OC-7 enforces SRP, OC-4 enforces DIP)
+- [[software-craft/tdd]] — design principle priority includes Object Calisthenics
+- [[software-craft/code-review]] — self-declaration checks include Object Calisthenics
+- [[software-craft/smell-catalogue]] — Object Calisthenics violations overlap with smell signals
+- [[software-craft/design-patterns]] — patterns complement Object Calisthenics rules
+- [[software-craft/refactoring-techniques]] — Object Calisthenics violations signal specific refactoring opportunities
+- [[software-craft/solid]] — Object Calisthenics rules overlap with SOLID (ObjCal-7 enforces SRP, ObjCal-4 enforces DIP)
 - [[software-craft/refactoring]] — when and how to refactor, clean code, technical debt
-- [[requirements/pre-mortem]] — pre-mortem checks include OC-7 (two instance variables)
+- [[requirements/pre-mortem]] — pre-mortem checks include ObjCal-7 (two instance variables)

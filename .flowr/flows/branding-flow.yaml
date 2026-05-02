@@ -50,11 +50,11 @@ states:
         - docs/assets/banner.svg
     conditions:
       monochrome_passed:
-        logo_monochrome: ==true
+        logo_monochrome: ==passes
       scalability_passed:
-        logo_scalability: ==true
+        logo_scalability: ==passes
       blur_passed:
-        logo_blur_test: ==true
+        logo_blur_test: ==passes
     next:
       approved: branded
       revise: design-assets

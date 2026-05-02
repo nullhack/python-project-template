@@ -5,7 +5,7 @@ description: "Push local main to remote and create an administrative PR for chan
 
 # Create PR
 
-Load [[software-craft/git-conventions#key-takeaways]] before starting. 
+Available knowledge: [[software-craft/git-conventions#key-takeaways]]. `in` artifacts: discover and read on demand as needed.
 
 1. Push local main to remote: `git push origin main`.
 2. Create a pull request with the squashed commit format from [[software-craft/git-conventions#content]], including @id traceability for all acceptance criteria.

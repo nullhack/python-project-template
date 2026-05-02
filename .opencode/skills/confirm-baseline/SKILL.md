@@ -5,7 +5,7 @@ description: "Confirm all planning artifacts are complete and the feature is rea
 
 # Confirm Baseline
 
-Load [[requirements/decomposition#key-takeaways]] before starting. 
+Available knowledge: [[requirements/decomposition#key-takeaways]]. `in` artifacts: discover and read on demand as needed.
 
 1. Verify the feature passes decomposition checks per [[requirements/decomposition#key-takeaways]] — no more than 2 concerns, no more than 8 Must Examples.
 2. Verify all planning artifacts are present and consistent.

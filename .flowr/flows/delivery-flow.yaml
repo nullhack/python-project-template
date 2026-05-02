@@ -71,8 +71,8 @@ states:
       out: []
     conditions:
       merged:
-        ci_passes: ==true
-        no_changes_requested: ==true
+        ci_passes: ==verified
+        no_changes_requested: ==verified
     next:
       approved:
         to: next-feature

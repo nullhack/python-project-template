@@ -5,7 +5,7 @@ description: "Pick the next feature to develop based on business priority and de
 
 # Select Feature
 
-Load [[requirements/wsjf]] before starting. 
+Available knowledge: [[requirements/wsjf]]. `in` artifacts: discover and read on demand as needed. 
 
 1. IF more than one feature directory exists in `docs/features/` → stop; WIP limit is 1.
 2. Verify that architecture covers the candidate features.

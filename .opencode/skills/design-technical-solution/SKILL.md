@@ -5,7 +5,7 @@ description: "Design the technical solution — architectural style, stack, modu
 
 # Design Technical Solution
 
-Load [[architecture/quality-attributes#key-takeaways]], [[architecture/technical-design#key-takeaways]], and [[architecture/contract-design#key-takeaways]] before starting. 
+Available knowledge: [[architecture/quality-attributes#key-takeaways]], [[architecture/technical-design#key-takeaways]], [[architecture/contract-design#key-takeaways]]. `in` artifacts: discover and read on demand as needed.
 
 1. Rank quality attributes by business priority per [[architecture/quality-attributes#concepts]].
 2. Select architectural style per the quality-attribute-to-style mapping in

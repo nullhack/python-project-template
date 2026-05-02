@@ -5,7 +5,7 @@ description: "Create minimum typed stubs and test stubs as domain model breadcru
 
 # Create Python Stubs
 
-Load [[architecture/technical-design]], [[software-craft/stub-design]], and [[software-craft/tdd]] before starting. 
+Available knowledge: [[architecture/technical-design]], [[software-craft/stub-design]], [[software-craft/tdd]]. `in` artifacts: discover and read on demand as needed.
 
 1. Read the feature file and identify all `@id` tags and the domain entities, value objects, and use cases referenced by the Examples.
 2. For each referenced entity/value object/use case not yet implemented, create a minimal typed stub per [[software-craft/stub-design#concepts]] — Protocol method signatures with `raise NotImplementedError` bodies, no docstrings, no type hints beyond the contract. These stubs are breadcrumbs from the domain model — the SE can add, remove, or modify them during implementation.

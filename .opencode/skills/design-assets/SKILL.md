@@ -5,7 +5,7 @@ description: "Create logo and banner using favicon-first, monochrome-first, prog
 
 # Design Assets
 
-Load [[design/project-assets#key-takeaways]] and [[design/visual-harmony#key-takeaways]] before starting. 
+Available knowledge: [[design/project-assets#key-takeaways]], [[design/visual-harmony#key-takeaways]]. `in` artifacts: discover and read on demand as needed.
 
 1. Read `docs/branding.md` and extract the personality adjectives, visual metaphor (if any), and colour palette from the Visual section.
 2. Determine the logo type per [[design/identity-design#concepts]]: combination mark (new brands), abstract mark (established names), pictogram (strong visual metaphor), or letterform (compact avatar).

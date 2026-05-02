@@ -5,7 +5,7 @@ description: "Write the minimum production code needed to make the failing test 
 
 # Implement Minimum
 
-Load [[software-craft/tdd]], [[software-craft/test-design]], [[software-craft/smell-catalogue]], [[software-craft/object-calisthenics]], and [[software-craft/solid]] before starting. 
+Available knowledge: [[software-craft/tdd]], [[software-craft/test-design]], [[software-craft/smell-catalogue]], [[software-craft/object-calisthenics]], [[software-craft/solid]]. `in` artifacts: discover and read on demand as needed.
 
 1. Write the minimum code to make the failing test pass AND satisfy reviewer checks per [[software-craft/tdd#key-takeaways]]. Add docstrings, type hints, and lint compliance only when reviewers require them — not proactively.
 2. IF a spec gap or inconsistency is discovered during implementation → do NOT modify specification documents (domain_model.md, technical_design.md, glossary.md, product_definition.md, system.md, context_map.md, ADRs, feature files). These are owned by other flow states. Flag the gap in output notes. The SE may ONLY modify production code and test code.

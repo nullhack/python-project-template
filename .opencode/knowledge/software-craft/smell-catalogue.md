@@ -33,7 +33,7 @@ last-updated: 2026-04-30
 | Smell | Signal | Why It Happens | Detection | Refactoring |
 |---|---|---|---|---|
 | Long Method | Method body needs a comment to understand any section; >10 lines is a warning sign | Easier to add a line than refactor; conditional branches grow; comments replace extraction | Method line count >10; comments inside method body that label sections | Extract Method, Decompose Conditional, Replace Temp with Query |
-| Large Class | Class has too many responsibilities or instance variables | Class grows by accretion; each new feature adds fields and methods; "God Object" | Instance variable count >2 (OC-7); class line count >50; class name contains "Manager" or "Handler" | Extract Class, Extract Subclass, Extract Interface |
+| Large Class | Class has too many responsibilities or instance variables | Class grows by accretion; each new feature adds fields and methods; "God Object" | Instance variable count >2 (ObjCal-7); class line count >50; class name contains "Manager" or "Handler" | Extract Class, Extract Subclass, Extract Interface |
 | Primitive Obsession | Domain concept represented as a raw primitive; constants for type codes; strings as field names | Creating a class feels like overkill; habit from non-OO languages; fear of "too many classes" | `isinstance` checks on primitives; string/integer constants used as type flags; dictionaries with fixed keys | Replace Data Value with Object, Replace Type Code with Class, Introduce Parameter Object |
 | Long Parameter List | Function takes 3+ parameters, or parameter group repeats across signatures | Method needs data from several sources; fear of making object dependencies explicit; passing individual fields instead of objects | Parameter count >3; same group of parameters appears in 2+ method signatures | Introduce Parameter Object, Preserve Whole Object, Replace Parameter with Method Call |
 | Data Clumps | Same 2-3 data items always appear together across signatures or fields | Related data not yet recognised as a domain concept; laziness in creating a value object | Search for repeated parameter groups; fields that always appear together in constructors | Introduce Parameter Object, Extract Class, Preserve Whole Object |
@@ -83,5 +83,5 @@ last-updated: 2026-04-30
 - [[software-craft/refactoring]] — when and how to refactor, clean code, technical debt
 - [[software-craft/solid]] — SOLID violations manifest as specific smells
 - [[software-craft/tdd]] — smells are identified and resolved during REFACTOR phase
-- [[software-craft/object-calisthenics]] — OC violations overlap with smell signals
+- [[software-craft/object-calisthenics]] — Object Calisthenics violations overlap with smell signals
 - [[software-craft/code-review]] — smells are checked during design review

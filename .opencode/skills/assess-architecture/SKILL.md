@@ -5,7 +5,7 @@ description: "Evaluate whether the feature requires new architecture or fits the
 
 # Assess Architecture
 
-Load [[architecture/assessment#key-takeaways]] and [[requirements/interview-techniques#key-takeaways]] before starting. 
+Available knowledge: [[architecture/assessment#key-takeaways]], [[requirements/interview-techniques#key-takeaways]]. `in` artifacts: discover and read on demand as needed.
 
 1. Check if architecture already exists per [[architecture/assessment#key-takeaways]].
 2. If architecture exists, verify the delivery mechanism per [[architecture/assessment#concepts]].

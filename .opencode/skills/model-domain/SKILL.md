@@ -5,7 +5,7 @@ description: "Formalize candidates into bounded contexts, entities, relationship
 
 # Model Domain
 
-Load [[domain-modeling/event-storming#key-takeaways]] before starting. 
+Available knowledge: [[domain-modeling/event-storming#key-takeaways]]. `in` artifacts: discover and read on demand as needed. 
 
 1. Define bounded contexts per [[domain-modeling/event-storming#key-takeaways]].
 2. Define entities within each context — name, attributes, lifecycle.
