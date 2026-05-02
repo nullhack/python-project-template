@@ -1,5 +1,6 @@
 flow: review-gate-flow
-version: 2.0.0
+version: 3.0.0
+params: [feature_name]
 exits:
   - pass
   - fail
@@ -9,6 +10,7 @@ states:
     attrs:
       description: "R verifies implementation aligns with domain model, follows DDD patterns, and respects architectural decisions"
       owner: R
+      git: feature
       skills:
         - review-design
       in:
@@ -36,6 +38,7 @@ states:
     attrs:
       description: "R verifies test coverage, BDD example pass rate, test coupling, and behavior-vs-structure testing"
       owner: R
+      git: feature
       skills:
         - review-structure
         - verify-traceability
@@ -63,6 +66,7 @@ states:
     attrs:
       description: "R verifies formatting, docstrings, type hints, import ordering, and lint rules unrelated to design"
       owner: R
+      git: feature
       skills:
         - review-conventions
       in:

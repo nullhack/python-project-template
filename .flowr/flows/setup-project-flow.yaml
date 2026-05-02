@@ -1,5 +1,5 @@
 flow: setup-project-flow
-version: 2.0.0
+version: 3.0.0
 exits: [initialized, cancelled]
 
 states:
@@ -7,6 +7,7 @@ states:
     attrs:
       description: "Interview user to understand project needs and assess parameters"
       owner: Setup Agent
+      git: main
       skills:
         - setup-assess
       in: []
@@ -20,6 +21,7 @@ states:
     attrs:
       description: "Gather and confirm project parameters based on assessment"
       owner: Setup Agent
+      git: main
       skills:
         - setup-configure
       in:
@@ -44,6 +46,7 @@ states:
     attrs:
       description: "Apply all text substitutions, rename package, reset version"
       owner: Setup Agent
+      git: main
       skills:
         - setup-apply
       in:
@@ -71,6 +74,7 @@ states:
     attrs:
       description: "Verify transformations, clean template artifacts, finalize project"
       owner: Setup Agent
+      git: main
       skills:
         - setup-verify
       in:
@@ -82,8 +86,12 @@ states:
         tests_pass: ==verified
         imports_valid: ==verified
         artifacts_cleaned: ==verified
+      committed_to_main_locally:
+        committed_to_main_locally: ==verified
     next:
       initialized:
         to: initialized
-        when: verification_passed
+        when:
+          - verification_passed
+          - committed_to_main_locally
       failed: cancelled

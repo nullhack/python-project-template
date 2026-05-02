@@ -1,5 +1,6 @@
 flow: planning-flow
-version: 4.0.0
+version: 5.0.0
+params: [feature_name]
 exits:
   - complete
   - needs_architecture
@@ -10,6 +11,7 @@ states:
     attrs:
       description: "PO picks the next feature to develop based on business priority and delivery order, verifying that architecture covers it"
       owner: PO
+      git: main
       skills:
         - select-feature
       in:
@@ -25,6 +27,7 @@ states:
     attrs:
       description: "PO conducts a targeted conversation with stakeholders to capture feature-specific behavioral rules, scenarios, and acceptance criteria"
       owner: PO
+      git: main
       skills:
         - specify-feature
       in:
@@ -42,6 +45,7 @@ states:
     attrs:
       description: "PO decomposes the selected feature into Rule blocks (user stories) within the feature file based on specification interview and domain constraints"
       owner: PO
+      git: main
       skills:
         - break-down-feature
       in:
@@ -70,6 +74,7 @@ states:
     attrs:
       description: "PO writes concrete Given/When/Then Example blocks for each Rule in the feature file using ubiquitous language from the glossary"
       owner: PO
+      git: main
       skills:
         - write-bdd-features
       in:
@@ -109,6 +114,7 @@ states:
     attrs:
       description: "SA creates minimum typed stubs and test stubs as domain model breadcrumbs for the current feature"
       owner: SA
+      git: main
       skills:
         - create-py-stubs
       in:
@@ -129,6 +135,7 @@ states:
     attrs:
       description: "PO tailors the definition of done criteria based on the specific feature's requirements"
       owner: PO
+      git: main
       skills:
         - define-done
       in:
@@ -144,6 +151,7 @@ states:
     attrs:
       description: "PO confirms all planning artifacts are complete and the feature is ready for development"
       owner: PO
+      git: main
       skills:
         - confirm-baseline
       in:
@@ -153,7 +161,11 @@ states:
     conditions:
       feature_baselined:
         feature_status: ==BASELINED
+      committed_to_main_locally:
+        committed_to_main_locally: ==verified
     next:
       done:
         to: complete
-        when: feature_baselined
+        when:
+          - feature_baselined
+          - committed_to_main_locally

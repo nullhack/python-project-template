@@ -8,6 +8,7 @@ Post-mortem analysis shows these six practices prevent most project failures. Vi
 4. **Never decompose a feature without stakeholder approval.** If a feature is too large for INVEST, propose the split to the stakeholder with rationale. They decide what's core vs. deferred.
 5. **Verify inputs exist before entering a state.** Every state's `in` artifacts must be readable on disk. If they're missing, stop and reconstruct them — don't proceed with assumed knowledge.
 6. **A feature is not done until every interview requirement is traced.** Every stakeholder Q&A must map to either a passing @id test or an explicit stakeholder deferral. Untraced requirements = incomplete delivery.
+7. **Respect git branch discipline.** Every state declares `git: main` or `git: feature` in its attrs. Work on `main` when the state says `main`, work on the feature branch when it says `feature`. Never switch branches mid-state. Before exiting a project-phase flow (discovery, architecture, branding, setup), set `committed_to_main_locally: ==verified` evidence — changes must be committed to main before advancing.
 
 ## Project Structure
 - `.flowr/flows/` — YAML state machine definitions (source of truth for routing)
@@ -86,15 +87,25 @@ Artifact names in `in` and `out` lists use these conventions:
 
 All commands require the virtual environment: `source .venv/bin/activate`. See [[workflow/flowr-operations]] for full command reference and workflow pattern.
 
+Commands accept short flow names (e.g., `planning-flow`) or full file paths. Use `--session <name>` to resolve flow/state from a session instead of specifying them explicitly.
+
 | Command | Purpose |
 |---------|---------|
 | `python -m flowr check <flow> <state>` | Show state attrs, owner, skills, and transitions |
 | `python -m flowr check <flow> <state> <target>` | Show conditions for a specific transition |
+| `python -m flowr check --session` | Show current session state (read-only) |
 | `python -m flowr next <flow> <state> [--evidence key=value]` | Show which transitions pass given evidence |
+| `python -m flowr next --session [--evidence key=value]` | Show available transitions from session state |
 | `python -m flowr transition <flow> <state> <trigger> [--evidence key=value]` | Advance to the next state |
+| `python -m flowr transition <trigger> --session [--evidence key=value]` | Advance using session (auto-updates session) |
 | `python -m flowr validate [<flow>]` | Validate flow definitions |
 | `python -m flowr states <flow>` | List all states in a flow |
 | `python -m flowr mermaid <flow>` | Export flow as Mermaid diagram |
+| `python -m flowr config` | Show resolved configuration with sources |
+| `python -m flowr session init <flow> [--name <name>]` | Create a session at the flow's initial state |
+| `python -m flowr session show [--name <name>]` | Display current session state and call stack |
+| `python -m flowr session set-state <state> [--name <name>]` | Manually update session state |
+| `python -m flowr session list` | List all sessions |
 | `task regenerate-flowviz` | Regenerate interactive D3.js visualization |
 
 ## Project Commands
@@ -121,10 +132,28 @@ Linting and formatting:
 
 Every state transition must go through flowr. Do not skip steps or guess transitions. See [[workflow/flowr-operations]] for the full command reference.
 
-1. **State entry:** Run `python -m flowr check <flow> <state>` to see current state, owner, skills, and available transitions. Verify all `in` artifacts exist on disk — if any are missing, stop and flag rather than proceeding with assumed knowledge. Announce the state in one line — e.g. `→ specify-feature`. No preamble, no recap of how you got here.
+1. **State entry:** Run `python -m flowr check --session` (or `python -m flowr check <flow> <state>`) to see current state, owner, skills, and available transitions. Verify all `in` artifacts exist on disk — if any are missing, stop and flag rather than proceeding with assumed knowledge. Announce the state in one line — e.g. `→ specify-feature`. No preamble, no recap of how you got here.
 2. **Dispatch to owner agent:** The state's `owner` field names the responsible agent. Call that agent as a subagent with the state's `skills` loaded, passing the state attrs as context. Owner mapping: `PO` → product-owner, `DE` → domain-expert, `SE` → software-engineer, `SA` → system-architect, `R` → reviewer, `Design Agent` → design-agent, `Setup Agent` → setup-agent.
-3. **Do the work:** Load and execute the skill(s) listed in the state's `skills` field. Read `in` artifacts on demand. Write only to `out` artifacts.
-4. **State exit:** Set evidence for any guarded transitions based on work completed. Run `python -m flowr next <flow> <state> --evidence key=value` to see available paths. Choose the path that matches the work outcome. Run `python -m flowr transition <flow> <state> <trigger> --evidence key=value` to advance. Do not skip this step.
+3. **Do the work:** Load and execute the skill(s) listed in the state's `skills` field. Read `in` artifacts on demand. Write only to `out` artifacts. Commit changes to the branch indicated by the state's `git` attribute (`main` or `feature`). Never switch branches mid-state.
+4. **State exit:** Set evidence for any guarded transitions based on work completed. Run `python -m flowr next --session --evidence key=value` to see available paths. Choose the path that matches the work outcome. Run `python -m flowr transition <trigger> --session --evidence key=value` to advance. Do not skip this step.
+
+### Session Init
+
+Before starting a flow, create a session to track progress:
+
+```bash
+python -m flowr session init <flow> --name <name>
+```
+
+For project-level flows (discovery, architecture, branding, setup), use a descriptive name like `project`. For feature flows, use the feature name. The session tracks the current flow, state, call stack (for subflows), and params (including `feature_name`).
+
+### Branch Discipline
+
+States declare their git context in `attrs.git`:
+- `git: main` — all changes are committed to the local main branch
+- `git: feature` — all changes are committed to the current feature branch
+
+Before exiting a project-phase flow (discovery, architecture, branding, setup), the exit transition requires `committed_to_main_locally: ==verified` evidence. This ensures project artifacts are persisted before advancing to the next phase.
 
 ### Within a State
 

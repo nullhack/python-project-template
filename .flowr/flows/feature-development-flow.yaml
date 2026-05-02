@@ -1,5 +1,6 @@
 flow: feature-development-flow
-version: 6.0.0
+version: 7.0.0
+params: [feature_name]
 
 exits:
   - needs_architecture
@@ -8,23 +9,32 @@ exits:
 
 states:
   - id: planning
+    attrs:
+      description: "Plan feature scope, specification, breakdown, and BDD scenarios"
+      git: main
     flow: planning-flow
-    flow-version: "^4"
+    flow-version: "^5"
     next:
       complete: development
       needs_architecture: needs_architecture
       no_features: completed
 
   - id: development
+    attrs:
+      description: "Implement the feature through TDD cycles, review, and commit"
+      git: feature
     flow: development-flow
-    flow-version: "^4"
+    flow-version: "^5"
     next:
       done: delivery
       needs_planning: planning
 
   - id: delivery
+    attrs:
+      description: "Accept, merge, and publish the completed feature"
+      git: feature
     flow: delivery-flow
-    flow-version: "^4"
+    flow-version: "^5"
     next:
       next-feature: planning
       rejected: post-mortem
@@ -32,8 +42,11 @@ states:
       cancelled: cancelled
 
   - id: post-mortem
+    attrs:
+      description: "Investigate rejection, document findings, and determine corrective action"
+      git: main
     flow: post-mortem-flow
-    flow-version: "^2"
+    flow-version: "^3"
     next:
       complete: planning
       needs_architecture: needs_architecture

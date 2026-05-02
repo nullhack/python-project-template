@@ -1,5 +1,6 @@
 flow: tdd-cycle-flow
-version: 2.0.0
+version: 3.0.0
+params: [feature_name]
 exits:
   - all_green
   - blocked
@@ -9,6 +10,7 @@ states:
     attrs:
       description: "SE writes a failing test body for one BDD example, specifying expected behavior before implementation exists"
       owner: SE
+      git: feature
       skills:
         - write-test
       in:
@@ -24,6 +26,7 @@ states:
     attrs:
       description: "SE writes the minimum production code needed to make the failing test pass"
       owner: SE
+      git: feature
       skills:
         - implement-minimum
       in:
@@ -38,6 +41,7 @@ states:
     attrs:
       description: "SE improves code structure while keeping all tests passing, then cycles to the next example or exits when all pass"
       owner: SE
+      git: feature
       skills:
         - refactor
       in:

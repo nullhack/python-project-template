@@ -1,21 +1,23 @@
 flow: main-flow
-version: 7.0.0
+version: 8.0.0
 exits: [completed, cancelled]
 
 states:
   - id: discovery
     attrs:
       description: "Understand the domain, define scope, and establish ubiquitous language through stakeholder interviews and domain modeling"
+      git: main
     flow: discovery-flow
-    flow-version: "^3"
+    flow-version: "^4"
     next:
       complete: architecture
 
   - id: architecture
     attrs:
       description: "Design technical architecture, context boundaries, and API contracts for the entire project"
+      git: main
     flow: architecture-flow
-    flow-version: "^4"
+    flow-version: "^5"
     next:
       complete: feature-development
       needs_discovery: discovery
@@ -23,8 +25,9 @@ states:
   - id: feature-development
     attrs:
       description: "Feature-level loop: Planning → Development → Acceptance → Delivery per feature"
+      git: feature
     flow: feature-development-flow
-    flow-version: "^6"
+    flow-version: "^7"
     next:
       needs_architecture: architecture
       cancelled: cancelled

@@ -1,5 +1,5 @@
 flow: discovery-flow
-version: 3.0.0
+version: 4.0.0
 exits:
   - complete
 
@@ -8,6 +8,7 @@ states:
     attrs:
       description: "PO interviews stakeholders to understand pain points, business goals, and domain terms, then decides how much discovery is needed"
       owner: PO
+      git: main
       skills:
         - conduct-interview
       in:
@@ -27,6 +28,7 @@ states:
     attrs:
       description: "DE facilitates an event storming workshop to surface domain events, commands, and aggregate candidates"
       owner: DE
+      git: main
       skills:
         - facilitate-event-storming
       in:
@@ -44,6 +46,7 @@ states:
     attrs:
       description: "DE formalizes the ubiquitous language by defining domain terms into a glossary"
       owner: DE
+      git: main
       skills:
         - define-ubiquitous-language
       in:
@@ -59,6 +62,7 @@ states:
     attrs:
       description: "DE formalizes candidates into proper bounded contexts, entities, relationships, and aggregate boundaries"
       owner: DE
+      git: main
       skills:
         - model-domain
       in:
@@ -81,6 +85,7 @@ states:
     attrs:
       description: "PO defines what the product IS and IS NOT, who the users are, and the delivery order"
       owner: PO
+      git: main
       skills:
         - define-product-scope
       in:
@@ -96,6 +101,11 @@ states:
             - delivery_order
             - quality_attributes
             - deployment
+    conditions:
+      committed_to_main_locally:
+        committed_to_main_locally: ==verified
     next:
-      done: complete
+      done:
+        to: complete
+        when: committed_to_main_locally
       needs_reinterview: stakeholder-interview
