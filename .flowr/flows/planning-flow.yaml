@@ -54,12 +54,12 @@ states:
             - rules
     conditions:
       invest_passed:
-        independent: ==true
-        negotiable: ==true
-        valuable: ==true
-        estimable: ==true
-        small: ==true
-        testable: ==true
+        independent: ==no_shared_data_or_side_effects
+        negotiable: ==scope_negotiated
+        valuable: ==user_value_clear
+        estimable: ==effort_estimated
+        small: ==fits_single_sprint
+        testable: ==acceptance_criteria_defined
     next:
       done:
         to: bdd-features
@@ -82,20 +82,23 @@ states:
             - examples
     conditions:
       examples_have_ids:
-        all_examples_have_ids: ==true
+        all_examples_have_ids: ==verified
       examples_have_gherkin:
-        all_examples_have_gherkin: ==true
+        all_examples_have_gherkin: ==verified
       premortem_done:
-        premortem_done: ==true
+        premortem_done: ==verified
       decomposition_valid:
         concerns: <=2
         must_examples: <=8
       examples_complete:
-        all_examples_have_ids: ==true
-        all_examples_have_gherkin: ==true
-        premortem_done: ==true
+        all_examples_have_ids: ==verified
+        all_examples_have_gherkin: ==verified
+        premortem_done: ==verified
         concerns: <=2
         must_examples: <=8
+        all_examples_observable: ==each_then_describes_single_outcome
+        all_examples_declarative: ==behaviour_not_ui_steps
+        distinctness_verified: ==no_duplicate_observable_behaviours
     next:
       done:
         to: create-py-stubs
@@ -118,7 +121,7 @@ states:
         - test_skeletons
     conditions:
       stubs_traceable:
-        all_ids_have_stubs: ==true
+        all_ids_have_stubs: ==verified
     next:
       done: definition-of-done
 

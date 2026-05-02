@@ -7,6 +7,8 @@ description: "Gather and confirm project parameters, validate template files exi
 
 Template resolution: templates live in `.templates/`. The instance path is the template path with `.templates/` prefix removed and `.template` suffix removed. Discover templates at runtime with `find .templates -name '*.template'`. Some templates contain `{variable}` tokens (e.g. `{project_name}`, `{YYYYMMDD}`) that the setup skill replaces with actual values.
 
+`in` artifacts: discover and read on demand as needed.
+
 1. Check that all required template files exist and set evidence:
    - `pyproject_toml`: Check `pyproject.toml` exists
    - `readme_md`: Check `README.md` exists
@@ -38,5 +40,5 @@ Template resolution: templates live in `.templates/`. The instance path is the t
    Note: `github_username` will be used in both `pyproject.toml` URLs and `git remote set-url`. Confirm they are correct.
 7. Ask the user to confirm before proceeding.
 8. Update the defaults section in `template-config.yaml` with confirmed values.
-9. Set all template existence evidence to `==true`.
+9. Set all template existence evidence to `==exists`.
 10. Advance the flow with necessary evidence, choosing the appropriate next state based on the work completed.

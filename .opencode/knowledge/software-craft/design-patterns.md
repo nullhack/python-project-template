@@ -102,5 +102,5 @@ last-updated: 2026-04-30
 - [[software-craft/refactoring-techniques]] — refactoring techniques that resolve smells before patterns are needed
 - [[software-craft/refactoring]] — when and how to refactor, clean code, technical debt
 - [[software-craft/solid]] — patterns resolve SOLID violations
-- [[software-craft/object-calisthenics]] — OC rules complement pattern application
+- [[software-craft/object-calisthenics]] — Object Calisthenics rules complement pattern application
 - [[software-craft/tdd]] — patterns are applied during REFACTOR phase

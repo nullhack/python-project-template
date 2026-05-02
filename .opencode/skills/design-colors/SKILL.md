@@ -5,7 +5,7 @@ description: "Select and validate a colour palette with WCAG contrast, dark-mode
 
 # Design Colours
 
-Load [[design/color-systems#key-takeaways]] before starting. 
+Available knowledge: [[design/color-systems#key-takeaways]]. `in` artifacts: discover and read on demand as needed.
 
 1. Read `docs/branding.md` and extract the personality adjectives from the Identity section.
 2. Propose a primary hue based on the hue-semantics table in [[design/color-systems#content]]. The primary must reinforce the personality adjectives.

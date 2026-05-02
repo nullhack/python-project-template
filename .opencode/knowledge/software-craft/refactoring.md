@@ -37,7 +37,7 @@ last-updated: 2026-04-30
 | Lack of team interaction | People work with outdated understanding | Pair programming, code reviews, knowledge sharing |
 | Long-lived branches | Merge debt accumulates | Short-lived branches, frequent integration |
 | Delayed refactoring | Obsolete code has more dependent code built on it | Refactor continuously during TDD REFACTOR phase |
-| Lack of coding standards | Everyone writes code as they see fit | Adopt and enforce coding standards (lint, OC, SOLID) |
+| Lack of coding standards | Everyone writes code as they see fit | Adopt and enforce coding standards (lint, ObjCal, SOLID) |
 | Developer incompetence | Developer doesn't know how to write decent code | Training, mentoring, pair programming |
 
 ### When to Refactor — Trigger Table
@@ -67,7 +67,7 @@ last-updated: 2026-04-30
 - [[software-craft/refactoring-techniques]] — the techniques to apply when refactoring
 - [[software-craft/design-patterns]] — patterns are applied when refactoring techniques are insufficient
 - [[software-craft/tdd]] — refactoring is the REFACTOR phase of TDD
-- [[software-craft/object-calisthenics]] — OC rules guide refactoring toward clean code
+- [[software-craft/object-calisthenics]] — ObjCal rules guide refactoring toward clean code
 - [[software-craft/solid]] — SOLID violations are resolved by refactoring
 - [[software-craft/git-conventions]] — refactoring commits are separate from feature commits
 - [[software-craft/code-review]] — code review is a trigger for refactoring

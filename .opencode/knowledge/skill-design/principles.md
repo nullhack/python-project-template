@@ -54,7 +54,7 @@ description: "<one-line description of what this skill does>"
 
 # <Skill Title>
 
-Load [[domain/concept]] before starting.  ← Only if the skill references domain concepts
+Available knowledge: [[domain/concept]]. `in` artifacts: discover and read on demand as needed.
 
 1. <procedural step>
 2. <step referencing knowledge per [[domain/concept]]>  ← Link at point of use
@@ -62,9 +62,9 @@ Load [[domain/concept]] before starting.  ← Only if the skill references domai
 4. Check flow transitions to determine next state.
 ```
 
-**When to include "Load" section:**
-- Include if the skill uses domain concepts, techniques, or criteria from knowledge files
-- Omit if the skill is pure mechanical procedure (e.g., "create git branch", "run tests")
+**When to include available knowledge:**
+- Include when the skill references knowledge files or document artifacts
+- Omit if the skill has no knowledge references (e.g., pure mechanical procedures)
 
 **When to reference knowledge in steps:**
 - Reference knowledge when applying a technique: "Apply pre-mortem per [[requirements/pre-mortem]]"
@@ -99,6 +99,14 @@ Not just "Apply SOLID principles" (no cue for when) or just "See [[software-craf
 ### De-Duplication
 
 When two skills need the same knowledge, both should reference the same knowledge file rather than each embedding a copy. Each piece of knowledge belongs in exactly one canonical location.
+
+### Input Handling
+
+Every skill that has `in` artifacts follows two rules:
+
+1. **Verify before proceeding.** Check that all `in` artifacts exist on disk. If any are missing, stop and flag the missing artifact rather than proceeding with assumed knowledge. This prevents the most common source of rework: building on assumptions about documents that don't exist or have been moved.
+
+2. **Read on demand, not eagerly.** Discover what's available first (`ls`, `find`), then read only the files and sections needed for the current step. The `in` list defines what you *may* read, not what you *must* read upfront. Loading all `in` artifacts before starting wastes context and causes middle-position attention degradation (Liu et al., 2023).
 
 ## Related
 

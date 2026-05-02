@@ -5,7 +5,7 @@ description: "Interview user to understand project needs and assess parameters f
 
 # Setup Assess
 
-Load [[requirements/interview-techniques#key-takeaways]] before starting. 
+Available knowledge: [[requirements/interview-techniques#key-takeaways]]. `in` artifacts: discover and read on demand as needed. 
 
 1. Use interview techniques per [[requirements/interview-techniques#concepts]] to understand project context.
 2. Start with general questions (Funnel Level 1):

@@ -21,7 +21,7 @@ last-updated: 2026-04-30
 
 **Minimum Code (GREEN phase)** — Write the simplest code that makes the failing test pass. This means: no speculative generalization (don't add parameters "for later"), no premature abstraction (don't extract a base class for one implementation), no future-proofing (don't handle cases the test doesn't require). If the test says "return 42", write `return 42` — not a configurable constant.
 
-**Design Principle Priority** — When writing code or refactoring, follow this priority order (Beck & Jeffries, 1999; Martin, 2000): YAGNI > KISS > DRY > OC > SOLID > Design Patterns. YAGNI overrides everything: if the test doesn't require it, don't write it. KISS overrides DRY: sometimes a small duplication is simpler than the wrong abstraction.
+**Design Principle Priority** — When writing code or refactoring, follow this priority order (Beck & Jeffries, 1999; Martin, 2000): YAGNI > KISS > DRY > ObjCal > Smells > SOLID > Design Patterns. YAGNI overrides everything: if the test doesn't require it, don't write it. KISS overrides DRY: sometimes a small duplication is simpler than the wrong abstraction.
 
 **Test as Specification** (North, 2006) — In TDD, tests are specifications, not verification. Each test specifies one observable behavior. The test is written first because it drives the design of the production code, not because it verifies implementation after the fact.
 
@@ -31,9 +31,9 @@ last-updated: 2026-04-30
 
 **Commit Discipline** — Refactor commits are separate from feature commits. Never mix a structural change with a behavior addition in one commit — this keeps history bisectable and every commit leaves tests green. See [[software-craft/git-conventions]] for granular and squashed commit formats.
 
-**Design-Only Refactoring** — During REFACTOR, apply only design transformations (SOLID, OC, DRY, KISS, YAGNI, pattern catalogue entries). Do not apply convention compliance (import ordering, docstring additions, type annotations, format changes) — those belong in the Conventions Phase after design approval.
+**Design-Only Refactoring** — During REFACTOR, apply only design transformations (YAGNI, KISS, DRY, ObjCal, Smells, SOLID, pattern catalogue entries). Do not apply convention compliance (import ordering, docstring additions, type annotations, format changes) — those belong in the Conventions Phase after design approval.
 
-**Two-Phase Quality Gate** — TDD operates in two distinct phases with different tooling and goals. **Design Phase** (during tdd-cycle): run `test-fast` only; no lint, no pyright, no docstring checks, no coverage unit tests. Write minimum code following best design principles (YAGNI > KISS > DRY > OC > SOLID > patterns). The goal is proving design correctness — never waste convention work on code that might be redesigned. Exit is gated by the `design_declared` condition. **Conventions Phase** (after design approval): add coverage unit tests, run lint, run pyright, add docstrings. These are convention concerns that the reviewer explicitly requests only after design is approved. Running lint or coverage on code that might be redesigned is wasted effort.
+**Two-Phase Quality Gate** — TDD operates in two distinct phases with different tooling and goals. **Design Phase** (during tdd-cycle): run `test-fast` only; no lint, no pyright, no docstring checks, no coverage unit tests. Write minimum code following best design principles (YAGNI > KISS > DRY > ObjCal > Smells > SOLID > patterns). The goal is proving design correctness — never waste convention work on code that might be redesigned. Exit is gated by the `design_declared` condition. **Conventions Phase** (after design and structure review pass): add coverage unit tests, run lint, run pyright, add docstrings. These are convention concerns, verified after design correctness is confirmed. Running lint or coverage on code that might be redesigned is wasted effort.
 
 ## Content
 
@@ -54,7 +54,7 @@ last-updated: 2026-04-30
 
 - All tests must remain green throughout refactoring
 - Only refactor if there is a test that would break if the refactoring is wrong
-- Apply design principles in priority order: YAGNI > KISS > DRY > OC > SOLID > patterns
+- Apply design principles in priority order: YAGNI > KISS > DRY > ObjCal > Smells > SOLID > patterns
 - If no improvement is needed, skip refactoring and proceed to the next test
 - Design-only refactoring: no convention compliance during this phase
 
@@ -68,7 +68,7 @@ last-updated: 2026-04-30
 ### Design Phase Rules (during tdd-cycle)
 
 - Run `test-fast` only — no lint, no pyright, no docstring checks, no coverage unit tests
-- Write minimum code following design principle priority: YAGNI > KISS > DRY > OC > SOLID > patterns
+- Write minimum code following design principle priority: YAGNI > KISS > DRY > ObjCal > Smells > SOLID > patterns
 - Refactor for design correctness only — no convention compliance
 - The goal is proving design correctness, not convention compliance
 - Exit gated by `design_declared` condition (all 6 checks == true)

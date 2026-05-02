@@ -5,7 +5,7 @@ description: "Squash-merge feature commits into local main, pull remote main, an
 
 # Merge Local
 
-Load [[software-craft/git-conventions#key-takeaways]] before starting. 
+Available knowledge: [[software-craft/git-conventions#key-takeaways]]. `in` artifacts: discover and read on demand as needed. 
 
 1. Pull latest remote main: `git fetch origin main && git merge --ff-only origin/main` into local main.
 2. If remote main has diverged, rebase the feature branch on updated main before squash-merging.

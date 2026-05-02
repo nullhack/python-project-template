@@ -133,5 +133,5 @@ last-updated: 2026-04-30
 - [[software-craft/design-patterns]] — patterns are applied when refactoring techniques are insufficient
 - [[software-craft/refactoring]] — when and how to refactor, clean code, technical debt
 - [[software-craft/tdd]] — refactoring techniques are applied during REFACTOR phase
-- [[software-craft/object-calisthenics]] — OC violations signal specific refactoring opportunities
+- [[software-craft/object-calisthenics]] — Object Calisthenics violations signal specific refactoring opportunities
 - [[software-craft/solid]] — SOLID violations are resolved by specific refactoring techniques

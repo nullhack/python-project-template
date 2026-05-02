@@ -32,12 +32,13 @@ states:
     flow-version: "^2"
     conditions:
       design_declared:
-        yagni: ==true
-        kiss: ==true
-        dry: ==true
-        oc: ==true
-        solid: ==true
-        patterns: ==true
+        yagni: ==no_premature_abstractions
+        kiss: ==simplest_solution
+        dry: ==no_duplicated_logic
+        objcal: ==calisthenics_followed
+        smells: ==all_smells_addressed
+        solid: ==principles_applied
+        patterns: ==patterns_justified
     next:
       all_green:
         to: review-gate

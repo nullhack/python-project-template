@@ -23,14 +23,14 @@ states:
             - quality_attributes
     conditions:
       architecture_complete:
-        system_md: ==true
-        technical_design_md: ==true
-        context_map_md: ==true
-        deployment_matches_codebase: ==true
+        system_md: ==exists
+        technical_design_md: ==exists
+        context_map_md: ==exists
+        deployment_matches_codebase: ==verified
       architecture_exists:
-        system_md: ==true
-        technical_design_md: ==true
-        context_map_md: ==true
+        system_md: ==exists
+        technical_design_md: ==exists
+        context_map_md: ==exists
       no_architecture_exists:
         technical_design_md: ==false
         context_map_md: ==false

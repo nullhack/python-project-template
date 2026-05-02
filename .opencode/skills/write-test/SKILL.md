@@ -5,7 +5,7 @@ description: "Write a failing test body for one BDD example"
 
 # Write Test
 
-Load [[software-craft/tdd]], [[software-craft/test-design]], [[software-craft/smell-catalogue]], [[software-craft/object-calisthenics]], and [[software-craft/solid]] before starting. 
+Available knowledge: [[software-craft/tdd]], [[software-craft/test-design]], [[software-craft/smell-catalogue]], [[software-craft/object-calisthenics]], [[software-craft/solid]]. `in` artifacts: discover and read on demand as needed. 
 
 1. Pick the next unimplemented `@id` from the feature file — order by fewest dependencies first per [[software-craft/tdd#concepts]].
 2. Write a failing test that specifies the expected behavior per [[software-craft/tdd#key-takeaways]].

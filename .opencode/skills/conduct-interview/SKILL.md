@@ -5,7 +5,7 @@ description: "Interview stakeholders to elicit pain points, business goals, doma
 
 # Conduct Stakeholder Interview
 
-Load [[requirements/interview-techniques#key-takeaways]] before starting. 
+Available knowledge: [[requirements/interview-techniques#key-takeaways]]. `in` artifacts: discover and read on demand as needed.
 
 1. Start with general questions per [[requirements/interview-techniques#concepts]].
 2. If general questions reveal multiple behaviour groups, probe each as a

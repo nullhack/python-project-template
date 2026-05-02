@@ -1,3 +1,14 @@
+## Golden Rules
+
+Post-mortem analysis shows these six practices prevent most project failures. Violating them triggers costly rework — defects caught later cost 10–100× more to fix (Boehm, 1981).
+
+1. **Never skip a flow state.** Every state boundary goes through flowr check → dispatch to owner → flowr transition. No shortcuts, no manual session edits, no jumping ahead.
+2. **Never bypass owner dispatch.** Each state has an owner agent. The orchestrator dispatches to that agent with skills loaded — it never does the work itself. One agent, one hat at a time.
+3. **Never collapse progressive gates.** Multi-step gates (review: design → structure → conventions) are separate for a reason. Each one can fail independently and send work back.
+4. **Never decompose a feature without stakeholder approval.** If a feature is too large for INVEST, propose the split to the stakeholder with rationale. They decide what's core vs. deferred.
+5. **Verify inputs exist before entering a state.** Every state's `in` artifacts must be readable on disk. If they're missing, stop and reconstruct them — don't proceed with assumed knowledge.
+6. **A feature is not done until every interview requirement is traced.** Every stakeholder Q&A must map to either a passing @id test or an explicit stakeholder deferral. Untraced requirements = incomplete delivery.
+
 ## Project Structure
 - `.flowr/flows/` — YAML state machine definitions (source of truth for routing)
 - `.flowr/sessions/` — runtime session state
@@ -110,7 +121,7 @@ Linting and formatting:
 
 Every state transition must go through flowr. Do not skip steps or guess transitions. See [[workflow/flowr-operations]] for the full command reference.
 
-1. **State entry:** Run `python -m flowr check <flow> <state>` to see current state, owner, skills, and available transitions. Announce the state in one line — e.g. `→ specify-feature`. No preamble, no recap of how you got here.
+1. **State entry:** Run `python -m flowr check <flow> <state>` to see current state, owner, skills, and available transitions. Verify all `in` artifacts exist on disk — if any are missing, stop and flag rather than proceeding with assumed knowledge. Announce the state in one line — e.g. `→ specify-feature`. No preamble, no recap of how you got here.
 2. **Dispatch to owner agent:** The state's `owner` field names the responsible agent. Call that agent as a subagent with the state's `skills` loaded, passing the state attrs as context. Owner mapping: `PO` → product-owner, `DE` → domain-expert, `SE` → software-engineer, `SA` → system-architect, `R` → reviewer, `Design Agent` → design-agent, `Setup Agent` → setup-agent.
 3. **Do the work:** Load and execute the skill(s) listed in the state's `skills` field. Read `in` artifacts on demand. Write only to `out` artifacts.
 4. **State exit:** Set evidence for any guarded transitions based on work completed. Run `python -m flowr next <flow> <state> --evidence key=value` to see available paths. Choose the path that matches the work outcome. Run `python -m flowr transition <flow> <state> <trigger> --evidence key=value` to advance. Do not skip this step.
@@ -125,7 +136,8 @@ Announce the state once at the top, then go quiet:
   - Files not in `out` must not be written to. If findings affect an artifact outside the output contract, flag them in output notes and defer the change to the step that owns that artifact.
   - The flow contract must always be followed unless the stakeholder explicitly asks to break it.
   - **Artifact existence guarantee:** When a flow state needs a file artifact that does not yet exist, it is created from the matching template in `.templates/` (if one exists). If no template exists for a non-Python file referenced in `in`/`out`, raise an error for the stakeholder to decide. Files are then updated when a state writes to them or their sections. Environment artifacts (e.g., `coverage_reports`, `test_output`, `linter_output`) are produced by tooling rather than flow states — they exist on disk after running the relevant tool and are referenced in `in` but not in any state's `out`.
-- **Read inputs on demand, not eagerly.** When `in` lists artifacts, discover what's available first (`ls`, `find`), then read only the files and sections needed for the current task. The `in` list defines what you *may* read, not what you *must* read up front. This applies to all files — spec documents, production code, and test code. List directories first, read selectively.
+- **Read inputs on demand, not eagerly.** When `in` lists artifacts, discover what's available first (`ls`, `find`), then read only the files and sections needed for the current task. The `in` list defines what you *may* read, not what you *must* read up front. This applies to all files — spec documents, production code, and test code. List directories first, read selectively. Loading all `in` artifacts before starting wastes context and causes middle-position attention degradation (Liu et al., 2023).
 - **Specification documents are read-only during development.** During TDD and review cycles, the SE and reviewer may ONLY modify production code and test code. Spec document inconsistencies must be FLAGGED in output notes, not fixed directly. Spec docs are owned by other flow states and can only be changed through the appropriate flow step — after code is reviewed and approved.
+- **Flag issues with precise citations.** When flagging a problem during review or adversarial analysis, include file:line references — e.g., "domain_model.md:23 conflicts with login.feature:15". Vague findings create rework.
 - **Do the work with the fewest, quietest commands.** Suppress verbose output. If a command can be scoped with a flag, pipe, or limit — use it. Don't dump full files or directory listings when a targeted query answers the question.
 - **No narration between steps.** The command and its output are the conversation. Don't echo what you're about to do or what you just did.

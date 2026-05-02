@@ -28,12 +28,12 @@ states:
         - template-config.yaml
     conditions:
       template_files_exist:
-        pyproject_toml: ==true
-        readme_md: ==true
-        github_workflows_ci_yml: ==true
-        license: ==true
-        tests_unit_main_test_py: ==true
-        app_directory: ==true
+        pyproject_toml: ==exists
+        readme_md: ==exists
+        github_workflows_ci_yml: ==exists
+        license: ==exists
+        tests_unit_main_test_py: ==exists
+        app_directory: ==exists
     next:
       confirmed:
         to: apply-substitutions
@@ -58,9 +58,9 @@ states:
         - package_directory
     conditions:
       substitutions_successful:
-        no_stale_app_imports: ==true
-        package_renamed: ==true
-        version_reset: ==true
+        no_stale_app_imports: ==verified
+        package_renamed: ==verified
+        version_reset: ==verified
     next:
       applied:
         to: verify-and-finalize
@@ -79,9 +79,9 @@ states:
         - git_remote
     conditions:
       verification_passed:
-        tests_pass: ==true
-        imports_valid: ==true
-        artifacts_cleaned: ==true
+        tests_pass: ==verified
+        imports_valid: ==verified
+        artifacts_cleaned: ==verified
     next:
       initialized:
         to: initialized
