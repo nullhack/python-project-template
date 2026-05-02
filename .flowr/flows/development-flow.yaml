@@ -1,5 +1,6 @@
 flow: development-flow
-version: 4.0.0
+version: 5.0.0
+params: [feature_name]
 exits:
   - done
   - needs_planning
@@ -9,6 +10,7 @@ states:
     attrs:
       description: "SA creates the project skeleton — branch, package structure, port interfaces, aggregate root signatures — before any feature-specific stubs"
       owner: SA
+      git: feature
       skills:
         - structure-project
       in:
@@ -28,8 +30,9 @@ states:
   - id: tdd-cycle
     attrs:
       description: "SE implements the feature through repeated RED-GREEN-REFACTOR cycles until all BDD examples pass"
+      git: feature
     flow: tdd-cycle-flow
-    flow-version: "^2"
+    flow-version: "^3"
     conditions:
       design_declared:
         yagni: ==no_premature_abstractions
@@ -48,8 +51,9 @@ states:
   - id: review-gate
     attrs:
       description: "R independently verifies implementation across three tiers — design, structure, and conventions — before commit"
+      git: feature
     flow: review-gate-flow
-    flow-version: "^2"
+    flow-version: "^3"
     next:
       pass: commit
       fail: tdd-cycle
@@ -58,6 +62,7 @@ states:
     attrs:
       description: "SE commits the reviewed, passing implementation with traceability to feature files"
       owner: SE
+      git: feature
       skills:
         - commit-implementation
       in:

@@ -1,6 +1,6 @@
 [project]
 name = "temple8"
-version = "8.0.0"
+version = "8.1.0"
 description = "Python template with some awesome tools to quickstart any Python project"
 readme = "README.md"
 requires-python = ">=3.13"
@@ -29,10 +29,16 @@ dev = [
     "hypothesis>=6.148.4",
     "pyright>=1.1.407",
     "ghp-import>=2.1.0",
-    "flowr>=0.3",
+    "flowr>=0.4",
     "gherkin-official>=39.0.0",
     "safety>=3.7.0",
 ]
+
+[tool.flowr]
+flows_dir = ".flowr/flows"
+sessions_dir = ".flowr/sessions"
+default_flow = "main-flow"
+default_session = "default"
 
 [tool.setuptools]
 packages = ["app"]

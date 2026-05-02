@@ -1,7 +1,7 @@
 ---
 domain: workflow
-tags: [fsm, state-machine, flow, yaml, flowr, transitions, conditions]
-last-updated: 2026-04-29
+tags: [fsm, state-machine, flow, yaml, flowr, transitions, conditions, session, config]
+last-updated: 2026-05-02
 ---
 
 # Flowr Specification
@@ -13,6 +13,9 @@ last-updated: 2026-04-29
 - Use `conditions` blocks on states to define named condition groups; reference them in transitions with `when`.
 - Guarded transitions use `when` dicts with expression strings (`==true`, `>=80%`, `~=100`); conditions are AND-combined with no inheritance.
 - Carry runtime metadata in state-level `attrs` (agent, skills, input_artifacts, etc.); `attrs` is opaque to the engine.
+- Sessions track workflow progress (flow, state, call stack) as YAML files in `.flowr/sessions/` with atomic writes; `--session` on check/next/transition resolves flow/state automatically.
+- Configuration reads `[tool.flowr]` from `pyproject.toml` (flows_dir, sessions_dir, default_flow, default_session); CLI flags override pyproject.toml which overrides defaults.
+- Flow name resolution: commands accept short names (e.g., `planning-flow`) resolved from the configured flows directory, or full file paths.
 - Immutable loaded flows, closed evidence schema, isolated subflow context, filesystem wins over session on conflict.
 
 ## Concepts
@@ -120,13 +123,45 @@ Named condition references in `when` clauses must resolve to a key in the same s
 
 ### Validation Rules (Load-Time)
 
-1. Every `next` target resolves to a state id or an exit name
-2. No `next` target is ambiguous (matches both a state id and an exit name)
-3. Parent `next` keys match child's `exits` list exactly
-4. No cross-flow cycles (DFS detection)
-5. Exit names in `exits` must have at least one state referencing them
-6. Named condition references in `when` must resolve to the same state's `conditions` block
-7. Params without defaults must be provided at invocation time
+Violations are categorized by severity: **MUST** (blocking errors) and **SHOULD** (non-blocking warnings).
+
+1. (MUST) Every `next` target resolves to a state id or an exit name
+2. (MUST) No `next` target is ambiguous (matches both a state id and an exit name)
+3. (MUST) Parent `next` keys match child's `exits` list exactly
+4. (MUST) No cross-flow cycles (DFS detection)
+5. (SHOULD) Exit names in `exits` are referenced by at least one state transition
+6. (MUST) Named condition references in `when` must resolve to the same state's `conditions` block
+7. (SHOULD) All defined condition groups are referenced by at least one transition
+8. (MUST) Flow definition has at least one exit
+9. (MUST) Flow definition has at least one state
+10. Params without defaults must be provided at invocation time
+
+### Session Model
+
+Sessions persist workflow progress as YAML files in `.flowr/sessions/` with atomic writes (temp-file-then-rename). Each session tracks:
+
+| Field | Description |
+|-------|-------------|
+| `flow` | Current flow name |
+| `state` | Current state id |
+| `name` | Session identifier (used as filename stem) |
+| `created_at` | ISO 8601 timestamp |
+| `updated_at` | ISO 8601 timestamp (updated on every transition) |
+| `stack` | List of `{flow, state}` frames for subflow nesting |
+| `params` | Per-flow parameter overrides |
+
+Subflow entry pushes a `SessionStackFrame(flow, state)` onto the stack and updates the session's flow/state to the subflow. Subflow exit pops the frame and restores the parent flow/state.
+
+### Configuration
+
+flowr reads `[tool.flowr]` from `pyproject.toml`. Resolution priority: CLI flags > pyproject.toml > defaults.
+
+| Key | Default | Description |
+|-----|---------|-------------|
+| `flows_dir` | `.flowr/flows` | Directory containing flow YAML files |
+| `sessions_dir` | `.flowr/sessions` | Directory for session YAML files |
+| `default_flow` | `main-flow` | Flow name used when none specified |
+| `default_session` | `default` | Session name used with bare `--session` |
 
 ### Design Principles
 
@@ -136,6 +171,7 @@ Named condition references in `when` clauses must resolve to a key in the same s
 4. **Session truth assumption** — filesystem wins over session on conflict
 5. **Thin enforcement** — validate only, no execution
 6. **No auto-rollback** — no transition limits
+7. **Atomic session writes** — temp-file-then-rename prevents corruption
 
 ## Related
 

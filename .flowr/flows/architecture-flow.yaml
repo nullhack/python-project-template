@@ -1,5 +1,5 @@
 flow: architecture-flow
-version: 4.0.0
+version: 5.0.0
 exits:
   - complete
   - needs_discovery
@@ -9,6 +9,7 @@ states:
     attrs:
       description: "SA evaluates whether the feature requires new architecture or fits the existing system, potentially overriding deployment decisions"
       owner: SA
+      git: main
       skills:
         - assess-architecture
       in:
@@ -54,6 +55,7 @@ states:
     attrs:
       description: "SA maps bounded context relationships, integration points, and anti-corruption layers"
       owner: SA
+      git: main
       skills:
         - map-contexts
       in:
@@ -74,6 +76,7 @@ states:
     attrs:
       description: "SA designs the technical solution — architectural style, stack, module structure, API/event contracts, interface definitions — and updates the system overview"
       owner: SA
+      git: main
       skills:
         - design-technical-solution
       in:
@@ -107,6 +110,7 @@ states:
     attrs:
       description: "SA documents architecturally significant decisions as ADRs and records key decisions and active constraints in system.md"
       owner: SA
+      git: main
       skills:
         - draft-adr
       in:
@@ -128,6 +132,7 @@ states:
     attrs:
       description: "R independently verifies architecture alignment with domain model and requirements, and cross-document consistency, before implementation begins"
       owner: R
+      git: main
       skills:
         - review-architecture
       in:
@@ -139,7 +144,17 @@ states:
         - domain_model.md
         - glossary.md
       out: []
+    conditions:
+      architecture_approved:
+        alignment: ==domain_model_verified
+        adr_compliance: ==adrs_respected
+      committed_to_main_locally:
+        committed_to_main_locally: ==verified
     next:
-      approved: complete
+      approved:
+        to: complete
+        when:
+          - architecture_approved
+          - committed_to_main_locally
       inconsistent: architecture-assessment
       needs_discovery: needs_discovery

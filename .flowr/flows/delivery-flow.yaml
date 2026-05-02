@@ -1,5 +1,6 @@
 flow: delivery-flow
-version: 4.0.0
+version: 5.0.0
+params: [feature_name]
 
 exits:
   - next-feature
@@ -12,6 +13,7 @@ states:
     attrs:
       description: "PO validates business behavior against BDD scenarios and quality attributes"
       owner: PO
+      git: feature
       skills:
         - accept-feature
         - verify-traceability
@@ -34,6 +36,7 @@ states:
     attrs:
       description: "SE squash-merges feature commits into local main and resolves any conflicts"
       owner: SE
+      git: main
       skills:
         - merge-local
       in:
@@ -50,6 +53,7 @@ states:
     attrs:
       description: "PO decides whether to publish the accumulated batch as a PR or continue accumulating features on local main"
       owner: PO
+      git: main
       skills:
         - decide-batch-action
       in:
@@ -63,6 +67,7 @@ states:
     attrs:
       description: "SE creates an administrative PR for changes already on local main"
       owner: SE
+      git: main
       skills:
         - create-pr
       in:

@@ -1,5 +1,5 @@
 flow: branding-flow
-version: 2.0.0
+version: 3.0.0
 exits:
   - branded
   - cancelled
@@ -9,6 +9,7 @@ states:
     attrs:
       description: "Interview stakeholder to establish brand identity: personality, visual metaphor, wording, and release naming"
       owner: Design Agent
+      git: main
       skills:
         - setup-branding
       in: []
@@ -25,6 +26,7 @@ states:
     attrs:
       description: "Select and validate a colour palette with WCAG contrast, dark-mode counterparts, and hue semantics"
       owner: Design Agent
+      git: main
       skills:
         - design-colors
       in:
@@ -41,6 +43,7 @@ states:
     attrs:
       description: "Create logo and banner using favicon-first, monochrome-first, progressive-simplification process"
       owner: Design Agent
+      git: main
       skills:
         - design-assets
       in:
@@ -55,7 +58,15 @@ states:
         logo_scalability: ==passes
       blur_passed:
         logo_blur_test: ==passes
+      assets_committed:
+        committed_to_main_locally: ==verified
     next:
-      approved: branded
+      approved:
+        to: branded
+        when:
+          - monochrome_passed
+          - scalability_passed
+          - blur_passed
+          - assets_committed
       revise: design-assets
       cancelled: cancelled

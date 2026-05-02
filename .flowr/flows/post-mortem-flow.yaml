@@ -1,5 +1,5 @@
 flow: post-mortem-flow
-version: 2.0.0
+version: 3.0.0
 exits:
   - complete
   - needs_architecture
@@ -10,6 +10,7 @@ states:
     attrs:
       description: "R investigates why the PR was rejected, identifying the failure point and missed gate"
       owner: R
+      git: main
       skills:
         - analyze-root-cause
       in: []
@@ -23,6 +24,7 @@ states:
     attrs:
       description: "R records what failed, why, and which quality gate was missed"
       owner: R
+      git: main
       skills:
         - document-post-mortem
       in:
@@ -39,6 +41,7 @@ states:
     attrs:
       description: "R determines the corrective fix and updates the post-mortem with remediation steps"
       owner: R
+      git: main
       skills:
         - extract-lessons
       in:
@@ -53,6 +56,7 @@ states:
     attrs:
       description: "R determines whether the feature needs replanning, architecture changes, or should be abandoned"
       owner: R
+      git: main
       skills:
         - determine-action-items
       in:
