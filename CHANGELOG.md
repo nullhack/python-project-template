@@ -2,6 +2,24 @@
 
 All notable changes to this template will be documented in this file.
 
+## [v8.1.0+20260502] - 2026-05-02
+
+### Added
+
+- **Git branch discipline**: Every state in all 12 flow YAML files now declares `git: main` or `git: feature` in its attrs. Agents must work on the declared branch and never switch mid-state. Golden Rule #7 added to AGENTS.md.
+- **Committed-to-main guards**: Project-phase exit transitions (discovery, architecture, planning, branding, setup) now require `committed_to_main_locally: ==verified` evidence before advancing. Ensures artifacts are persisted before moving to the next phase.
+- **flowr 0.4.0 adoption**: Upgraded dependency from `>=0.3` to `>=0.4`. Added `[tool.flowr]` config section to pyproject.toml (flows_dir, sessions_dir, default_flow, default_session).
+- **Session management**: `.flowr/sessions/` directory for persisting workflow progress. AGENTS.md updated with session init, `--session` flag usage, and session-based workflow pattern.
+- **Flow params**: Feature-scoped flows (planning, development, delivery, tdd-cycle, review-gate, feature-development) now declare `params: [feature_name]` for session parameter tracking.
+- **Flowr commands**: AGENTS.md and knowledge files updated with session commands (`init`, `show`, `set-state`, `list`), `--session` flag on check/next/transition, `config` command, short flow name resolution, and `--evidence-json` flag.
+- **flowr-spec.md knowledge**: Session model (flow, state, name, stack, params), configuration resolution, MUST/SHOULD severity levels on validation rules, atomic session writes principle.
+- **flowr-operations.md knowledge**: Session commands, session-based workflow pattern, configuration section, evidence syntax with condition operators.
+- **Research note**: `docs/research/software-engineering/process/nullhack_flowr_0.4.0.md` documenting flowr 0.4.0 analysis.
+
+### Changed
+
+- **Flow version bumps**: main-flow 7→8, discovery-flow 3→4, architecture-flow 4→5, planning-flow 4→5, feature-development-flow 6→7, development-flow 4→5, delivery-flow 4→5, tdd-cycle-flow 2→3, review-gate-flow 2→3, post-mortem-flow 2→3, branding-flow 2→3, setup-project-flow 2→3.
+
 ## [v8.0.0+20260501] - 2026-05-01
 
 ### Added
