@@ -322,14 +322,14 @@ wheels = [
 
 [[package]]
 name = "flowr"
-version = "0.3.20260427"
+version = "0.4.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "pyyaml" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/38/e1/6e1050ef5b7eaeb390d7c1500c6930b91e5a389ef5be357e0f56002f8ca4/flowr-0.3.20260427.tar.gz", hash = "sha256:5f98acfa1ff9494a2a6af6a84f7863c0b1285eb35d6471f4fc5aba2537ccdf39", size = 13605, upload-time = "2026-04-27T06:49:06.434Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/9c/12/1963adb845d53333de04d07b413981d7c7c02f27ae62a27f40147d09c688/flowr-0.4.0.tar.gz", hash = "sha256:e5bef7f54c3173dfb9e01cd2e8d67ee28c06248eefdd1a318106a6947d1425ab", size = 24737, upload-time = "2026-05-02T18:05:08.688Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/f4/6e/1912d7364694209829838a62d44d4ab02517ef11d8e1db39e41b37938dd9/flowr-0.3.20260427-py3-none-any.whl", hash = "sha256:a88bbf230e3492fc314108cb967dbd490313e8f4805150e83c017914378410e2", size = 13786, upload-time = "2026-04-27T06:49:05.194Z" },
+    { url = "https://files.pythonhosted.org/packages/c7/dd/ceb7f110a4f7d62b1e5192cdd49de4ad42a9c17f550598a89b62695cadbc/flowr-0.4.0-py3-none-any.whl", hash = "sha256:03ac05eb929b63b372c2fedac95567c2968d5568cef1ab3ef9681f4bb6b7a126", size = 25116, upload-time = "2026-05-02T18:05:07.096Z" },
 ]
 
 [[package]]
@@ -1068,7 +1068,7 @@ wheels = [
 
 [[package]]
 name = "temple8"
-version = "8.0.0"
+version = "8.1.0"
 source = { virtual = "." }
 
 [package.optional-dependencies]
@@ -1090,7 +1090,7 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "flowr", marker = "extra == 'dev'", specifier = ">=0.3" },
+    { name = "flowr", marker = "extra == 'dev'", specifier = ">=0.4" },
     { name = "gherkin-official", marker = "extra == 'dev'", specifier = ">=39.0.0" },
     { name = "ghp-import", marker = "extra == 'dev'", specifier = ">=2.1.0" },
     { name = "hypothesis", marker = "extra == 'dev'", specifier = ">=6.148.4" },
