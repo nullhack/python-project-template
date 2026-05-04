@@ -28,13 +28,13 @@ Feature: <Feature title>
     I want <goal>
     So that <benefit>
 
-    @id:<unique-id>
+    @id:3a7f1b2c
     Example: <Concrete scenario title>
       Given <initial context>
       When <event or action>
       Then <observable outcome>
 
-    @deprecated @id:<unique-id>
+    @deprecated @id:a1b2c3d4
     Example: <Replaced scenario>
       Given ...
       When ...

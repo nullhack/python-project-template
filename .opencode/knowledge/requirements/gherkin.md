@@ -9,7 +9,7 @@ last-updated: 2026-04-29
 ## Key Takeaways
 
 - Write declarative Examples that describe behaviour, not UI steps; use `Example:` not `Scenario:` (BDD — North, 2006).
-- Each Example must have an `@id` tag (format `@id:<unique-id>`) for traceability from test to acceptance criterion.
+- Each Example must have an `@id` tag (format `@id:<unique-id>`, e.g. 8-char hex like `@id:3a7f1b2c`) for traceability from test to acceptance criterion.
 - `Then` must be a single, observable, measurable outcome; no "and" combining multiple behaviours in one `Then`.
 - Bug Examples use `@bug` and require both a specific feature test and a Hypothesis property test.
 - After criteria commit, Examples are frozen; changes require `@deprecated` on the old Example and a new Example with a new `@id`.
@@ -18,7 +18,7 @@ last-updated: 2026-04-29
 
 **Declarative vs Imperative Gherkin**: Declarative Examples describe behaviour, not UI steps (BDD — North, 2006). "Given a registered user Bob / When Bob logs in / Then Bob sees a personalized welcome" is correct. "Given I type 'bob' in the username field / When I click the Login button / Then I see 'Welcome, Bob'" is imperative and wrong. Declarative Examples express what the user observes, not how the system implements it.
 
-**Example Format and @id Tags**: Each Example uses the `Example:` keyword (not `Scenario:`), includes `Given/When/Then` in plain English, and must have an `@id` tag for traceability. The format is `@id:<unique-id>` where the unique ID is assigned when the feature is baselined. Each Example must be observably distinct from every other Example in the same Rule.
+**Example Format and @id Tags**: Each Example uses the `Example:` keyword (not `Scenario:`), includes `Given/When/Then` in plain English, and must have an `@id` tag for traceability. The format is `@id:<unique-id>` (e.g., 8-char hex like `@id:3a7f1b2c`). IDs are assigned during example writing if not already set; the agent respects the existing format if present. Stakeholder may define a different ID format — agents must honour the established convention. Each Example must be observably distinct from every other Example in the same Rule.
 
 **Single Observable Outcome per Then**: `Then` must be a single, observable, measurable outcome. No "and" combining multiple behaviours in one `Then` — split into separate Examples instead. Observable means observable by the end user, not by a test harness.
 
@@ -47,8 +47,9 @@ last-updated: 2026-04-29
 
 ### @id Tag Format
 
-- Format: `@id:<unique-id>`
-- Assigned when the feature is baselined
+- Format: `@id:<unique-id>` (e.g., 8-char hex like `@id:3a7f1b2c`)
+- Assigned during example writing if not already set; respects existing format if present
+- Stakeholder may define a different ID format — agents must honour the established convention
 - Globally unique across all feature files
 - Enables traceability from test to acceptance criterion
 
