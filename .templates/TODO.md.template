@@ -1,0 +1,28 @@
+# State: <state-id> — <short-description>
+
+> **Flow:** <flow-name>
+> **Session:** <session-name>
+> **Owner:** <owner-agent>
+> **Skills:** <skill-list>
+> **Git:** <main|feature>
+
+---
+
+## State Metadata
+
+| Attr | Value |
+|------|-------|
+| `in` | <list in artifacts> |
+| `out` | <list out artifacts> |
+| `transitions` | <list available triggers> |
+
+---
+
+## Todo
+
+[X] Preparation — list available `in` artifacts (discover via `ls`/`find`)
+[ ] Dispatch — call <owner-agent> with skills loaded [<skill-list>]
+[ ] Output — <out artifact 1>
+[ ] Output — <out artifact 2>
+[ ] Verification — check constraints, run tests/lint if applicable
+[~] Check flowr transitions → decide next state → rewrite todo

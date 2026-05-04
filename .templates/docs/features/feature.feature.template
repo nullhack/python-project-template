@@ -37,7 +37,7 @@ Feature: <Feature title>
     I want <goal>
     So that <benefit>
 
-@id:<unique-id>
+    @id:<unique-id>
     Example: <Concrete scenario title>
       Given <initial context>
       When <event or action>

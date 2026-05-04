@@ -137,6 +137,29 @@ Every state transition must go through flowr. Do not skip steps or guess transit
 3. **Do the work:** Load and execute the skill(s) listed in the state's `skills` field. Read `in` artifacts on demand. Write only to `out` artifacts. Commit changes to the branch indicated by the state's `git` attribute (`main` or `feature`). Never switch branches mid-state.
 4. **State exit:** Set evidence for any guarded transitions based on work completed. Run `python -m flowr next --session --evidence key=value` to see available paths. Choose the path that matches the work outcome. Run `python -m flowr transition <trigger> --session --evidence key=value` to advance. Do not skip this step.
 
+### Todo-Driven State Execution
+
+At state entry, generate a procedural todo list from the state's metadata using the todowrite tool. Format: `[X]` completed, `[ ]` pending, `[~]` anchor (always last).
+
+Generation rules:
+
+1. **Preparation items** (`[ ]`) — list available `in` artifacts (discover via `ls`/`find`), read selectively as needed for the current task
+2. **Dispatch item** (`[ ]`) — call the state's owner agent with the state's `skills` loaded, passing state attrs as context. Owner mapping: `PO` → product-owner, `DE` → domain-expert, `SE` → software-engineer, `SA` → system-architect, `R` → reviewer, `Design Agent` → design-agent, `Setup Agent` → setup-agent
+3. **Output items** (`[ ]`) — one per `out` artifact to create/update
+4. **Verification items** (`[ ]`) — check constraints, run tests/lint if applicable
+5. **Anchor item** (`[~]`, always last) — "Check flowr transitions → decide next state → rewrite todo"
+
+The owner agent reads `in` artifacts on demand — only what the task requires, not everything upfront.
+
+Anchor item must:
+- Run `flowr next --session --evidence key=value` to see available transitions
+- Present options to stakeholder if multiple paths exist
+- Run `flowr transition <trigger> --session --evidence key=value`
+- Generate new todo list from next state's metadata via `flowr check --session`
+- Never skip — this is the guardrail that prevents state-skipping
+
+Only one `[ ]` item should be `in_progress` at a time. Mark `[X]` immediately upon completion.
+
 ### Session Init
 
 Before starting a flow, create a session to track progress:
