@@ -107,7 +107,7 @@ states:
 
   - id: feature-discovery
     attrs:
-      description: "PO creates .feature file stubs from the delivery order, domain model, and interview notes"
+      description: "PO synthesizes analysis artifacts into coherent feature boundaries with scoped business rules and constraints"
       owner: PO
       git: main
       skills:
@@ -117,6 +117,7 @@ states:
         - domain_model.md
         - glossary.md
         - interview-notes/*.md
+        - technical_design.md
       out:
         - features/<feature_name>.feature:
             - title
