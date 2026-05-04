@@ -14,7 +14,7 @@ Available knowledge: [[requirements/gherkin]], [[requirements/moscow]], [[requir
 5. Classify each Example per [[requirements/moscow#concepts]]; MoSCoW classification is for internal triage only — do NOT add Must/Should/Could tags to Examples in the .feature file.
 6. IF a Rule has more than 8 Must Examples → split the Rule per [[requirements/decomposition#key-takeaways]].
 7. IF a Rule spans more than 2 concerns → split per [[requirements/decomposition#key-takeaways]].
-8. Assign `@id` tags to all Examples.
+8. Assign `@id` tags to all Examples. After a feature is BASELINED, all Example blocks are immutable — changes require `@deprecated` on the old Example (preserving the original @id) and a new Example with a new @id. `@id` tags are for traceability only; do NOT add priority tags (e.g. @must, @should) to Examples.
 9. Self-declare example quality for each Rule:
    - Observable: each Then describes a single observable outcome — AGREE/DISAGREE
    - Declarative: each Example describes behaviour, not UI steps — AGREE/DISAGREE
