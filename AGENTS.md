@@ -137,6 +137,17 @@ Every state transition must go through flowr. Do not skip steps or guess transit
 3. **Do the work:** Load and execute the skill(s) listed in the state's `skills` field. Read `in` artifacts on demand. Write only to `out` artifacts. Commit changes to the branch indicated by the state's `git` attribute (`main` or `feature`). Never switch branches mid-state.
 4. **State exit:** Set evidence for any guarded transitions based on work completed. Run `python -m flowr next --session --evidence key=value` to see available paths. Choose the path that matches the work outcome. Run `python -m flowr transition <trigger> --session --evidence key=value` to advance. Do not skip this step.
 
+### Convention Boundary
+
+Convention checks (ruff, pyright, lint, format, docstring, import sorting, type checking) are **prohibited** during design-phase states (create-py-stubs, write-test, implement-minimum, refactor). Only `test-fast` is permitted — see `software-craft/tdd.md` two-phase quality gate.
+
+When dispatching an agent during design phase:
+- Do NOT include any convention tool commands in the prompt
+- Only include verification steps that the skill explicitly defines
+- The skill's verification steps are the ceiling, not the floor
+
+Exception: When the reviewer agent explicitly requests convention fixes during review-conventions state, those specific convention commands may be included in the dispatch.
+
 ### Todo-Driven State Execution
 
 At state entry, generate a procedural todo list from the state's metadata using the todowrite tool. Format: `[X]` completed, `[ ]` pending, `[~]` anchor (always last).
