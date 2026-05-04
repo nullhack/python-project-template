@@ -18,12 +18,7 @@ Available knowledge: [[requirements/invest]], [[requirements/decomposition]], [[
 6. IF a story contains "and" → split into two Rules per [[requirements/decomposition#key-takeaways]].
 7. IF a story lacks a named user role or business value → reframe per [[requirements/invest#concepts]].
 8. IF a Rule spans more than 2 concerns or has more than 8 candidate Examples → split per [[requirements/decomposition#key-takeaways]].
-9. Self-declare INVEST for each Rule per [[requirements/invest#concepts]]:
-   - INVEST-I: each Rule is Independent — AGREE/DISAGREE
-   - INVEST-V: each Rule delivers Value to a named user — AGREE/DISAGREE
-   - INVEST-S: each Rule is Small enough for one cycle — AGREE/DISAGREE
-   - INVEST-T: each Rule is Testable — AGREE/DISAGREE
-   Every DISAGREE is a hard blocker — fix before advancing.
+9. Evaluate each Rule against INVEST criteria (Independent, Negotiable, Valuable, Estimable, Small, Testable) per [[requirements/invest#concepts]]. Every criterion that fails is a hard blocker — fix before writing the Rule to the feature file.
 10. IF the feature cannot pass INVEST as a single story → propose the split to the stakeholder with rationale per [[requirements/decomposition#key-takeaways]]. Stakeholder decides what's core vs. deferred. Document their decision in the feature file.
 11. Write results to artifacts listed in the current state's `out` attrs. If findings affect artifacts outside the `out` contract, flag them in output notes for the appropriate step.
 12. Advance the flow with necessary evidence, choosing the appropriate next state based on the work completed.
