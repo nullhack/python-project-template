@@ -1,6 +1,6 @@
 ---
 domain: requirements
-tags: [feature-discovery, story-mapping, backlog-creation, discovery]
+tags: [feature-discovery, story-mapping, backlog-creation, gap-analysis]
 last-updated: 2026-05-04
 ---
 
@@ -8,29 +8,33 @@ last-updated: 2026-05-04
 
 ## Key Takeaways
 
-- Feature discovery materializes `.feature` file stubs from the delivery order, domain model, and interview notes. It is a mechanical step, not a new workshop — the stories were already identified during earlier discovery states.
-- Each `.feature` file receives a title, 2-4 sentence description, coarse Rules (Business) bullet points, and Constraints — but NOT full Rule blocks (As a/I want/So that) or Examples.
-- Story mapping and event storming (earlier discovery states) produced the bounded contexts, domain events, and delivery order that feed this step. This state just writes the stubs.
-- Features enter `Status: ELICITING` during discovery. They advance to `BASELINED` after planning (breakdown + BDD + baseline confirmation).
-- The feature-discovery state bridges discovery (domain model, scope) and planning (per-feature specification and development).
+- Feature discovery synthesizes multiple analysis artifacts (domain model, event map, interview notes, delivery order, technical design) into coherent feature boundaries with scoped business rules. It is a genuine analysis step, not mechanical transcription.
+- Each feature captures coarse business rules — one-line statements of behavior that the feature must enforce or enable. These are behavioral hypotheses to be validated and refined during breakdown.
+- The PO must identify feature boundaries that respect bounded context borders, aggregate transactional boundaries, and module dependency order. Features that span aggregate boundaries or cross dependency lines are flagged for splitting.
+- Gaps discovered during feature discovery (a bounded context with no feature, a quality attribute with no enforcing feature, a domain event with no corresponding rule) are flagged, not silently filled.
+- When artifacts are ambiguous, contradictory, or incomplete, the PO asks targeted clarification questions using the same interview techniques (CIT, laddering) as discovery interviews, but scoped to the specific feature boundary or rule under consideration.
+- Features enter `Status: ELICITING` during discovery and advance to `BASELINED` after planning (breakdown, example writing, and baseline confirmation).
 
 ## Concepts
 
-**Feature Discovery as Materialization**: After Event Storming identifies bounded contexts, the domain model formalizes entities and aggregates, and the scope boundary defines the delivery order, feature discovery materializes this work into `.feature` file stubs. It reads the existing artifacts and writes one stub per delivery order step. The "discovery" already happened in earlier states — this step captures it in the feature template format.
+**Feature Boundary Identification**: Deciding where one feature ends and another begins is a design judgment, not a mechanical step. Bounded contexts provide coarse boundaries, but the PO must decide granularity — too coarse and the feature is unmanageable; too fine and you lose cohesion. Patton (2014) recommends mapping the user's narrative flow as a backbone, then slicing vertically into releasable increments. Each slice should be independently deliverable and testable. Cross-reference the domain model's aggregate boundaries and the delivery order's dependency graph to validate that each feature is self-contained.
 
-**Story Mapping and Event Storming as Precursors** (Patton, 2014; Brandolini, 2012): The bounded contexts, domain events, and delivery order produced by earlier discovery states ARE the story map's backbone and release slices. Feature discovery translates that map into the `.feature` template format — coarse Rules (Business) bullet points serve as one-line story summaries.
+**Rule Discovery as Hypothesis**: Coarse rules are hypotheses about what the system must do, derived by cross-referencing three sources: domain events ("what must happen when X occurs"), entity invariants ("what must always be true about Y"), and stakeholder goals ("what the user needs to accomplish"). These hypotheses will be validated and refined during breakdown. This two-phase approach — coarse hypotheses during discovery, validated rules during breakdown — prevents premature commitment to story-level detail while ensuring comprehensive coverage across the whole product before any single feature is developed (Cohn, 2004; Patton, 2014).
 
-**Feature Lifecycle**: Features follow a three-stage lifecycle across flows:
-1. **Discovery** (`feature-discovery` state): Story mapping creates `.feature` stubs with title, description, coarse Rules (Business), and Constraints. Status: ELICITING.
-2. **Planning** (`feature-breakdown` state): Coarse Rules are expanded into full Rule blocks with As a/I want/So that format. INVEST validation is applied. Status remains ELICITING.
-3. **Planning** (`ready` state): After BDD Examples are written and baseline confirmed, Status advances to BASELINED.
+**Targeted Clarification During Discovery**: When synthesizing analysis artifacts into feature boundaries, gaps and contradictions naturally emerge. A delivery step may map to multiple aggregates with unclear ownership. An entity invariant may contradict what the interview notes say. A quality attribute may have no obvious enforcing mechanism. These are not failures of earlier interviews — they are expected consequences of zooming from domain-level understanding to feature-level specificity. Targeted questions use the same techniques as discovery interviews (CIT for specific failure incidents, laddering for "why does this matter?") but are narrower, focused on resolving a specific boundary question rather than exploring the whole domain.
 
-**Coarse vs. Detailed Rules**: The `Rules (Business)` section in the `.feature` template receives one-line bullet points during discovery — e.g., "Token identifies a tradeable asset by symbol." Full `Rule:` blocks with As a/I want/So that format are written during planning's `feature-breakdown` state. This separation prevents premature specification (Cohn, 2004) while ensuring the whole product is mapped before any single feature is developed.
+**Gap Analysis**: Systematically verify coverage across three dimensions: (1) every bounded context from the domain model is covered by at least one feature, (2) every quality attribute from the product definition is enforced by at least one feature's constraints, and (3) every critical domain event is traceable to at least one business rule. Uncovered areas indicate missing features or gaps in the domain model itself — flag both.
+
+**Feature Lifecycle**: Features follow a lifecycle of increasing specificity across phases:
+1. **Discovery**: Feature boundaries identified, coarse business rules written, constraints scoped. Status: ELICITING.
+2. **Breakdown**: Coarse rules expanded into full Rule blocks with As a/I want/So that format. INVEST validation applied. Targeted clarification may refine rules. Status remains ELICITING.
+3. **Example Writing and Baseline**: Given/When/Then Examples written, pre-mortems applied, baseline confirmed. Status advances to BASELINED.
 
 ## Related
 
-- [[requirements/invest]] — story quality criteria applied during planning refinement
+- [[requirements/invest]] — story quality criteria applied during breakdown
 - [[requirements/wsjf]] — feature prioritization applied to BASELINED features
-- [[requirements/gherkin]] — Examples written during planning BDD phase
-- [[requirements/interview-techniques]] — interview methods used during discovery
-- [[requirements/decomposition]] — splitting Rules during planning refinement
+- [[requirements/gherkin]] — Examples written during planning
+- [[requirements/interview-techniques]] — interview methods used during discovery and clarification
+- [[requirements/decomposition]] — splitting Rules during breakdown
+- [[requirements/pre-mortem]] — adversarial analysis applied during breakdown

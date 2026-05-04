@@ -11,7 +11,7 @@ last-updated: 2026-04-29
 - Classify each candidate Example as Must (required for correctness), Should (high value but deferrable), or Could (nice-to-have edge case). This classification is for internal triage only — it must NOT appear as Gherkin tags or in the .feature file.
 - If Musts alone exceed 8 Examples or the Rule spans more than 2 concerns, split the Rule immediately.
 - Musts cannot exceed 60% of total effort at the story level (DSDM); if a story has 12 Examples and only 3 are Musts, the remaining 9 can be deferred.
-- MoSCoW triage is applied during criteria writing (planning-flow `bdd-features` state), not during discovery.
+- MoSCoW triage is applied when writing Examples (after INVEST qualification and pre-mortem analysis), not during discovery.
 
 ## Concepts
 
@@ -46,7 +46,7 @@ At the story level, Musts should not exceed 60% of total effort (DSDM). If a sto
 
 ### When to Apply
 
-MoSCoW triage is applied during criteria writing in the `bdd-features` state of the planning flow, after INVEST qualification in `feature-breakdown` and pre-mortem analysis. Each candidate Example receives a Must/Should/Could classification for internal triage — to decide which Examples to include and which to defer. MoSCoW labels must NOT appear as Gherkin tags, in `@id` tags, or anywhere in the .feature file.
+MoSCoW triage is applied when writing Examples, after INVEST qualification and pre-mortem analysis. Each candidate Example receives a Must/Should/Could classification for internal triage — to decide which Examples to include and which to defer. MoSCoW labels must NOT appear as Gherkin tags, in `@id` tags, or anywhere in the .feature file.
 
 ## Related
 

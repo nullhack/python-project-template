@@ -90,7 +90,7 @@ conditions:
     valuable: ==true
 next:
   done:
-    to: bdd-features
+    to: next-state
     when: invest_passed
 ```
 

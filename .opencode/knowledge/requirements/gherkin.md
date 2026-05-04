@@ -54,7 +54,7 @@ last-updated: 2026-04-29
 
 ### Frozen Examples Rule
 
-After criteria commit, Examples are frozen. This rule is stated explicitly in the feature template and enforced by the `bdd-features` conditions in the planning flow:
+After criteria commit, Examples are frozen. This rule is enforced by the flow's example-writing conditions:
 
 - `all_examples_have_ids: ==true`
 - `all_examples_have_gherkin: ==true`

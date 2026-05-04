@@ -42,7 +42,7 @@ All commands require the virtual environment: `source .venv/bin/activate`
 | `python -m flowr validate <flow>` | Validate a flow definition | `python -m flowr validate architecture-flow` |
 | `python -m flowr states <flow>` | List all states in a flow | `python -m flowr states planning-flow` |
 | `python -m flowr check <flow> <state>` | Show state attrs, owner, skills, and transitions | `python -m flowr check planning-flow feature-selection` |
-| `python -m flowr check <flow> <state> <target>` | Show conditions for a specific transition target | `python -m flowr check planning-flow feature-breakdown bdd-features` |
+| `python -m flowr check <flow> <state> <target>` | Show conditions for a specific transition target | `python -m flowr check planning-flow feature-selection selected` |
 | `python -m flowr next <flow> <state>` | Show which transitions are available (unguarded always shown) | `python -m flowr next planning-flow feature-selection` |
 | `python -m flowr next <flow> <state> --evidence key=value` | Show which transitions pass given evidence | `python -m flowr next planning-flow feature-breakdown --evidence independent=true` |
 | `python -m flowr transition <flow> <state> <trigger>` | Compute next state for a trigger | `python -m flowr transition planning-flow feature-selection selected` |
