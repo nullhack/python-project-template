@@ -8,7 +8,7 @@ description: "Write a failing test body for one BDD example"
 Available knowledge: [[software-craft/tdd]], [[software-craft/test-design]], [[software-craft/smell-catalogue]], [[software-craft/object-calisthenics]], [[software-craft/solid]]. `in` artifacts: discover and read on demand as needed. 
 
 1. Pick the next unimplemented `@id` from the feature file — order by fewest dependencies first per [[software-craft/tdd#concepts]].
-2. Write a failing test that specifies the expected behavior per [[software-craft/tdd#key-takeaways]].
+2. Write a failing test that specifies the expected behavior per [[software-craft/tdd#key-takeaways]]. Preserve the full docstring from the test stub — the Gherkin steps (Given/When/Then) are immutable specification content for traceability and must not be removed, shortened, or reformatted.
 3. IF a spec gap or inconsistency is discovered → do NOT modify specification documents (domain_model.md, technical_design.md, glossary.md, product_definition.md, system.md, context_map.md, ADRs, feature files). Flag it in output notes. The SE may ONLY modify production code and test code.
 4. Run `task test-fast` to confirm the test fails for the right reason (RED) per [[software-craft/tdd#key-takeaways]].
 5. Write results to artifacts listed in the current state's `out` attrs. If findings affect artifacts outside the `out` contract, flag them in output notes for the appropriate step.
