@@ -15,11 +15,6 @@ Available knowledge: [[requirements/gherkin]], [[requirements/moscow]], [[requir
 6. IF a Rule has more than 8 Must Examples → split the Rule per [[requirements/decomposition#key-takeaways]].
 7. IF a Rule spans more than 2 concerns → split per [[requirements/decomposition#key-takeaways]].
 8. Assign `@id` tags to all Examples. After a feature is BASELINED, all Example blocks are immutable — changes require `@deprecated` on the old Example (preserving the original @id) and a new Example with a new @id. `@id` tags are for traceability only; do NOT add priority tags (e.g. @must, @should) to Examples.
-9. Self-declare example quality for each Rule:
-   - Observable: each Then describes a single observable outcome — AGREE/DISAGREE
-   - Declarative: each Example describes behaviour, not UI steps — AGREE/DISAGREE
-   - Distinct: no two Examples in the same Rule test the same observable behaviour — AGREE/DISAGREE
-   - Pre-mortem: all pre-mortem findings have corresponding Examples — AGREE/DISAGREE
-   Every DISAGREE is a hard blocker — fix before advancing.
+9. Evaluate each Rule's Examples for quality: observable (single outcome per Then), declarative (behaviour not steps), distinct (no duplicate coverage), and pre-mortem coverage. Every criterion that fails is a hard blocker — fix before advancing.
 10. Write results to artifacts listed in the current state's `out` attrs. If findings affect artifacts outside the `out` contract, flag them in output notes for the appropriate step.
 11. Advance the flow with necessary evidence, choosing the appropriate next state based on the work completed.
