@@ -2,23 +2,29 @@
 
 All notable changes to this template will be documented in this file.
 
-## [v8.2.0+20260505] - 2026-05-05
+## [v8.2.0+20260505] - 2026-05-05 — Discriminating Epicurus
 
 ### Added
 
-- **flowr 0.5.0 adoption**: Upgraded dependency from `>=0.4` to `>=0.5`. All knowledge files and templates updated for JSON-first output, enhanced `next` command, and improved session management.
-- **JSON-first output documentation**: All flowr commands now output JSON by default (replacing `--json` flag with `--text` for human-readable). `flowr-operations.md` updated with full JSON output format examples for `check`, `next`, `transition`, and `config`. `flowr-spec.md` updated with JSON-first design principle.
-- **Enhanced `next` output**: `next` command now shows all transitions with status markers (`"open"` / `"blocked"`) and condition hints for blocked transitions. Documented in `flowr-operations.md`, `todo-anchor-protocol.md`, and `TODO.md.template`.
-- **New session commands**: `states --session` (list states in current subflow), `validate --session` (validate current subflow), `check --session <trigger>` (show transition conditions via session). Added to `AGENTS.md` and `flowr-operations.md`.
-- **Flowr JSON cheatsheet**: Added to `TODO.md.template` — compact reference for parsing JSON output with key extraction patterns for `check`, `next`, and `transition` commands.
-- **Skill boilerplate removal**: Removed "Write results to artifacts" and "Advance the flow" boilerplate from all 41 skills. Updated `skill-design/principles.md` to list these as patterns NOT to include (orchestrator handles them).
+- **Feature discovery state**: New `discover-features` skill replaces `specify-feature` with adversarial analysis. Discovery-flow updated (v4→v5) with feature-discovery state that reads `technical_design.md` alongside `product_definition.md`.
+- **Todo-driven execution**: Procedural contract and anchor protocol extracted to `.opencode/knowledge/workflow/todo-anchor-protocol.md`. FAA-style checklist, loop prevention, one-state-per-todo enforcement, anti-patterns, and owner mapping table.
+- **Convention Boundary**: Convention checks (ruff, pyright, lint, format) are prohibited during design-phase states. Only `test-fast` is permitted — two-phase quality gate enforced in AGENTS.md.
+- **@id format**: 8-char hex default for scenario IDs, with respect for existing formats. Verified at baseline via `verify-traceability` skill.
+- **Silent quality gates**: INVEST validation and example quality checks are silent gates (not artifact content). Features that fail these gates loop back for respecification without polluting the feature file.
+- **Gherkin steps preservation**: `write-test` skill preserves Gherkin steps in docstrings as immutable specification — agents must not modify them.
 - **Todo anchor protocol knowledge file**: Created `.opencode/knowledge/workflow/todo-anchor-protocol.md` with FAA checklist, loop prevention, one-state-per-todo enforcement, anti-patterns, and owner mapping table.
 
 ### Changed
 
-- **AGENTS.md refactored**: Replaced ~40 lines of verbose Procedural Contract + Todo-Driven Execution with ~15 lines referencing `[[workflow/todo-anchor-protocol]]`. Flowr Commands table updated with new 0.5.0 commands. Session Protocol step 1 mentions JSON parsing. Session Init mentions auto-entering subflow.
-- **flowr-operations.md rewritten**: Output Formats section added with JSON examples for all commands. Command Reference table simplified (removed Examples column in favor of Output Formats section). Key Takeaways updated for JSON-first workflow.
-- **flowr-spec.md updated**: Added JSON-First Output and Subflow Exit Resolution concepts. Subflow Model section expanded with chaining, recursive entry, and auto-enter details. Design Principles expanded with JSON-first and complete transition visibility.
+- **flowr 0.5.0 adoption**: Upgraded dependency from `>=0.4` to `>=0.5`. All knowledge files and templates updated for JSON-first output, enhanced `next` command (shows all transitions with `"open"`/`"blocked"` status markers and condition hints), new session commands (`states --session`, `validate --session`, `check --session <trigger>`), and subflow exit resolution through parent transition map.
+- **Skill/protocol separation**: Removed "Write results to artifacts" and "Advance the flow" boilerplate from all 41 skills. Updated `skill-design/principles.md` to list these as patterns NOT to include (orchestrator handles them).
+- **AGENTS.md refactored**: Replaced ~40 lines of verbose Procedural Contract + Todo-Driven Execution with ~15 lines referencing `[[workflow/todo-anchor-protocol]]`. Flowr Commands table updated with 0.5.0 commands. Session Protocol step 1 mentions JSON parsing. Session Init mentions auto-entering subflow. `flowr` moved from production dependencies to dev-only dependencies.
+- **flowr-operations.md rewritten**: Output Formats section with JSON examples for all commands. Command Reference table updated. Key Takeaways updated for JSON-first workflow.
+- **flowr-spec.md updated**: Added JSON-First Output and Subflow Exit Resolution concepts. Subflow Model expanded with chaining, recursive entry, and auto-enter details. Design Principles expanded with JSON-first and complete transition visibility.
+- **TODO template**: Slimmed from 47 lines to 21 lines. Essential flowr JSON cheatsheet added. Removed redundant Procedural Contract, Anchor Checklist, and State Metadata sections (now in knowledge files).
+- **Knowledge decoupled from flow state names**: Knowledge files no longer reference specific flow state names, making them reusable across different flow configurations.
+- **Flow version bumps**: discovery-flow 4→5, planning-flow 5→6.
+- **Frozen Examples Rule**: Removed from feature template — moved to `write-bdd-features` skill where it belongs.
 
 ## [v8.1.0+20260502] - 2026-05-02
 

@@ -1068,11 +1068,8 @@ wheels = [
 
 [[package]]
 name = "temple8"
-version = "8.1.0"
+version = "8.2.0"
 source = { virtual = "." }
-dependencies = [
-    { name = "flowr" },
-]
 
 [package.optional-dependencies]
 dev = [
@@ -1093,7 +1090,6 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "flowr", specifier = ">=0.5" },
     { name = "flowr", marker = "extra == 'dev'", specifier = ">=0.5" },
     { name = "gherkin-official", marker = "extra == 'dev'", specifier = ">=39.0.0" },
     { name = "ghp-import", marker = "extra == 'dev'", specifier = ">=2.1.0" },

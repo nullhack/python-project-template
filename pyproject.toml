@@ -1,6 +1,6 @@
 [project]
 name = "temple8"
-version = "8.1.0"
+version = "8.2.0"
 description = "Python template with some awesome tools to quickstart any Python project"
 readme = "README.md"
 requires-python = ">=3.13"
@@ -12,7 +12,6 @@ maintainers = [
     { name = "eol", email = "nullhack@users.noreply.github.com" }
 ]
 dependencies = [
-    "flowr>=0.5",
 ]
 
 [project.urls]
