@@ -10,10 +10,10 @@ exits:
 states:
   - id: planning
     attrs:
-      description: "Plan feature scope, specification, breakdown, and BDD scenarios"
+      description: "Plan feature breakdown, BDD scenarios, and development readiness"
       git: main
     flow: planning-flow
-    flow-version: "^5"
+    flow-version: "^6"
     next:
       complete: development
       needs_architecture: needs_architecture

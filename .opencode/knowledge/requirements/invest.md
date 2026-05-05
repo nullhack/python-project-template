@@ -12,7 +12,7 @@ last-updated: 2026-04-29
 - Each letter has a specific FAIL action: split or reorder dependencies (I), remove over-specification (N), reframe or drop (V), split or add discovery (E), split into smaller Rules (S), rewrite with observable outcomes (T).
 - Common mistakes: "As the system, I want..." has no business value; stories containing "and" should be split into two Rules; duplicate stories should be merged or differentiated.
 - Self-declare INVEST-I, INVEST-V, INVEST-S, and INVEST-T before committing stories; every DISAGREE is a hard blocker.
-- In the planning flow, the `invest_passed` condition on `feature-breakdown.done` requires all six letters to be `==true`.
+- In the flow, the INVEST condition on the breakdown-done transition requires all six letters to be `==true`.
 
 ## Concepts
 
@@ -22,7 +22,7 @@ last-updated: 2026-04-29
 
 **Self-Declaration**: Before committing stories, declare INVEST-I (each Rule is Independent), INVEST-V (each Rule delivers Value to a named user), INVEST-S (each Rule is Small enough for one development cycle), and INVEST-T (each Rule is Testable). Every DISAGREE is a hard blocker — fix before committing.
 
-**Flow Condition Gate**: The `invest_passed` condition on the `feature-breakdown.done` transition requires `independent: ==true`, `negotiable: ==true`, `valuable: ==true`, `estimable: ==true`, `small: ==true`, and `testable: ==true`. All six must pass before the flow advances to BDD features.
+**Flow Condition Gate**: The INVEST condition on the breakdown-done transition requires `independent: ==true`, `negotiable: ==true`, `valuable: ==true`, `estimable: ==true`, `small: ==true`, and `testable: ==true`. All six must pass before the flow advances to Example writing.
 
 ## Content
 
@@ -57,7 +57,7 @@ Every DISAGREE is a hard blocker — must be fixed before committing.
 
 ### Flow Condition Gate
 
-In `planning-flow.yaml`, the `feature-breakdown.done` transition is guarded by `when: invest_passed`, which requires:
+In the flow, the breakdown-done transition is guarded by an INVEST condition, which requires:
 
 ```yaml
 invest_passed:

@@ -1,6 +1,6 @@
 ## Golden Rules
 
-Post-mortem analysis shows these six practices prevent most project failures. Violating them triggers costly rework — defects caught later cost 10–100× more to fix (Boehm, 1981).
+Post-mortem analysis shows these practices prevent most project failures. Violating them triggers costly rework — defects caught later cost 10–100× more to fix (Boehm, 1981).
 
 1. **Never skip a flow state.** Every state boundary goes through flowr check → dispatch to owner → flowr transition. No shortcuts, no manual session edits, no jumping ahead.
 2. **Never bypass owner dispatch.** Each state has an owner agent. The orchestrator dispatches to that agent with skills loaded — it never does the work itself. One agent, one hat at a time.
@@ -136,6 +136,63 @@ Every state transition must go through flowr. Do not skip steps or guess transit
 2. **Dispatch to owner agent:** The state's `owner` field names the responsible agent. Call that agent as a subagent with the state's `skills` loaded, passing the state attrs as context. Owner mapping: `PO` → product-owner, `DE` → domain-expert, `SE` → software-engineer, `SA` → system-architect, `R` → reviewer, `Design Agent` → design-agent, `Setup Agent` → setup-agent.
 3. **Do the work:** Load and execute the skill(s) listed in the state's `skills` field. Read `in` artifacts on demand. Write only to `out` artifacts. Commit changes to the branch indicated by the state's `git` attribute (`main` or `feature`). Never switch branches mid-state.
 4. **State exit:** Set evidence for any guarded transitions based on work completed. Run `python -m flowr next --session --evidence key=value` to see available paths. Choose the path that matches the work outcome. Run `python -m flowr transition <trigger> --session --evidence key=value` to advance. Do not skip this step.
+
+### Convention Boundary
+
+Convention checks (ruff, pyright, lint, format, docstring, import sorting, type checking) are **prohibited** during design-phase states (create-py-stubs, write-test, implement-minimum, refactor). Only `test-fast` is permitted — see `software-craft/tdd.md` two-phase quality gate.
+
+When dispatching an agent during design phase:
+- Do NOT include any convention tool commands in the prompt
+- Only include verification steps that the skill explicitly defines
+- The skill's verification steps are the ceiling, not the floor
+
+Exception: When the reviewer agent explicitly requests convention fixes during review-conventions state, those specific convention commands may be included in the dispatch.
+
+### Procedural Contract
+
+**One state = one dispatch = one skill.** Every state transition produces exactly one agent dispatch. Never combine multiple states or multiple skills into a single dispatch. The orchestrator's job is routing, not doing.
+
+**Single-dispatch rule:**
+- Each dispatch calls exactly one agent with exactly the skills listed in the state's `skills` field.
+- If a state has multiple skills (e.g., `review-structure` + `verify-traceability`), both are loaded in the same dispatch — they are still one state.
+- If a flow has multiple states (e.g., design-review → structure-review → conventions-review), each state is a SEPARATE dispatch with a SEPARATE flowr transition between them. Never tell an agent "do all three tiers."
+- If a review tier rejects, the orchestrator transitions `fail` back to `tdd-cycle`, dispatches the SE to fix ONLY the rejected tier's findings, then re-enters the review-gate at `design-review` again. Each tier re-runs independently.
+
+**Why this matters:**
+- Each review tier is an independent gate that can fail. Collapsing tiers loses fail-fast behavior.
+- The SE must not do convention work during a tdd-cycle dispatch. Design fixes and convention fixes are separate dispatches because they are separate states.
+- The orchestrator must intervene between every state to check results and route properly.
+
+**Violation examples (do NOT do these):**
+- Dispatching R with "perform all three review tiers" — collapses 3 states into 1.
+- Dispatching SE with "fix design findings AND run ruff/format AND add docstrings" — mixes tdd-cycle work with conventions-review work.
+- Skipping the anchor item to save time — loses the gate check.
+- Running multiple flowr transitions without dispatching between them — skips states.
+
+**Todo list is the execution contract.** The todo list generated at state entry is not a suggestion — it is the procedural checklist. Every item must be marked `[X]` before the next `[ ]` item becomes `in_progress`. The anchor item `[~]` is mandatory and must never be skipped. If the anchor reveals a problem (wrong state, missing artifacts), stop and fix before continuing.
+
+### Todo-Driven State Execution
+
+At state entry, generate a procedural todo list from the state's metadata using the todowrite tool. Format: `[X]` completed, `[ ]` pending, `[~]` anchor (always last).
+
+Generation rules:
+
+1. **Preparation items** (`[ ]`) — list available `in` artifacts (discover via `ls`/`find`), read selectively as needed for the current task
+2. **Dispatch item** (`[ ]`) — call the state's owner agent with the state's `skills` loaded, passing state attrs as context. Owner mapping: `PO` → product-owner, `DE` → domain-expert, `SE` → software-engineer, `SA` → system-architect, `R` → reviewer, `Design Agent` → design-agent, `Setup Agent` → setup-agent
+3. **Output items** (`[ ]`) — one per `out` artifact to create/update
+4. **Verification items** (`[ ]`) — check constraints, run tests/lint if applicable
+5. **Anchor item** (`[~]`, always last) — "Check flowr transitions → decide next state → rewrite todo"
+
+The owner agent reads `in` artifacts on demand — only what the task requires, not everything upfront.
+
+Anchor item must:
+- Run `flowr next --session --evidence key=value` to see available transitions
+- Present options to stakeholder if multiple paths exist
+- Run `flowr transition <trigger> --session --evidence key=value`
+- Generate new todo list from next state's metadata via `flowr check --session`
+- Never skip — this is the guardrail that prevents state-skipping
+
+Only one `[ ]` item should be `in_progress` at a time. Mark `[X]` immediately upon completion.
 
 ### Session Init
 

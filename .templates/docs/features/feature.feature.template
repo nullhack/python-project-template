@@ -11,15 +11,6 @@ Feature: <Feature title>
   Constraints:
   - <Non-functional requirement specific to this feature — reference product_definition.md#quality_attributes for measurable targets>
 
-  ## Frozen Examples Rule
-
-  After a feature is BASELINED, all `Example:` blocks are immutable. Changes require
-  `@deprecated` on the old Example (preserving the original @id) and a new Example
-  with a new @id. This prevents scope creep and maintains traceability.
-
-  `@id` tags are for traceability only — do NOT add priority tags (e.g. @must, @should,
-  @could) to Examples. MoSCoW classification is an internal triage step, not a Gherkin tag.
-
   ## Questions
 
   | ID | Question | Status | Answer / Assumption |
@@ -37,13 +28,13 @@ Feature: <Feature title>
     I want <goal>
     So that <benefit>
 
-@id:<unique-id>
+    @id:3a7f1b2c
     Example: <Concrete scenario title>
       Given <initial context>
       When <event or action>
       Then <observable outcome>
 
-    @deprecated @id:<unique-id>
+    @deprecated @id:a1b2c3d4
     Example: <Replaced scenario>
       Given ...
       When ...
