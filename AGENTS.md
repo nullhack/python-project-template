@@ -1,6 +1,6 @@
 ## Golden Rules
 
-Post-mortem analysis shows these six practices prevent most project failures. Violating them triggers costly rework — defects caught later cost 10–100× more to fix (Boehm, 1981).
+Post-mortem analysis shows these practices prevent most project failures. Violating them triggers costly rework — defects caught later cost 10–100× more to fix (Boehm, 1981).
 
 1. **Never skip a flow state.** Every state boundary goes through flowr check → dispatch to owner → flowr transition. No shortcuts, no manual session edits, no jumping ahead.
 2. **Never bypass owner dispatch.** Each state has an owner agent. The orchestrator dispatches to that agent with skills loaded — it never does the work itself. One agent, one hat at a time.
@@ -147,6 +147,29 @@ When dispatching an agent during design phase:
 - The skill's verification steps are the ceiling, not the floor
 
 Exception: When the reviewer agent explicitly requests convention fixes during review-conventions state, those specific convention commands may be included in the dispatch.
+
+### Procedural Contract
+
+**One state = one dispatch = one skill.** Every state transition produces exactly one agent dispatch. Never combine multiple states or multiple skills into a single dispatch. The orchestrator's job is routing, not doing.
+
+**Single-dispatch rule:**
+- Each dispatch calls exactly one agent with exactly the skills listed in the state's `skills` field.
+- If a state has multiple skills (e.g., `review-structure` + `verify-traceability`), both are loaded in the same dispatch — they are still one state.
+- If a flow has multiple states (e.g., design-review → structure-review → conventions-review), each state is a SEPARATE dispatch with a SEPARATE flowr transition between them. Never tell an agent "do all three tiers."
+- If a review tier rejects, the orchestrator transitions `fail` back to `tdd-cycle`, dispatches the SE to fix ONLY the rejected tier's findings, then re-enters the review-gate at `design-review` again. Each tier re-runs independently.
+
+**Why this matters:**
+- Each review tier is an independent gate that can fail. Collapsing tiers loses fail-fast behavior.
+- The SE must not do convention work during a tdd-cycle dispatch. Design fixes and convention fixes are separate dispatches because they are separate states.
+- The orchestrator must intervene between every state to check results and route properly.
+
+**Violation examples (do NOT do these):**
+- Dispatching R with "perform all three review tiers" — collapses 3 states into 1.
+- Dispatching SE with "fix design findings AND run ruff/format AND add docstrings" — mixes tdd-cycle work with conventions-review work.
+- Skipping the anchor item to save time — loses the gate check.
+- Running multiple flowr transitions without dispatching between them — skips states.
+
+**Todo list is the execution contract.** The todo list generated at state entry is not a suggestion — it is the procedural checklist. Every item must be marked `[X]` before the next `[ ]` item becomes `in_progress`. The anchor item `[~]` is mandatory and must never be skipped. If the anchor reveals a problem (wrong state, missing artifacts), stop and fix before continuing.
 
 ### Todo-Driven State Execution
 

@@ -18,6 +18,12 @@
 
 ---
 
+## Procedural Contract
+
+> One state = one dispatch. The orchestrator dispatches the owner agent once with the state's skills loaded. Each review tier is a separate dispatch with a separate flowr transition between them. Never combine multiple states into one dispatch. The todo list is the execution contract — every item marked before moving on.
+
+---
+
 ## Todo
 
 [X] Preparation — list available `in` artifacts (discover via `ls`/`find`)
@@ -25,4 +31,17 @@
 [ ] Output — <out artifact 1>
 [ ] Output — <out artifact 2>
 [ ] Verification — check constraints, run tests/lint if applicable
-[~] Check flowr transitions → decide next state → rewrite todo
+[~] **ANCHOR** — flowr next → pick transition → flowr transition → rewrite todo from next state
+
+---
+
+## Anchor Checklist (FAA AC 120-71b)
+
+Before exiting this state, confirm each item aloud:
+
+- [ ] **Dispatch completed:** Exactly one agent dispatch happened with exactly the skills listed above.
+- [ ] **Single-state scope:** No work from adjacent states was performed during this dispatch.
+- [ ] **Flowr next checked:** `flowr next --session` (or `flowr next <flow> <state>`) ran and available transitions are known.
+- [ ] **Transition executed:** `flowr transition <trigger> --session` (or `flowr transition <flow> <state> <trigger>`) ran successfully.
+- [ ] **Todo rewritten:** New todo list generated from the next state's metadata via `flowr check --session`.
+- [ ] **No state skipped:** Every item above this anchor is marked `[X]`. If any are incomplete, stop and complete them before transitioning.
