@@ -322,14 +322,14 @@ wheels = [
 
 [[package]]
 name = "flowr"
-version = "0.4.0"
+version = "0.5.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "pyyaml" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/9c/12/1963adb845d53333de04d07b413981d7c7c02f27ae62a27f40147d09c688/flowr-0.4.0.tar.gz", hash = "sha256:e5bef7f54c3173dfb9e01cd2e8d67ee28c06248eefdd1a318106a6947d1425ab", size = 24737, upload-time = "2026-05-02T18:05:08.688Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/4f/e1/c03bdd6e47cd79478c0117083cd95607fb98df1621f522ae17c8dd2a9776/flowr-0.5.0.tar.gz", hash = "sha256:60552c381df0dd098949ac24e83aa1f214bd00422a2361e9fd9735f860b6ef72", size = 26647, upload-time = "2026-05-05T07:05:07.54Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/c7/dd/ceb7f110a4f7d62b1e5192cdd49de4ad42a9c17f550598a89b62695cadbc/flowr-0.4.0-py3-none-any.whl", hash = "sha256:03ac05eb929b63b372c2fedac95567c2968d5568cef1ab3ef9681f4bb6b7a126", size = 25116, upload-time = "2026-05-02T18:05:07.096Z" },
+    { url = "https://files.pythonhosted.org/packages/9b/3a/d55d1ca71dba350cf0693aae8e7ffc7ffaf142ee262bc141cfc3a5afce15/flowr-0.5.0-py3-none-any.whl", hash = "sha256:c6fec5a2b01bbf7f3bf9eefcfc5ae3dabf8bc6966cd09a896ffbc60587b443fc", size = 26905, upload-time = "2026-05-05T07:05:06.297Z" },
 ]
 
 [[package]]
@@ -1070,6 +1070,9 @@ wheels = [
 name = "temple8"
 version = "8.1.0"
 source = { virtual = "." }
+dependencies = [
+    { name = "flowr" },
+]
 
 [package.optional-dependencies]
 dev = [
@@ -1090,7 +1093,8 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "flowr", marker = "extra == 'dev'", specifier = ">=0.4" },
+    { name = "flowr", specifier = ">=0.5" },
+    { name = "flowr", marker = "extra == 'dev'", specifier = ">=0.5" },
     { name = "gherkin-official", marker = "extra == 'dev'", specifier = ">=39.0.0" },
     { name = "ghp-import", marker = "extra == 'dev'", specifier = ">=2.1.0" },
     { name = "hypothesis", marker = "extra == 'dev'", specifier = ">=6.148.4" },

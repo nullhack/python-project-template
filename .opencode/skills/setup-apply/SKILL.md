@@ -23,4 +23,3 @@ description: "Apply text substitutions, rename package directory, and write temp
     - `no_stale_app_imports`: verified if grep returns empty
     - `package_renamed`: verified if old `app/` is gone and new directory exists
     - `version_reset`: verified if pyproject.toml version is `0.1.0`
-8. Advance the flow with necessary evidence, choosing the appropriate next state based on the work completed.

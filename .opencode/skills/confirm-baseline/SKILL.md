@@ -11,4 +11,3 @@ Available knowledge: [[requirements/decomposition#key-takeaways]]. `in` artifact
 2. Verify the feature passes decomposition checks per [[requirements/decomposition#key-takeaways]] — no more than 2 concerns, no more than 8 Must Examples.
 3. Verify all planning artifacts are present and consistent.
 4. Verify feature status is BASELINED.
-5. Advance the flow with necessary evidence, choosing the appropriate next state based on the work completed.

@@ -16,5 +16,3 @@ Available knowledge: [[software-craft/git-conventions#key-takeaways]]. `in` arti
 7. If conflicts arise during rebase or merge:
    - IF the conflict is a straightforward text merge → resolve and continue.
    - IF the conflict requires a design decision → present options to the stakeholder with consequences before resolving.
-8. Write results to artifacts listed in the current state's `out` attrs. If findings affect artifacts outside the `out` contract, flag them in output notes for the appropriate step.
-9. Advance the flow with necessary evidence, choosing the appropriate next state based on the work completed.

@@ -16,5 +16,3 @@ Available knowledge: [[requirements/wsjf]]. `in` artifacts: discover and read on
    - Skip WSJF scoring — there's nothing to compare against.
 6. IF features have `Status: BASELINED` (subsequent runs) → score per [[requirements/wsjf]] and select the highest WSJF score among Dependency=0 candidates.
 7. Set the `feature_name` session param to the selected feature's filename stem (without `.feature` extension).
-8. Write results to artifacts listed in the current state's `out` attrs. If findings affect artifacts outside the `out` contract, flag them in output notes for the appropriate step.
-9. Advance the flow with necessary evidence, choosing the appropriate next state based on the work completed.

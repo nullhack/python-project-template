@@ -12,5 +12,3 @@ Available knowledge: [[domain-modeling/event-storming#key-takeaways]]. `in` arti
 3. Identify commands (imperative verbs) that trigger each event per [[domain-modeling/event-storming#key-takeaways]].
 4. Group events and commands into candidate bounded contexts per [[domain-modeling/event-storming#key-takeaways]].
 5. Identify aggregate candidates per [[domain-modeling/event-storming#key-takeaways]].
-6. Write results to artifacts listed in the current state's `out` attrs. If findings affect artifacts outside the `out` contract, flag them in output notes for the appropriate step.
-7. Advance the flow with necessary evidence, choosing the appropriate next state based on the work completed.

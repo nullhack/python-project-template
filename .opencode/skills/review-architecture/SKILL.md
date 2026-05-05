@@ -14,5 +14,3 @@ Available knowledge: [[architecture/reconciliation#key-takeaways]], [[architectu
    [[architecture/quality-attributes#concepts]].
 5. If any inconsistency is found, resolve per [[architecture/reconciliation#concepts]].
 6. When flagging issues, include file:line references — e.g., "technical_design.md:34 contradicts system.md:12". Vague findings create rework.
-7. Write results to artifacts listed in the current state's `out` attrs. If findings affect artifacts outside the `out` contract, flag them in output notes for the appropriate step.
-8. Advance the flow with necessary evidence, choosing the appropriate next state based on the work completed.

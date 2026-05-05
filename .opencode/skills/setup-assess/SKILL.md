@@ -28,4 +28,3 @@ Available knowledge: [[requirements/interview-techniques#key-takeaways]]. `in` a
    - Why is [constraint] important for this project?
    - What would happen if [setup choice] were different?
 7. Write assessment summary for confirmation before proceeding.
-8. Advance the flow with necessary evidence, choosing the appropriate next state based on the work completed.

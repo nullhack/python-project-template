@@ -58,8 +58,7 @@ Available knowledge: [[domain/concept]]. `in` artifacts: discover and read on de
 
 1. <procedural step>
 2. <step referencing knowledge per [[domain/concept]]>  ← Link at point of use
-3. Write results to output artifacts.
-4. Check flow transitions to determine next state.
+3. ...remaining procedural steps
 ```
 
 **When to include available knowledge:**
@@ -71,14 +70,12 @@ Available knowledge: [[domain/concept]]. `in` artifacts: discover and read on de
 - Reference knowledge when using criteria: "Validate each Rule per [[requirements/invest]]"
 - Do NOT inline knowledge content: Wrong: "split if >8 examples", Right: "per [[requirements/decomposition]]"
 
-**Standard final steps:**
-- "Write results to output artifacts" — the flow defines what these are
-- "Check flow transitions to determine next state" — the flow defines available transitions
-
 **What NOT to include:**
 - Lists of specific artifact names (these come from flow)
 - "Review input artifacts" as step 1 (flow already defines inputs)
 - Routing logic or transition conditions (flow owns this)
+- "Write results to output artifacts" (orchestrator's todo handles output items)
+- "Advance the flow" or "Check flow transitions" (orchestrator's anchor handles state exit)
 - Knowledge content (reference via wikilinks only)
 
 ### On-Demand Loading

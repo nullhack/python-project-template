@@ -1,7 +1,7 @@
 ---
 domain: workflow
 tags: [fsm, state-machine, flow, yaml, flowr, transitions, conditions, session, config]
-last-updated: 2026-05-02
+last-updated: 2026-05-05
 ---
 
 # Flowr Specification
@@ -13,7 +13,10 @@ last-updated: 2026-05-02
 - Use `conditions` blocks on states to define named condition groups; reference them in transitions with `when`.
 - Guarded transitions use `when` dicts with expression strings (`==true`, `>=80%`, `~=100`); conditions are AND-combined with no inheritance.
 - Carry runtime metadata in state-level `attrs` (agent, skills, input_artifacts, etc.); `attrs` is opaque to the engine.
+- All CLI commands output **JSON by default** (structured, machine-parseable). Use `--text` flag for human-readable plain text.
+- `next` command shows **all** transitions with status markers (`"open"` / `"blocked"`) and condition hints for blocked transitions.
 - Sessions track workflow progress (flow, state, call stack) as YAML files in `.flowr/sessions/` with atomic writes; `--session` on check/next/transition resolves flow/state automatically.
+- Subflow exit names resolve through the parent flow's transition map (not used directly as state IDs). Enables subflow chaining and recursive entry up to 3 levels.
 - Configuration reads `[tool.flowr]` from `pyproject.toml` (flows_dir, sessions_dir, default_flow, default_session); CLI flags override pyproject.toml which overrides defaults.
 - Flow name resolution: commands accept short names (e.g., `planning-flow`) resolved from the configured flows directory, or full file paths.
 - Immutable loaded flows, closed evidence schema, isolated subflow context, filesystem wins over session on conflict.
@@ -22,6 +25,8 @@ last-updated: 2026-05-02
 
 **YAML Flow Definitions**: Flows are finite state machines defined in `.flowr/flows/` as YAML files. Each flow has a name, version, exits, and states. The first state is the initial state. The flow YAML is the single source of truth for what happens at each state; agents read it to determine routing; skills define how to execute.
 
+**JSON-First Output**: All CLI commands return JSON by default for machine-parseable structured output. The `--text` flag provides human-readable plain text. JSON output includes structured keys for programmatic extraction: `check` returns `{"id", "attrs", "transitions"}`, `next` returns `{"state", "transitions": [{"trigger", "target", "status", "conditions"}]}`, `transition` returns `{"from", "trigger", "to"}`.
+
 **Exits as Contracts**: Every flow declares `exits` — the list of ways it can terminate. Parent flows reference these exit names in their `next` maps. This creates a typed contract between flows. Adding a new exit is a minor version bump; removing or renaming one is a major breaking change.
 
 **Conditions and Guards**: States may define `conditions` blocks containing named condition groups. Transitions reference these groups with `when` to create guarded transitions. Condition expressions use operators like `==value`, `!=value`, `>=N`, `<=N`, `>N`, `<N`, `~=value`. All conditions in a `when` dict are AND-combined with no inheritance — every condition must be explicit.
@@ -29,6 +34,8 @@ last-updated: 2026-05-02
 **State Attrs**: State-level `attrs` carry runtime metadata that the flowr engine ignores but agents and skills read. Common keys: `description`, `owner`, `skills`, `input_artifacts`, `edited_artifacts`, `output_artifacts`. State-level `attrs` replace flow-level attrs entirely (no merge, no deep merge).
 
 **Subflow Invocation**: A state with a `flow:` field becomes a subflow invocation. The parent's `next` keys must match the child's `exits` exactly. Subflows use a call-stack mechanism: push on entry, pop on exit. Context is isolated: only the current flow is visible. Cross-flow cycles are forbidden.
+
+**Subflow Exit Resolution (≥0.5)**: Exit names resolve through the parent flow's transition map instead of being used directly as state IDs. This enables subflow chaining (atomic exit + re-enter next subflow) and recursive subflow entry up to 3 levels deep (e.g., main-flow → feature-dev-flow → planning-flow). Stack frames record the correct parent state (subflow wrapper, not pre-transition state).
 
 ## Content
 
@@ -112,6 +119,12 @@ Named condition references in `when` clauses must resolve to a key in the same s
 - Subflows use a call-stack: push on entry, pop on exit
 - Context is isolated: only current flow visible
 - Cross-flow cycles are forbidden (detected via DFS at load time)
+- Exit names resolve through parent flow's transition map (not used directly as state IDs)
+- Subflow chaining: atomic exit + re-enter next subflow without manual state manipulation
+- Recursive entry: supports up to 3-level nesting (main → feature-dev → planning)
+- Stack frames record the subflow wrapper state (not the pre-transition state)
+- `.yaml` extension fallback: flow references without extension are resolved automatically
+- `session init` auto-enters subflow when first state has a `flow:` field
 
 ### Semver Conventions
 
@@ -172,6 +185,8 @@ flowr reads `[tool.flowr]` from `pyproject.toml`. Resolution priority: CLI flags
 5. **Thin enforcement** — validate only, no execution
 6. **No auto-rollback** — no transition limits
 7. **Atomic session writes** — temp-file-then-rename prevents corruption
+8. **JSON-first output** — structured data by default; `--text` for human-readable
+9. **Complete transition visibility** — `next` shows all transitions with status markers
 
 ## Related
 

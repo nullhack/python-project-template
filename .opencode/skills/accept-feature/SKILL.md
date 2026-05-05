@@ -15,5 +15,3 @@ Available knowledge: [[requirements/gherkin#key-takeaways]], [[software-craft/te
 6. Verify quality attributes are met.
 7. Verify definition of done criteria are satisfied.
 8. Verify every stakeholder Q&A from interview notes maps to either a passing @id test or an explicit stakeholder deferral. Untraced requirements = incomplete delivery.
-9. Write results to artifacts listed in the current state's `out` attrs. If findings affect artifacts outside the `out` contract, flag them in output notes for the appropriate step.
-10. Advance the flow with necessary evidence, choosing the appropriate next state based on the work completed.

@@ -20,5 +20,3 @@ Available knowledge: [[requirements/feature-discovery#concepts]]. `in` artifacts
    IF any gap is found → flag it. Do NOT silently fill gaps with assumed rules.
 8. Create a `.feature` file from the template at `.templates/docs/features/feature.feature.template` for each feature with title, description, Status: ELICITING, Rules (Business), and Constraints.
 9. Do NOT write full `Rule:` blocks (As a/I want/So that) or `Example:` blocks — those require the adversarial analysis of breakdown.
-10. Write results to artifacts listed in the current state's `out` attrs. If findings affect artifacts outside the `out` contract, flag them in output notes for the appropriate step.
-11. Advance the flow with necessary evidence, choosing the appropriate next state based on the work completed.
