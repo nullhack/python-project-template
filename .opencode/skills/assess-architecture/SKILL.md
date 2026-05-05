@@ -13,4 +13,3 @@ Available knowledge: [[architecture/assessment#key-takeaways]], [[requirements/i
    gap-finding techniques per [[requirements/interview-techniques#concepts]].
 4. If hidden failure modes are suspected, apply a pre-mortem per [[requirements/pre-mortem]].
 5. Write corrections to edited artifacts.
-6. Advance the flow with necessary evidence, choosing the appropriate next state based on the work completed.

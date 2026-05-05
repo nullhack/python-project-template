@@ -22,7 +22,7 @@ last-updated: 2026-04-29
 
 **Architecture Pre-Mortem**: Before writing design or stubs, ask "In 6 months this design is a mess. What mistakes did we make?" Check each candidate class for >2 instance variables → split (Object Calisthenics — Bay, 2008) or >1 reason to change → isolate (SRP — Martin, 2000). Check each external dependency for Protocol encapsulation (Hexagonal Architecture — Cockburn, 2005). Check each noun for cross-module double duty.
 
-**Flow Condition Gates**: Pre-mortem completion is encoded as condition gates in the flow YAML. The `premortem_done` condition on `bdd-features.done` requires `premortem_done: ==true`. The `design_declared` condition on `tdd-cycle.all_green` requires self-declaration including design correctness checks that subsume the architecture pre-mortem. Self-declaration uses explicit AGREE/DISAGREE commitments — a commitment device (Cialdini, 2001) that makes the declaration psychologically binding. Adversarial framing during pre-mortem analysis — "find what's wrong" rather than "confirm it's right" — leverages adversarial collaboration (Mellers et al., 2001) to produce stronger reasoning.
+**Flow Condition Gates**: Pre-mortem completion is encoded as condition gates in the flow YAML. The `premortem_done` condition on the transition after pre-mortems requires `premortem_done: ==true`. The `design_declared` condition on `tdd-cycle.all_green` requires self-declaration including design correctness checks that subsume the architecture pre-mortem. Self-declaration uses explicit AGREE/DISAGREE commitments — a commitment device (Cialdini, 2001) that makes the declaration psychologically binding. Adversarial framing during pre-mortem analysis — "find what's wrong" rather than "confirm it's right" — leverages adversarial collaboration (Mellers et al., 2001) to produce stronger reasoning.
 
 ## Content
 
@@ -34,7 +34,7 @@ Before writing Examples for any Rule:
 
 All Rules must have their pre-mortems completed before any Examples are written. Record the findings in the feature's Questions section or as additional Rules.
 
-In the planning flow, this is enforced by the `premortem_done` condition on the `bdd-features.done` transition.
+In the flow, this is enforced by the `premortem_done` condition on the transition after pre-mortems are complete.
 
 ### Architecture Pre-Mortem
 

@@ -1,35 +1,41 @@
 ---
 domain: workflow
 tags: [flowr, cli, commands, transitions, evidence, session, config]
-last-updated: 2026-05-02
+last-updated: 2026-05-05
 ---
 
 # Flowr Operations
 
 ## Key Takeaways
 
-- Use `python -m flowr check <flow> <state>` to inspect a state's attrs, owner, skills, and transitions at state entry.
-- Use `python -m flowr next <flow> <state> --evidence key=value` to see which transitions pass given your evidence.
-- Use `python -m flowr transition <flow> <state> <trigger> --evidence key=value` to advance to the next state.
-- Use `python -m flowr check <flow> <state> <target>` to see the conditions guarding a specific transition.
-- Use `python -m flowr session init <flow>` to create a session that tracks progress; use `--session` on check/next/transition to resolve flow and state automatically.
-- Use `python -m flowr config` to show resolved configuration (flows_dir, sessions_dir, default_flow, default_session) with source tracking.
+- All commands output **JSON by default** (machine-parseable). Use `--text` for human-readable output.
+- Use `python -m flowr check --session` to inspect current state's attrs, owner, skills, and transitions.
+- Use `python -m flowr next --session` to see **all** transitions with status markers (`"open"` / `"blocked"`) and condition hints.
+- Use `python -m flowr transition <trigger> --session --evidence key=value` to advance to the next state.
+- Use `python -m flowr check --session <trigger>` to see the conditions guarding a specific transition.
+- Use `python -m flowr session init <flow> --name <name>` to create a session; `session init` auto-enters subflow when first state has a `flow:` field.
 - Set evidence based on work completed before advancing — guarded transitions will not pass without it.
 - Always activate the virtual environment first: `source .venv/bin/activate`.
 
 ## Concepts
 
-**State Entry**: Before starting work, inspect the current state to confirm the owner, skills, input artifacts, output artifacts, and available transitions.
+**JSON-First Output**: All flowr commands output JSON by default. Parse the structured output to extract state metadata, transition status, and conditions programmatically. Use `--text` flag for human-readable plain text when needed.
+
+**State Entry**: Before starting work, inspect the current state with `check --session` to confirm the owner, skills, input artifacts, output artifacts, and available transitions. The output is a JSON object with `id`, `attrs`, and `transitions` keys.
+
+**Enhanced `next` Output**: The `next` command shows **all** transitions (open and blocked) with status markers. Each transition has `trigger`, `target`, `status` (`"open"` or `"blocked"`), and `conditions` (null if unguarded, or a dict of condition expressions). This lets you identify what evidence is needed to unblock guarded transitions.
 
 **Evidence**: Some transitions are guarded by conditions (e.g., `feature_accepted: ==ACCEPTED`, `all_ids_have_stubs: ==true`). Set evidence with `--evidence key=value` or `--evidence-json '{"key":"value"}'` when advancing. If a transition is guarded and evidence is not set, the transition will fail.
 
-**Choosing a Path**: After completing work, use `next` with your evidence to see which transitions are available. Choose the path that matches your work outcome. Do not guess transition names — check first.
+**Choosing a Path**: After completing work, use `next` with your evidence. Transitions with `"status": "open"` are available; `"status": "blocked"` transitions show which conditions need evidence. Choose the path that matches your work outcome.
 
-**Flow Name Resolution**: Commands accept short flow names (e.g., `architecture-flow`) or full file paths (e.g., `.flowr/flows/architecture-flow.yaml`). Short names are resolved by searching the configured flows directory.
+**Flow Name Resolution**: Commands accept short flow names (e.g., `architecture-flow`) or full file paths. Short names are resolved by searching the configured flows directory.
 
-**Sessions**: Sessions persist workflow progress (current flow, state, call stack for subflows) as YAML files in `.flowr/sessions/`. Use `--session <name>` on check/next/transition to resolve flow and state from the session. `transition --session` auto-updates the session after advancing.
+**Sessions**: Sessions persist workflow progress (current flow, state, call stack for subflows) as YAML files in `.flowr/sessions/`. Use `--session <name>` on check/next/transition to resolve flow and state from the session. `transition --session` auto-updates the session after advancing. `session init` auto-enters subflow when the first state has a `flow:` field.
 
-**Configuration**: flowr reads `[tool.flowr]` from `pyproject.toml` with keys: `flows_dir`, `sessions_dir`, `default_flow`, `default_session`. CLI flags override pyproject.toml which overrides defaults. Use `flowr config` to inspect resolved values.
+**Subflow Exit Resolution**: In flowr ≥0.5, exit names resolve through the parent flow's transition map rather than being used directly as state IDs. This enables subflow chaining (e.g., discovery-flow → architecture-flow) and recursive subflow entry (3-level nesting) without manual state manipulation.
+
+**Configuration**: flowr reads `[tool.flowr]` from `pyproject.toml`. CLI flags override pyproject.toml which overrides defaults. Use `flowr config` to inspect resolved values as a JSON array of key/value/source objects.
 
 ## Content
 
@@ -37,31 +43,101 @@ last-updated: 2026-05-02
 
 All commands require the virtual environment: `source .venv/bin/activate`
 
-| Command | Purpose | Example |
-|---------|---------|---------|
-| `python -m flowr validate <flow>` | Validate a flow definition | `python -m flowr validate architecture-flow` |
-| `python -m flowr states <flow>` | List all states in a flow | `python -m flowr states planning-flow` |
-| `python -m flowr check <flow> <state>` | Show state attrs, owner, skills, and transitions | `python -m flowr check planning-flow feature-selection` |
-| `python -m flowr check <flow> <state> <target>` | Show conditions for a specific transition target | `python -m flowr check planning-flow feature-breakdown bdd-features` |
-| `python -m flowr next <flow> <state>` | Show which transitions are available (unguarded always shown) | `python -m flowr next planning-flow feature-selection` |
-| `python -m flowr next <flow> <state> --evidence key=value` | Show which transitions pass given evidence | `python -m flowr next planning-flow feature-breakdown --evidence independent=true` |
-| `python -m flowr transition <flow> <state> <trigger>` | Compute next state for a trigger | `python -m flowr transition planning-flow feature-selection selected` |
-| `python -m flowr transition <flow> <state> <trigger> --evidence key=value` | Advance with evidence | `python -m flowr transition planning-flow feature-breakdown done --evidence independent=true valuable=true` |
-| `python -m flowr transition <trigger> --session` | Advance using session (auto-resolves flow/state) | `python -m flowr transition done --session --evidence independent=true` |
-| `python -m flowr check --session` | Show current session state (read-only) | `python -m flowr check --session` |
-| `python -m flowr next --session` | Show available transitions from session state | `python -m flowr next --session --evidence independent=true` |
-| `python -m flowr mermaid <flow>` | Export flow as Mermaid diagram | `python -m flowr mermaid planning-flow` |
-| `python -m flowr config` | Show resolved configuration with sources | `python -m flowr config` |
-| `python -m flowr config --json` | Show resolved configuration as JSON | `python -m flowr config --json` |
+All commands output JSON by default. Add `--text` for human-readable output.
+
+| Command | Purpose |
+|---------|---------|
+| `python -m flowr validate [<flow>]` | Validate flow definition(s). Returns `{"valid", "violations"}` |
+| `python -m flowr validate --session <name>` | Validate the current (sub)flow from session |
+| `python -m flowr states <flow>` | List all state ids in a flow as JSON array |
+| `python -m flowr states --session <name>` | List states in the current (sub)flow from session |
+| `python -m flowr check <flow> <state>` | Show state attrs, owner, skills, and transitions |
+| `python -m flowr check <flow> <state> <target>` | Show conditions for a specific transition |
+| `python -m flowr check --session <name>` | Show current session state (read-only) |
+| `python -m flowr check --session <name> <trigger>` | Show conditions for a specific transition via session |
+| `python -m flowr next <flow> <state> [--evidence key=value]` | Show all transitions with status markers |
+| `python -m flowr next --session <name> [--evidence key=value]` | Show transitions from session state |
+| `python -m flowr transition <flow> <state> <trigger> [--evidence key=value]` | Advance to the next state |
+| `python -m flowr transition <trigger> --session <name> [--evidence key=value]` | Advance using session (auto-updates) |
+| `python -m flowr mermaid <flow>` | Export flow as Mermaid diagram |
+| `python -m flowr config` | Show resolved configuration as JSON array |
 
 ### Session Commands
 
 | Command | Purpose |
 |---------|---------|
-| `python -m flowr session init <flow> [--name <name>]` | Create a new session at the flow's initial state |
-| `python -m flowr session show [--name <name>] [--format yaml\|json]` | Display current session state and call stack |
+| `python -m flowr session init <flow> [--name <name>]` | Create session at initial state; auto-enters subflow if first state has `flow:` |
+| `python -m flowr session show [--name <name>] [--format yaml\|json]` | Display session state, call stack, params |
 | `python -m flowr session set-state <state> [--name <name>]` | Manually update session state (validates state exists in flow) |
 | `python -m flowr session list [--format yaml\|json]` | List all sessions |
+
+### Output Formats
+
+**`check`** returns:
+```json
+{
+  "id": "feature-selection",
+  "attrs": {
+    "description": "...", "owner": "PO", "git": "main",
+    "skills": ["select-feature"], "in": [...], "out": [...]
+  },
+  "transitions": ["selected", "needs_architecture", "no_features"]
+}
+```
+
+**`next`** returns all transitions with status markers:
+```json
+{
+  "state": "feature-breakdown",
+  "transitions": [
+    {
+      "trigger": "done",
+      "target": "feature-examples",
+      "status": "blocked",
+      "conditions": {
+        "independent": "==no_shared_data_or_side_effects",
+        "negotiable": "==scope_negotiated",
+        "valuable": "==user_value_clear"
+      }
+    },
+    {
+      "trigger": "needs_respecification",
+      "target": "feature-breakdown",
+      "status": "open",
+      "conditions": null
+    }
+  ]
+}
+```
+
+**`check <target>`** returns transition conditions:
+```json
+{
+  "from": "feature-breakdown",
+  "target": "done",
+  "conditions": {
+    "independent": "==no_shared_data_or_side_effects",
+    "negotiable": "==scope_negotiated"
+  }
+}
+```
+
+**`transition`** returns the computed state change:
+```json
+{
+  "from": "feature-selection",
+  "trigger": "selected",
+  "to": "feature-breakdown"
+}
+```
+
+**`config`** returns resolved configuration with sources:
+```json
+[
+  {"key": "flows_dir", "value": ".flowr/flows", "source": "pyproject.toml"},
+  {"key": "default_session", "value": "default", "source": "default"}
+]
+```
 
 ### Configuration
 
@@ -89,17 +165,17 @@ Condition operators: `==value`, `!=value`, `>=N`, `<=N`, `>N`, `<N`, `~=value` (
 
 Every state follows the same pattern:
 
-1. **Enter**: `python -m flowr check <flow> <state>` — confirm owner, skills, attrs, and transitions.
+1. **Enter**: `python -m flowr check --session` — confirm owner, skills, attrs, and transitions. Parse `attrs.owner` to determine dispatch target.
 2. **Work**: Execute the skill, reading `in` artifacts and writing `out` artifacts.
 3. **Evidence**: Set any evidence required by guarded transitions based on work completed.
-4. **Choose**: `python -m flowr next <flow> <state> --evidence key=value` — see which paths are available.
-5. **Advance**: `python -m flowr transition <flow> <state> <trigger> --evidence key=value` — move to the next state.
+4. **Choose**: `python -m flowr next --session --evidence key=value` — see all transitions with status. `"status": "open"` transitions are available; `"status": "blocked"` shows which conditions need evidence.
+5. **Advance**: `python -m flowr transition <trigger> --session --evidence key=value` — move to the next state.
 
 ### Session-Based Workflow
 
 For ongoing work, use sessions to track progress:
 
-1. **Init**: `python -m flowr session init <flow> --name <name>` — create session at initial state.
+1. **Init**: `python -m flowr session init <flow> --name <name>` — create session at initial state (auto-enters subflow if first state has `flow:`).
 2. **Check**: `python -m flowr check --session` — inspect current state (read-only).
 3. **Work**: Execute the skill for the current state.
 4. **Advance**: `python -m flowr transition <trigger> --session --evidence key=value` — transition and auto-update session.

@@ -20,5 +20,3 @@ Available knowledge: [[architecture/reconciliation]], [[architecture/adr]], [[so
 11. IF a quality attribute from the product definition has no corresponding design decision → flag it as a gap.
 12. Stop at the first failure per [[software-craft/code-review#key-takeaways]] — write a minimal REJECTED report with file:line evidence.
 13. When flagging issues, include file:line references — e.g., "domain_model.md:23 conflicts with login.feature:15". Vague findings create rework.
-14. Write results to artifacts listed in the current state's `out` attrs. If findings affect artifacts outside the `out` contract, flag them in output notes for the appropriate step.
-15. Advance the flow with necessary evidence, choosing the appropriate next state based on the work completed.

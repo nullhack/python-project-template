@@ -1,6 +1,6 @@
 ## Golden Rules
 
-Post-mortem analysis shows these six practices prevent most project failures. Violating them triggers costly rework — defects caught later cost 10–100× more to fix (Boehm, 1981).
+Post-mortem analysis shows these practices prevent most project failures. Violating them triggers costly rework — defects caught later cost 10–100× more to fix (Boehm, 1981).
 
 1. **Never skip a flow state.** Every state boundary goes through flowr check → dispatch to owner → flowr transition. No shortcuts, no manual session edits, no jumping ahead.
 2. **Never bypass owner dispatch.** Each state has an owner agent. The orchestrator dispatches to that agent with skills loaded — it never does the work itself. One agent, one hat at a time.
@@ -85,7 +85,7 @@ Artifact names in `in` and `out` lists use these conventions:
 
 ## Flowr Commands
 
-All commands require the virtual environment: `source .venv/bin/activate`. See [[workflow/flowr-operations]] for full command reference and workflow pattern.
+All commands output **JSON by default**. Use `--text` for human-readable output. All commands require the virtual environment: `source .venv/bin/activate`. See [[workflow/flowr-operations]] for full command reference, output formats, and workflow pattern.
 
 Commands accept short flow names (e.g., `planning-flow`) or full file paths. Use `--session <name>` to resolve flow/state from a session instead of specifying them explicitly.
 
@@ -94,12 +94,15 @@ Commands accept short flow names (e.g., `planning-flow`) or full file paths. Use
 | `python -m flowr check <flow> <state>` | Show state attrs, owner, skills, and transitions |
 | `python -m flowr check <flow> <state> <target>` | Show conditions for a specific transition |
 | `python -m flowr check --session` | Show current session state (read-only) |
-| `python -m flowr next <flow> <state> [--evidence key=value]` | Show which transitions pass given evidence |
-| `python -m flowr next --session [--evidence key=value]` | Show available transitions from session state |
+| `python -m flowr check --session <trigger>` | Show conditions for a transition via session |
+| `python -m flowr next <flow> <state> [--evidence key=value]` | Show all transitions with status markers (`open`/`blocked`) |
+| `python -m flowr next --session [--evidence key=value]` | Show transitions from session state with status |
 | `python -m flowr transition <flow> <state> <trigger> [--evidence key=value]` | Advance to the next state |
 | `python -m flowr transition <trigger> --session [--evidence key=value]` | Advance using session (auto-updates session) |
-| `python -m flowr validate [<flow>]` | Validate flow definitions |
+| `python -m flowr validate [<flow>]` | Validate flow definition(s) |
+| `python -m flowr validate --session` | Validate the current (sub)flow from session |
 | `python -m flowr states <flow>` | List all states in a flow |
+| `python -m flowr states --session` | List states in the current (sub)flow from session |
 | `python -m flowr mermaid <flow>` | Export flow as Mermaid diagram |
 | `python -m flowr config` | Show resolved configuration with sources |
 | `python -m flowr session init <flow> [--name <name>]` | Create a session at the flow's initial state |
@@ -132,10 +135,37 @@ Linting and formatting:
 
 Every state transition must go through flowr. Do not skip steps or guess transitions. See [[workflow/flowr-operations]] for the full command reference.
 
-1. **State entry:** Run `python -m flowr check --session` (or `python -m flowr check <flow> <state>`) to see current state, owner, skills, and available transitions. Verify all `in` artifacts exist on disk — if any are missing, stop and flag rather than proceeding with assumed knowledge. Announce the state in one line — e.g. `→ specify-feature`. No preamble, no recap of how you got here.
+1. **State entry:** Run `python -m flowr check --session` to see current state, owner, skills, and available transitions (JSON output — parse `attrs.owner`, `attrs.skills`, `attrs.in`, `attrs.out`, `transitions`). Verify all `in` artifacts exist on disk — if any are missing, stop and flag rather than proceeding with assumed knowledge. Announce the state in one line — e.g. `→ specify-feature`. No preamble, no recap of how you got here.
 2. **Dispatch to owner agent:** The state's `owner` field names the responsible agent. Call that agent as a subagent with the state's `skills` loaded, passing the state attrs as context. Owner mapping: `PO` → product-owner, `DE` → domain-expert, `SE` → software-engineer, `SA` → system-architect, `R` → reviewer, `Design Agent` → design-agent, `Setup Agent` → setup-agent.
 3. **Do the work:** Load and execute the skill(s) listed in the state's `skills` field. Read `in` artifacts on demand. Write only to `out` artifacts. Commit changes to the branch indicated by the state's `git` attribute (`main` or `feature`). Never switch branches mid-state.
-4. **State exit:** Set evidence for any guarded transitions based on work completed. Run `python -m flowr next --session --evidence key=value` to see available paths. Choose the path that matches the work outcome. Run `python -m flowr transition <trigger> --session --evidence key=value` to advance. Do not skip this step.
+4. **State exit:** The anchor item in the todo handles this — see [[workflow/todo-anchor-protocol#key-takeaways]].
+
+### Convention Boundary
+
+Convention checks (ruff, pyright, lint, format, docstring, import sorting, type checking) are **prohibited** during design-phase states (create-py-stubs, write-test, implement-minimum, refactor). Only `test-fast` is permitted — see `software-craft/tdd.md` two-phase quality gate.
+
+When dispatching an agent during design phase:
+- Do NOT include any convention tool commands in the prompt
+- Only include verification steps that the skill explicitly defines
+- The skill's verification steps are the ceiling, not the floor
+
+Exception: When the reviewer agent explicitly requests convention fixes during review-conventions state, those specific convention commands may be included in the dispatch.
+
+### Procedural Contract
+
+**One state = one dispatch.** Every state transition produces exactly one agent dispatch with exactly the skills listed in the state's `skills` field. Never combine multiple states into a single dispatch. The orchestrator's job is routing, not doing. See [[workflow/todo-anchor-protocol#concepts]] for the full protocol.
+
+### Todo-Driven State Execution
+
+At state entry, generate a procedural todo list from the state's metadata using the todowrite tool. Format: `[X]` completed, `[ ]` pending, `[~]` anchor (always last).
+
+1. **Preparation** (`[ ]`) — list available `in` artifacts
+2. **Dispatch** (`[ ]`) — call the state's owner agent with skills loaded
+3. **Output** (`[ ]`) — one per `out` artifact
+4. **Verification** (`[ ]`) — check constraints, run tests/lint if applicable
+5. **Anchor** (`[~]`, always last) — flowr next → pick transition → flowr transition → rewrite todo
+
+The todo is the execution contract — every item must be marked `[X]` before the anchor fires. One state per todo; never span multiple states or collapse loop iterations. Full protocol: [[workflow/todo-anchor-protocol]].
 
 ### Session Init
 
@@ -145,7 +175,7 @@ Before starting a flow, create a session to track progress:
 python -m flowr session init <flow> --name <name>
 ```
 
-For project-level flows (discovery, architecture, branding, setup), use a descriptive name like `project`. For feature flows, use the feature name. The session tracks the current flow, state, call stack (for subflows), and params (including `feature_name`).
+For project-level flows (discovery, architecture, branding, setup), use a descriptive name like `project`. For feature flows, use the feature name. The session tracks the current flow, state, call stack (for subflows), and params (including `feature_name`). When the first state has a `flow:` field, `session init` auto-enters the subflow.
 
 ### Branch Discipline
 

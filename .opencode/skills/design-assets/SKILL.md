@@ -29,4 +29,3 @@ Available knowledge: [[design/project-assets#key-takeaways]], [[design/visual-ha
     - `docs/assets/banner.svg` — README banner, composed using rule of thirds, tested on light and dark backgrounds
 12. **Create favicon set** per [[design/project-assets#concepts]]: favicon.ico, icon.svg (with dark-mode media query), apple-touch-icon.png, icon-192.png, icon-512.png. Each size tier progressively simplified per [[design/project-assets#concepts]].
 13. Update `docs/branding.md` Visual section with asset paths.
-14. Advance the flow with necessary evidence, choosing the appropriate next state based on the work completed.

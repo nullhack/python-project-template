@@ -1,5 +1,5 @@
 flow: planning-flow
-version: 5.0.0
+version: 6.0.0
 params: [feature_name]
 exits:
   - complete
@@ -9,7 +9,7 @@ exits:
 states:
   - id: feature-selection
     attrs:
-      description: "PO picks the next feature to develop based on business priority and delivery order, verifying that architecture covers it"
+      description: "PO selects the next feature — by delivery order for first feature, by WSJF for subsequent features"
       owner: PO
       git: main
       skills:
@@ -19,31 +19,13 @@ states:
         - technical_design.md
       out: []
     next:
-      selected: feature-specification
+      selected: feature-breakdown
       needs_architecture: needs_architecture
       no_features: no_features
 
-  - id: feature-specification
-    attrs:
-      description: "PO conducts a targeted conversation with stakeholders to capture feature-specific behavioral rules, scenarios, and acceptance criteria"
-      owner: PO
-      git: main
-      skills:
-        - specify-feature
-      in:
-        - product_definition.md
-        - domain_model.md
-        - glossary.md
-        - technical_design.md
-      out:
-        - interview-notes/<session>.md
-    next:
-      done: feature-breakdown
-      needs_architecture: needs_architecture
-
   - id: feature-breakdown
     attrs:
-      description: "PO decomposes the selected feature into Rule blocks (user stories) within the feature file based on specification interview and domain constraints"
+      description: "PO refines coarse Rules from discovery into full Rule blocks with INVEST validation, adding detail through targeted clarification"
       owner: PO
       git: main
       skills:
@@ -66,11 +48,11 @@ states:
         testable: ==acceptance_criteria_defined
     next:
       done:
-        to: bdd-features
+        to: feature-examples
         when: invest_passed
-      needs_respecification: feature-specification
+      needs_respecification: feature-breakdown
 
-  - id: bdd-features
+  - id: feature-examples
     attrs:
       description: "PO writes concrete Given/When/Then Example blocks for each Rule in the feature file using ubiquitous language from the glossary"
       owner: PO
@@ -108,7 +90,7 @@ states:
       done:
         to: create-py-stubs
         when: examples_complete
-      needs_respecification: feature-specification
+      needs_respecification: feature-breakdown
 
   - id: create-py-stubs
     attrs:

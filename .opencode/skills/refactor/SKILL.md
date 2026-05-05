@@ -24,5 +24,3 @@ Available knowledge: [[software-craft/tdd]], [[software-craft/refactoring]], [[s
 15. IF a spec gap or inconsistency is discovered during refactoring → do NOT modify specification documents (domain_model.md, technical_design.md, glossary.md, product_definition.md, system.md, context_map.md, ADRs, feature files). Flag it in output notes. The SE may ONLY modify production code and test code.
 16. Commit refactor changes separately from feature changes per [[software-craft/git-conventions#concepts]].
 17. Run `task test-fast` to confirm all tests remain green after refactoring.
-18. Write results to artifacts listed in the current state's `out` attrs. If findings affect artifacts outside the `out` contract, flag them in output notes for the appropriate step.
-19. Advance the flow with necessary evidence, choosing the appropriate next state based on the work completed.

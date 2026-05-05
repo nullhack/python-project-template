@@ -1,5 +1,5 @@
 flow: discovery-flow
-version: 4.0.0
+version: 5.0.0
 exits:
   - complete
 
@@ -101,6 +101,29 @@ states:
             - delivery_order
             - quality_attributes
             - deployment
+    next:
+      done: feature-discovery
+      needs_reinterview: stakeholder-interview
+
+  - id: feature-discovery
+    attrs:
+      description: "PO synthesizes analysis artifacts into coherent feature boundaries with scoped business rules and constraints"
+      owner: PO
+      git: main
+      skills:
+        - discover-features
+      in:
+        - product_definition.md
+        - domain_model.md
+        - glossary.md
+        - interview-notes/*.md
+        - technical_design.md
+      out:
+        - features/<feature_name>.feature:
+            - title
+            - description
+            - rules_business
+            - constraints
     conditions:
       committed_to_main_locally:
         committed_to_main_locally: ==verified

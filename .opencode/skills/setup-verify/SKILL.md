@@ -22,4 +22,3 @@ description: "Verify transformations, clean template artifacts, and finalize the
     - `tests_pass`: verified if smoke test passed
     - `imports_valid`: verified if no import errors during test run
     - `artifacts_cleaned`: verified if cleanup completed
-7. Advance the flow with necessary evidence, choosing the appropriate next state based on the work completed.

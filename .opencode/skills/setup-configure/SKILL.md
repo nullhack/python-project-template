@@ -41,4 +41,3 @@ Template resolution: templates live in `.templates/`. The instance path is the t
 7. Ask the user to confirm before proceeding.
 8. Update the defaults section in `template-config.yaml` with confirmed values.
 9. Set all template existence evidence to `==exists`.
-10. Advance the flow with necessary evidence, choosing the appropriate next state based on the work completed.

@@ -1,7 +1,7 @@
 ---
 domain: requirements
-tags: [wsjf, prioritization, scoring, backlog, feature-selection]
-last-updated: 2026-04-29
+tags: [wsjf, prioritization, scoring, backlog]
+last-updated: 2026-05-04
 ---
 
 # Weighted Shortest Job First — Reinertsen, 2009
@@ -12,7 +12,7 @@ last-updated: 2026-04-29
 - Value (1-5) maps to Kano categories: 5=Must-have (core workflow blocked), 4=High, 3=Medium (performance), 2=Low (delighter), 1=Minimal (cosmetic).
 - Effort (1-5) maps to complexity: 1=Trivial (no new domain concepts), 2=Small (one new entity), 3=Medium (cross-cutting), 4=Large (multiple entities), 5=Very large (spans modules).
 - Dependency=1 features are ineligible regardless of WSJF score; ties broken by Value; if all features have Dependency=1, resolve the blocking dependency first.
-- Only features with `Status: BASELINED` are eligible for scoring; WIP limit is 1.
+- Only features with `Status: BASELINED` are eligible for WSJF scoring; WIP limit is 1.
 
 ## Concepts
 
@@ -76,7 +76,7 @@ Estimate implementation complexity:
 
 ### Prerequisites
 
-- Only features with `Status: BASELINED` are eligible for scoring
+- Only features with `Status: BASELINED` are eligible for WSJF scoring
 - WIP limit of 1 — only one feature in progress at a time
 - The PO selects and moves the feature; no other agent moves feature files
 

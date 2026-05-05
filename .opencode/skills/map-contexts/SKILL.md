@@ -14,5 +14,3 @@ Available knowledge: [[domain-modeling/context-mapping#key-takeaways]]. `in` art
    [[domain-modeling/context-mapping#concepts]].
 4. If a downstream context needs isolation from an upstream model, design an
    anti-corruption layer per [[domain-modeling/context-mapping#concepts]].
-5. Write results to artifacts listed in the current state's `out` attrs. If findings affect artifacts outside the `out` contract, flag them in output notes for the appropriate step.
-6. Advance the flow with necessary evidence, choosing the appropriate next state based on the work completed.

@@ -1,6 +1,6 @@
 [project]
 name = "temple8"
-version = "8.1.0"
+version = "8.2.0"
 description = "Python template with some awesome tools to quickstart any Python project"
 readme = "README.md"
 requires-python = ">=3.13"
@@ -11,7 +11,8 @@ authors = [
 maintainers = [
     { name = "eol", email = "nullhack@users.noreply.github.com" }
 ]
-dependencies = []
+dependencies = [
+]
 
 [project.urls]
 Repository = "https://github.com/nullhack/temple8"
@@ -29,7 +30,7 @@ dev = [
     "hypothesis>=6.148.4",
     "pyright>=1.1.407",
     "ghp-import>=2.1.0",
-    "flowr>=0.4",
+    "flowr>=0.5",
     "gherkin-official>=39.0.0",
     "safety>=3.7.0",
 ]

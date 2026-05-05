@@ -19,5 +19,3 @@ Available knowledge: [[architecture/quality-attributes#key-takeaways]], [[archit
 8. Update system overview sections to reflect the current design.
 9. If a decision is architecturally significant per [[architecture/adr#key-takeaways]],
    route to needs_decisions.
-10. Write results to artifacts listed in the current state's `out` attrs. If findings affect artifacts outside the `out` contract, flag them in output notes for the appropriate step.
-11. Advance the flow with necessary evidence, choosing the appropriate next state based on the work completed.

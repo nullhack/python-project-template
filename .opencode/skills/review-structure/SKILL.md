@@ -16,5 +16,3 @@ Available knowledge: [[software-craft/test-design]], [[software-craft/tdd]], [[s
 7. Verify @id-to-test traceability — every @id in the feature file must have exactly one test in tests/features/<feature_slug>/, and every test in tests/features/ must trace back to an @id. Missing tests → REJECT (feature not done). Orphan tests in tests/features/ → REJECT (move to tests/unit/).
 8. Stop at the first failure per [[software-craft/code-review#key-takeaways]] — write a minimal REJECTED report with file:line evidence.
 9. When flagging issues, include file:line references — e.g., "test_login.py:45 tests domain method directly instead of command handler". Vague findings create rework.
-10. Write results to artifacts listed in the current state's `out` attrs. If findings affect artifacts outside the `out` contract, flag them in output notes for the appropriate step.
-11. Advance the flow with necessary evidence, choosing the appropriate next state based on the work completed.

@@ -18,4 +18,3 @@ Available knowledge: [[design/color-systems#key-takeaways]]. `in` artifacts: dis
 9. Propose dark-mode counterparts for each colour. Do not simply invert — use off-white (#e0e0e0 or similar) on dark backgrounds, and adjust accent saturation for dark contexts per [[design/color-systems#key-takeaways]].
 10. Present the full palette to the stakeholder as a table: colour role, hex value, RGB, dark-mode hex, WCAG ratio on primary background, and the Itten visual weight ratio.
 11. IF stakeholder approves → write the Visual section of `docs/branding.md`. IF stakeholder requests changes → revise and re-verify contrast ratios (go to step 2).
-12. Advance the flow with necessary evidence, choosing the appropriate next state based on the work completed.
