@@ -2,10 +2,19 @@
 
 All notable changes to this template will be documented in this file.
 
-## [v8.2.1+20260506] - 2026-05-06: Rigorous Euclid
+## [v8.3.0+20260506] - 2026-05-06: Rigorous Euclid
+
+### Added
+
+- **README FAQ section**: Five questions covering Kiro, Cursor/Copilot, Claude Code/opencode, tool compatibility, and non-software workflows.
+- **README "Who is this for" rewrite**: Refocused around vibe coding, agentic engineering, and spec-driven development adoption.
+- **agents-smith quick start**: New "Existing project" quick-start block using [agents-smith](https://github.com/nullhack/agents-smith) for one-command adoption.
+- **Workflow flexibility paragraph**: New "What it does" paragraph explaining that flows are not hardcoded and any state machine process fits.
 
 ### Changed
 
+- **Tagline**: "From zero to hero: production-ready Python, without the ceremony." → "From zero to hero: Spec-driven agent orchestration. Any workflow. Any LLM. Zero lock-in."
+- **Branding sync**: `docs/branding/branding.md` tagline updated to match README.
 - **flowr 1.0.0 adoption**: Upgraded dependency from `>=0.5` to `>=1.0.0`. Knowledge files synced to the official v1.0.0 specification.
 - **`~=` operator removed**: The approximate numeric match operator is no longer in the specification. Condition operators are now: `==`, `!=`, `>=`, `<=`, `>`, `<`. Plain values without operator prefix are implicit `==`.
 - **`when` forms**: Updated documentation to cover all three `when` forms: dict (inline), string (named ref), list (AND-combined mix).
