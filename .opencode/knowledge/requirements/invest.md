@@ -4,25 +4,22 @@ tags: [stories, INVEST, quality-criteria, self-declaration]
 last-updated: 2026-04-29
 ---
 
-# INVEST Criteria — Wake, 2003
+# INVEST Criteria, Wake, 2003
 
 ## Key Takeaways
 
-- Every Rule must pass all six INVEST letters before committing: Independent, Negotiable, Valuable, Estimable, Small, Testable.
+- Every Rule must pass all six INVEST letters: Independent, Negotiable, Valuable, Estimable, Small, Testable.
 - Each letter has a specific FAIL action: split or reorder dependencies (I), remove over-specification (N), reframe or drop (V), split or add discovery (E), split into smaller Rules (S), rewrite with observable outcomes (T).
-- Common mistakes: "As the system, I want..." has no business value; stories containing "and" should be split into two Rules; duplicate stories should be merged or differentiated.
-- Self-declare INVEST-I, INVEST-V, INVEST-S, and INVEST-T before committing stories; every DISAGREE is a hard blocker.
-- In the flow, the INVEST condition on the breakdown-done transition requires all six letters to be `==true`.
+- Common mistakes: "As the system, I want..." has no business value; duplicate stories should be merged or differentiated. Stories containing "and" or spanning multiple concerns must be split per [[requirements/decomposition]].
+- Self-declare INVEST-I, INVEST-V, INVEST-S, and INVEST-T; every DISAGREE is a hard blocker.
 
 ## Concepts
 
-**INVEST Criteria**: Every Rule (user story) must pass all six letters before committing. Independent means deliverable without other Rules. Negotiable means details open to discussion. Valuable means delivers something the user cares about. Estimable means a software-engineer can estimate effort. Small means completable in one feature cycle. Testable means verifiable with a concrete test.
+**INVEST Criteria**: Every Rule (user story) must pass all six letters. Independent means deliverable without other Rules. Negotiable means details open to discussion. Valuable means delivers something the user cares about. Estimable means a software-engineer can estimate effort. Small means completable in one feature cycle. Testable means verifiable with a concrete test.
 
 **FAIL Actions**: Each letter has a specific corrective action when a Rule fails. Independent → split or reorder dependencies. Negotiable → remove over-specification. Valuable → reframe or drop. Estimable → split or add discovery questions. Small → split into smaller Rules. Testable → rewrite with observable outcomes.
 
-**Self-Declaration**: Before committing stories, declare INVEST-I (each Rule is Independent), INVEST-V (each Rule delivers Value to a named user), INVEST-S (each Rule is Small enough for one development cycle), and INVEST-T (each Rule is Testable). Every DISAGREE is a hard blocker — fix before committing.
-
-**Flow Condition Gate**: The INVEST condition on the breakdown-done transition requires `independent: ==true`, `negotiable: ==true`, `valuable: ==true`, `estimable: ==true`, `small: ==true`, and `testable: ==true`. All six must pass before the flow advances to Example writing.
+**Self-Declaration**: Declare INVEST-I (each Rule is Independent), INVEST-V (each Rule delivers Value to a named user), INVEST-S (each Rule is Small enough for one development cycle), and INVEST-T (each Rule is Testable). Every DISAGREE is a hard blocker. The procedural steps for self-declaration are in the break-down-feature skill.
 
 ## Content
 
@@ -39,39 +36,22 @@ last-updated: 2026-04-29
 
 ### Common Mistakes to Avoid
 
-- "As the system, I want..." — no business value. Every story must name a user role who benefits.
-- Stories containing "and" — break them into two separate Rules.
-- Stories that duplicate another Rule — merge or differentiate.
-- Stories that span multiple unrelated concerns — split immediately.
-
+- "As the system, I want...": no business value. Every story must name a user role who benefits.
+- Stories that duplicate another Rule: merge or differentiate.
 ### Self-Declaration Protocol
 
 Before committing stories, declare:
 
-- INVEST-I: each Rule is Independent — AGREE/DISAGREE
-- INVEST-V: each Rule delivers Value to a named user — AGREE/DISAGREE
-- INVEST-S: each Rule is Small enough for one development cycle — AGREE/DISAGREE
-- INVEST-T: each Rule is Testable — AGREE/DISAGREE
+- INVEST-I: each Rule is Independent. AGREE/DISAGREE
+- INVEST-V: each Rule delivers Value to a named user. AGREE/DISAGREE
+- INVEST-S: each Rule is Small enough for one development cycle. AGREE/DISAGREE
+- INVEST-T: each Rule is Testable. AGREE/DISAGREE
 
-Every DISAGREE is a hard blocker — must be fixed before committing.
-
-### Flow Condition Gate
-
-In the flow, the breakdown-done transition is guarded by an INVEST condition, which requires:
-
-```yaml
-invest_passed:
-  independent: ==true
-  negotiable: ==true
-  valuable: ==true
-  estimable: ==true
-  small: ==true
-  testable: ==true
-```
+Every DISAGREE is a hard blocker.
 
 ## Related
 
-- [[requirements/moscow]] — prioritizing Examples within a Rule
-- [[requirements/decomposition]] — splitting Rules that fail INVEST-S or span too many concerns
-- [[requirements/gherkin]] — writing Examples from INVEST-qualified stories
-- [[requirements/pre-mortem]] — finding hidden failure modes before writing Examples
+- [[requirements/moscow]]: prioritizing Examples within a Rule
+- [[requirements/decomposition]]: splitting Rules that fail INVEST-S or span too many concerns
+- [[requirements/gherkin]]: writing Examples from INVEST-qualified stories
+- [[requirements/pre-mortem]]: finding hidden failure modes in rules

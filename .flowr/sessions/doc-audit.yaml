@@ -1,0 +1,9 @@
+created_at: '2026-05-06T09:26:21.074902+00:00'
+flow: architecture-flow
+name: doc-audit
+params: {}
+stack:
+- flow: main-flow
+  state: architecture
+state: architecture-assessment
+updated_at: '2026-05-06T10:25:28.454349+00:00'

@@ -1,4 +1,4 @@
-# Property-Based Testing — MacIver, 2016
+# Property-Based Testing (MacIver, 2016)
 
 ## Citation
 
@@ -26,7 +26,7 @@ Property-based testing constructs tests such that when these tests are fuzzed wi
 
 ## Core Findings
 
-1. Meaningful property tests assert invariants—things that must always be true about the contract
+1. Meaningful property tests assert invariants: things that must always be true about the contract
 2. Tautological tests assert reconstruction patterns that merely verify the implementation without constraining behavior
 3. Property tests generate diverse inputs to verify that certain properties hold across the entire input space
 4. This approach discovers edge cases that example-based tests typically miss and provides stronger confidence in correctness

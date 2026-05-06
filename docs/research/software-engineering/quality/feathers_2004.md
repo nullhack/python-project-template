@@ -1,4 +1,4 @@
-# Working Effectively with Legacy Code — Feathers, 2004
+# Working Effectively with Legacy Code (Feathers, 2004)
 
 ## Citation
 
@@ -42,5 +42,5 @@ Essential methodology for working with legacy codebases safely. Critical for org
 
 ## Related Research
 
-- (Beck, 2002) — Test-driven development providing methodology for new code development with tests
-- (Fowler, 1999) — Refactoring techniques that require test safety net provided by characterization tests
+- (Beck, 2002): Test-driven development providing methodology for new code development with tests
+- (Fowler, 1999): Refactoring techniques that require test safety net provided by characterization tests

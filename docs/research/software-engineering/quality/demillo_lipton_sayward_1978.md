@@ -1,4 +1,4 @@
-# Mutation Testing — DeMillo, Lipton & Sayward, 1978
+# Mutation Testing (DeMillo, Lipton & Sayward, 1978)
 
 ## Citation
 

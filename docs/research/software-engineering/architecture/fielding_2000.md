@@ -1,4 +1,4 @@
-# Representational State Transfer (REST) — Fielding, 2000
+# Representational State Transfer (REST) (Fielding, 2000)
 
 ## Citation
 
@@ -43,5 +43,5 @@ Foundational architecture for web services, APIs, and distributed systems. Essen
 
 ## Related Research
 
-- (Conway, 1968) — Organizational structure implications for REST service boundaries
-- (Fowler, 2014) — Microservices architecture patterns building on REST principles
+- (Conway, 1968): Organizational structure implications for REST service boundaries
+- (Fowler, 2014): Microservices architecture patterns building on REST principles

@@ -1,4 +1,4 @@
-# Logo Design Love — Airey, 2010
+# Logo Design Love (Airey, 2010)
 
 ## Citation
 
@@ -22,7 +22,7 @@ High
 
 ## Key Insight
 
-Strong logos have one dominant feature — not two, three, or four. The design process must be monochrome-first to focus on the core idea.
+Strong logos have one dominant feature, not two, three, or four. The design process must be monochrome-first to focus on the core idea.
 
 ## Core Findings
 
@@ -44,5 +44,5 @@ Essential methodology for brand identity design, startup logo creation, and visu
 
 ## Related Research
 
-- (Rand, 1985) — Foundational principles of logo simplicity and testing methods
-- (Wertheimer, 1923) — Gestalt principles underlying logo recognition and memorability
+- (Rand, 1985): Foundational principles of logo simplicity and testing methods
+- (Wertheimer, 1923): Gestalt principles underlying logo recognition and memorability

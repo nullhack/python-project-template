@@ -1,5 +1,5 @@
 flow: review-gate-flow
-version: 3.0.0
+version: 4.0.0
 params: [feature_name]
 exits:
   - pass
@@ -18,9 +18,8 @@ states:
         - glossary.md
         - technical_design.md
         - context_map.md
-        - system.md
         - product_definition.md
-        - adr/*.md
+        - "adr/*.md"  # optional
         - refactored_source
       out:
         - design_review_evidence

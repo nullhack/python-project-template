@@ -8,7 +8,7 @@ last-updated: 2026-04-29
 
 ## Key Takeaways
 
-- Use Critical Incident Technique (CIT — Flanagan, 1954) to ask about specific past events rather than general descriptions; concrete incidents force actual memory and surface edge cases.
+- Use Critical Incident Technique (CIT, Flanagan, 1954) to ask about specific past events rather than general descriptions; concrete incidents force actual memory and surface edge cases.
 - Use Laddering (Reynolds & Gutman, 1988) to climb from surface features to underlying consequences and terminal values; stop when the answer produces a design constraint.
 - Use CI Perspective Change (Fisher & Geiselman, 1987) to ask stakeholders to describe the same situation from another actor's viewpoint; peripheral details and cross-role concerns surface.
 - Apply three levels of active listening (Rogers & Farson, 1957): per answer (paraphrase), per group (synthesis), end of session (full synthesis for approval).
@@ -18,21 +18,21 @@ last-updated: 2026-04-29
 
 ## Concepts
 
-**Critical Incident Technique (CIT — Flanagan, 1954)**: Ask about a specific past event rather than a general description. Schema-based recall ("usually we...") hides edge cases and workarounds (Christel & Kang, 1992). A concrete incident forces actual memory. Probe each incident with "What task were you doing? What happened next? What made it effective/ineffective?" In architecture context: "If this entity is misused, what breaks?" and "Tell me about a concrete case where this boundary would be crossed."
+**Critical Incident Technique (CIT, Flanagan, 1954)**: Ask about a specific past event rather than a general description. Schema-based recall ("usually we...") hides edge cases and workarounds (Christel & Kang, 1992). A concrete incident forces actual memory. Probe each incident with "What task were you doing? What happened next? What made it effective/ineffective?" In architecture context: "If this entity is misused, what breaks?" and "Tell me about a concrete case where this boundary would be crossed."
 
 **Laddering / Means-End Chain**: Climb from surface feature to underlying consequence to terminal value. The first answer is rarely the real constraint. Keep asking "Why is that important?", "What does that enable?", "What would break if that were not available?" Stop when the stakeholder reaches a value they cannot explain further. In architecture context, stop when the answer produces a design constraint writable into an ADR.
 
 **CI Perspective Change**: Ask the stakeholder to describe the same situation from another actor's point of view. Peripheral details and cross-role concerns surface that the primary perspective conceals. Ask "What do you think the end user experiences?", "What would your team lead's concern be?", "From the perspective of someone encountering this for the first time, what would they need to know?"
 
-**Active Listening Protocol**: Three levels apply throughout every interview session. Level 1 (per answer): immediately paraphrase each answer before moving to the next question. Level 2 (per group): brief synthesis when transitioning between behaviour groups. Level 3 (end of session): full synthesis of everything discussed, presented for stakeholder approval. Do not introduce topic labels or categories during active listening — the summary must reflect what the stakeholder said.
+**Active Listening Protocol**: Three levels apply throughout every interview session. Level 1 (per answer): immediately paraphrase each answer before moving to the next question. Level 2 (per group): brief synthesis when transitioning between behaviour groups. Level 3 (end of session): full synthesis of everything discussed, presented for stakeholder approval. Do not introduce topic labels or categories during active listening. The summary must reflect what the stakeholder said.
 
 **Funnel Technique**: Start with broad open-ended questions before narrowing to specifics. Priming bias (Tversky & Kahneman, 1974) is structural: any category name the interviewer introduces activates a schema that filters what the interviewee considers worth reporting. The funnel sequences questions so the interviewee's own categories emerge first.
 
-**Discovery Interview Structure**: Discovery interviews follow a three-level funnel aligned with the Funnel technique. Level 1 — General: seven standard questions (Who, What, Why, When/Where, Success, Failure, Out-of-scope) establish the big picture. Level 2 — Cross-cutting: behaviour groups, bounded contexts, integration points, and lifecycle events structure the domain. Level 3 — Feature identification: feature names and rough boundaries are identified; detailed feature specification (stories, criteria) happens later, not here. The purpose of the discovery interview is to understand the domain and identify what features exist, not to specify each feature in detail.
+**Discovery Interview Structure**: Discovery interviews follow a three-level funnel aligned with the Funnel technique. Level 1 (General: seven standard questions (Who, What, Why, When/Where, Success, Failure, Out-of-scope) establish the big picture. Level 2) Cross-cutting: behaviour groups, bounded contexts, integration points, and lifecycle events structure the domain. Level 3, Feature identification: feature names and rough boundaries are identified; detailed feature specification (stories, criteria) happens later, not here. The purpose of the discovery interview is to understand the domain and identify what features exist, not to specify each feature in detail.
 
 ## Content
 
-### Critical Incident Technique (CIT) — Flanagan 1954
+### Critical Incident Technique (CIT), Flanagan 1954
 
 Ask about a specific past event rather than a general description. Schema-based recall ("usually we...") hides edge cases and workarounds. A concrete incident forces actual memory.
 
@@ -42,7 +42,7 @@ Ask about a specific past event rather than a general description. Schema-based 
 
 Architecture context: "If this entity is misused, what breaks?" and "Tell me about a concrete case where this boundary would be crossed."
 
-### Laddering / Means-End Chain — Reynolds & Gutman 1988
+### Laddering / Means-End Chain, Reynolds & Gutman 1988
 
 Climb from surface feature to underlying consequence to terminal value. The first answer is rarely the real constraint.
 
@@ -53,7 +53,7 @@ Climb from surface feature to underlying consequence to terminal value. The firs
 
 Architecture context: "Why does this need to be immutable?" and "What breaks if this is not behind a Protocol?" Stop when the answer produces a design constraint that can be written into an ADR.
 
-### CI Perspective Change — Fisher & Geiselman 1987
+### CI Perspective Change, Fisher & Geiselman 1987
 
 Ask the stakeholder to describe the same situation from another actor's point of view. Peripheral details and cross-role concerns surface that the primary perspective conceals. The enhanced Cognitive Interview elicits approximately 35% more correct information than standard interviews with equal accuracy rates.
 
@@ -61,17 +61,17 @@ Ask the stakeholder to describe the same situation from another actor's point of
 - "What would your team lead's concern be here?"
 - "From the perspective of someone encountering this for the first time, what would they need to know?"
 
-### Active Listening Protocol — Rogers & Farson, 1957
+### Active Listening Protocol, Rogers & Farson, 1957
 
 Three levels of active listening apply throughout every interview session:
 
-- **Level 1 — Per answer**: immediately paraphrase each answer before moving to the next question. "So if I understand correctly, you're saying that X happens when Y?" Catches misunderstanding in the moment.
-- **Level 2 — Per group**: brief synthesis when transitioning between behaviour groups. "We've covered [area A] and [area B]. Before I ask about [area C], here is what I understood so far: [summary]. Does that capture it?" Confirms completeness, gives stakeholder a recovery point.
-- **Level 3 — End of session**: full synthesis of everything discussed. Present to stakeholder for approval. This is the accuracy gate and the input to domain modelling.
+- **Level 1 (Per answer)**: immediately paraphrase each answer before moving to the next question. "So if I understand correctly, you're saying that X happens when Y?" Catches misunderstanding in the moment.
+- **Level 2 (Per group)**: brief synthesis when transitioning between behaviour groups. "We've covered [area A] and [area B]. Before I ask about [area C], here is what I understood so far: [summary]. Does that capture it?" Confirms completeness, gives stakeholder a recovery point.
+- **Level 3 (End of session)**: full synthesis of everything discussed. Present to stakeholder for approval. This is the accuracy gate and the input to domain modelling.
 
 Do not introduce topic labels or categories during active listening. The summary must reflect what the stakeholder said, not new framing that prompts reactions to things they haven't considered.
 
-### Funnel Technique — Question Ordering to Prevent Priming (Tversky & Kahneman, 1974)
+### Funnel Technique: Question Ordering to Prevent Priming (Tversky & Kahneman, 1974)
 
 Start with broad open-ended questions before narrowing to specifics. Priming bias is structural: any category name the interviewer introduces activates a schema that filters what the interviewee considers worth reporting. The funnel sequences questions so the interviewee's own categories emerge first.
 
@@ -79,6 +79,6 @@ The standard seven general questions (Who, What, Why, When/Where, Success, Failu
 
 ## Related
 
-- [[requirements/pre-mortem]] — prospective hindsight technique applied at specification and design stages
-- [[requirements/invest]] — story quality criteria applied after discovery
-- [[requirements/gherkin]] — writing specifications from discovered requirements
+- [[requirements/pre-mortem]]: prospective hindsight technique applied at specification and design stages
+- [[requirements/invest]]: story quality criteria applied after discovery
+- [[requirements/gherkin]]: writing specifications from discovered requirements

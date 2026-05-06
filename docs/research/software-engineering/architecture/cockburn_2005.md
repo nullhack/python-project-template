@@ -1,4 +1,4 @@
-# Hexagonal Architecture (Ports & Adapters) — Cockburn, 2005
+# Hexagonal Architecture (Ports & Adapters) (Cockburn, 2005)
 
 ## Citation
 
@@ -43,5 +43,5 @@ Foundational pattern for clean architecture, domain-driven design, and microserv
 
 ## Related Research
 
-- (Martin, 2017) — Clean Architecture building on Cockburn's dependency inversion principles
-- (Fowler, 2003) — Architectural decision-making frameworks that support ports and adapters pattern
+- (Martin, 2017): Clean Architecture building on Cockburn's dependency inversion principles
+- (Fowler, 2003): Architectural decision-making frameworks that support ports and adapters pattern

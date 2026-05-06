@@ -1,4 +1,4 @@
-# Diátaxis Documentation Framework — Procida, 2021
+# Diátaxis Documentation Framework (Procida, 2021)
 
 ## Citation
 

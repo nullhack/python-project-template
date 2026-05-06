@@ -1,4 +1,4 @@
-# Attractive Quality and Must-Be Quality (Kano Model) — Kano et al., 1984
+# Attractive Quality and Must-Be Quality (Kano Model) (Kano et al., 1984)
 
 ## Citation
 

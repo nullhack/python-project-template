@@ -1,4 +1,4 @@
-# C4 Model — Brown, 2006–2018
+# C4 Model (Brown, 2006–2018)
 
 ## Citation
 
@@ -22,14 +22,14 @@ High
 
 ## Key Insight
 
-Four levels of architectural abstraction — Context, Container, Component, Code — provide just enough detail at each audience level without overwhelming any single audience.
+Four levels of architectural abstraction (Context, Container, Component, Code) provide just enough detail at each audience level without overwhelming any single audience.
 
 ## Core Findings
 
 1. **Hierarchical abstraction levels**: Context (system in environment), Container (deployable units), Component (modules within containers), Code (classes and functions).
-2. **Audience-specific communication**: Each level answers different questions for different audiences — Context for stakeholders, Container for developers/operators, Component for internal structure, Code for detailed design.
+2. **Audience-specific communication**: Each level answers different questions for different audiences: Context for stakeholders, Container for developers/operators, Component for internal structure, Code for detailed design.
 3. **Progressive disclosure**: Starting from Context and drilling down prevents premature detail overload.
-4. **Notation independence**: C4 works with any diagramming tool or notation — boxes and lines are sufficient.
+4. **Notation independence**: C4 works with any diagramming tool or notation. Boxes and lines are sufficient.
 5. **Tooling independence**: Can be implemented with simple drawing tools, specialized software, or code-based approaches.
 6. **Developer-friendly approach**: Focuses on developer mental models rather than formal architectural frameworks.
 7. **Supporting diagrams**: System landscape, dynamic, and deployment diagrams complement the core four levels.
@@ -44,5 +44,5 @@ Essential methodology for software architecture documentation and communication.
 
 ## Related Research
 
-- (Kruchten, 1995) — 4+1 architectural view model that influenced hierarchical approach
-- (Fowler, 2003) — "Who Needs an Architect?" discussion on architectural communication
+- (Kruchten, 1995): 4+1 architectural view model that influenced hierarchical approach
+- (Fowler, 2003): "Who Needs an Architect?" discussion on architectural communication

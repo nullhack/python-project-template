@@ -1,4 +1,4 @@
-# Calendar Versioning — CalVer, 2020
+# Calendar Versioning (CalVer, 2020)
 
 ## Citation
 

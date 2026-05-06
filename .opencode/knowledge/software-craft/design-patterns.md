@@ -8,23 +8,23 @@ last-updated: 2026-04-30
 
 ## Key Takeaways
 
-- Apply patterns during REFACTOR only when a smell triggers them; never speculatively (Shvets, 2014).
+- Apply patterns only when a smell triggers them; never speculatively (Shvets, 2014).
 - Creational smells (scattered construction, multi-step setup) trigger Factory Method, Abstract Factory, or Builder.
 - Structural smells (type-switching, feature envy, parallel hierarchies) trigger Strategy, Visitor, Move Method, or Bridge.
 - Behavioral smells (large state machines, scattered notifications, repeated algorithm skeletons) trigger State, Observer, or Template Method.
-- When procedural code requires modifying existing functions for new variants, OOP is the fix — the smell is always a place that must change every time the domain grows.
+- When procedural code requires modifying existing functions for new variants, OOP is the fix: the smell is always a place that must change every time the domain grows.
 
 ## Concepts
 
-**Pattern Selection from Smells** (Shvets, 2014; Gamma et al., 1994) — GoF design patterns provide structural solutions to recurring code smells. Patterns are applied during REFACTOR only when a smell triggers them — never speculatively. The smell catalogue identifies the gap; the pattern provides the structural solution.
+**Pattern Selection from Smells** (Shvets, 2014; Gamma et al., 1994). GoF design patterns provide structural solutions to recurring code smells. Patterns are applied only when a smell triggers them, never speculatively. The smell catalogue identifies the gap; the pattern provides the structural solution.
 
-**Creational Smells and Patterns** — Scattered object construction (same object built in 3+ places) triggers Factory Method or Factory Function. Multi-step construction with optional parts (object requires several setup calls before valid) triggers Builder. The key change is centralizing creation knowledge or making invalid intermediate states impossible.
+**Creational Smells and Patterns**. Scattered object construction (same object built in 3+ places) triggers Factory Method or Factory Function. Multi-step construction with optional parts (object requires several setup calls before valid) triggers Builder. The key change is centralizing creation knowledge or making invalid intermediate states impossible.
 
-**Structural Smells and Patterns** — Type-switching (function branches on a type flag) triggers Strategy (behaviour varies per call) or Visitor (operation varies over fixed structure). Feature envy (method uses another class's data more than its own) triggers Move Method. Parallel inheritance hierarchies (two class hierarchies growing in lockstep) trigger Bridge.
+**Structural Smells and Patterns**. Type-switching (function branches on a type flag) triggers Strategy (behaviour varies per call) or Visitor (operation varies over fixed structure). Feature envy (method uses another class's data more than its own) triggers Move Method. Parallel inheritance hierarchies (two class hierarchies growing in lockstep) trigger Bridge.
 
-**Behavioral Smells and Patterns** — Large state machines in one class trigger State pattern. Scattered notification (source directly calls multiple downstream systems) triggers Observer. Repeated algorithm skeletons (two functions sharing structure but differing in one step) trigger Template Method.
+**Behavioral Smells and Patterns**. Large state machines in one class trigger State pattern. Scattered notification (source directly calls multiple downstream systems) triggers Observer. Repeated algorithm skeletons (two functions sharing structure but differing in one step) trigger Template Method.
 
-**Core Heuristic** — When procedural code requires modifying existing functions to add new variants, OOP is the fix. Procedural code is open to modification; OOP closes existing code to modification and opens it to extension through new types. The smell is always the same: a place in the codebase that must change every time the domain grows.
+**Core Heuristic**. When procedural code requires modifying existing functions to add new variants, OOP is the fix. Procedural code is open to modification; OOP closes existing code to modification and opens it to extension through new types. The smell is always the same: a place in the codebase that must change every time the domain grows.
 
 ## Content
 
@@ -38,7 +38,7 @@ last-updated: 2026-04-30
 | Abstract Factory | Create families of related objects without specifying concrete classes | Code depends on families of related objects and must work with any family | Multiple product variants that must be used together; configuration-driven object creation |
 | Builder | Construct complex objects step-by-step, separating construction from representation | Telescoping constructor with many optional parameters; subclass explosion for every configuration | Eliminate telescoping constructor; different representations with similar construction steps; construct Composite trees |
 | Prototype | Clone existing objects instead of creating new ones from scratch | Object creation is expensive or complex; object configuration is the hard part, not the class | Object has many configuration options; deep copy needed; avoid subclass explosion for configuration |
-| Singleton | Ensure a class has only one instance (use sparingly — prefer dependency injection) | Shared resource that must have exactly one instance | Database connection, configuration, logger — but prefer DI over Singleton |
+| Singleton | Ensure a class has only one instance (use sparingly (prefer dependency injection) | Shared resource that must have exactly one instance | Database connection, configuration, logger) but prefer DI over Singleton |
 
 #### Structural
 
@@ -98,9 +98,9 @@ last-updated: 2026-04-30
 
 ## Related
 
-- [[software-craft/smell-catalogue]] — smells trigger pattern selection
-- [[software-craft/refactoring-techniques]] — refactoring techniques that resolve smells before patterns are needed
-- [[software-craft/refactoring]] — when and how to refactor, clean code, technical debt
-- [[software-craft/solid]] — patterns resolve SOLID violations
-- [[software-craft/object-calisthenics]] — Object Calisthenics rules complement pattern application
-- [[software-craft/tdd]] — patterns are applied during REFACTOR phase
+- [[software-craft/smell-catalogue]]: smells trigger pattern selection
+- [[software-craft/refactoring-techniques]]: refactoring techniques that resolve smells before patterns are needed
+- [[software-craft/refactoring]]: when and how to refactor, clean code, technical debt
+- [[software-craft/solid]]: patterns resolve SOLID violations
+- [[software-craft/object-calisthenics]]: Object Calisthenics rules complement pattern application
+- [[software-craft/tdd]]: patterns are applied when improving code structure

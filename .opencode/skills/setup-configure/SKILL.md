@@ -19,12 +19,12 @@ Template resolution: templates live in `.templates/`. The instance path is the t
 2. IF any template files are missing → set evidence to false, exit `missing_files`.
 3. Read `template-config.yaml` defaults section.
 4. Present the 6 current values to the user based on the assessment:
-   - `github_username` — GitHub handle used in URLs and git remote
-   - `project_name` — kebab-case repository name (e.g. my-awesome-project)
-   - `package_name` — snake_case Python package directory (e.g. my_awesome_project)
-   - `project_description` — one sentence describing what the project does
-   - `author_name` — author's full name
-   - `author_email` — author's email address
+   - `github_username`: GitHub handle used in URLs and git remote
+   - `project_name`: kebab-case repository name (e.g. my-awesome-project)
+   - `package_name`: snake_case Python package directory (e.g. my_awesome_project)
+   - `project_description`: one sentence describing what the project does
+   - `author_name`: author's full name
+   - `author_email`: author's email address
 5. For each parameter, ask: "Use this value or enter a new one?" Accept default if confirmed.
 6. Show summary table:
 

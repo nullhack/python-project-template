@@ -1,4 +1,4 @@
-# MoSCoW Prioritization — Clegg & Barker, 1994
+# MoSCoW Prioritization (Clegg & Barker, 1994)
 
 ## Citation
 

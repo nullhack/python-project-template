@@ -1,5 +1,5 @@
 ---
-description: "Design Agent — creates and maintains brand identity, visual assets, and colour systems"
+description: "Design Agent: creates and maintains brand identity, visual assets, and colour systems"
 mode: subagent
 temperature: 0.4
 ---

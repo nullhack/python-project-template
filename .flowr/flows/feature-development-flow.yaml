@@ -13,7 +13,7 @@ states:
       description: "Plan feature breakdown, BDD scenarios, and development readiness"
       git: main
     flow: planning-flow
-    flow-version: "^6"
+    flow-version: "^7"
     next:
       complete: development
       needs_architecture: needs_architecture
@@ -24,7 +24,7 @@ states:
       description: "Implement the feature through TDD cycles, review, and commit"
       git: feature
     flow: development-flow
-    flow-version: "^5"
+    flow-version: "^6"
     next:
       done: delivery
       needs_planning: planning

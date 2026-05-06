@@ -1,4 +1,4 @@
-# Recognition-by-Components — Biederman, 1987
+# Recognition-by-Components (Biederman, 1987)
 
 ## Citation
 
@@ -44,5 +44,5 @@ Foundational theory for understanding how visual recognition works, with direct 
 
 ## Related Research
 
-- (Wertheimer, 1923) — Gestalt principles that complement geon-based recognition
-- (Kare, 1984) — Practical application of edge-based recognition in icon design
+- (Wertheimer, 1923): Gestalt principles that complement geon-based recognition
+- (Kare, 1984): Practical application of edge-based recognition in icon design

@@ -1,4 +1,4 @@
-# Refactoring: Improving the Design of Existing Code — Fowler, 1999
+# Refactoring: Improving the Design of Existing Code (Fowler, 1999)
 
 ## Citation
 
@@ -42,5 +42,5 @@ Foundational methodology for systematic code improvement and design evolution. E
 
 ## Related Research
 
-- (Beck, 2002) — Test-driven development methodology supporting refactoring safety
-- (Shvets, 2014) — Comprehensive online refactoring catalog building on Fowler's work
+- (Beck, 2002): Test-driven development methodology supporting refactoring safety
+- (Shvets, 2014): Comprehensive online refactoring catalog building on Fowler's work

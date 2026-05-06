@@ -1,4 +1,4 @@
-# YAGNI ("You Aren't Gonna Need It") — Beck & Jeffries, 1999
+# YAGNI ("You Aren't Gonna Need It") (Beck & Jeffries, 1999)
 
 ## Citation
 

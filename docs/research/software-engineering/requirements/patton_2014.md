@@ -1,4 +1,4 @@
-# User Story Mapping — Patton, 2014
+# User Story Mapping (Patton, 2014)
 
 ## Citation
 
@@ -27,7 +27,7 @@ Story mapping is a collaborative discovery workshop that produces a two-dimensio
 ## Core Findings
 
 1. **Backbone First**: Map user activities (high-level workflows) as the top row before adding any stories. Activities correspond to bounded contexts or major product areas.
-2. **Stories Are Discovered, Not Written**: Stories emerge from mapping user tasks beneath activities. The mapping workshop IS the discovery process — it replaces separate specification interviews for initial story creation.
+2. **Stories Are Discovered, Not Written**: Stories emerge from mapping user tasks beneath activities. The mapping workshop IS the discovery process. It replaces separate specification interviews for initial story creation.
 3. **Release Slicing**: Horizontal cuts across the map define releases. The minimum viable product is the thinnest horizontal slice that covers all activities.
 4. **Coarse Then Detailed**: Stories start as brief titles (one-line descriptions). Full "As a / I want / So that" format comes later during backlog refinement, not during mapping.
 5. **Whole Product View**: A flat backlog hides dependencies and gaps. The two-dimensional map makes missing functionality, duplicate stories, and ordering dependencies visible.
@@ -43,4 +43,4 @@ Story mapping bridges Event Storming (which surfaces bounded contexts and domain
 
 ## Related Research
 
-Builds on agile user stories (Cohn, 2004), influenced by design thinking's emphasis on whole-product understanding. Complements Event Storming (Brandolini, 2012) — storming produces events and contexts, mapping produces stories and releases. Patton explicitly credits Constantine's usage-centered design as a precursor.
+Builds on agile user stories (Cohn, 2004), influenced by design thinking's emphasis on whole-product understanding. Complements Event Storming (Brandolini, 2012): storming produces events and contexts, mapping produces stories and releases. Patton explicitly credits Constantine's usage-centered design as a precursor.

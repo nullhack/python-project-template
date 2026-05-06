@@ -1,5 +1,5 @@
 ---
-description: "Software Engineer — implements, tests, and ships production code"
+description: "Software Engineer: implements, tests, and ships production code"
 mode: subagent
 temperature: 0.3
 ---

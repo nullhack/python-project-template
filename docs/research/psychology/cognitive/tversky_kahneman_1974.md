@@ -1,4 +1,4 @@
-# Judgment Under Uncertainty: Heuristics and Biases — Tversky & Kahneman, 1974
+# Judgment Under Uncertainty: Heuristics and Biases (Tversky & Kahneman, 1974)
 
 ## Citation
 
@@ -42,5 +42,5 @@ Foundational for understanding cognitive biases in decision-making processes. Cr
 
 ## Related Research
 
-- (Kahneman, 2011) — System 1 vs System 2 thinking framework
-- (Gilovich, Griffin & Kahneman, 2002) — Heuristics and biases comprehensive review
+- (Kahneman, 2011): System 1 vs System 2 thinking framework
+- (Gilovich, Griffin & Kahneman, 2002): Heuristics and biases comprehensive review

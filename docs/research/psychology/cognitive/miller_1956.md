@@ -1,4 +1,4 @@
-# The Magical Number Seven, Plus or Minus Two — Miller, 1956
+# The Magical Number Seven, Plus or Minus Two (Miller, 1956)
 
 ## Citation
 
@@ -43,6 +43,6 @@ Foundational principle for interface design, information architecture, and cogni
 
 ## Related Research
 
-- (Sweller, 1988) — Cognitive load theory and instructional design
-- (Cowan, 2001) — Revised capacity estimate of ~4 chunks rather than 7±2
-- (Baddeley, 1992) — Working memory model with multiple components
+- (Sweller, 1988): Cognitive load theory and instructional design
+- (Cowan, 2001): Revised capacity estimate of ~4 chunks rather than 7±2
+- (Baddeley, 1992): Working memory model with multiple components

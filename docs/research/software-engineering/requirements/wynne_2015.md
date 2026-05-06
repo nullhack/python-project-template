@@ -1,4 +1,4 @@
-# Example Mapping — Wynne, 2015
+# Example Mapping (Wynne, 2015)
 
 ## Citation
 

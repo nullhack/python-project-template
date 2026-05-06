@@ -1,4 +1,4 @@
-# Design Patterns: Elements of Reusable Object-Oriented Software — Gamma, Helm, Johnson, Vlissides, 1994
+# Design Patterns: Elements of Reusable Object-Oriented Software (Gamma, Helm, Johnson, Vlissides, 1994)
 
 ## Citation
 
@@ -42,5 +42,5 @@ Foundational reference for object-oriented design and software architecture. Ess
 
 ## Related Research
 
-- (Fowler, 1999) — Refactoring methodology that prepares code for pattern application
-- (Shvets, 2014) — Modern catalog connecting code smells to appropriate patterns
+- (Fowler, 1999): Refactoring methodology that prepares code for pattern application
+- (Shvets, 2014): Modern catalog connecting code smells to appropriate patterns

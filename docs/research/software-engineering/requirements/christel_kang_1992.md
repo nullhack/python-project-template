@@ -1,4 +1,4 @@
-# Issues in Requirements Elicitation — Christel & Kang, 1992
+# Issues in Requirements Elicitation (Christel & Kang, 1992)
 
 ## Citation
 

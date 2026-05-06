@@ -1,4 +1,4 @@
-# Semantic Versioning 2.0.0 — Preston-Werner, 2013
+# Semantic Versioning 2.0.0 (Preston-Werner, 2013)
 
 ## Citation
 

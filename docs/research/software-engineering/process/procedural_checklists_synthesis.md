@@ -1,4 +1,4 @@
-# Procedural Checklists and Initiation Anchors — Synthesis, 2026
+# Procedural Checklists and Initiation Anchors (Synthesis, 2026)
 
 ## Citation
 
@@ -26,16 +26,16 @@ High
 
 ## Key Insight
 
-Checklists must be anchored to clear external cues that cannot be forgotten, and each gate requires explicit challenge-response confirmation before proceeding — floating initiation and collapsed phases are the primary failure modes.
+Checklists must be anchored to clear external cues that cannot be forgotten, and each gate requires explicit challenge-response confirmation before proceeding. Floating initiation and collapsed phases are the primary failure modes.
 
 ## Core Findings
 
 1. **Initiation anchors prevent skip failures.** FAA AC 120-71b §5.1.5: checklist initiation must be anchored to a clear external cue (e.g., reaching 2,000 feet before hold-short line). "Floating" initiation (no external trigger) has high risk of being forgotten entirely.
 2. **Challenge-response ensures explicit confirmation.** Aviation uses two-person read-respond. WHO SSC uses three phases (Sign In, Time Out, Sign Out) with a coordinator who must confirm completion before the team proceeds.
-3. **Interruption recovery requires restarting.** FAA AC 120-71b §5.2.3: if a checklist is interrupted and position is unclear, the section must be reaccomplished from the beginning — partial completion is never trusted.
+3. **Interruption recovery requires restarting.** FAA AC 120-71b §5.2.3: if a checklist is interrupted and position is unclear, the section must be reaccomplished from the beginning. Partial completion is never trusted.
 4. **Cue distinctiveness prevents overload.** Finley (2018): effective cues are distinctive (single mapping), encoding-specific (overlap with task context), and stable (consistent across environments). Cue overload degrades reliability.
 5. **Structured pause points drive the effect.** Haynes et al. (2009): WHO SSC reduced complications 11.0%→7.0% and mortality 1.5%→0.8%. The mechanism was not individual items but forced communication at phase transitions.
-6. **Multi-phase collapse loses fail-fast.** Collapsing checklist phases (e.g., running all review tiers in one pass) eliminates independent gates — each phase can fail independently and should stop the sequence.
+6. **Multi-phase collapse loses fail-fast.** Collapsing checklist phases (e.g., running all review tiers in one pass) eliminates independent gates. Each phase can fail independently and should stop the sequence.
 
 ## Mechanism
 
@@ -47,6 +47,6 @@ Applied to agentic workflow orchestration: the `[~]` anchor item in the todo tem
 
 ## Related Research
 
-- [[software-craft/tdd]] — two-phase quality gate (design-phase: test-fast only; convention-phase: lint/format)
-- [[workflow/flowr-operations]] — flowr commands for state transitions
-- [[requirements/pre-mortem]] — pre-mortem analysis as a checklist item before example writing
+- [[software-craft/tdd]]: two-phase quality gate (design-phase: test-fast only; convention-phase: lint/format)
+- [[workflow/flowr-operations]]: flowr commands for state transitions
+- [[requirements/pre-mortem]]: pre-mortem analysis as a checklist item before example writing

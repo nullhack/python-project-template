@@ -4,7 +4,7 @@
 > Updated by the Domain Expert when domain understanding evolves.
 > This document captures what code cannot express: WHY entities exist, HOW aggregates are bounded, and WHAT business capabilities each context serves.
 >
-> **Evolving document:** Event Storming fills the Event Map, Aggregate Candidates, and Context Candidates sections (workshop draft). Domain Modeling then formalizes them into Entities, Relationships, and Aggregate Boundaries.
+> **Evolving document:** Event Storming produces event_storming.md (workshop draft). Domain Modeling then reads that draft and formalizes it into the Bounded Contexts, Entities, Relationships, and Aggregate Boundaries sections below.
 
 ---
 
@@ -14,53 +14,11 @@
 
 ---
 
-## Event Map
-
-### Domain Events
-
-| Event | Description | Trigger | Bounded Context |
-|-------|-------------|---------|-----------------|
-| `<EventName>` | <what happened> | <what causes it> | <Context> |
-
-### Commands
-
-| Command | Description | Produces Event | Actor |
-|---------|-------------|----------------|-------|
-| `<CommandName>` | <what it does> | `<EventName>` | <who triggers it> |
-
-### Read Models
-
-| Read Model | Description | Consumes Event | Used By |
-|------------|-------------|----------------|---------|
-| `<ReadModel>` | <what it shows> | `<EventName>` | <who reads it> |
-
----
-
-## Context Candidates
-
-> Filled during Event Storming. Formalized in Bounded Contexts section below by Domain Modeling.
-
-| Candidate | Responsibility | Grouped Aggregates | Notes |
-|-----------|---------------|--------------------|-------|
-| `<ContextName>` | <what this context owns> | `<Aggregate1>`, `<Aggregate2>` | <why this boundary was suggested> |
-
----
-
-## Aggregate Candidates
-
-> Filled during Event Storming. Formalized in Aggregate Boundaries section below by Domain Modeling.
-
-| Candidate | Events Grouped | Tentative Root Entity | Notes |
-|-----------|---------------|-----------------------|-------|
-| `<AggregateName>` | `<Event1>`, `<Event2>` | `<EntityName>` | <why these events share a transactional boundary> |
-
----
-
 ## Bounded Contexts
 
-| Context | Responsibility | Key Entities | Integration Points |
-|---------|----------------|--------------|-------------------|
-| `<Context>` | <responsibility> | `<Entity1>`, `<Entity2>` | <how it connects to other contexts> |
+| Context | Responsibility | Key Entities | Business Capability | Why Separate | Integration Points |
+|---------|----------------|--------------|---------------------|-------------|-------------------|
+| `<Context>` | <responsibility> | `<Entity1>`, `<Entity2>` | <what business need it serves> | <why it can't be merged with another context> | <how it connects to other contexts> |
 
 ---
 
@@ -83,9 +41,9 @@
 
 ## Aggregate Boundaries
 
-| Aggregate | Root Entity | Invariants | Bounded Context |
-|-----------|-------------|------------|-----------------|
-| `<Aggregate>` | `<RootEntity>` | <business rules this aggregate enforces> | <Context> |
+| Aggregate | Root Entity | Invariants | Why Grouped | Bounded Context |
+|-----------|-------------|------------|-------------|-----------------|
+| `<Aggregate>` | `<RootEntity>` | <business rules this aggregate enforces> | <business reason for the boundary> | <Context> |
 
 ---
 

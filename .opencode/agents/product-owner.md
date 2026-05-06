@@ -1,5 +1,5 @@
 ---
-description: "Product Owner — owns scope, requirements, and acceptance"
+description: "Product Owner: owns scope, requirements, and acceptance"
 mode: subagent
 temperature: 0.4
 ---

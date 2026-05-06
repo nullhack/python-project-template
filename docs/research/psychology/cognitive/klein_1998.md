@@ -1,4 +1,4 @@
-# Sources of Power / PreMortem — Klein, 1998/2007
+# Sources of Power / PreMortem (Klein, 1998/2007)
 
 ## Citation
 
@@ -22,7 +22,7 @@ High
 
 ## Key Insight
 
-Prospective hindsight ("imagine this failed — why?") catches 30% more potential issues than forward-looking review because the brain is better at explaining past events than predicting future ones.
+Prospective hindsight ("imagine this failed. Why?") catches 30% more potential issues than forward-looking review because the brain is better at explaining past events than predicting future ones.
 
 ## Core Findings
 
@@ -35,7 +35,7 @@ Prospective hindsight ("imagine this failed — why?") catches 30% more potentia
 
 ## Mechanism
 
-PreMortem shifts cognitive frame from prediction (weak) to explanation (strong). By asking "imagine this already failed — why?" the technique activates the brain's superior ability to generate causal explanations for past events. This reveals failure modes that forward-looking analysis ("what could go wrong?") typically misses because prediction requires cognitive resources that explanation does not.
+PreMortem shifts cognitive frame from prediction (weak) to explanation (strong). By asking "imagine this already failed. Why?" the technique activates the brain's superior ability to generate causal explanations for past events. This reveals failure modes that forward-looking analysis ("what could go wrong?") typically misses because prediction requires cognitive resources that explanation does not.
 
 ## Relevance
 
@@ -43,5 +43,5 @@ Essential methodology for project risk assessment, decision-making improvement, 
 
 ## Related Research
 
-- (Kahneman & Klein, 2009) — Conditions for intuitive expertise
-- (Mitchell et al., 1989) — Prospective hindsight effectiveness studies
+- (Kahneman & Klein, 2009): Conditions for intuitive expertise
+- (Mitchell et al., 1989): Prospective hindsight effectiveness studies

@@ -2,16 +2,36 @@
 
 All notable changes to this template will be documented in this file.
 
-## [v8.2.0+20260505] - 2026-05-05 — Discriminating Epicurus
+## [v8.3.0+20260506] - 2026-05-06: Rigorous Euclid
+
+### Added
+
+- **README FAQ section**: Five questions covering Kiro, Cursor/Copilot, Claude Code/opencode, tool compatibility, and non-software workflows.
+- **README "Who is this for" rewrite**: Refocused around vibe coding, agentic engineering, and spec-driven development adoption.
+- **agents-smith quick start**: New "Existing project" quick-start block using [agents-smith](https://github.com/nullhack/agents-smith) for one-command adoption.
+- **Workflow flexibility paragraph**: New "What it does" paragraph explaining that flows are not hardcoded and any state machine process fits.
+
+### Changed
+
+- **Tagline**: "From zero to hero: production-ready Python, without the ceremony." → "From zero to hero: Spec-driven agent orchestration. Any workflow. Any LLM. Zero lock-in."
+- **Branding sync**: `docs/branding/branding.md` tagline updated to match README.
+- **flowr 1.0.0 adoption**: Upgraded dependency from `>=0.5` to `>=1.0.0`. Knowledge files synced to the official v1.0.0 specification.
+- **`~=` operator removed**: The approximate numeric match operator is no longer in the specification. Condition operators are now: `==`, `!=`, `>=`, `<=`, `>`, `<`. Plain values without operator prefix are implicit `==`.
+- **`when` forms**: Updated documentation to cover all three `when` forms: dict (inline), string (named ref), list (AND-combined mix).
+- **Conformance levels**: Added MUST/SHOULD/MAY conformance levels and extension field semantics. Reserved keys registry added.
+- **Validation rules streamlined**: Consolidated to seven MUST-level checks matching the specification.
+- **Research note**: Renamed `nullhack_flowr_0.4.0.md` to `nullhack_flowr_1.0.0.md` with full specification review.
+
+## [v8.2.0+20260505] - 2026-05-05: Discriminating Epicurus
 
 ### Added
 
 - **Feature discovery state**: New `discover-features` skill replaces `specify-feature` with adversarial analysis. Discovery-flow updated (v4→v5) with feature-discovery state that reads `technical_design.md` alongside `product_definition.md`.
 - **Todo-driven execution**: Procedural contract and anchor protocol extracted to `.opencode/knowledge/workflow/todo-anchor-protocol.md`. FAA-style checklist, loop prevention, one-state-per-todo enforcement, anti-patterns, and owner mapping table.
-- **Convention Boundary**: Convention checks (ruff, pyright, lint, format) are prohibited during design-phase states. Only `test-fast` is permitted — two-phase quality gate enforced in AGENTS.md.
+- **Convention Boundary**: Convention checks (ruff, pyright, lint, format) are prohibited during design-phase states. Only `test-fast` is permitted. The design-before-conventions principle is enforced in AGENTS.md.
 - **@id format**: 8-char hex default for scenario IDs, with respect for existing formats. Verified at baseline via `verify-traceability` skill.
 - **Silent quality gates**: INVEST validation and example quality checks are silent gates (not artifact content). Features that fail these gates loop back for respecification without polluting the feature file.
-- **Gherkin steps preservation**: `write-test` skill preserves Gherkin steps in docstrings as immutable specification — agents must not modify them.
+- **Gherkin steps preservation**: `write-test` skill preserves Gherkin steps in docstrings as immutable specification. Agents must not modify them.
 - **Todo anchor protocol knowledge file**: Created `.opencode/knowledge/workflow/todo-anchor-protocol.md` with FAA checklist, loop prevention, one-state-per-todo enforcement, anti-patterns, and owner mapping table.
 
 ### Changed
@@ -24,7 +44,7 @@ All notable changes to this template will be documented in this file.
 - **TODO template**: Slimmed from 47 lines to 21 lines. Essential flowr JSON cheatsheet added. Removed redundant Procedural Contract, Anchor Checklist, and State Metadata sections (now in knowledge files).
 - **Knowledge decoupled from flow state names**: Knowledge files no longer reference specific flow state names, making them reusable across different flow configurations.
 - **Flow version bumps**: discovery-flow 4→5, planning-flow 5→6.
-- **Frozen Examples Rule**: Removed from feature template — moved to `write-bdd-features` skill where it belongs.
+- **Frozen Examples Rule**: Removed from feature template, moved to `write-bdd-features` skill where it belongs.
 
 ## [v8.1.0+20260502] - 2026-05-02
 
@@ -72,13 +92,13 @@ All notable changes to this template will be documented in this file.
 - **Architecture-assessment conditions**: Added `architecture_complete` condition. Fixed `no_architecture_exists` to check `technical_design_md` and `context_map_md` (not `system.md`).
 - **MoSCoW prevention**: MoSCoW classification is internal triage only, must NOT appear as Gherkin tags. Updated `moscow.md`, `write-bdd-features` SKILL.md, `feature.feature.template`.
 - **Minimum stub principle**: Protocol signatures + `raise NotImplementedError`, no docstrings, no type hints beyond contract. Docstrings/type hints/lint added when reviewers require them.
-- **Reviewer role**: Reviewer MUST NOT modify files — only APPROVED/REJECTED reports. 'Minor' is not a pass — acknowledged smells are still findings.
+- **Reviewer role**: Reviewer MUST NOT modify files: only APPROVED/REJECTED reports. 'Minor' is not a pass: acknowledged smells are still findings.
 - **Terminology**: 'cosmetic' → 'conventions', 'Completion Phase' → 'Conventions Phase'.
-- **On-demand reading**: `in` artifacts are read on demand, not eagerly. Applies to all files — spec documents, production code, and test code.
+- **On-demand reading**: `in` artifacts are read on demand, not eagerly. Applies to all files: spec documents, production code, and test code.
 - **Spec doc protection**: Specification documents are read-only during TDD. SE may ONLY modify production code and test code. Gaps flagged in output notes.
 - **Session protocol**: AGENTS.md Session Protocol uses real flowr CLI commands (`check` for state entry, `next` for available paths, `transition` for advancing). Owner dispatch is top-level step 2. Skills use generic exit instructions referencing `[[workflow/flowr-operations]]`.
 - **Artifact existence guarantee**: File artifacts in `in`/`out` are created from templates lazily. Missing non-Python templates raise error. Environment artifacts produced by tooling.
-- **WSJF selection rules**: Clarified — only Dependency=0 features eligible. Ties broken by Value. If all blocked, resolve dependency first then re-score.
+- **WSJF selection rules**: Clarified: only Dependency=0 features eligible. Ties broken by Value. If all blocked, resolve dependency first then re-score.
 - **Flowviz moved to `.flowr/viz/`**: Interactive D3 visualization data now lives under `.flowr/viz/` instead of `flowviz/`.
 - **Removed `scripts/flowr-utils.sh` and `scripts/generate-svg.sh`**: Agents use `python -m flowr` directly. SVG generation was broken for all but one flow.
 - **Research files**: All 71+ research files converted to v8 template format with Source Type, Method, Verification Status, Confidence, Key Insight, Core Findings, Mechanism, Relevance, Related Research. Citation reference fixes (Tetlock 1983→1985, Brown 2006→2018, king_1991_mutation→demillo_lipton_sayward_1978).
@@ -94,14 +114,14 @@ All notable changes to this template will be documented in this file.
 
 ### Added
 
-- **Flow-based delivery system**: Hierarchical state machines (`.flowr/flows/`) replace monolithic agents/skills — main-flow → discovery → architecture → feature-development, with planning/development/delivery/post-mortem subflows
-- **Identity-only agents**: 5 agents (product-owner, domain-expert, system-architect, reviewer, software-engineer) matching flow owners — no routing, artifacts, or skill lists in agent files
-- **Procedure-only skills**: 26 skills mapped to flow states — no identity or routing logic
+- **Flow-based delivery system**: Hierarchical state machines (`.flowr/flows/`) replace monolithic agents/skills: main-flow → discovery → architecture → feature-development, with planning/development/delivery/post-mortem subflows
+- **Identity-only agents**: 5 agents (product-owner, domain-expert, system-architect, reviewer, software-engineer) matching flow owners: no routing, artifacts, or skill lists in agent files
+- **Procedure-only skills**: 26 skills mapped to flow states: no identity or routing logic
 - **Progressive knowledge**: Split/rewrote 15+ knowledge files with `#key-takeaways`/`#concepts` fragments for token-efficient loading
 - **Flowviz**: Interactive D3+dagre visualization for all 10 flows (`flowviz/`)
 - **Document templates**: 11 templates in `.templates/` with instance path mapping in `AGENTS.md`
 - **Research library**: 41 structured research notes under `docs/research/` with citation metadata
-- **Versioning scheme**: Semver (`major.minor.patch`) in pyproject.toml; git tags append `+YYYYMMDD` build metadata; PyPI uses semver core only — see `[[software-craft/versioning]]`
+- **Versioning scheme**: Semver (`major.minor.patch`) in pyproject.toml; git tags append `+YYYYMMDD` build metadata; PyPI uses semver core only (see `[[software-craft/versioning]]`)
 - **`software-engineer` agent**: Identity-only agent for the SE flow owner role
 
 ### Changed
@@ -119,7 +139,7 @@ All notable changes to this template will be documented in this file.
 
 ### Removed
 
-- **Monolithic agents/skills**: `architect`, `define-scope`, `implement`, `verify`, `update-docs`, `run-session`, `flow`, `git-release`, `create-agent`, `create-knowledge`, `create-skill`, `design-assets`, `design-colors`, `check-quality`, `apply-patterns`, `version-control` — all replaced by flow-driven architecture
+- **Monolithic agents/skills**: `architect`, `define-scope`, `implement`, `verify`, `update-docs`, `run-session`, `flow`, `git-release`, `create-agent`, `create-knowledge`, `create-skill`, `design-assets`, `design-colors`, `check-quality`, `apply-patterns`, `version-control`, all replaced by flow-driven architecture
 - **`FLOW.md` and `WORK.md`**: Replaced by `.flowr/flows/` YAML state machines and `.flowr/sessions/` runtime state
 - **Stale docs**: `docs/research/` (flat files), `docs/features/completed/`, `docs/features/in-progress/`, `docs/adr/` old ADRs, `docs/product-definition.md`, `docs/glossary.md`, `docs/system.md`, `docs/scope_journal.md`, `docs/assets/workflow.svg`
 - **11 obsolete scripts**: `assign_ids.py`, `check_adrs.py`, `check_commit_messages.py`, `check_feature_file.py`, `check_knowledge.py`, `check_oc.py`, `check_stubs.py`, `check_version.py`, `check_work_md.py`, `detect_state.py`, `score_features.py`, `update_index_html.py`
@@ -133,7 +153,7 @@ Releases v1.0.0 through v7.2 used a hybrid calver scheme where the date occupied
 
 Key milestones:
 
-- **v1.0** (2026-03-12): Initial release — 7-phase TDD, agents, skills, CI
+- **v1.0** (2026-03-12): Initial release: 7-phase TDD, agents, skills, CI
 - **v2.0** (2026-04-11): V1→V2 architecture transition, CI/CD, Docker, security
 - **v3.0** (2026-04-14): 6-step/3-role redesign (PO, Developer, Reviewer)
 - **v4.0** (2026-04-16): Per-test Design Self-Declaration, `template-config.yaml`, post-mortem protocol

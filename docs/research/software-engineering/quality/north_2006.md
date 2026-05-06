@@ -1,4 +1,4 @@
-# Behaviour-Driven Development — North, 2006
+# Behaviour-Driven Development (North, 2006)
 
 ## Citation
 

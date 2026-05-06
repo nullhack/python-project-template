@@ -9,20 +9,20 @@ last-updated: 2026-04-29
 ## Key Takeaways
 
 - Skills are procedure only (HOW); the flow defines routing (WHEN), artifacts (WHAT), and transitions (WHERE TO NEXT).
-- Skills load into context only when invoked; keep them lean — target under 150 lines.
+- Skills load into context only when invoked; keep them lean. Target under 150 lines.
 - Skills reference knowledge via wikilinks and never inline knowledge content.
 - Embed IF-THEN triggers (Gollwitzer, 1999) at the decision point within steps, not in a separate section.
-- Skills are how-to guides (Diátaxis — Procida, 2021): step-by-step instructions for achieving a specific outcome.
+- Skills are how-to guides (Diátaxis, Procida, 2021): step-by-step instructions for achieving a specific outcome.
 
 ## Concepts
 
-**Skill = Procedure Only**: The flow YAML is the single source of truth for owner, skills, input_artifacts, output_artifacts, and next transitions. The skill contains only the procedure for doing the work. Do not duplicate artifact paths, routing decisions, or "when to use" sections — those come from the flow.
+**Skill = Procedure Only**: The flow YAML is the single source of truth for owner, skills, input_artifacts, output_artifacts, and next transitions. The skill contains only the procedure for doing the work. Do not duplicate artifact paths, routing decisions, or "when to use" sections; those come from the flow.
 
 **On-Demand Loading**: Skills load into context only when invoked. Bloated always-loaded files cause LLMs to ignore critical instructions (Liu et al., 2023). Every token in an unconditionally-loaded file competes for attention. Skills must be self-contained when loaded but must not duplicate content in `AGENTS.md` or other skills.
 
-**Skill as How-To Guide (Diátaxis — Procida, 2021)**: In the Diátaxis framework, skills serve as how-to guides: task-oriented, step-by-step instructions. Tutorials (learning a role) belong in agent files. Reference and explanation belong in knowledge files.
+**Skill as How-To Guide (Diátaxis, Procida, 2021)**: In the Diátaxis framework, skills serve as how-to guides: task-oriented, step-by-step instructions. Tutorials (learning a role) belong in agent files. Reference and explanation belong in knowledge files.
 
-**Reference Knowledge, Never Inline**: When a skill needs domain knowledge (e.g., INVEST criteria, Gherkin format), it must reference the knowledge file via wikilink rather than embedding the content. This prevents duplication and ensures the knowledge file remains the single source of truth.
+**Reference Knowledge, Never Inline**: When a skill needs domain knowledge (e.g., INVEST criteria, Gherkin format), it must reference the knowledge file via wikilink rather than embedding the content. This prevents duplication and guarantees the knowledge file remains the single source of truth.
 
 **Prospective Memory Cues** (Gollwitzer, 1999; McDaniel & Einstein, 2000): Memory for intended actions is better when cues are embedded at the decision point. Include the IF-THEN trigger and the knowledge reference at the point of decision, not in a separate reference document.
 

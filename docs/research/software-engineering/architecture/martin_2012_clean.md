@@ -1,4 +1,4 @@
-# Clean Architecture — Martin, 2012
+# Clean Architecture (Martin, 2012)
 
 ## Citation
 
@@ -26,12 +26,12 @@ The dependency arrow always points inward: from infrastructure toward applicatio
 
 ## Core Findings
 
-1. **Dependency Rule**: Source code dependencies must point inward only — outer layers can depend on inner layers, but inner layers must never depend on outer layers.
+1. **Dependency Rule**: Source code dependencies must point inward only. Outer layers can depend on inner layers, but inner layers must never depend on outer layers.
 2. **Concentric layer structure**: Four layers from outside to inside: Frameworks/Drivers → Interface Adapters → Application Business Rules (Use Cases) → Enterprise Business Rules (Entities).
 3. **Framework independence**: The architecture doesn't depend on frameworks; frameworks are tools to be used, not architectures to be conformed to.
 4. **Testable in isolation**: Business rules can be tested without UI, database, web server, or any external element because dependencies point inward.
-5. **Database independence**: Business rules are not bound to the database — you can swap Oracle for SQL Server, MongoDB, CouchDB, or something else without affecting business rules.
-6. **UI independence**: The UI can change without changing the rest of the system — Web UI could be replaced with console UI without changing business rules.
+5. **Database independence**: Business rules are not bound to the database. You can swap Oracle for SQL Server, MongoDB, CouchDB, or something else without affecting business rules.
+6. **UI independence**: The UI can change without changing the rest of the system. Web UI could be replaced with console UI without changing business rules.
 7. **Building on previous architectures**: Clean Architecture synthesizes Hexagonal Architecture (Cockburn, 2005), Onion Architecture, Screaming Architecture, and DCI into a unified approach.
 
 ## Mechanism
@@ -44,5 +44,5 @@ Foundational architecture pattern for creating maintainable, testable, framework
 
 ## Related Research
 
-- (Parnas, 1972) — Information hiding principles underlying Clean Architecture's dependency rule
-- (Cockburn, 2005) — Hexagonal Architecture that Clean Architecture builds upon and generalizes
+- (Parnas, 1972): Information hiding principles underlying Clean Architecture's dependency rule
+- (Cockburn, 2005): Hexagonal Architecture that Clean Architecture builds upon and generalizes

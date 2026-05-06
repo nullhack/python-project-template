@@ -1,4 +1,4 @@
-# Strategic and Automatic Processes in Prospective Memory — McDaniel & Einstein, 2000
+# Strategic and Automatic Processes in Prospective Memory (McDaniel & Einstein, 2000)
 
 ## Citation
 
@@ -43,5 +43,5 @@ Critical for interface design, process documentation, and workflow systems. Appl
 
 ## Related Research
 
-- (Gollwitzer, 1999) — Implementation intentions creating automatic cue-response links
-- (Miller, 1956) — Working memory limitations affecting monitoring-based prospective memory
+- (Gollwitzer, 1999): Implementation intentions creating automatic cue-response links
+- (Miller, 1956): Working memory limitations affecting monitoring-based prospective memory

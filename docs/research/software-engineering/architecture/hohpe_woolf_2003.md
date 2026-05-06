@@ -1,4 +1,4 @@
-# Enterprise Integration Patterns — Hohpe & Woolf, 2003
+# Enterprise Integration Patterns (Hohpe & Woolf, 2003)
 
 ## Citation
 
@@ -43,5 +43,5 @@ Foundational reference for all distributed system integration, microservices arc
 
 ## Related Research
 
-- (Fielding, 2000) — REST architectural style complementing messaging patterns for distributed systems
-- (Conway, 1968) — Organizational structures affecting integration architecture design
+- (Fielding, 2000): REST architectural style complementing messaging patterns for distributed systems
+- (Conway, 1968): Organizational structures affecting integration architecture design

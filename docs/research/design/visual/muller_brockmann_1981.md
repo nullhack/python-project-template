@@ -1,4 +1,4 @@
-# Grid Systems in Graphic Design — Müller-Brockmann, 1981
+# Grid Systems in Graphic Design (Müller-Brockmann, 1981)
 
 ## Citation
 
@@ -35,7 +35,7 @@ A grid provides the rational structure upon which creative work becomes legible,
 
 ## Mechanism
 
-The rule of thirds divides a canvas into 9 equal zones (3 columns × 3 rows). The four intersections are natural focal points — the eye is drawn to them preferentially over the center. Placing the primary mark at an upper-third intersection and secondary elements along the lower third creates dynamic tension. A centered composition (mark at dead center) creates calm and stability but risks feeling static. Müller-Brockmann's key rule: the grid constrains placement but liberates proportion. Within a grid, elements can be large or small, bold or light — the grid ensures they relate to each other rationally. Without a grid, elements appear arbitrary and the composition feels disorganized regardless of individual element quality.
+The rule of thirds divides a canvas into 9 equal zones (3 columns × 3 rows). The four intersections are natural focal points. The eye is drawn to them preferentially over the center. Placing the primary mark at an upper-third intersection and secondary elements along the lower third creates dynamic tension. A centered composition (mark at dead center) creates calm and stability but risks feeling static. Müller-Brockmann's key rule: the grid constrains placement but liberates proportion. Within a grid, elements can be large or small, bold or light. The grid ensures they relate to each other rationally. Without a grid, elements appear arbitrary and the composition feels disorganized regardless of individual element quality.
 
 ## Relevance
 
@@ -43,5 +43,5 @@ Foundational methodology for all layout design, logo positioning, and visual com
 
 ## Related Research
 
-- (Wertheimer, 1923) — Gestalt principles that inform grid-based visual organization
-- (Rand, 1985) — Application of grid principles to logo and identity design
+- (Wertheimer, 1923): Gestalt principles that inform grid-based visual organization
+- (Rand, 1985): Application of grid principles to logo and identity design

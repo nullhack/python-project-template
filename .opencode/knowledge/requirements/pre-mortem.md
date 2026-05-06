@@ -8,60 +8,54 @@ last-updated: 2026-04-29
 
 ## Key Takeaways
 
-- Prospective hindsight catches approximately 30% more issues than forward-looking review (Klein, 1998); frame the question as "it already failed — why?" to activate explanation mode.
-- Apply the pre-mortem at three stages: before writing Examples (specification), before writing design or stubs (architecture), and before implementation (TDD).
+- Prospective hindsight catches approximately 30% more issues than forward-looking review (Klein, 1998); frame the question as "it already failed: why?" to activate explanation mode.
+- Apply the pre-mortem at three levels of granularity: specification (missing observable behaviours), architecture (design principle violations), and implementation (design self-declaration).
 - At specification: "Imagine this feature was built exactly as described, all tests pass, but it doesn't work for the user. What would be missing?"
-- At architecture: for each candidate class check >2 instance variables (Object Calisthenics — Bay, 2008) or >1 reason to change (SRP — Martin, 2000); for each external dependency check if it is behind a Protocol (Hexagonal Architecture — Cockburn, 2005); for each noun check if it serves double duty across modules.
-- All pre-mortems must complete before moving to the next stage; they are condition gates in the flow, not optional exercises.
+- At architecture: for each candidate class check [[software-craft/object-calisthenics#key-takeaways]] and [[software-craft/solid#key-takeaways]]; for each external dependency check [[architecture/hexagonal#key-takeaways]]; for each noun check if it serves double duty across modules.
+- All pre-mortems are enforced by condition gates in the flow: they are not optional exercises.
 
 ## Concepts
 
-**Prospective Hindsight Mechanism**: Asking "imagine this failed — why?" catches 30% more issues than forward-looking review (Klein, 1998). The brain is better at explaining past events than predicting future ones (Kahneman, 2011). By framing as "it already failed," you activate explanation mode (System 2 reasoning) rather than prediction mode (System 1 heuristic).
+**Prospective Hindsight Mechanism**: Asking "imagine this failed: why?" catches 30% more issues than forward-looking review (Klein, 1998). The brain is better at explaining past events than predicting future ones (Kahneman, 2011). By framing as "it already failed," you activate explanation mode (System 2 reasoning) rather than prediction mode (System 1 heuristic).
 
-**Specification Pre-Mortem**: Before writing Examples for any Rule, ask "What observable behaviours must we prove for this Rule to be complete?" All Rules must have their pre-mortems completed before any Examples are written. This surfaces hidden requirements that forward-looking analysis misses.
+**Specification Pre-Mortem**: Ask "What observable behaviours must we prove for this Rule to be complete?" This surfaces hidden requirements that forward-looking analysis misses.
 
-**Architecture Pre-Mortem**: Before writing design or stubs, ask "In 6 months this design is a mess. What mistakes did we make?" Check each candidate class for >2 instance variables → split (Object Calisthenics — Bay, 2008) or >1 reason to change → isolate (SRP — Martin, 2000). Check each external dependency for Protocol encapsulation (Hexagonal Architecture — Cockburn, 2005). Check each noun for cross-module double duty.
+**Architecture Pre-Mortem**: Ask "In 6 months this design is a mess. What mistakes did we make?" Check each candidate class per [[software-craft/object-calisthenics]] and [[software-craft/solid]]. Check each external dependency per [[architecture/hexagonal]]. Check each noun for cross-module double duty.
 
-**Flow Condition Gates**: Pre-mortem completion is encoded as condition gates in the flow YAML. The `premortem_done` condition on the transition after pre-mortems requires `premortem_done: ==true`. The `design_declared` condition on `tdd-cycle.all_green` requires self-declaration including design correctness checks that subsume the architecture pre-mortem. Self-declaration uses explicit AGREE/DISAGREE commitments — a commitment device (Cialdini, 2001) that makes the declaration psychologically binding. Adversarial framing during pre-mortem analysis — "find what's wrong" rather than "confirm it's right" — leverages adversarial collaboration (Mellers et al., 2001) to produce stronger reasoning.
+**Flow Condition Gates**: Pre-mortem completion is enforced by condition gates in the flow YAML. Self-declaration uses explicit AGREE/DISAGREE commitments (a commitment device (Cialdini, 2001) that makes the declaration psychologically binding). Adversarial framing during pre-mortem analysis ("find what's wrong" rather than "confirm it's right") uses adversarial collaboration (Mellers et al., 2001) to produce stronger reasoning.
 
 ## Content
 
 ### Specification Pre-Mortem
 
-Before writing Examples for any Rule:
+Ask:
 
 > "Imagine the software-engineer builds this feature exactly as described, all tests pass, but the feature doesn't work for the user. What would be missing?"
 
-All Rules must have their pre-mortems completed before any Examples are written. Record the findings in the feature's Questions section or as additional Rules.
-
-In the flow, this is enforced by the `premortem_done` condition on the transition after pre-mortems are complete.
+Record the findings in the feature's Questions section or as additional Rules.
 
 ### Architecture Pre-Mortem
 
-Before writing design or stubs:
+Ask:
 
 > "In 6 months this design is a mess. What mistakes did we make?"
 
-For each candidate class:
-- >2 instance variables? → split (Object Calisthenics — Bay, 2008)
-- >1 reason to change? → isolate (SRP — Martin, 2000)
+For each candidate class, check per [[software-craft/object-calisthenics#concepts]] and [[software-craft/solid#concepts]].
 
-For each external dependency:
-- Is it behind a Protocol? → if not, add one (Hexagonal Architecture — Cockburn, 2005)
+For each external dependency, check per [[architecture/hexagonal#concepts]].
 
-For each noun:
-- Serving double duty across modules? → isolate into separate contexts
+For each noun, check for cross-module double duty.
 
 ### Implementation Pre-Mortem
 
-Before the TDD cycle, the design self-declaration covers YAGNI, KISS, DRY, Object Calisthenics per [[software-craft/object-calisthenics#key-takeaways]], smells per [[software-craft/smell-catalogue#key-takeaways]], SOLID per [[software-craft/solid#key-takeaways]], and semantic alignment. This is the TDD-stage pre-mortem, encoded as the `design_declared` condition on `tdd-cycle.all_green`.
+The design self-declaration covers YAGNI, KISS, DRY, Object Calisthenics per [[software-craft/object-calisthenics#key-takeaways]], smells per [[software-craft/smell-catalogue#key-takeaways]], SOLID per [[software-craft/solid#key-takeaways]], and semantic alignment. This is the implementation-level pre-mortem, enforced by condition gates in the flow YAML.
 
 ## Related
 
-- [[requirements/interview-techniques]] — gap-finding techniques used during discovery interviews
-- [[requirements/invest]] — story quality criteria that pre-mortem findings may affect
-- [[requirements/gherkin]] — writing Examples after pre-mortem analysis
-- [[software-craft/tdd]] — design self-declaration subsumes the implementation pre-mortem
-- [[software-craft/object-calisthenics]] — ObjCal-7 (two instance variables) checked in architecture pre-mortem
-- [[software-craft/smell-catalogue]] — pattern smells checked in implementation pre-mortem
-- [[software-craft/solid]] — SOLID checks in implementation pre-mortem
+- [[requirements/interview-techniques]]: gap-finding techniques used in interviews
+- [[requirements/invest]]: story quality criteria that pre-mortem findings may affect
+- [[requirements/gherkin]]: writing Examples informed by pre-mortem analysis
+- [[software-craft/tdd]]: design self-declaration subsumes the implementation pre-mortem
+- [[software-craft/object-calisthenics]]: ObjCal-7 (two instance variables) checked in architecture pre-mortem
+- [[software-craft/smell-catalogue]]: pattern smells checked in implementation pre-mortem
+- [[software-craft/solid]]: SOLID checks in implementation pre-mortem

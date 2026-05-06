@@ -1,4 +1,4 @@
-# Laddering Theory / Means-End Chain — Reynolds & Gutman, 1988
+# Laddering Theory / Means-End Chain (Reynolds & Gutman, 1988)
 
 ## Citation
 
@@ -22,7 +22,7 @@ High
 
 ## Key Insight
 
-The laddering technique reveals that the stakeholder's first answer about what they want is rarely the real constraint — repeatedly asking "Why is that important to you?" climbs from surface attributes to deeper motivational values.
+The laddering technique reveals that the stakeholder's first answer about what they want is rarely the real constraint. Repeatedly asking "Why is that important to you?" climbs from surface attributes to deeper motivational values.
 
 ## Core Findings
 
@@ -42,5 +42,5 @@ Essential technique for requirements gathering, user research, and stakeholder a
 
 ## Related Research
 
-- (Rokeach, 1973) — Values theory underlying the terminal value concept
-- (Gutman, 1982) — Original means-end chain model foundation
+- (Rokeach, 1973): Values theory underlying the terminal value concept
+- (Gutman, 1982): Original means-end chain model foundation

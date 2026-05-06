@@ -1,5 +1,5 @@
 ---
-description: "Setup Agent — transforms templates into new projects"
+description: "Setup Agent: transforms templates into new projects"
 mode: subagent
 temperature: 0.3
 ---

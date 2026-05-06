@@ -1,4 +1,4 @@
-# Information Hiding — Parnas, 1972
+# Information Hiding (Parnas, 1972)
 
 ## Citation
 
@@ -43,5 +43,5 @@ Foundational principle for all modern software architecture. Essential for creat
 
 ## Related Research
 
-- (Martin, 2000) — SOLID principles building on Parnas's information hiding foundation
-- (Cockburn, 2005) — Hexagonal Architecture applying information hiding to external dependencies
+- (Martin, 2000): SOLID principles building on Parnas's information hiding foundation
+- (Cockburn, 2005): Hexagonal Architecture applying information hiding to external dependencies

@@ -1,4 +1,4 @@
-# Software Risk Management — Boehm, 1991
+# Software Risk Management (Boehm, 1991)
 
 ## Citation
 
@@ -35,7 +35,7 @@ Architecture risk can be systematically assessed using Probability × Impact cla
 
 ## Mechanism
 
-Probability × Impact works because it forces decision-makers to externalize and quantify what would otherwise remain gut feelings. Low-probability high-impact risks (e.g., database vendor bankruptcy) are distinguished from high-probability low-impact risks (e.g., minor performance degradation) — both may have the same exposure score but demand different mitigation strategies. The framework also introduces risk leverage: high-leverage mitigations (significant risk reduction for low cost) are prioritized over low-leverage ones (minor risk reduction for high cost).
+Probability × Impact works because it forces decision-makers to externalize and quantify what would otherwise remain gut feelings. Low-probability high-impact risks (e.g., database vendor bankruptcy) are distinguished from high-probability low-impact risks (e.g., minor performance degradation); both may have the same exposure score but demand different mitigation strategies. The framework also introduces risk leverage: high-leverage mitigations (significant risk reduction for low cost) are prioritized over low-leverage ones (minor risk reduction for high cost).
 
 ## Relevance
 
@@ -43,5 +43,5 @@ Foundational framework for architectural decision records (ADRs) where each deci
 
 ## Related Research
 
-- (Kazman, Klein & Clements, 2000) — ATAM method building on Boehm's risk assessment principles
-- (Fowler, 2003) — Architectural decision-making frameworks incorporating risk evaluation
+- (Kazman, Klein & Clements, 2000): ATAM method building on Boehm's risk assessment principles
+- (Fowler, 2003): Architectural decision-making frameworks incorporating risk evaluation

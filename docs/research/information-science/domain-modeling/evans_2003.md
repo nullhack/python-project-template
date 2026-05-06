@@ -1,4 +1,4 @@
-# Domain-Driven Design — Evans, 2003
+# Domain-Driven Design (Evans, 2003)
 
 ## Citation
 

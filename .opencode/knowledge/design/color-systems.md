@@ -12,13 +12,13 @@ last-updated: 2026-04-30
 - Use 1–2 colours maximum in a logo mark; three or more create reproduction problems and visual noise at small sizes.
 - Hue is one axis; saturation (vivid vs muted) and value (light vs dark) are independent levers that carry as much meaning. A desaturated blue signals "corporate"; a saturated blue signals "tech/digital."
 - Every text–background pair must meet WCAG 2.1 SC 1.4.3 minimum contrast: 4.5:1 for normal text, 3:1 for large text (W3C, 2018).
-- Verify colours on actual backgrounds, not in isolation — simultaneous contrast shifts perceived hue (Itten, 1961; Albers, 1963).
+- Verify colours on actual backgrounds, not in isolation. Simultaneous contrast shifts perceived hue (Itten, 1961; Albers, 1963).
 - Define each brand colour with: hex value, RGB, dark-mode counterpart, and WCAG contrast ratio against primary backgrounds.
 - Choose colour harmony type based on emotional effect: analogous for calm, complementary for vibrancy, split-complementary for balanced contrast, triadic for energy.
 
 ## Concepts
 
-**Monochrome-First Process**: Design the entire mark in black on white, then white on black. If it does not work in monochrome, colour will not save it. Only after the shape holds identity in one colour should a second colour be introduced — and only as an accent, never carrying meaning that must be read.
+**Monochrome-First Process**: Design the entire mark in black on white, then white on black. If it does not work in monochrome, colour will not save it. Only after the shape holds identity in one colour should a second colour be introduced, and only as an accent, never carrying meaning that must be read.
 
 **Hue, Saturation, and Value as Independent Axes**: Hue (which colour) is one dimension. Saturation (how vivid vs muted) and value (how light vs dark) carry as much meaning as hue and are independent levers. A single hue can express different personalities by varying saturation and value:
 - High saturation + medium value: "digital, energetic, modern" (e.g., #3B82F6)
@@ -55,13 +55,13 @@ For 2-colour brand marks, use complementary or split-complementary. Analogous pa
 
 **Itten's Seven Contrast Types**: Each contrast type is a design tool that produces a different emotional effect (Itten, 1961). The three most useful for branding:
 
-1. **Light-Dark contrast**: Black on white. Maximum clarity. Foundation of WCAG accessibility. Use for text–background pairs where legibility is paramount.
+1. **Light-Dark contrast**: Black on white. Maximum clarity. Foundation of WCAG accessibility. Use for text–background pairs where legibility is essential.
 2. **Complementary contrast**: Opposite hues placed together (red–green, blue–orange). Maximum visual tension and vibrancy. Risk: at similar saturation, complements vibrate uncomfortably. Mitigation: vary the value (one lighter/darker) or desaturate one.
-3. **Saturation contrast**: A vivid colour next to a muted one. The vivid colour appears to glow. This is the primary tool for accent hierarchy — a saturated accent on a desaturated primary draws the eye precisely without requiring hue contrast.
+3. **Saturation contrast**: A vivid colour next to a muted one. The vivid colour appears to glow. This is the primary tool for accent hierarchy: a saturated accent on a desaturated primary draws the eye precisely without requiring hue contrast.
 
 The other four (cold-warm, simultaneous, hue, extension) are documented by Itten (1961) and are useful for advanced palette refinement.
 
-**Complementary Palette Construction**: A brand palette has 5 roles: (1) primary — the dominant colour; (2) accent — a contrasting highlight; (3) background — the surface colour; (4) text-primary — the main text colour; (5) text-secondary — muted text. Primary and accent are typically complementary or split-complementary. Background and text colours must achieve ≥4.5:1 contrast (WCAG AA).
+**Complementary Palette Construction**: A brand palette has 5 roles: (1) primary, the dominant colour; (2) accent, a contrasting highlight; (3) background, the surface colour; (4) text-primary, the main text colour; (5) text-secondary, muted text. Primary and accent are typically complementary or split-complementary. Background and text colours must achieve ≥4.5:1 contrast (WCAG AA).
 
 **WCAG Contrast Calculation**: Relative luminance L = 0.2126R + 0.7152G + 0.0722B (after gamma linearisation). Contrast ratio = (L_lighter + 0.05) / (L_darker + 0.05). Ratio ranges from 1:1 to 21:1. Normal text requires ≥4.5:1 (AA) or ≥7:1 (AAA). Large text (≥18pt or ≥14pt bold) requires ≥3:1 (AA) or ≥4.5:1 (AAA).
 
@@ -111,13 +111,13 @@ A thin gold line on a navy field reads as "balanced" because the yellow's visual
 
 For each colour in the palette, verify contrast ratio against:
 
-1. **Primary on background** — must be ≥4.5:1 for normal text
-2. **Accent on background** — must be ≥3:1 for large text or ≥4.5:1 if carrying meaning
-3. **Secondary on background** — must be ≥3:1 minimum
-4. **Dark-mode primary on dark background** — must be ≥4.5:1
-5. **Dark-mode accent on dark background** — must be ≥3:1
-6. **Logo mark on white** — must be clearly legible (no numeric threshold, but test by squinting)
-7. **Logo mark on dark** — must be clearly legible in dark mode variant
+1. **Primary on background**: must be ≥4.5:1 for normal text
+2. **Accent on background**: must be ≥3:1 for large text or ≥4.5:1 if carrying meaning
+3. **Secondary on background**: must be ≥3:1 minimum
+4. **Dark-mode primary on dark background**: must be ≥4.5:1
+5. **Dark-mode accent on dark background**: must be ≥3:1
+6. **Logo mark on white**: must be clearly legible (no numeric threshold, but test by squinting)
+7. **Logo mark on dark**: must be clearly legible in dark mode variant
 
 ## Related
 

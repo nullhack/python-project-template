@@ -1,4 +1,4 @@
-# Design and Code Inspections — Fagan, 1976
+# Design and Code Inspections (Fagan, 1976)
 
 ## Citation
 

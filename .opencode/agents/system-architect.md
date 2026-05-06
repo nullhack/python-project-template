@@ -1,5 +1,5 @@
 ---
-description: "System Architect — designs technical architecture and reviews implementation"
+description: "System Architect: designs technical architecture and reviews implementation"
 mode: subagent
 temperature: 0.3
 ---

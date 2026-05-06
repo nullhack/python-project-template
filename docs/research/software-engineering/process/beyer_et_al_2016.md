@@ -1,4 +1,4 @@
-# Blameless Post-Mortems — Beyer et al., 2016
+# Blameless Post-Mortems (Beyer et al., 2016)
 
 ## Citation
 

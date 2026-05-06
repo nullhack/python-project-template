@@ -1,5 +1,5 @@
 flow: planning-flow
-version: 6.0.0
+version: 7.0.0
 params: [feature_name]
 exits:
   - complete
@@ -34,7 +34,6 @@ states:
         - features/<feature_name>.feature
         - product_definition.md
         - technical_design.md
-        - interview-notes/*.md
       out:
         - features/<feature_name>.feature:
             - rules

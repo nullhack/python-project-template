@@ -1,4 +1,4 @@
-# Software Engineering Economics — Boehm, 1981
+# Software Engineering Economics (Boehm, 1981)
 
 ## Citation
 
@@ -22,7 +22,7 @@ High
 
 ## Key Insight
 
-The cost of fixing a software defect escalates by roughly an order of magnitude at each subsequent lifecycle phase — from 1× during requirements to 100× after deployment.
+The cost of fixing a software defect escalates by roughly an order of magnitude at each subsequent lifecycle phase, from 1× during requirements to 100× after deployment.
 
 ## Core Findings
 
@@ -34,15 +34,15 @@ The cost of fixing a software defect escalates by roughly an order of magnitude 
 
 ## Mechanism
 
-The exponential cost curve arises because late-phase defect fixes require re-traversing all upstream work: re-specifying, re-designing, re-implementing, and re-verifying. A requirements error found in operations forces revisiting every downstream artifact, whereas catching it during requirements review costs only the specification revision. The mechanism is compounding rework — each phase that passes with an undetected defect adds a layer of dependent decisions and artifacts that must also be corrected.
+The exponential cost curve arises because late-phase defect fixes require re-traversing all upstream work: re-specifying, re-designing, re-implementing, and re-verifying. A requirements error found in operations forces revisiting every downstream artifact, whereas catching it during requirements review costs only the specification revision. The mechanism is compounding rework. Each phase that passes with an undetected defect adds a layer of dependent decisions and artifacts that must also be corrected.
 
 ## Relevance
 
-Directly justifies investment in upfront specification (event storming, domain modeling, ubiquitous language) and early validation (BDD scenarios, TDD) in our workflow. The 10× per phase curve means that a defect caught in review costs 1× what it would cost in production — validating the economic case for design-phase quality gates and the "shift left" principle embedded in our flow.
+Directly justifies investment in upfront specification (event storming, domain modeling, ubiquitous language) and early validation (BDD scenarios, TDD) in our workflow. The 10× per phase curve means that a defect caught in review costs 1× what it would cost in production, validating the economic case for design-phase quality gates and the "shift left" principle embedded in our flow.
 
 ## Related Research
 
-- (Boehm, 1991) — Risk management framework building on COCOMO cost data
-- (Fagan, 1976) — Code inspection as a cost-effective early detection technique
-- (Beck, 2002) — TDD as a practice that shifts defect detection leftward
-- (Boehm & Basili, 2005) — Condensed "Top 10 Defect Reduction" list restating the 100× cost ratio with updated data
+- (Boehm, 1991): Risk management framework building on COCOMO cost data
+- (Fagan, 1976): Code inspection as a cost-effective early detection technique
+- (Beck, 2002): TDD as a practice that shifts defect detection leftward
+- (Boehm & Basili, 2005): Condensed "Top 10 Defect Reduction" list restating the 100× cost ratio with updated data

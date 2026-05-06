@@ -1,5 +1,5 @@
 ---
-description: "Reviewer — independently verifies architecture and implementation"
+description: "Reviewer: independently verifies architecture and implementation"
 mode: subagent
 temperature: 0.3
 ---

@@ -1,4 +1,4 @@
-# Architecture Decision Records — Nygard, 2011
+# Architecture Decision Records (Nygard, 2011)
 
 ## Citation
 
@@ -22,12 +22,12 @@ High
 
 ## Key Insight
 
-Architecturally significant decisions should be documented as short, immutable records capturing the context, decision, rationale, alternatives, and consequences. Each record is written once and never edited — if understanding changes, a new record supersedes the old one.
+Architecturally significant decisions should be documented as short, immutable records capturing the context, decision, rationale, alternatives, and consequences. Each record is written once and never edited. If understanding changes, a new record supersedes the old one.
 
 ## Core Findings
 
 1. **Five-part structure**: Title, Context (forces at play), Decision (response to forces), Status (proposed/accepted/superseded), Consequences (resulting context after decision).
-2. **Immutability principle**: ADRs are never edited after acceptance — superseded decisions remain as historical record with references to replacements.
+2. **Immutability principle**: ADRs are never edited after acceptance. Superseded decisions remain as historical record with references to replacements.
 3. **Lightweight format**: One to two pages maximum, written in Markdown, stored in version control with code.
 4. **Architecturally significant scope**: Decisions affecting structure, non-functional characteristics, dependencies, interfaces, or construction techniques.
 5. **Sequential numbering**: ADRs numbered monotonically and sequentially (never reused) for easy reference.
@@ -44,5 +44,5 @@ Essential practice for software architecture documentation and knowledge managem
 
 ## Related Research
 
-- (Kruchten, 2004) — Importance of architecture decisions in software development
-- (Brown, 2018) — C4 model complementing ADR documentation with visual architecture communication
+- (Kruchten, 2004): Importance of architecture decisions in software development
+- (Brown, 2018): C4 model complementing ADR documentation with visual architecture communication
