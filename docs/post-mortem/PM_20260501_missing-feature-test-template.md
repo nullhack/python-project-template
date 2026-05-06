@@ -2,7 +2,7 @@
 
 ## Failed At
 
-project-structuring — SA: "SA generated test stubs without a template to follow, using `...` ellipsis bodies and carrying MoSCoW tags into docstrings"
+project-structuring. SA: "SA generated test stubs without a template to follow, using `...` ellipsis bodies and carrying MoSCoW tags into docstrings"
 
 ## Root Cause
 
@@ -18,7 +18,7 @@ The `stubs_traceable` condition checks that all `@id` tags have corresponding te
 2. Updated `stub-design.md` knowledge file with explicit stub format requirements: skip decorator (never `...`), naming convention, no MoSCoW tags in docstrings.
 3. Updated `structure-project` SKILL.md step 4 to reference the template and prohibit MoSCoW tags and `...` bodies.
 4. Updated `feature.feature.template` to note that `@id` tags are for traceability only, not priority classification.
-5. Updated `moscow.md` and `write-bdd-features` SKILL.md to clarify MoSCoW is internal triage only — must NOT appear as Gherkin tags or in .feature files.
+5. Updated `moscow.md` and `write-bdd-features` SKILL.md to clarify MoSCoW is internal triage only: must NOT appear as Gherkin tags or in .feature files.
 
 ## Restart Check
 

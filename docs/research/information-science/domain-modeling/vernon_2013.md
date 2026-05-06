@@ -1,4 +1,4 @@
-# Implementing Domain-Driven Design — Vernon, 2013
+# Implementing Domain-Driven Design (Vernon, 2013)
 
 ## Citation
 

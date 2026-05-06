@@ -1,4 +1,4 @@
-# SOLID Principles — Martin, 2000
+# SOLID Principles (Martin, 2000)
 
 ## Citation
 
@@ -26,7 +26,7 @@ Five object-oriented design principles that reduce coupling and increase maintai
 
 ## Core Findings
 
-1. **Single Responsibility Principle (SRP)**: A class should have only one reason to change — each class should have only one responsibility.
+1. **Single Responsibility Principle (SRP)**: A class should have only one reason to change. Each class should have only one responsibility.
 2. **Open-Closed Principle (OCP)**: Software entities should be open for extension but closed for modification.
 3. **Liskov Substitution Principle (LSP)**: Derived classes must be substitutable for their base classes without altering program correctness.
 4. **Interface Segregation Principle (ISP)**: Clients should not be forced to depend on interface methods they don't use.
@@ -43,5 +43,5 @@ Foundational for modern software architecture and clean code practices. Directly
 
 ## Related Research
 
-- (Fowler, 1999) — Refactoring patterns that support SOLID principles
-- (Beck, 2002) — Test-driven development practices that reinforce these design principles
+- (Fowler, 1999): Refactoring patterns that support SOLID principles
+- (Beck, 2002): Test-driven development practices that reinforce these design principles

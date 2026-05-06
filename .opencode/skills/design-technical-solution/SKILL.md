@@ -1,6 +1,6 @@
 ---
 name: design-technical-solution
-description: "Design the technical solution — architectural style, stack, module structure, API/event contracts, interface definitions"
+description: "Design the technical solution: architectural style, stack, module structure, API/event contracts, interface definitions"
 ---
 
 # Design Technical Solution

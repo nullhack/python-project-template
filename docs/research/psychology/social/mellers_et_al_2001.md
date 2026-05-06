@@ -1,4 +1,4 @@
-# Adversarial Collaboration — Kahneman & Various, Multiple Studies
+# Adversarial Collaboration: Kahneman & Various, Multiple Studies
 
 ## Citation
 
@@ -28,7 +28,7 @@ Adversarial collaboration produces highest-quality thinking when parties with op
 
 1. **Collaborative antagonism**: Scientists with competing hypotheses can co-design experiments that satisfy both groups regarding bias and experimental weaknesses.
 2. **Quality improvement**: Adversarial collaboration reduces cognitive-motivational biases and improves scientific reasoning quality.
-3. **Feasibility paradox**: "Most feasible when least needed" — works best when camps have testable theories and common methodological standards, but is hardest to implement when most needed (when communities lack falsification criteria).
+3. **Feasibility paradox**: "Most feasible when least needed": works best when camps have testable theories and common methodological standards, but is hardest to implement when most needed (when communities lack falsification criteria).
 4. **Neutral moderation**: Often requires neutral third-party moderators to facilitate the collaboration process.
 5. **Open science framework**: Emphasizes transparency throughout research process, fitting within broader open science movement.
 
@@ -42,5 +42,5 @@ Powerful methodology for resolving scientific disputes, improving research quali
 
 ## Related Research
 
-- (Tetlock & Mitchell, 2009) — Implicit bias and accountability systems  
-- (Latham, Erez & Locke, 1988) — Early example of adversarial collaboration in goal-setting research
+- (Tetlock & Mitchell, 2009): Implicit bias and accountability systems  
+- (Latham, Erez & Locke, 1988): Early example of adversarial collaboration in goal-setting research

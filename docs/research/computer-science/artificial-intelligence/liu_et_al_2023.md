@@ -1,4 +1,4 @@
-# Lost in the Middle (Positional Attention Degradation) — Liu et al., 2023
+# Lost in the Middle (Positional Attention Degradation) (Liu et al., 2023)
 
 ## Citation
 

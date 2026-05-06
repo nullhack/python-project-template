@@ -8,20 +8,20 @@ last-updated: 2026-04-29
 
 ## Key Takeaways
 
-- Context mapping defines how bounded contexts relate to each other — each relationship pattern carries specific coordination costs and risk trade-offs (Vernon, 2013).
+- Context mapping defines how bounded contexts relate to each other. Each relationship pattern carries specific coordination costs and risk trade-offs (Vernon, 2013).
 - Nine relationship patterns describe inter-context dynamics: Partnership, Shared Kernel, Customer-Supplier, Conformist, Anticorruption Layer, Separate Ways, Open Host Service, Published Language, and Big Ball of Mud (Vernon, 2013; Evans, 2003).
-- Selecting the correct pattern prevents model pollution and reduces integration friction — use ACL when downstream has limited influence, Customer-Supplier when both teams negotiate, Open Host Service when many consumers need a standardised protocol.
-- Integration points are the seams between contexts — each must define its mechanism (sync API, async event, shared DB), its contract, and its error handling.
+- Selecting the correct pattern prevents model pollution and reduces integration friction. Use ACL when downstream has limited influence, Customer-Supplier when both teams negotiate, Open Host Service when many consumers need a standardised protocol.
+- Integration points are the seams between contexts. Each must define its mechanism (sync API, async event, shared DB), its contract, and its error handling.
 
 ## Concepts
 
-**Context Relationship Patterns** (Vernon, 2013) — Nine patterns describe the social and technical contracts between bounded contexts. Each pattern carries obligations: Customer-Supplier demands upstream awareness of downstream needs; Conformist accepts upstream dominance; Anticorruption Layer isolates downstream from upstream model drift. Naming the relationship makes both teams' obligations explicit.
+**Context Relationship Patterns** (Vernon, 2013): Nine patterns describe the social and technical contracts between bounded contexts. Each pattern carries obligations: Customer-Supplier demands upstream awareness of downstream needs; Conformist accepts upstream dominance; Anticorruption Layer isolates downstream from upstream model drift. Naming the relationship makes both teams' obligations explicit.
 
-**Pattern Selection** — The choice of relationship pattern depends on team influence, model purity needs, and integration complexity. When the downstream team has limited influence over the upstream model, use an Anticorruption Layer. When both teams can negotiate, use Customer-Supplier. When many consumers need access, use Open Host Service with a Published Language. When the cost of integration exceeds the benefit, use Separate Ways.
+**Pattern Selection**: The choice of relationship pattern depends on team influence, model purity needs, and integration complexity. When the downstream team has limited influence over the upstream model, use an Anticorruption Layer. When both teams can negotiate, use Customer-Supplier. When many consumers need access, use Open Host Service with a Published Language. When the cost of integration exceeds the benefit, use Separate Ways.
 
-**Integration Points** — Every seam between bounded contexts is an integration point. Each integration point must specify: the mechanism (synchronous API, asynchronous event, shared database, file exchange), the contract (schema, versioning, backward compatibility), and the error handling (retry, dead letter, circuit breaker). Undefined integration points are the primary source of coupling failures.
+**Integration Points**: Every seam between bounded contexts is an integration point. Each integration point must specify: the mechanism (synchronous API, asynchronous event, shared database, file exchange), the contract (schema, versioning, backward compatibility), and the error handling (retry, dead letter, circuit breaker). Undefined integration points are the primary source of coupling failures.
 
-**Anti-Corruption Layers** — An ACL is a translation boundary that prevents upstream concepts from leaking into the downstream model. It translates between the upstream's data model and the downstream's domain model, allowing the downstream context to maintain its own ubiquitous language even when consuming services from a differently-modelled context.
+**Anti-Corruption Layers**: An ACL is a translation boundary that prevents upstream concepts from leaking into the downstream model. It translates between the upstream's data model and the downstream's domain model, allowing the downstream context to maintain its own ubiquitous language even when consuming services from a differently-modelled context.
 
 ## Content
 

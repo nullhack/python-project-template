@@ -19,17 +19,17 @@ last-updated: 2026-04-30
 
 ## Concepts
 
-**Favicon-First Design**: Design at the smallest target size (16×16 or 32×32) first, then scale up and add detail. Kare designed all original Macintosh icons on a 32×32 grid because "every pixel must carry meaning." If a mark cannot be recognised at favicon size, it relies on detail that will vanish in real usage. The favicon version is not a simplification of a larger design — it is the core identity, and the larger versions are elaborations of it.
+**Favicon-First Design**: Design at the smallest target size (16×16 or 32×32) first, then scale up and add detail. Kare designed all original Macintosh icons on a 32×32 grid because "every pixel must carry meaning." If a mark cannot be recognised at favicon size, it relies on detail that will vanish in real usage. The favicon version is not a simplification of a larger design. It is the core identity, and the larger versions are elaborations of it.
 
 **Monochrome-First Process**: The mark must work in a single colour on a single background before any colour is applied. Rand tested his logos by blurring them (Gaussian blur 3–5px) to verify the silhouette held. If the blurred mark is still identifiable, the shape is strong. If not, it relies on detail that will fail at small sizes, in print, or on dark backgrounds.
 
-**Progressive Simplification**: Each size tier gets its own optimised version: Master (512px, full detail), Standard (180px, remove thin strokes, simplify curves), Small (32px, only core silhouette, strokes→fills), Tiny (16px, single bold shape, often hand-redrawn). Do not simply scale a 512px icon to 16px — it produces a muddy, unrecognisable mark.
+**Progressive Simplification**: Each size tier gets its own optimised version: Master (512px, full detail), Standard (180px, remove thin strokes, simplify curves), Small (32px, only core silhouette, strokes→fills), Tiny (16px, single bold shape, often hand-redrawn). Do not simply scale a 512px icon to 16px. It produces a muddy, unrecognisable mark.
 
-**Evaluation Checklist**: (1) 5-second test — show for 5 seconds, remove, ask "what did you see?"; (2) blur test — Gaussian blur 3–5px, silhouette must remain identifiable; (3) monochrome test — pure black on white, pure white on black; (4) scalability test — legible at 16px and 500px; (5) proximity test — distinguishable from 5 competitor logos; (6) "one thing" test — there should be one dominant feature.
+**Evaluation Checklist**: (1) 5-second test: show for 5 seconds, remove, ask "what did you see?"; (2) blur test: Gaussian blur 3–5px, silhouette must remain identifiable; (3) monochrome test: pure black on white, pure white on black; (4) scalability test: legible at 16px and 500px; (5) proximity test: distinguishable from 5 competitor logos; (6) "one thing" test: there should be one dominant feature.
 
-**SVG Construction Rules**: Use presentation attributes (`fill="#1a1a2e"`) not CSS classes (GitHub strips inline `<style>`). All content must be self-contained — no `<use href="external">`, no external fonts, no `<style>` blocks in production SVGs. Use a square `viewBox` (e.g., `0 0 512 512`) with 5–10% padding. Convert all strokes to filled paths for the production file. Optimise with SVGO (`removeMetadata`, `convertShapeToPath`, `mergePaths`, `cleanupNumericValues` at precision 1–2).
+**SVG Construction Rules**: Use presentation attributes (`fill="#1a1a2e"`) not CSS classes (GitHub strips inline `<style>`). All content must be self-contained: no `<use href="external">`, no external fonts, no `<style>` blocks in production SVGs. Use a square `viewBox` (e.g., `0 0 512 512`) with 5–10% padding. Convert all strokes to filled paths for the production file. Optimise with SVGO (`removeMetadata`, `convertShapeToPath`, `mergePaths`, `cleanupNumericValues` at precision 1–2).
 
-**Dark-Mode Strategy**: Modern approach: embed `@media (prefers-color-scheme: dark)` in SVG favicon with human-readable CSS classes for dark-mode targeting. Fallback: maintain separate `logo-dark.svg` and `logo-light.svg` files for non-web contexts. Dark mode is not simply inverted — use off-white (#e0e0e0) instead of pure white, and increase stroke weight by 0.5–1px.
+**Dark-Mode Strategy**: Modern approach: embed `@media (prefers-color-scheme: dark)` in SVG favicon with human-readable CSS classes for dark-mode targeting. Fallback: maintain separate `logo-dark.svg` and `logo-light.svg` files for non-web contexts. Dark mode is not simply inverted. Use off-white (#e0e0e0) instead of pure white, and increase stroke weight by 0.5–1px.
 
 **Favicon Delivery Set**: favicon.ico (32×32 containing 16×16 + 32×32), icon.svg (with dark-mode media query), apple-touch-icon.png (180×180), icon-192.png (Android), icon-512.png (PWA). Plus `manifest.webmanifest` referencing icon sizes. HTML: `<link rel="icon" href="/favicon.ico" sizes="32x32">`, `<link rel="icon" href="/icon.svg" type="image/svg+xml">`, `<link rel="apple-touch-icon" href="/apple-touch-icon.png">`.
 
@@ -58,16 +58,16 @@ last-updated: 2026-04-30
 
 ### File Delivery Checklist
 
-- [ ] `logo.svg` — Master SVG, square viewBox, clean paths, human-readable IDs
-- [ ] `logo-dark.svg` — Dark-mode variant (or embedded media query in logo.svg)
-- [ ] `logo-icon.svg` — Symbol only (no wordmark), with dark-mode support
-- [ ] `favicon.ico` — 32×32 ICO (with 16×16 embedded)
-- [ ] `icon.svg` — Favicon SVG with `prefers-color-scheme` media query
-- [ ] `apple-touch-icon.png` — 180×180 PNG
-- [ ] `icon-192.png` — 192×192 PNG for Android
-- [ ] `icon-512.png` — 512×512 PNG for PWA
-- [ ] `banner.svg` — README banner, SVG, tested on light and dark backgrounds
-- [ ] Social preview PNG — 1280×640, critical content in centre 60–70%
+- [ ] `logo.svg`: Master SVG, square viewBox, clean paths, human-readable IDs
+- [ ] `logo-dark.svg`: Dark-mode variant (or embedded media query in logo.svg)
+- [ ] `logo-icon.svg`: Symbol only (no wordmark), with dark-mode support
+- [ ] `favicon.ico`: 32×32 ICO (with 16×16 embedded)
+- [ ] `icon.svg`: Favicon SVG with `prefers-color-scheme` media query
+- [ ] `apple-touch-icon.png`: 180×180 PNG
+- [ ] `icon-192.png`: 192×192 PNG for Android
+- [ ] `icon-512.png`: 512×512 PNG for PWA
+- [ ] `banner.svg`: README banner, SVG, tested on light and dark backgrounds
+- [ ] Social preview PNG: 1280×640, critical content in centre 60–70%
 
 ## Related
 

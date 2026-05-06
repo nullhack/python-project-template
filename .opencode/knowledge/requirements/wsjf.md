@@ -4,7 +4,7 @@ tags: [wsjf, prioritization, scoring, backlog]
 last-updated: 2026-05-04
 ---
 
-# Weighted Shortest Job First — Reinertsen, 2009
+# Weighted Shortest Job First, Reinertsen, 2009
 
 ## Key Takeaways
 
@@ -18,7 +18,7 @@ last-updated: 2026-05-04
 
 **WSJF Formula** (Reinertsen, 2009): `WSJF = Cost of Delay / Duration = Value / Effort`. Higher WSJF score means higher priority for selection. Value and Effort are each scored 1-5 using defined scales.
 
-**Value Scale**: Value maps to Kano model categories (Kano et al., 1984). Must-have (5) means core workflow is blocked without it. High (4) significantly improves the primary use case. Medium (3) is useful but not blocking. Low (2) is a nice-to-have. Minimal (1) is cosmetic or out-of-scope.
+**Value Scale**: Value maps to Kano model categories (Kano et al., 1984). Must-have (5) means core workflow is blocked without it. High (4) noticeably improves the primary use case. Medium (3) is useful but not blocking. Low (2) is a nice-to-have. Minimal (1) is cosmetic or out-of-scope.
 
 **Effort Scale**: Effort maps to complexity. Trivial (1) has no new domain concepts. Small (2) introduces one new domain entity. Medium (3) is a cross-cutting concern. Large (4) involves multiple interacting domain entities. Very large (5) spans multiple modules or has unknown complexity.
 
@@ -41,10 +41,10 @@ Estimate user/business impact, mapped to Kano model categories:
 | Score | Label | Kano Category | Description |
 |---|---|---|---|
 | 5 | Must-have | Basic need | Core workflow blocked without it |
-| 4 | High | — | Significantly improves the primary use case |
+| 4 | High | (none) | Noticeably improves the primary use case |
 | 3 | Medium | Performance | Useful but not blocking |
 | 2 | Low | Delighter | Nice-to-have |
-| 1 | Minimal | — | Cosmetic or out-of-scope edge case |
+| 1 | Minimal | (none) | Cosmetic or out-of-scope edge case |
 
 Tiebreaker: use the number of Must Examples in the feature's Rule blocks. More Musts = higher value.
 
@@ -64,23 +64,23 @@ Estimate implementation complexity:
 
 | Score | Meaning |
 |---|---|
-| 0 | Independent — no hard prerequisite |
-| 1 | Blocked — requires another backlog feature to be completed first |
+| 0 | Independent (no hard prerequisite) |
+| 1 | Blocked (requires another backlog feature to be completed first) |
 
 ### Selection Rules
 
-1. Only features with Dependency=0 are eligible — features that depend on other uncompleted features cannot be selected, regardless of WSJF score.
+1. Only features with Dependency=0 are eligible. Features that depend on other uncompleted features cannot be selected, regardless of WSJF score.
 2. Among eligible features, select the one with the highest WSJF score.
-3. Ties broken by Value — user impact matters more than effort optimization.
+3. Ties broken by Value. User impact matters more than effort optimization.
 4. If no features are eligible (all have Dependency=1): resolve the blocking dependency first, then re-score.
 
 ### Prerequisites
 
 - Only features with `Status: BASELINED` are eligible for WSJF scoring
-- WIP limit of 1 — only one feature in progress at a time
+- WIP limit of 1: only one feature in progress at a time
 - The PO selects and moves the feature; no other agent moves feature files
 
 ## Related
 
-- [[requirements/invest]] — story quality criteria applied before scoring
-- [[requirements/moscow]] — prioritizing Examples within a Rule
+- [[requirements/invest]]: story quality criteria applied before scoring
+- [[requirements/moscow]]: prioritizing Examples within a Rule

@@ -22,8 +22,8 @@ Available knowledge: [[requirements/interview-techniques#key-takeaways]]. `in` a
    - Are there any naming conventions you need to follow? (company standards, existing project family)
    - Do you already know of any major dependencies you'll need? (for context only)
 5. Use CIT probes if setup concerns emerge:
-   - Tell me about the last Python project you set up — what was tedious about the initial configuration?
-   - Describe a time when project setup took longer than expected — what caused the delay?
+   - Tell me about the last Python project you set up. What was tedious about the initial configuration?
+   - Describe a time when project setup took longer than expected. What caused the delay?
 6. Use Laddering if constraints are unclear:
    - Why is [constraint] important for this project?
    - What would happen if [setup choice] were different?

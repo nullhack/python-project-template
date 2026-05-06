@@ -1,4 +1,4 @@
-# Test Contra-variance (First-Class Tests) — Martin, 2017
+# Test Contra-variance (First-Class Tests) (Martin, 2017)
 
 ## Citation
 

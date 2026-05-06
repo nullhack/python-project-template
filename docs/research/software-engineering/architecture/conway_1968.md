@@ -1,4 +1,4 @@
-# Conway's Law and Inverse Conway Maneuver — Conway, 1968
+# Conway's Law and Inverse Conway Maneuver (Conway, 1968)
 
 ## Citation
 
@@ -35,7 +35,7 @@ Any organization that designs a system will produce a design whose structure is 
 
 ## Mechanism
 
-System boundaries mirror communication boundaries. Teams that communicate frequently create tightly coupled systems. Teams with minimal communication create loosely coupled systems. Organizational design becomes architectural design. The Inverse Conway Maneuver deliberately alters team organization to encourage the desired software architecture—aligning Conway's Law with architectural intent rather than fighting it.
+System boundaries mirror communication boundaries. Teams that communicate frequently create tightly coupled systems. Teams with minimal communication create loosely coupled systems. Organizational design becomes architectural design. The Inverse Conway Maneuver deliberately alters team organization to encourage the desired software architecture, aligning Conway's Law with architectural intent rather than fighting it.
 
 ## Relevance
 
@@ -43,5 +43,5 @@ Foundational principle for organizational design in software development. Critic
 
 ## Related Research
 
-- (Skelton & Pais, 2019) — Team Topologies and modern application of Conway's Law
-- (MacCormack, Rusnak & Baldwin, 2011) — Empirical validation of the mirroring hypothesis
+- (Skelton & Pais, 2019): Team Topologies and modern application of Conway's Law
+- (MacCormack, Rusnak & Baldwin, 2011): Empirical validation of the mirroring hypothesis

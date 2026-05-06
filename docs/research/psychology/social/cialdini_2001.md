@@ -1,4 +1,4 @@
-# Influence: The Psychology of Persuasion — Cialdini, 1984/2001
+# Influence: The Psychology of Persuasion (Cialdini, 1984/2001)
 
 ## Citation
 
@@ -35,7 +35,7 @@ Influence operates through six universal principles of persuasion that create au
 
 ## Mechanism
 
-Commitment devices work by engaging the consistency principle — once someone has made an explicit commitment (especially written or public), psychological pressure to remain consistent makes reversal psychologically costly. Structured tables with PASS/FAIL cells create micro-commitments where marking "FAIL" requires explicit justification, making silent passes feel inconsistent.
+Commitment devices work by engaging the consistency principle. Once someone has made an explicit commitment (especially written or public), psychological pressure to remain consistent makes reversal psychologically costly. Structured tables with PASS/FAIL cells create micro-commitments where marking "FAIL" requires explicit justification, making silent passes feel inconsistent.
 
 ## Relevance
 
@@ -43,5 +43,5 @@ Foundational framework for understanding persuasion in business, marketing, nego
 
 ## Related Research
 
-- (Kiesler, 1971) — Psychology of commitment and consistency  
-- (Festinger, 1957) — Cognitive dissonance theory underlying consistency principle
+- (Kiesler, 1971): Psychology of commitment and consistency  
+- (Festinger, 1957): Cognitive dissonance theory underlying consistency principle

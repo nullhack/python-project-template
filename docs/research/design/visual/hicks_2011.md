@@ -1,4 +1,4 @@
-# The Icon Handbook — Hicks, 2011
+# The Icon Handbook (Hicks, 2011)
 
 ## Citation
 
@@ -43,5 +43,5 @@ Essential methodology for any icon system, mobile app design, or interface requi
 
 ## Related Research
 
-- (Wertheimer, 1923) — Gestalt principles that inform icon recognition at small sizes
-- (Miller, 1956) — Cognitive load implications of visual complexity in small-scale graphics
+- (Wertheimer, 1923): Gestalt principles that inform icon recognition at small sizes
+- (Miller, 1956): Cognitive load implications of visual complexity in small-scale graphics

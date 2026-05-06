@@ -1,4 +1,4 @@
-# Refactoring.Guru — Shvets, 2014
+# Refactoring.Guru (Shvets, 2014)
 
 ## Citation
 
@@ -42,5 +42,5 @@ Essential reference for code quality improvement, refactoring practice, and desi
 
 ## Related Research
 
-- (Fowler, 1999) — Foundational refactoring catalog and methodology
-- (Gamma et al., 1995) — Original Gang of Four design patterns catalog
+- (Fowler, 1999): Foundational refactoring catalog and methodology
+- (Gamma et al., 1995): Original Gang of Four design patterns catalog

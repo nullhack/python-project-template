@@ -1,5 +1,5 @@
 ---
-description: "Domain Expert — facilitates discovery and models the domain"
+description: "Domain Expert: facilitates discovery and models the domain"
 mode: subagent
 temperature: 0.3
 ---

@@ -1,4 +1,4 @@
-# Test-Behavior Alignment — Google Testing Blog, 2013
+# Test-Behavior Alignment (Google Testing Blog, 2013)
 
 ## Citation
 

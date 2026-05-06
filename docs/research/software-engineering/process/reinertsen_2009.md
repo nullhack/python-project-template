@@ -1,4 +1,4 @@
-# The Principles of Product Development Flow (WSJF) — Reinertsen, 2009
+# The Principles of Product Development Flow (WSJF) (Reinertsen, 2009)
 
 ## Citation
 

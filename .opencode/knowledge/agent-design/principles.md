@@ -11,17 +11,17 @@ last-updated: 2026-04-29
 - Agents contain identity only (who I am, what I decide); the flow YAML is the source of truth for routing, skills, and artifacts.
 - Use subagents for investigation tasks that rapidly exhaust context; they quarantine token cost and prevent anchoring bias (Tversky & Kahneman, 1974).
 - Maintain a three-file separation (AGENTS.md, agents, skills) to prevent conflicting instructions from competing sources, positional attention degradation (Liu et al., 2023), and redundant content creating competing attention targets.
-- Agents are minimal — the flow determines which skill to load, the skill determines how to do the work, the knowledge provides the reference material.
-- AGENTS.md must discover, not enumerate — provide discovery commands and naming conventions, never file inventories that go stale.
+- Agents are minimal. The flow determines which skill to load, the skill determines how to do the work, the knowledge provides the reference material.
+- AGENTS.md must discover, not enumerate: provide discovery commands and naming conventions, never file inventories that go stale.
 
 ## Concepts
 
 **Agent = Identity Only**: The agent file defines who the agent is and what it decides. It does NOT contain skill lists, ownership tables, routing logic, artifact paths, or knowledge references. The flow YAML is the single source of truth for routing (owner, skills, transitions, artifacts). Duplicating any of these in the agent creates a second source of truth that will drift.
 
 **Three-File Separation**: Three failure modes observed in LLM context windows produce a three-file split:
-- **Conflicting instructions** from multiple sources — each concern has one file
-- **Positional attention degradation** (Liu et al., 2023 — middle content receives less attention) — keep files short
-- **Redundant content** creating competing attention targets — each fact in one location
+- **Conflicting instructions** from multiple sources: each concern has one file
+- **Positional attention degradation** (Liu et al., 2023: middle content receives less attention): keep files short
+- **Redundant content** creating competing attention targets: each fact in one location
 
 | Concern | File | Purpose | Loaded When |
 |---|---|---|---|
@@ -34,7 +34,7 @@ last-updated: 2026-04-29
 
 **Effective Instruction Writing**: Specific IF-THEN triggers at decision points are 2-3x more likely to execute than general intentions (Gollwitzer, 1999). But these triggers belong in the skill steps at the decision point, NOT in the agent file. The agent file is too far from the work context for triggers to be effective.
 
-**Discover, Don't Enumerate**: AGENTS.md must never enumerate files that can go stale. Instead, it provides discovery commands (`ls`, `find`) and file naming conventions so agents discover what exists at runtime. This prevents drift between documentation and reality — an inventory that lists 30 skills will be wrong the moment a skill is added or removed, but a discovery command is always correct.
+**Discover, Don't Enumerate**: AGENTS.md must never enumerate files that can go stale. Instead, it provides discovery commands (`ls`, `find`) and file naming conventions so agents discover what exists at runtime. This prevents drift between documentation and reality: an inventory that lists 30 skills will be wrong the moment a skill is added or removed, but a discovery command is always correct.
 
 **Naming Distinction**: `AGENTS.md` (project root) is the navigation file loaded every session. `.opencode/agents/*.md` are agent identity files loaded on demand. Despite the similar names, they serve different purposes: AGENTS.md tells you where things are; agent files tell you who you are.
 
@@ -61,12 +61,12 @@ That is the entire agent. No skill lists, no ownership tables, no IF-THEN trigge
 
 ### What NOT to Put in an Agent File
 
-- **Skill lists** — the flow `skills` field determines which skill to load
-- **Ownership tables** — the flow `input/edited/output_artifacts` defines what each state reads and writes
-- **Routing logic** — the flow `next` field defines transitions
-- **Knowledge references** — the skill's `## Load` section handles knowledge loading
-- **Step procedures** — skills contain procedure, agents contain identity
-- **Quality gates** — the flow `conditions` field defines gate conditions
+- **Skill lists**: the flow `skills` field determines which skill to load
+- **Ownership tables**: the flow `input/edited/output_artifacts` defines what each state reads and writes
+- **Routing logic**: the flow `next` field defines transitions
+- **Knowledge references**: the skill's `## Load` section handles knowledge loading
+- **Step procedures**: skills contain procedure, agents contain identity
+- **Quality gates**: the flow `conditions` field defines gate conditions
 
 ### AGENTS.md Is Navigation Only
 

@@ -1,5 +1,5 @@
 flow: development-flow
-version: 5.0.0
+version: 6.0.0
 params: [feature_name]
 exits:
   - done
@@ -19,7 +19,6 @@ states:
         - domain_model.md
         - glossary.md
         - context_map.md
-        - adr/*.md
         - product_definition.md
       out:
         - git_branch
@@ -53,7 +52,7 @@ states:
       description: "R independently verifies implementation across three tiers — design, structure, and conventions — before commit"
       git: feature
     flow: review-gate-flow
-    flow-version: "^3"
+    flow-version: "^4"
     next:
       pass: commit
       fail: tdd-cycle

@@ -1,5 +1,5 @@
 flow: architecture-flow
-version: 5.0.0
+version: 6.0.0
 exits:
   - complete
   - needs_discovery
@@ -15,21 +15,18 @@ states:
       in:
         - product_definition.md
         - domain_model.md
-        - system.md
-        - technical_design.md
-        - context_map.md
+        - "technical_design.md"  # optional
+        - "context_map.md"  # optional
       out:
         - product_definition.md:
             - deployment
             - quality_attributes
     conditions:
       architecture_complete:
-        system_md: ==exists
         technical_design_md: ==exists
         context_map_md: ==exists
         deployment_matches_codebase: ==verified
       architecture_exists:
-        system_md: ==exists
         technical_design_md: ==exists
         context_map_md: ==exists
       no_architecture_exists:
@@ -74,7 +71,7 @@ states:
 
   - id: technical-design
     attrs:
-      description: "SA designs the technical solution — architectural style, stack, module structure, API/event contracts, interface definitions — and updates the system overview"
+      description: "SA designs the technical solution — architectural style, stack, module structure, API/event contracts, interface definitions"
       owner: SA
       git: main
       skills:
@@ -83,8 +80,8 @@ states:
         - context_map.md
         - domain_model.md
         - glossary.md
-        - system.md
         - product_definition.md
+        - "technical_design.md"  # optional
       out:
         - technical_design.md:
             - architectural_style
@@ -97,18 +94,13 @@ states:
             - c4_diagrams
             - dependencies
             - configuration_keys
-        - system.md:
-            - context
-            - container
-            - module_structure
-            - delivery
     next:
       done: review-signoff
       needs_decisions: adr-draft
 
   - id: adr-draft
     attrs:
-      description: "SA documents architecturally significant decisions as ADRs and records key decisions and active constraints in system.md"
+      description: "SA documents architecturally significant decisions as ADRs and records key decisions and active constraints in technical_design.md"
       owner: SA
       git: main
       skills:
@@ -119,9 +111,8 @@ states:
         - domain_model.md
         - product_definition.md
         - glossary.md
-        - system.md
       out:
-        - system.md:
+        - technical_design.md:
             - key_decisions
             - active_constraints
         - adr/<slug>.md
@@ -138,8 +129,7 @@ states:
       in:
         - context_map.md
         - technical_design.md
-        - system.md
-        - adr/*.md
+        - "adr/*.md"  # optional
         - product_definition.md
         - domain_model.md
         - glossary.md

@@ -1,5 +1,5 @@
 flow: discovery-flow
-version: 5.0.0
+version: 6.0.0
 exits:
   - complete
 
@@ -12,7 +12,7 @@ states:
       skills:
         - conduct-interview
       in:
-        - interview-notes/*.md
+        - "interview-notes/*.md"  # optional
       out:
         - interview-notes/<session>.md:
             - pain_points
@@ -34,7 +34,7 @@ states:
       in:
         - interview-notes/*.md
       out:
-        - domain_model.md:
+        - event_storming.md:
             - event_map
             - context_candidates
             - aggregate_candidates
@@ -51,7 +51,8 @@ states:
         - define-ubiquitous-language
       in:
         - interview-notes/*.md
-        - domain_model.md
+        - event_storming.md
+        - "domain_model.md"  # optional
       out:
         - glossary.md
     next:
@@ -67,7 +68,7 @@ states:
         - model-domain
       in:
         - glossary.md
-        - domain_model.md
+        - event_storming.md
       out:
         - domain_model.md:
             - bounded_contexts
@@ -116,8 +117,7 @@ states:
         - product_definition.md
         - domain_model.md
         - glossary.md
-        - interview-notes/*.md
-        - technical_design.md
+        - "technical_design.md"  # optional
       out:
         - features/<feature_name>.feature:
             - title

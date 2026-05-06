@@ -16,11 +16,11 @@ last-updated: 2026-04-29
 
 ## Concepts
 
-**Separation of Concerns**: Knowledge, skills, and agents each have exactly one canonical location. Knowledge files hold reference and explanation; skills hold procedural instructions; agents hold role identity. The flow YAML holds routing, artifacts, and transitions. No knowledge is embedded in skills or agents — they reference it via wikilinks. Three failure modes observed in LLM context windows justify this separation: conflicting instructions from multiple sources (each concern gets one file), positional attention degradation (Liu et al., 2023 — middle content receives less attention; keep files short), and redundant content creating competing attention targets (each fact in one location).
+**Separation of Concerns**: Knowledge, skills, and agents each have exactly one canonical location. Knowledge files hold reference and explanation; skills hold procedural instructions; agents hold role identity. The flow YAML holds routing, artifacts, and transitions. No knowledge is embedded in skills or agents; they reference it via wikilinks. Three failure modes observed in LLM context windows justify this separation: conflicting instructions from multiple sources (each concern gets one file), positional attention degradation (Liu et al., 2023: middle content receives less attention; keep files short), and redundant content creating competing attention targets (each fact in one location).
 
 **Three-Tier Progressive Disclosure**: Every knowledge file has four body sections ordered by depth: Key Takeaways (bullets), Concepts (paragraphs), Content (full reference), and Related (wikilinks). Each bullet in Key Takeaways corresponds to exactly one paragraph in Concepts and one or more subsections in Content. Small focused files may omit the Content section if bullets and concepts are sufficient.
 
-**Wikilink Routing and Extraction**: Skills are the authoritative routing mechanism — they say when to load a knowledge file. Wikilinks support a `#section-name` fragment for cumulative extraction: `[[domain/concept#key-takeaways]]` loads frontmatter + Key Takeaways only (approximately 80% token savings), `[[domain/concept#concepts]]` loads through Concepts (approximately 65% savings), and no fragment loads the full file. Use `sed '/^## SectionName/Q' file.md` to extract up to but not including the next section header.
+**Wikilink Routing and Extraction**: Skills are the authoritative routing mechanism. They say when to load a knowledge file. Wikilinks support a `#section-name` fragment for cumulative extraction: `[[domain/concept#key-takeaways]]` loads frontmatter + Key Takeaways only (approximately 80% token savings), `[[domain/concept#concepts]]` loads through Concepts (approximately 65% savings), and no fragment loads the full file. Use `sed '/^## SectionName/Q' file.md` to extract up to but not including the next section header.
 
 **Reference and Explanation Only**: Knowledge files contain reference and explanation content (the what and why). Procedural instructions (the when and how) belong in skills. This separation follows the Diátaxis framework (Procida, 2021): knowledge serves the Reference and Explanation modes, skills serve the How-to and Tutorial modes.
 
@@ -38,7 +38,7 @@ last-updated: 2026-04-29
 | Role identity | `.opencode/agents/*.md` | When role invoked | Tutorial |
 | Procedural instructions | `.opencode/skills/*/SKILL.md` | On demand | How-to guide |
 | Domain knowledge | `.opencode/knowledge/*/` | On demand, referenced by skill | Reference + Explanation |
-| Routing, artifacts, transitions | `.flowr/flows/*.yaml` | Via `flowr status` | — |
+| Routing, artifacts, transitions | `.flowr/flows/*.yaml` | Via `flowr status` | N/A |
 
 ### Knowledge File Format
 
@@ -63,7 +63,7 @@ last-updated: <YYYY-MM-DD>
 
 ## Content
 
-<Reference and explanatory content. No procedural instructions — those belong
+<Reference and explanatory content. No procedural instructions; those belong
 in skills. Self-contained: understandable without reading linked files.
 Subsections correspond to Key Takeaway bullets (1:1 or N:1 grouping).>
 
@@ -74,15 +74,15 @@ Subsections correspond to Key Takeaway bullets (1:1 or N:1 grouping).>
 
 ### Format Rules
 
-1. **One concept per file** — each file covers exactly one topic
-2. **Max ~150 lines** — avoid positional attention degradation (Liu et al., 2023)
-3. **Self-contained** — understandable without reading linked files
-4. **Key Takeaways first** — one bullet per concept, imperative mood, enables fast relevance scanning
-5. **Concepts expand Key Takeaways** — one paragraph per bullet, same order and grouping
-6. **Correspondence rule** — bullet N in Key Takeaways corresponds to paragraph N in Concepts and subsection(s) N in Content
-7. **No procedural instructions** — how-to content belongs in skills (Diátaxis — Procida, 2021)
-8. **YAML frontmatter** — `domain`, `tags`, `last-updated` for search and filtering
-9. **Small files may omit Content** — focused topics with rules that fit in bullets and concepts need no expansion
+1. **One concept per file**: each file covers exactly one topic
+2. **Max ~150 lines**: avoid positional attention degradation (Liu et al., 2023)
+3. **Self-contained**: understandable without reading linked files
+4. **Key Takeaways first**: one bullet per concept, imperative mood, enables fast relevance scanning
+5. **Concepts expand Key Takeaways**: one paragraph per bullet, same order and grouping
+6. **Correspondence rule**: bullet N in Key Takeaways corresponds to paragraph N in Concepts and subsection(s) N in Content
+7. **No procedural instructions**: how-to content belongs in skills (Diátaxis, Procida, 2021)
+8. **YAML frontmatter**: `domain`, `tags`, `last-updated` for search and filtering
+9. **Small files may omit Content**: focused topics with rules that fit in bullets and concepts need no expansion
 
 ### Wikilink Convention
 

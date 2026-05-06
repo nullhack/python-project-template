@@ -112,7 +112,19 @@ class <InterfaceName>(Protocol):
 
 ## C4 Diagrams
 
-<Reference or embed C4 diagrams. These may overlap with system.md — this document focuses on the current feature's technical design, system.md focuses on the overall system state.>
+<Reference or embed C4 diagrams for the current feature's technical design.>
+
+---
+
+## Active Constraints
+
+- <system-wide constraint from ADRs or completed features>
+
+---
+
+## Key Decisions
+
+- <system-wide decision from ADRs — one bullet per decision>
 
 ---
 

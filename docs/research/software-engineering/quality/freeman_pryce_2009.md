@@ -1,4 +1,4 @@
-# GOOS — Growing Object-Oriented Software, Guided by Tests — Freeman & Pryce, 2009
+# GOOS: Growing Object-Oriented Software, Guided by Tests (Freeman & Pryce, 2009)
 
 ## Citation
 

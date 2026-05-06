@@ -1,4 +1,4 @@
-# The Art of Color — Itten, 1961
+# The Art of Color (Itten, 1961)
 
 ## Citation
 
@@ -22,7 +22,7 @@ High
 
 ## Key Insight
 
-Color interaction is relational — the same hue appears different depending on its neighbors. Itten's seven contrast types provide a systematic framework for predicting how colors will read in context.
+Color interaction is relational. The same hue appears different depending on its neighbors. Itten's seven contrast types provide a systematic framework for predicting how colors will read in context.
 
 ## Core Findings
 
@@ -44,5 +44,5 @@ Foundational for brand palette design, interface color systems, and accessibilit
 
 ## Related Research
 
-- (Albers, 1963) — Further development of color interaction principles focusing on pigment-based relationships
-- (Chevreul, 1839) — Early simultaneous contrast observations that influenced Itten's work
+- (Albers, 1963): Further development of color interaction principles focusing on pigment-based relationships
+- (Chevreul, 1839): Early simultaneous contrast observations that influenced Itten's work

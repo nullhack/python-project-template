@@ -1,4 +1,4 @@
-# The Enhanced Cognitive Interview — Fisher & Geiselman, 1987
+# The Enhanced Cognitive Interview (Fisher & Geiselman, 1987)
 
 ## Citation
 
@@ -43,5 +43,5 @@ Foundational technique for investigative interviewing, user research, and requir
 
 ## Related Research
 
-- (Tulving & Thomson, 1973) — Encoding specificity principle underlying context reinstatement
-- (Flanagan, 1954) — Critical incident technique as complementary approach to incident-based recall
+- (Tulving & Thomson, 1973): Encoding specificity principle underlying context reinstatement
+- (Flanagan, 1954): Critical incident technique as complementary approach to incident-based recall

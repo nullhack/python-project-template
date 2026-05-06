@@ -1,4 +1,4 @@
-# Laws of Organization in Perceptual Forms — Wertheimer, 1923
+# Laws of Organization in Perceptual Forms (Wertheimer, 1923)
 
 ## Citation
 
@@ -44,5 +44,5 @@ Foundational for all visual design, user interface design, and logo creation. Es
 
 ## Related Research
 
-- (Arnheim, 1954) — Application of Gestalt principles to art and visual perception
-- (Köhler, 1920) — Gestalt psychology's figure-ground and organizational principles
+- (Arnheim, 1954): Application of Gestalt principles to art and visual perception
+- (Köhler, 1920): Gestalt psychology's figure-ground and organizational principles

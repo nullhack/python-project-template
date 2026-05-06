@@ -1,4 +1,4 @@
-# Event Storming — Brandolini, 2012
+# Event Storming (Brandolini, 2012)
 
 ## Citation
 

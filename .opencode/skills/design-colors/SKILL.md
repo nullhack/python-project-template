@@ -14,7 +14,7 @@ Available knowledge: [[design/color-systems#key-takeaways]]. `in` artifacts: dis
 5. Propose an accent colour using the selected harmony type. Maximum 2 colours in the logo mark.
 6. Propose background, text-primary, and text-secondary colours.
 7. For each colour pair (text on background, accent on background, dark-mode primary on dark background), calculate the WCAG contrast ratio using the formula in [[design/color-systems#concepts]]. Every text–background pair must meet ≥4.5:1 (AA). Every large-text pair must meet ≥3:1.
-8. Balance visual weight in the composition using Itten's contrast of extension per [[design/color-systems#content]] — verify that accent and primary areas follow the visual weight ratios (yellow:violet ≈ 1:3, orange:blue ≈ 1:2, red:green ≈ 1:1).
-9. Propose dark-mode counterparts for each colour. Do not simply invert — use off-white (#e0e0e0 or similar) on dark backgrounds, and adjust accent saturation for dark contexts per [[design/color-systems#key-takeaways]].
+8. Balance visual weight in the composition using Itten's contrast of extension per [[design/color-systems#content]]: verify that accent and primary areas follow the visual weight ratios (yellow:violet ≈ 1:3, orange:blue ≈ 1:2, red:green ≈ 1:1).
+9. Propose dark-mode counterparts for each colour. Do not simply invert: use off-white (#e0e0e0 or similar) on dark backgrounds, and adjust accent saturation for dark contexts per [[design/color-systems#key-takeaways]].
 10. Present the full palette to the stakeholder as a table: colour role, hex value, RGB, dark-mode hex, WCAG ratio on primary background, and the Itten visual weight ratio.
 11. IF stakeholder approves → write the Visual section of `docs/branding.md`. IF stakeholder requests changes → revise and re-verify contrast ratios (go to step 2).

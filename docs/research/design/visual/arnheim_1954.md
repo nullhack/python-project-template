@@ -1,4 +1,4 @@
-# Art and Visual Perception — Arnheim, 1954
+# Art and Visual Perception (Arnheim, 1954)
 
 ## Citation
 
@@ -44,5 +44,5 @@ Foundational for logo design, visual identity systems, and interface design. Ess
 
 ## Related Research
 
-- (Wertheimer, 1923) — Gestalt principles underlying visual perception
-- (Rand, 1985) — Practical application of simplicity principles in logo design
+- (Wertheimer, 1923): Gestalt principles underlying visual perception
+- (Rand, 1985): Practical application of simplicity principles in logo design

@@ -11,7 +11,7 @@ Available knowledge: [[requirements/feature-discovery#concepts]]. `in` artifacts
 2. Map delivery order steps to bounded contexts and aggregate boundaries. IF a delivery step spans multiple aggregates → flag for potential split. IF multiple delivery steps share one aggregate → they may belong together.
 3. For each feature boundary, cross-reference domain events, entity invariants, and interview findings to identify business rules.
 4. IF artifacts are ambiguous, contradictory, or incomplete for a feature boundary or business rule → ask the stakeholder targeted questions using CIT and laddering per [[requirements/interview-techniques#concepts]]. Record answers in the feature's Questions table.
-5. Derive coarse `Rules (Business)` bullets from the synthesized understanding — one per behavioral hypothesis.
+5. Derive coarse `Rules (Business)` bullets from the synthesized understanding: one per behavioral hypothesis.
 6. For each feature, identify applicable Constraints from the product definition's quality attributes.
 7. Run gap analysis per [[requirements/feature-discovery#concepts]]:
    - Every bounded context covered by at least one feature?
@@ -19,4 +19,4 @@ Available knowledge: [[requirements/feature-discovery#concepts]]. `in` artifacts
    - Every critical domain event traceable to a rule?
    IF any gap is found → flag it. Do NOT silently fill gaps with assumed rules.
 8. Create a `.feature` file from the template at `.templates/docs/features/feature.feature.template` for each feature with title, description, Status: ELICITING, Rules (Business), and Constraints.
-9. Do NOT write full `Rule:` blocks (As a/I want/So that) or `Example:` blocks — those require the adversarial analysis of breakdown.
+9. Do NOT write full `Rule:` blocks (As a/I want/So that) or `Example:` blocks. Those require the adversarial analysis of breakdown.

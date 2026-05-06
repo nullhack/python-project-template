@@ -1,4 +1,4 @@
-# The 4+1 View Model of Architecture — Kruchten, 1995
+# The 4+1 View Model of Architecture (Kruchten, 1995)
 
 ## Citation
 
@@ -35,7 +35,7 @@ Software architecture cannot be adequately captured in a single model or view. T
 
 ## Mechanism
 
-The model emphasizes that architecture is not just structure—it must address non-functional requirements (performance, availability, modifiability) through specific design decisions in each view. Each view uses different notation and focuses on different architectural elements, but scenarios weave through all views to demonstrate end-to-end system behavior. This multi-perspective approach ensures no critical architectural concern is overlooked while avoiding the complexity of a single, monolithic architectural model.
+The model emphasizes that architecture is not just structure. It must address non-functional requirements (performance, availability, modifiability) through specific design decisions in each view. Each view uses different notation and focuses on different architectural elements, but scenarios weave through all views to demonstrate end-to-end system behavior. This multi-perspective approach ensures no critical architectural concern is overlooked while avoiding the complexity of a single, monolithic architectural model.
 
 ## Relevance
 
@@ -43,5 +43,5 @@ Foundational framework for architectural documentation and communication. C4 dia
 
 ## Related Research
 
-- (Brown, 2018) — C4 model applying multi-view principles to contemporary software architecture
-- (Bass et al., 2021) — Software Architecture in Practice building on Kruchten's view-based approach
+- (Brown, 2018): C4 model applying multi-view principles to contemporary software architecture
+- (Bass et al., 2021): Software Architecture in Practice building on Kruchten's view-based approach

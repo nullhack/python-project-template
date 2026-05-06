@@ -1,5 +1,5 @@
 flow: main-flow
-version: 8.0.0
+version: 9.0.0
 exits: [completed, cancelled]
 
 states:
@@ -8,7 +8,7 @@ states:
       description: "Understand the domain, define scope, and establish ubiquitous language through stakeholder interviews and domain modeling"
       git: main
     flow: discovery-flow
-    flow-version: "^4"
+    flow-version: "^6"
     next:
       complete: architecture
 
@@ -17,7 +17,7 @@ states:
       description: "Design technical architecture, context boundaries, and API contracts for the entire project"
       git: main
     flow: architecture-flow
-    flow-version: "^5"
+    flow-version: "^6"
     next:
       complete: feature-development
       needs_discovery: discovery

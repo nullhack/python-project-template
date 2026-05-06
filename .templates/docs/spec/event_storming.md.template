@@ -1,0 +1,47 @@
+# Event Storming: <project-name>
+
+> Workshop output from the Event Storming session.
+> Produced by the Domain Expert during the facilitate-event-storming skill.
+> This is an intermediate artifact — candidates here are formalized by Domain Modeling into domain_model.md.
+
+---
+
+## Event Map
+
+### Domain Events
+
+| Event | Description | Trigger | Bounded Context |
+|-------|-------------|---------|-----------------|
+| `<EventName>` | <what happened> | <what causes it> | <Context> |
+
+### Commands
+
+| Command | Description | Produces Event | Actor |
+|---------|-------------|----------------|-------|
+| `<CommandName>` | <what it does> | `<EventName>` | <who triggers it> |
+
+### Read Models
+
+| Read Model | Description | Consumes Event | Used By |
+|------------|-------------|----------------|---------|
+| `<ReadModel>` | <what it shows> | `<EventName>` | <who reads it> |
+
+---
+
+## Context Candidates
+
+> Tentative context boundaries identified during the workshop. Formalized in domain_model.md Bounded Contexts by Domain Modeling.
+
+| Candidate | Responsibility | Grouped Aggregates | Notes |
+|-----------|---------------|--------------------|-------|
+| `<ContextName>` | <what this context owns> | `<Aggregate1>`, `<Aggregate2>` | <why this boundary was suggested> |
+
+---
+
+## Aggregate Candidates
+
+> Tentative aggregate boundaries identified during the workshop. Formalized in domain_model.md Aggregate Boundaries by Domain Modeling.
+
+| Candidate | Events Grouped | Tentative Root Entity | Notes |
+|-----------|---------------|-----------------------|-------|
+| `<AggregateName>` | `<Event1>`, `<Event2>` | `<EntityName>` | <why these events share a transactional boundary> |

@@ -13,13 +13,13 @@
 [![CI](https://img.shields.io/github/actions/workflow/status/nullhack/temple8/ci.yml?style=for-the-badge&label=CI)](https://github.com/nullhack/temple8/actions/workflows/ci.yml)
 [![Python](https://img.shields.io/badge/python-%E2%89%A513-blue?style=for-the-badge)](https://www.python.org/downloads/)
 
-**From zero to hero — production-ready Python, without the ceremony.**
+**From zero to hero: production-ready Python, without the ceremony.**
 
 </div>
 
 ---
 
-You have tried to ship features with AI assistants. The agent writes code, you review it, and somehow the spec still drifts from the implementation. Tests pass but the feature doesn't match what stakeholders asked for. Architecture decisions vanish into commit messages nobody reads. The review cycle is a black box — either everything passes or nothing does, with no structured progression.
+You have tried to ship features with AI assistants. The agent writes code, you review it, and somehow the spec still drifts from the implementation. Tests pass but the feature doesn't match what stakeholders asked for. Architecture decisions vanish into commit messages nobody reads. The review cycle is a black box: either everything passes or nothing does, with no structured progression.
 
 **temple8 replaces ad-hoc agent orchestration with state machines that route every step through the right agent with the right skills at the right time.**
 
@@ -29,15 +29,15 @@ Flow definitions in YAML declare what happens at each state: who owns it, what t
 
 ## Who is this for?
 
-### Developers — TDD with traceability, not just coverage
+### Developers: TDD with traceability, not just coverage
 
-You write BDD scenarios from stakeholder interviews. Tests are linked to feature specs with `@id` tags. Every `Given/When/Then` maps to a test function. No orphan tests, no missing tests. Red-green-refactor cycles are enforced — you can't skip to implementation.
+You write BDD scenarios from stakeholder interviews. Tests are linked to feature specs with `@id` tags. Every `Given/When/Then` maps to a test function. No orphan tests, no missing tests. Red-green-refactor cycles are enforced. You can't skip to implementation.
 
-### Product Owners — Living documentation that never drifts
+### Product Owners: Living documentation that never drifts
 
-Feature files are the contract. Acceptance criteria are BDD scenarios, not bullet points in a ticket. The delivery flow tracks whether a feature is `BASELINED`, `ACCEPTED`, or rejected — with evidence at every gate. You see exactly what was built and why.
+Feature files are the contract. Acceptance criteria are BDD scenarios, not bullet points in a ticket. The delivery flow tracks whether a feature is `BASELINED`, `ACCEPTED`, or rejected, with evidence at every gate. You see exactly what was built and why.
 
-### Architects — Adversarial review that catches what linters miss
+### Architects: Adversarial review that catches what linters miss
 
 Three-tier review: design alignment (does it match the domain model?), structure (coverage, traceability, coupling), conventions (formatting, naming, lint). Each tier can fail independently. No rubber-stamping through one monolithic gate.
 
@@ -51,7 +51,7 @@ flowr next       →  see which transitions pass given your evidence
 flowr transition →  advance to the next state with evidence
 ```
 
-**State machines route the work.** YAML flows define the delivery pipeline — discovery, architecture, planning, TDD cycles, review gates, delivery. Each state declares an owner, skills, input/output artifacts, and guard conditions. The engine validates transitions. The agent executes.
+**State machines route the work.** YAML flows define the delivery pipeline: discovery, architecture, planning, TDD cycles, review gates, delivery. Each state declares an owner, skills, input/output artifacts, and guard conditions. The engine validates transitions. The agent executes.
 
 **Agents execute it.** Each state's `owner` dispatches to the right agent (PO, SE, SA, DE, R). Skills are loaded per state. Input/output contracts prevent scope creep. Evidence gates prevent premature transitions.
 
@@ -87,15 +87,15 @@ uv run task doc-build     # build API docs + coverage report
 
 ## Documentation
 
-- **[Product Definition](https://nullhack.github.io/temple8/)** — product boundaries, users, and scope
-- **[System Overview](https://nullhack.github.io/temple8/)** — architecture, domain model, module structure, and constraints
-- **[Glossary](https://nullhack.github.io/temple8/)** — living domain glossary
+- **[Product Definition](https://nullhack.github.io/temple8/)**: product boundaries, users, and scope
+- **[System Overview](https://nullhack.github.io/temple8/)**: architecture, domain model, module structure, and constraints
+- **[Glossary](https://nullhack.github.io/temple8/)**: living domain glossary
 
 ---
 
 ## License
 
-MIT — see [LICENSE](LICENSE).
+MIT. See [LICENSE](LICENSE).
 
 **Author:** [@nullhack](https://github.com/nullhack) · [Documentation](https://nullhack.github.io/temple8)
 

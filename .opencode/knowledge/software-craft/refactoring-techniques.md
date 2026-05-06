@@ -8,26 +8,26 @@ last-updated: 2026-04-30
 
 ## Key Takeaways
 
-- Composing Methods (9 techniques): extract, inline, and substitute to make methods short and focused — Long Method is the most common smell and Extract Method is the most common refactoring (Fowler, 1999).
-- Moving Features between Objects (8 techniques): relocate methods and fields to the class where they belong — Feature Envy and Inappropriate Intimacy are resolved by moving behaviour next to the data it depends on.
-- Organizing Data (15 techniques): replace primitives with objects, encapsulate fields, and change type codes — Primitive Obsession and Data Clumps are resolved by giving data domain-specific types.
-- Simplifying Conditional Expressions (8 techniques): decompose conditionals, replace conditionals with polymorphism, and introduce guard clauses — Switch Statements are resolved by distributing conditional logic to the types that own it.
-- Simplifying Method Calls (14 techniques): rename methods, introduce parameter objects, and replace constructors with factory methods — Long Parameter Lists and data class smells are resolved by giving methods clearer interfaces.
-- Dealing with Generalization (12 techniques): pull up, push down, extract, and collapse hierarchies — Refused Bequest and Parallel Inheritance Hierarchies are resolved by aligning inheritance with responsibility.
+- Composing Methods (9 techniques): extract, inline, and substitute to make methods short and focused: Long Method is the most common smell and Extract Method is the most common refactoring (Fowler, 1999).
+- Moving Features between Objects (8 techniques): relocate methods and fields to the class where they belong: Feature Envy and Inappropriate Intimacy are resolved by moving behaviour next to the data it depends on.
+- Organizing Data (15 techniques): replace primitives with objects, encapsulate fields, and change type codes: Primitive Obsession and Data Clumps are resolved by giving data domain-specific types.
+- Simplifying Conditional Expressions (8 techniques): decompose conditionals, replace conditionals with polymorphism, and introduce guard clauses: Switch Statements are resolved by distributing conditional logic to the types that own it.
+- Simplifying Method Calls (14 techniques): rename methods, introduce parameter objects, and replace constructors with factory methods: Long Parameter Lists and data class smells are resolved by giving methods clearer interfaces.
+- Dealing with Generalization (12 techniques): pull up, push down, extract, and collapse hierarchies: Refused Bequest and Parallel Inheritance Hierarchies are resolved by aligning inheritance with responsibility.
 
 ## Concepts
 
-**Composing Methods** — The most fundamental category. Most other refactorings depend on methods being small enough to name clearly. Extract Method is the workhorse: when a method does more than one thing, extract each thing into its own method with a descriptive name. Inline Method is the inverse: when a method body is as clear as its name, inline it. Replace Temp with Query eliminates temporary variables by turning them into query methods.
+**Composing Methods**. The most fundamental category. Most other refactorings depend on methods being small enough to name clearly. Extract Method is the workhorse: when a method does more than one thing, extract each thing into its own method with a descriptive name. Inline Method is the inverse: when a method body is as clear as its name, inline it. Replace Temp with Query eliminates temporary variables by turning them into query methods.
 
-**Moving Features between Objects** — When a method uses another class's data more than its own (Feature Envy), Move Method relocates it. When a class is doing too much, Extract Class splits it. When a class is doing too little, Inline Class merges it back. Hide Delegate and Remove Middle Man adjust delegation levels.
+**Moving Features between Objects**. When a method uses another class's data more than its own (Feature Envy), Move Method relocates it. When a class is doing too much, Extract Class splits it. When a class is doing too little, Inline Class merges it back. Hide Delegate and Remove Middle Man adjust delegation levels.
 
-**Organizing Data** — Primitive Obsession is resolved by wrapping primitives in domain-specific types (Replace Data Value with Object). Type codes are resolved by replacing them with class hierarchies (Replace Type Code with Subclasses) or State/Strategy (Replace Type Code with State/Strategy). Encapsulate Field and Encapsulate Collection protect data from uncontrolled access.
+**Organizing Data**. Primitive Obsession is resolved by wrapping primitives in domain-specific types (Replace Data Value with Object). Type codes are resolved by replacing them with class hierarchies (Replace Type Code with Subclasses) or State/Strategy (Replace Type Code with State/Strategy). Encapsulate Field and Encapsulate Collection protect data from uncontrolled access.
 
-**Simplifying Conditional Expressions** — Switch Statements and nested conditionals are resolved by decomposing them (Decompose Conditional), replacing them with polymorphism (Replace Conditional with Polymorphism), or introducing guard clauses (Replace Nested Conditional with Guard Clauses). Introduce Null Object eliminates null checks by providing a do-nothing implementation.
+**Simplifying Conditional Expressions**. Switch Statements and nested conditionals are resolved by decomposing them (Decompose Conditional), replacing them with polymorphism (Replace Conditional with Polymorphism), or introducing guard clauses (Replace Nested Conditional with Guard Clauses). Introduce Null Object eliminates null checks by providing a do-nothing implementation.
 
-**Simplifying Method Calls** — Method interfaces are simplified by renaming (Rename Method), reducing parameters (Introduce Parameter Object, Preserve Whole Object), and replacing constructors with factory methods (Replace Constructor with Factory Method). Separate Query from Modifier ensures methods have clear single responsibilities.
+**Simplifying Method Calls**. Method interfaces are simplified by renaming (Rename Method), reducing parameters (Introduce Parameter Object, Preserve Whole Object), and replacing constructors with factory methods (Replace Constructor with Factory Method). Separate Query from Modifier guarantees methods have clear single responsibilities.
 
-**Dealing with Generalization** — Inheritance hierarchies are refined by pulling up common behaviour (Pull Up Method/Field) and pushing down specialised behaviour (Push Down Method/Field). Extract Superclass and Extract Subclass create new levels of abstraction. Replace Inheritance with Delegation converts misapplied inheritance to composition.
+**Dealing with Generalization**. Inheritance hierarchies are refined by pulling up common behaviour (Pull Up Method/Field) and pushing down specialised behaviour (Push Down Method/Field). Extract Superclass and Extract Subclass create new levels of abstraction. Replace Inheritance with Delegation converts misapplied inheritance to composition.
 
 ## Content
 
@@ -43,13 +43,13 @@ last-updated: 2026-04-30
 | Split Temporary Variable | A variable is assigned more than once and is not a loop counter or collecting variable | (1) Change variable name for second assignment (2) Declare new variable (3) Update references (4) Compile and test |
 | Remove Assignments to Parameters | A parameter is reassigned inside the method body | (1) Create local variable (2) Replace parameter assignments with local variable (3) Compile and test |
 | Replace Method with Method Object | A long method uses so many local variables that Extract Method is impractical | (1) Create new class with local variables as fields (2) Create constructor taking params and locals (3) Move method body to new class (4) Original method creates object and delegates |
-| Substitute Algorithm | A clearer or simpler algorithm replaces a complex one | (1) Prepare tests for existing algorithm (2) Replace body with new algorithm (3) Test — results must be identical |
+| Substitute Algorithm | A clearer or simpler algorithm replaces a complex one | (1) Prepare tests for existing algorithm (2) Replace body with new algorithm (3) Test. Results must be identical |
 
 ### Moving Features between Objects
 
 | Technique | When to Apply | Mechanics |
 |---|---|---|
-| Move Method | A method uses more data from another class than its own (Feature Envy) | (1) Copy method to target class (2) Adjust references — change `self` to source object param if needed (3) Replace body in source with delegation (4) Consider removing delegation later |
+| Move Method | A method uses more data from another class than its own (Feature Envy) | (1) Copy method to target class (2) Adjust references, change `self` to source object param if needed (3) Replace body in source with delegation (4) Consider removing delegation later |
 | Move Field | A field is used more by another class than its owner | (1) Create field in target class (2) Change all source references to target (3) Remove field from source (4) Compile and test |
 | Extract Class | A class has too many responsibilities or instance variables | (1) Create new class (2) Move related fields and methods (3) Create reference from old to new (4) Adjust callers (5) Compile and test |
 | Inline Class | A class does too little to justify its existence | (1) Move all features into the host class (2) Remove class (3) Adjust callers (4) Compile and test |
@@ -129,9 +129,9 @@ last-updated: 2026-04-30
 
 ## Related
 
-- [[software-craft/smell-catalogue]] — each smell maps to specific refactoring techniques
-- [[software-craft/design-patterns]] — patterns are applied when refactoring techniques are insufficient
-- [[software-craft/refactoring]] — when and how to refactor, clean code, technical debt
-- [[software-craft/tdd]] — refactoring techniques are applied during REFACTOR phase
-- [[software-craft/object-calisthenics]] — Object Calisthenics violations signal specific refactoring opportunities
-- [[software-craft/solid]] — SOLID violations are resolved by specific refactoring techniques
+- [[software-craft/smell-catalogue]]: each smell maps to specific refactoring techniques
+- [[software-craft/design-patterns]]: patterns are applied when refactoring techniques are insufficient
+- [[software-craft/refactoring]]: when and how to refactor, clean code, technical debt
+- [[software-craft/tdd]]: refactoring techniques are applied when improving code structure
+- [[software-craft/object-calisthenics]]: Object Calisthenics violations signal specific refactoring opportunities
+- [[software-craft/solid]]: SOLID violations are resolved by specific refactoring techniques

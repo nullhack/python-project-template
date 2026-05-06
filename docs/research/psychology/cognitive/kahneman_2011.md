@@ -1,4 +1,4 @@
-# Thinking, Fast and Slow — Kahneman, 2011
+# Thinking, Fast and Slow (Kahneman, 2011)
 
 ## Citation
 
@@ -43,5 +43,5 @@ Foundational for understanding human decision-making biases in design, product m
 
 ## Related Research
 
-- (Tversky & Kahneman, 1974) — Original heuristics and biases research
-- (Stanovich & West, 2000) — Dual-process theory development
+- (Tversky & Kahneman, 1974): Original heuristics and biases research
+- (Stanovich & West, 2000): Dual-process theory development

@@ -1,4 +1,4 @@
-# Active Listening — Rogers & Farson, 1957
+# Active Listening (Rogers & Farson, 1957)
 
 ## Citation
 
@@ -42,5 +42,5 @@ Foundational communication technique applicable across therapeutic, business, ed
 
 ## Related Research
 
-- (Gottman, 1999) — Critique of active listening effectiveness in marriage therapy
-- (McNaughton et al., 2008) — LAFF strategy development for educational contexts
+- (Gottman, 1999): Critique of active listening effectiveness in marriage therapy
+- (McNaughton et al., 2008): LAFF strategy development for educational contexts

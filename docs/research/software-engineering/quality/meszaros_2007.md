@@ -1,4 +1,4 @@
-# xUnit Test Patterns — Meszaros, 2007
+# xUnit Test Patterns (Meszaros, 2007)
 
 ## Citation
 
@@ -34,7 +34,7 @@ Tests should specify observable behavior, not verify implementation - coupling t
 
 ## Mechanism
 
-Test coupling arises when test depends on how system works internally rather than what it does externally. Coupled tests use private methods, internal state, or implementation-specific assertions. When implementation changes — even if behavior is identical — coupled tests fail, creating noise that trains developers to ignore test failures. Decoupled tests use public interfaces and assert on observable outcomes, remaining green through refactoring.
+Test coupling arises when test depends on how system works internally rather than what it does externally. Coupled tests use private methods, internal state, or implementation-specific assertions. When implementation changes (even if behavior is identical), coupled tests fail, creating noise that trains developers to ignore test failures. Decoupled tests use public interfaces and assert on observable outcomes, remaining green through refactoring.
 
 ## Relevance
 
@@ -42,5 +42,5 @@ Essential reference for writing maintainable test code in xUnit frameworks (JUni
 
 ## Related Research
 
-- (Beck, 2002) — Test-driven development methodology using xUnit frameworks
-- (Fowler, 1999) — Refactoring techniques that tests must support without breaking
+- (Beck, 2002): Test-driven development methodology using xUnit frameworks
+- (Fowler, 1999): Refactoring techniques that tests must support without breaking

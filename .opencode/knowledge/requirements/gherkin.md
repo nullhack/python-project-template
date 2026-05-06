@@ -8,7 +8,7 @@ last-updated: 2026-04-29
 
 ## Key Takeaways
 
-- Write declarative Examples that describe behaviour, not UI steps; use `Example:` not `Scenario:` (BDD — North, 2006).
+- Write declarative Examples that describe behaviour, not UI steps; use `Example:` not `Scenario:` (BDD, North, 2006).
 - Each Example must have an `@id` tag (format `@id:<unique-id>`, e.g. 8-char hex like `@id:3a7f1b2c`) for traceability from test to acceptance criterion.
 - `Then` must be a single, observable, measurable outcome; no "and" combining multiple behaviours in one `Then`.
 - Bug Examples use `@bug` and require both a specific feature test and a Hypothesis property test.
@@ -16,11 +16,11 @@ last-updated: 2026-04-29
 
 ## Concepts
 
-**Declarative vs Imperative Gherkin**: Declarative Examples describe behaviour, not UI steps (BDD — North, 2006). "Given a registered user Bob / When Bob logs in / Then Bob sees a personalized welcome" is correct. "Given I type 'bob' in the username field / When I click the Login button / Then I see 'Welcome, Bob'" is imperative and wrong. Declarative Examples express what the user observes, not how the system implements it.
+**Declarative vs Imperative Gherkin**: Declarative Examples describe behaviour, not UI steps (BDD, North, 2006). "Given a registered user Bob / When Bob logs in / Then Bob sees a personalized welcome" is correct. "Given I type 'bob' in the username field / When I click the Login button / Then I see 'Welcome, Bob'" is imperative and wrong. Declarative Examples express what the user observes, not how the system implements it.
 
-**Example Format and @id Tags**: Each Example uses the `Example:` keyword (not `Scenario:`), includes `Given/When/Then` in plain English, and must have an `@id` tag for traceability. The format is `@id:<unique-id>` (e.g., 8-char hex like `@id:3a7f1b2c`). IDs are assigned during example writing if not already set; the agent respects the existing format if present. Stakeholder may define a different ID format — agents must honour the established convention. Each Example must be observably distinct from every other Example in the same Rule.
+**Example Format and @id Tags**: Each Example uses the `Example:` keyword (not `Scenario:`), includes `Given/When/Then` in plain English, and must have an `@id` tag for traceability. The format is `@id:<unique-id>` (e.g., 8-char hex like `@id:3a7f1b2c`). IDs are assigned during example writing if not already set; the agent respects the existing format if present. Stakeholder may define a different ID format: agents must honour the established convention. Each Example must be observably distinct from every other Example in the same Rule.
 
-**Single Observable Outcome per Then**: `Then` must be a single, observable, measurable outcome. No "and" combining multiple behaviours in one `Then` — split into separate Examples instead. Observable means observable by the end user, not by a test harness.
+**Single Observable Outcome per Then**: `Then` must be a single, observable, measurable outcome. No "and" combining multiple behaviours in one `Then`. Split into separate Examples instead. Observable means observable by the end user, not by a test harness.
 
 **Frozen Examples**: After criteria commit, Examples are frozen. Changes require `@deprecated` on the old Example and a new Example with a new `@id`. No editing or deleting committed Examples. This prevents scope creep and maintains traceability from test to acceptance criterion.
 
@@ -40,28 +40,22 @@ last-updated: 2026-04-29
 
 - `Example:` keyword (not `Scenario:`)
 - `Given/When/Then` in plain English
-- `Then` must be a single, observable, measurable outcome — no "and"
+- `Then` must be a single, observable, measurable outcome: no "and"
 - Observable means observable by the end user, not by a test harness
-- Declarative, not imperative — describe behaviour, not UI steps
+- Declarative, not imperative: describe behaviour, not UI steps
 - Each Example must be observably distinct from every other
 
 ### @id Tag Format
 
 - Format: `@id:<unique-id>` (e.g., 8-char hex like `@id:3a7f1b2c`)
 - Assigned during example writing if not already set; respects existing format if present
-- Stakeholder may define a different ID format — agents must honour the established convention
+- Stakeholder may define a different ID format: agents must honour the established convention
 - Globally unique across all feature files
 - Enables traceability from test to acceptance criterion
 
 ### Frozen Examples Rule
 
-After criteria commit, Examples are frozen. This rule is enforced by the flow's example-writing conditions:
-
-- `all_examples_have_ids: ==true`
-- `all_examples_have_gherkin: ==true`
-- `premortem_done: ==true`
-
-Any change to committed Examples requires:
+After criteria commit, Examples are frozen. Any change to committed Examples requires:
 1. `@deprecated` on the old Example
 2. A new Example with a new `@id`
 
@@ -85,9 +79,9 @@ Implement both:
 
 ### Common Mistakes
 
-- "Then: It works correctly" — not measurable
-- "Then: The system updates the database and sends an email" — split into two Examples
-- Multiple behaviours in one Example — split them
+- "Then: It works correctly": not measurable
+- "Then: The system updates the database and sends an email": split into two Examples
+- Multiple behaviours in one Example: split them
 - Examples that test implementation details ("Then: the Strategy pattern is used")
 - Imperative UI steps instead of declarative behaviour descriptions
 
@@ -95,21 +89,13 @@ Implement both:
 
 Feature files are located at `features/<file>.feature`. The flow works on one feature at a time, so `<file>.feature` refers to a single feature file, not a glob pattern.
 
-### Test Path Convention
+### Test Path and Traceability Conventions
 
-Tests follow the pattern `tests/features/<feature_slug>/<rule_slug>_test.py` with function names `test_<feature_stem>_<id>`.
-
-### Feature Test vs Unit Test Boundary
-
-`tests/features/` contains only BDD scenario tests with `@id` traceability to the feature file. Coverage-boosting tests that exercise implementation branches not covered by any `@id` example are unit contract tests and belong in `tests/unit/`, not `tests/features/`. Adding a test to `tests/features/` without a corresponding `@id` tag violates the traceability contract.
-
-### Two-Dimensional Traceability
-
-Traceability is two-dimensional: **structural** (every @id has a test function) and **semantic** (every @id test exercises the entry point the AC describes). Structural traceability without semantic depth creates a false sense of coverage — tests exist for every example but don't verify the actual user-facing behavior. If the AC describes a command-line invocation with flags, the test must invoke the command handler with those flags; calling domain methods directly satisfies structural traceability but fails semantic depth.
+Test path conventions (`tests/features/<feature_slug>/`), the feature-test vs unit-test boundary, and two-dimensional traceability (structural + semantic) are defined in [[software-craft/test-design]].
 
 ## Related
 
-- [[requirements/invest]] — story quality criteria applied before writing Examples
-- [[requirements/moscow]] — prioritizing Examples as Must/Should/Could
-- [[requirements/decomposition]] — splitting Rules with too many Examples
-- [[requirements/pre-mortem]] — finding hidden failure modes before writing Examples
+- [[requirements/invest]]: story quality criteria for rules
+- [[requirements/moscow]]: prioritizing Examples as Must/Should/Could
+- [[requirements/decomposition]]: splitting Rules with too many Examples
+- [[requirements/pre-mortem]]: finding hidden failure modes in rules

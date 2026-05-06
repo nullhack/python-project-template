@@ -1,4 +1,4 @@
-# Architecture Tradeoff Analysis Method (ATAM) — Kazman, Klein & Clements, 2000
+# Architecture Tradeoff Analysis Method (ATAM) (Kazman, Klein & Clements, 2000)
 
 ## Citation
 
@@ -43,5 +43,5 @@ Foundational methodology for architectural assessment and review processes. ATAM
 
 ## Related Research
 
-- (Bass, Clements & Kazman, 2021) — Software Architecture in Practice expanding on ATAM methodology
-- (Clements, Kazman & Klein, 2002) — Evaluating Software Architectures comprehensive guide
+- (Bass, Clements & Kazman, 2021): Software Architecture in Practice expanding on ATAM methodology
+- (Clements, Kazman & Klein, 2002): Evaluating Software Architectures comprehensive guide

@@ -1,7 +1,7 @@
 ---
 domain: workflow
 tags: [flowr, cli, commands, transitions, evidence, session, config]
-last-updated: 2026-05-05
+last-updated: 2026-05-06
 ---
 
 # Flowr Operations
@@ -14,7 +14,7 @@ last-updated: 2026-05-05
 - Use `python -m flowr transition <trigger> --session --evidence key=value` to advance to the next state.
 - Use `python -m flowr check --session <trigger>` to see the conditions guarding a specific transition.
 - Use `python -m flowr session init <flow> --name <name>` to create a session; `session init` auto-enters subflow when first state has a `flow:` field.
-- Set evidence based on work completed before advancing — guarded transitions will not pass without it.
+- Set evidence based on work completed before advancing. Guarded transitions will not pass without it.
 - Always activate the virtual environment first: `source .venv/bin/activate`.
 
 ## Concepts
@@ -33,7 +33,7 @@ last-updated: 2026-05-05
 
 **Sessions**: Sessions persist workflow progress (current flow, state, call stack for subflows) as YAML files in `.flowr/sessions/`. Use `--session <name>` on check/next/transition to resolve flow and state from the session. `transition --session` auto-updates the session after advancing. `session init` auto-enters subflow when the first state has a `flow:` field.
 
-**Subflow Exit Resolution**: In flowr ≥0.5, exit names resolve through the parent flow's transition map rather than being used directly as state IDs. This enables subflow chaining (e.g., discovery-flow → architecture-flow) and recursive subflow entry (3-level nesting) without manual state manipulation.
+**Subflow Exit Resolution**: In flowr v1.0.0, exit names resolve through the parent flow's transition map rather than being used directly as state IDs. This enables subflow chaining (e.g., discovery-flow → architecture-flow) and recursive subflow entry (3-level nesting) without manual state manipulation.
 
 **Configuration**: flowr reads `[tool.flowr]` from `pyproject.toml`. CLI flags override pyproject.toml which overrides defaults. Use `flowr config` to inspect resolved values as a JSON array of key/value/source objects.
 
@@ -156,35 +156,35 @@ CLI `--flows-dir` overrides `pyproject.toml` which overrides defaults.
 
 Evidence can be provided two ways:
 
-- `--evidence key=value` — multiple flags for individual pairs
-- `--evidence-json '{"key":"value"}'` — single JSON object for all pairs
+- `--evidence key=value`: multiple flags for individual pairs
+- `--evidence-json '{"key":"value"}'`: single JSON object for all pairs
 
-Condition operators: `==value`, `!=value`, `>=N`, `<=N`, `>N`, `<N`, `~=value` (approximate numeric match within 5%).
+Condition operators: `==value`, `!=value`, `>=N`, `<=N`, `>N`, `<N`. Plain values without operator prefix are treated as `==` (implicit equality). Numeric portion is extracted from both condition and evidence before comparison.
 
 ### Workflow Pattern
 
 Every state follows the same pattern:
 
-1. **Enter**: `python -m flowr check --session` — confirm owner, skills, attrs, and transitions. Parse `attrs.owner` to determine dispatch target.
+1. **Enter**: `python -m flowr check --session`: confirm owner, skills, attrs, and transitions. Parse `attrs.owner` to determine dispatch target.
 2. **Work**: Execute the skill, reading `in` artifacts and writing `out` artifacts.
 3. **Evidence**: Set any evidence required by guarded transitions based on work completed.
-4. **Choose**: `python -m flowr next --session --evidence key=value` — see all transitions with status. `"status": "open"` transitions are available; `"status": "blocked"` shows which conditions need evidence.
-5. **Advance**: `python -m flowr transition <trigger> --session --evidence key=value` — move to the next state.
+4. **Choose**: `python -m flowr next --session --evidence key=value`: see all transitions with status. `"status": "open"` transitions are available; `"status": "blocked"` shows which conditions need evidence.
+5. **Advance**: `python -m flowr transition <trigger> --session --evidence key=value`: move to the next state.
 
 ### Session-Based Workflow
 
 For ongoing work, use sessions to track progress:
 
-1. **Init**: `python -m flowr session init <flow> --name <name>` — create session at initial state (auto-enters subflow if first state has `flow:`).
-2. **Check**: `python -m flowr check --session` — inspect current state (read-only).
+1. **Init**: `python -m flowr session init <flow> --name <name>`: create session at initial state (auto-enters subflow if first state has `flow:`).
+2. **Check**: `python -m flowr check --session`: inspect current state (read-only).
 3. **Work**: Execute the skill for the current state.
-4. **Advance**: `python -m flowr transition <trigger> --session --evidence key=value` — transition and auto-update session.
+4. **Advance**: `python -m flowr transition <trigger> --session --evidence key=value`: transition and auto-update session.
 
 ### Session Protocol Integration
 
 - The `owner` field from `check` output determines which agent to dispatch to (PO → product-owner, SE → software-engineer, SA → system-architect, DE → domain-expert, R → reviewer, Design Agent → design-agent, Setup Agent → setup-agent).
 - The `skills` field lists which skills to load and execute.
-- The `in` and `out` fields define the artifact contract — what you may read and what you may write.
+- The `in` and `out` fields define the artifact contract: what you may read and what you may write.
 - Do not skip the check step or guess transitions. Always verify the current state before starting work.
 
 ## Related

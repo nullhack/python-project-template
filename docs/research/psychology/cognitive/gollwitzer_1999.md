@@ -1,4 +1,4 @@
-# Implementation Intentions — Gollwitzer, 1999
+# Implementation Intentions (Gollwitzer, 1999)
 
 ## Citation
 
@@ -39,10 +39,10 @@ If-then plans create automatic cue-response links in memory. The brain processes
 
 ## Relevance
 
-Foundational for automated behavioral interventions, habit formation systems, and decision-making tools. Essential for any system requiring reliable execution of intended behaviors — from code review processes to health interventions. The specificity requirement directly applies to creating effective automation rules and behavioral prompts.
+Foundational for automated behavioral interventions, habit formation systems, and decision-making tools. Essential for any system requiring reliable execution of intended behaviors, from code review processes to health interventions. The specificity requirement directly applies to creating effective automation rules and behavioral prompts.
 
 ## Related Research
 
-- (Gollwitzer & Brandstätter, 1997) — Original empirical validation of implementation intentions
-- (Rogers et al., 2015) — Planning prompts and follow-through effectiveness
-- (Achtziger, Gollwitzer & Sheeran, 2008) — Goal shielding mechanisms
+- (Gollwitzer & Brandstätter, 1997): Original empirical validation of implementation intentions
+- (Rogers et al., 2015): Planning prompts and follow-through effectiveness
+- (Achtziger, Gollwitzer & Sheeran, 2008): Goal shielding mechanisms

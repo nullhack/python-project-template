@@ -1,4 +1,4 @@
-# Interaction of Color — Albers, 1963
+# Interaction of Color (Albers, 1963)
 
 ## Citation
 
@@ -22,7 +22,7 @@ High
 
 ## Key Insight
 
-Color is the most relative medium in art — the same physical color is perceived differently depending on its surrounding colors and the quantity in which it appears.
+Color is the most relative medium in art. The same physical color is perceived differently depending on its surrounding colors and the quantity in which it appears.
 
 ## Core Findings
 
@@ -31,12 +31,12 @@ Color is the most relative medium in art — the same physical color is perceive
 3. **Experiential learning approach**: Color is best studied through hands-on experimentation and observation rather than theoretical study alone.
 4. **"Making one color appear as two"**: Albers' key exercise demonstrates that color perception is determined by relationships, not absolute values.
 5. **Systematic color exploration**: The "Homage to the Square" series methodically explored chromatic interactions with nested squares across hundreds of works.
-6. **Pedagogical methodology**: Prioritized experience over theory - "what counts is not so-called knowledge of so-called facts, but vision — seeing."
+6. **Pedagogical methodology**: Prioritized experience over theory - "what counts is not so-called knowledge of so-called facts, but vision: seeing."
 7. **Brand design implications**: Colors must be defined as relationships (contrast ratios, visual weight proportions) rather than fixed values applied without context.
 
 ## Mechanism
 
-Albers' key exercise — making one color appear as two different colors by changing its surroundings — proves that color perception is determined by relationships, not absolute values. This has direct implications for brand design: an accent color that reads clearly on white may appear muddy on dark backgrounds, not because the accent changed, but because its relationship to the background changed. The actionable rule is to define brand colors as relationships (primary is always N× the visual weight of accent; text maintains ≥4.5:1 contrast) rather than fixed hex values applied without context.
+Albers' key exercise (making one color appear as two different colors by changing its surroundings) proves that color perception is determined by relationships, not absolute values. This has direct implications for brand design: an accent color that reads clearly on white may appear muddy on dark backgrounds, not because the accent changed, but because its relationship to the background changed. The actionable rule is to define brand colors as relationships (primary is always N× the visual weight of accent; text maintains ≥4.5:1 contrast) rather than fixed hex values applied without context.
 
 ## Relevance
 
@@ -44,5 +44,5 @@ Foundational for brand palette design, interface color systems, and accessibilit
 
 ## Related Research
 
-- (Land, 1977) — Retinex theory of color constancy challenging some of Albers' assumptions
-- (Jameson, 1985) — Defense of Albers' pigment-based approach vs. theoretical color mixing
+- (Land, 1977): Retinex theory of color constancy challenging some of Albers' assumptions
+- (Jameson, 1985): Defense of Albers' pigment-based approach vs. theoretical color mixing

@@ -1,4 +1,4 @@
-# The Critical Incident Technique — Flanagan, 1954
+# The Critical Incident Technique (Flanagan, 1954)
 
 ## Citation
 
@@ -35,7 +35,7 @@ Anchoring an interview on a specific past incident breaks schema-based recall, r
 
 ## Mechanism
 
-Direct questions elicit the stakeholder's mental schema — a sanitized, gap-free description of how things should work. Critical incidents bypass the schema because episodic memory is anchored to specific sensory and emotional detail. The technique requires incidents to be "sufficiently complete" and "critical" (making positive or negative contribution) where purpose and consequences are clear to the observer.
+Direct questions elicit the stakeholder's mental schema: a sanitized, gap-free description of how things should work. Critical incidents bypass the schema because episodic memory is anchored to specific sensory and emotional detail. The technique requires incidents to be "sufficiently complete" and "critical" (making positive or negative contribution) where purpose and consequences are clear to the observer.
 
 ## Relevance
 
@@ -43,5 +43,5 @@ Foundational technique for requirements gathering, user research, and system des
 
 ## Related Research
 
-- (Bitner, Booms & Tetreault, 1990) — Service encounter satisfaction research using CIT
-- (Klein, 1998) — Recognition-primed decision making and naturalistic observation methods
+- (Bitner, Booms & Tetreault, 1990): Service encounter satisfaction research using CIT
+- (Klein, 1998): Recognition-primed decision making and naturalistic observation methods

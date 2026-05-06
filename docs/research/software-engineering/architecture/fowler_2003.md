@@ -1,4 +1,4 @@
-# Who Needs an Architect? — Fowler, 2003
+# Who Needs an Architect? (Fowler, 2003)
 
 ## Citation
 
@@ -22,7 +22,7 @@ High
 
 ## Key Insight
 
-The architect's job is not to draw diagrams—it is to make **significant decisions** that are hard to change later. The architect is a facilitator who builds consensus around technical direction, not a dictator who issues edicts.
+The architect's job is not to draw diagrams. It is to make **significant decisions** that are hard to change later. The architect is a facilitator who builds consensus around technical direction, not a dictator who issues edicts.
 
 ## Core Findings
 
@@ -43,5 +43,5 @@ Foundational framework for defining architectural roles and responsibilities in 
 
 ## Related Research
 
-- (Martin, 2017) — Clean Architecture principles building on Fowler's policy/detail separation
-- (Bass et al., 2021) — Software Architecture in Practice expanding on architectural decision-making frameworks
+- (Martin, 2017): Clean Architecture principles building on Fowler's policy/detail separation
+- (Bass et al., 2021): Software Architecture in Practice expanding on architectural decision-making frameworks

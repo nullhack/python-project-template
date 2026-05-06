@@ -1,4 +1,4 @@
-# Accountability: A Social Check on the Fundamental Attribution Error — Tetlock, 1985
+# Accountability: A Social Check on the Fundamental Attribution Error (Tetlock, 1985)
 
 ## Citation
 
@@ -41,5 +41,5 @@ Critical for review processes and agent design. Creating accountability structur
 
 ## Related Research
 
-- (Kahneman, 2011) — System 1 vs System 2 thinking and cognitive biases
-- (Lerner & Tetlock, 1999) — Comprehensive review of accountability effects on judgment
+- (Kahneman, 2011): System 1 vs System 2 thinking and cognitive biases
+- (Lerner & Tetlock, 1999): Comprehensive review of accountability effects on judgment

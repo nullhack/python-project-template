@@ -300,11 +300,13 @@
           const labelMap = {
             description: "Description",
             owner: "Owner",
+            in: "In",
+            out: "Out",
             input_artifacts: "In",
             edited_artifacts: "Edit",
             output_artifacts: "Out",
           };
-          const ordered = ["description", "owner", "input_artifacts", "edited_artifacts", "output_artifacts"];
+          const ordered = ["description", "owner", "in", "out", "input_artifacts", "edited_artifacts", "output_artifacts"];
           const rest = Object.keys(d.attrs).filter((k) => !ordered.includes(k));
           const allKeys = [...ordered, ...rest];
           for (const key of allKeys) {
