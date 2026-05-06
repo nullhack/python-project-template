@@ -1,6 +1,6 @@
 # Branding: temple8
 
-> *From zero to hero: production-ready Python, without the ceremony.*
+> *From zero to hero: Spec-driven agent orchestration. Any workflow. Any LLM. Zero lock-in.*
 
 Agents read this file before generating release names, C4 diagrams, README banners, or any document with visual or copy identity. All fields are optional; absent or blank fields fall back to defaults (adjective-animal release names, Mermaid default colors, no wording constraints).
 
@@ -11,7 +11,7 @@ Agents read this file before generating release names, C4 diagrams, README banne
 ## Identity
 
 - **Project name:** temple8
-- **Tagline:** From zero to hero: production-ready Python, without the ceremony.
+- **Tagline:** From zero to hero: Spec-driven agent orchestration. Any workflow. Any LLM. Zero lock-in.
 - **Mission:** Eliminate overhead so engineers ship features, not setup.
 - **Vision:** The standard starting point for any serious Python project: the bedrock every Python engineer reaches for first.
 - **Tone of voice:** Direct, precise, minimal. The Greeks did not decorate the Parthenon with apologies. Neither do we.

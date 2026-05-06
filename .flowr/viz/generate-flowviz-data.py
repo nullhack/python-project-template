@@ -54,7 +54,13 @@ def _flatten_attrs(attrs: dict | None) -> dict | None:
         return attrs
     flat = {}
     for key, val in attrs.items():
-        if key in ("input_artifacts", "edited_artifacts", "output_artifacts", "in", "out"):
+        if key in (
+            "input_artifacts",
+            "edited_artifacts",
+            "output_artifacts",
+            "in",
+            "out",
+        ):
             flat[key] = _flatten_artifacts(val)
         else:
             flat[key] = val
