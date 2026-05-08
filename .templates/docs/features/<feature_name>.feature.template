@@ -9,17 +9,11 @@ Feature: <Feature title>
   Constraints:
   - <Non-functional requirement specific to this feature — reference product_definition.md#quality_attributes for measurable targets>
 
-  ## Questions
-
-  | ID | Question | Status | Answer / Assumption |
-  |----|----------|--------|---------------------|
-  | Q1 | <unresolved question from specification session> | Open / Assumed / Resolved | <if assumed: what was assumed; if resolved: answer> |
-
   ## Changes
 
-  | Session | Q-IDs | Change |
-  |---------|-------|--------|
-  | YYYY-MM-DD SN | Q-IDs | Created: <summary> |
+  | Session | Change |
+  |---------|--------|
+  | YYYY-MM-DD SN | Created: <summary> |
 
   Rule: <User story title>
     As a <role>
