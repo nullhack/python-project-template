@@ -5,7 +5,7 @@ description: "Verify 1-1 correspondence between @id tags in the feature file and
 
 # Verify Traceability
 
-Available knowledge: [[software-craft/test-design#key-takeaways]], [[requirements/gherkin#key-takeaways]]. `in` artifacts: discover and read on demand as needed. 
+Available knowledge: [[software-craft/test-design#key-takeaways]], [[requirements/gherkin#key-takeaways]]. `in` artifacts: read all before starting work. 
 
 1. Extract all `@id` tags from the feature file.
 2. Extract all test function names from `tests/features/<feature_slug>/`.

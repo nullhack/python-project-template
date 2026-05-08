@@ -1,0 +1,3 @@
+{
+  "mermaid": "stateDiagram-v2\n    state \"red\" as red\n    state \"green\" as green\n    state \"refactor\" as refactor\n    red --> green : test_written\n    red --> blocked : blocked\n    green --> refactor : test_passes\n    refactor --> red : next_example\n    refactor --> all_green : all_examples_pass"
+}

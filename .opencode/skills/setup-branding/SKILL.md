@@ -5,7 +5,7 @@ description: "Interview stakeholder to establish brand identity: personality, vi
 
 # Setup Branding
 
-Available knowledge: [[design/identity-design#key-takeaways]], [[requirements/interview-techniques#key-takeaways]]. `in` artifacts: discover and read on demand as needed. 
+Available knowledge: [[design/identity-design#key-takeaways]], [[requirements/interview-techniques#key-takeaways]]. `in` artifacts: read all before starting work. 
 
 1. Ask the stakeholder for the project name (if not already set in `pyproject.toml`).
 2. Ask for a one-sentence tagline describing what the project does.

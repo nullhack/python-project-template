@@ -1,22 +1,18 @@
 ---
 name: discover-features
-description: "Synthesize analysis artifacts into .feature files with coherent boundaries, business rules, and constraints"
+description: "Identify feature boundaries from the delivery order, validated against bounded contexts and aggregate boundaries"
 ---
 
 # Discover Features
 
-Available knowledge: [[requirements/feature-discovery#concepts]]. `in` artifacts: discover and read on demand as needed.
+Available knowledge: [[requirements/feature-boundaries]], [[requirements/feature-discovery#concepts]]. `in` artifacts: read all before starting work.
 
-1. Read the product definition, domain model, technical design, and interview notes.
-2. Map delivery order steps to bounded contexts and aggregate boundaries. IF a delivery step spans multiple aggregates → flag for potential split. IF multiple delivery steps share one aggregate → they may belong together.
-3. For each feature boundary, cross-reference domain events, entity invariants, and interview findings to identify business rules.
-4. IF artifacts are ambiguous, contradictory, or incomplete for a feature boundary or business rule → ask the stakeholder targeted questions using CIT and laddering per [[requirements/interview-techniques#concepts]]. Record answers in the feature's Questions table.
-5. Derive coarse `Rules (Business)` bullets from the synthesized understanding: one per behavioral hypothesis.
-6. For each feature, identify applicable Constraints from the product definition's quality attributes.
-7. Run gap analysis per [[requirements/feature-discovery#concepts]]:
-   - Every bounded context covered by at least one feature?
-   - Every quality attribute enforced by at least one feature?
-   - Every critical domain event traceable to a rule?
-   IF any gap is found → flag it. Do NOT silently fill gaps with assumed rules.
-8. Create a `.feature` file from the template at `.templates/docs/features/feature.feature.template` for each feature with title, description, Status: ELICITING, Rules (Business), and Constraints.
-9. Do NOT write full `Rule:` blocks (As a/I want/So that) or `Example:` blocks. Those require the adversarial analysis of breakdown.
+1. Read product_definition.md, domain_model.md, and glossary.md from `in` artifacts.
+2. List the delivery order steps from product_definition.md. Each step is a feature candidate per [[requirements/feature-boundaries#key-takeaways]].
+3. For each candidate, map it to bounded contexts using the domain model's entity table. IF a candidate spans multiple contexts → flag for splitting per [[requirements/feature-boundaries#key-takeaways]].
+4. For each candidate, map it to aggregate boundaries using the domain model's aggregate boundary table. IF a candidate requires cross-aggregate transactions → flag for splitting per [[requirements/feature-boundaries#key-takeaways]].
+5. Name each feature per [[requirements/feature-boundaries#content]]: use the delivery step name, validated for clarity and specificity.
+6. Write a description for each feature per [[requirements/feature-boundaries#content]]: what it provides, which context it serves, why it exists, key entities.
+7. Identify cross-cutting quality attributes from product_definition.md that will become Constraints — note which features they distribute to per [[requirements/feature-boundaries#content]] — but do NOT write Constraints yet; discover-rules will write them.
+8. Create a `.feature` file from the template at `.templates/docs/features/feature.feature.template` for each feature with title, description, Status: ELICITING, and an empty Questions table. Do NOT write Rules (Business) or Constraints — those come from the discover-rules skill.
+9. Run context coverage gap analysis per [[requirements/feature-discovery#content]]: every bounded context covered by at least one feature? IF any gap → add a Questions entry flagging it.

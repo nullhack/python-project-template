@@ -4,7 +4,7 @@
 > Updated by the Domain Expert when domain understanding evolves.
 > This document captures what code cannot express: WHY entities exist, HOW aggregates are bounded, and WHAT business capabilities each context serves.
 >
-> **Evolving document:** Event Storming produces event_storming.md (workshop draft). Domain Modeling then reads that draft and formalizes it into the Bounded Contexts, Entities, Relationships, and Aggregate Boundaries sections below.
+> **Evolving document:** Domain Modeling formalizes understanding into the sections below. The Bounded Contexts, Events and Commands, Entities, Relationships, Aggregate Boundaries, and Context Map sections are the canonical structural spec.
 
 ---
 
@@ -19,6 +19,22 @@
 | Context | Responsibility | Key Entities | Business Capability | Why Separate | Integration Points |
 |---------|----------------|--------------|---------------------|-------------|-------------------|
 | `<Context>` | <responsibility> | `<Entity1>`, `<Entity2>` | <what business need it serves> | <why it can't be merged with another context> | <how it connects to other contexts> |
+
+---
+
+## Events and Commands
+
+### Domain Events
+
+| Event | Bounded Context | Description | Trigger Command |
+|-------|-----------------|-------------|-----------------|
+| `<EventVerbEd>` | `<Context>` | <what happened in the domain> | `<CommandVerb>` or External |
+
+### Commands
+
+| Command | Bounded Context | Actor | Read Model | Produces Event(s) | Rejection Event |
+|---------|-----------------|-------|------------|---------------------|-------------------|
+| `<CommandVerb>` | `<Context>` | <who/what triggers> | <decision info needed> | `<EventVerbEd>` | `<EventVerbEd>Rejected>` or None |
 
 ---
 
@@ -44,6 +60,29 @@
 | Aggregate | Root Entity | Invariants | Why Grouped | Bounded Context |
 |-----------|-------------|------------|-------------|-----------------|
 | `<Aggregate>` | `<RootEntity>` | <business rules this aggregate enforces> | <business reason for the boundary> | <Context> |
+
+---
+
+## Context Map
+
+<Context relationships classified per Vernon (2013) context-mapping patterns: OHS, Conformist, Customer-Supplier, Partnership, etc.>
+
+| Upstream Context | Downstream Context | Relationship Pattern | Translation / Anti-Corruption Layer |
+|-----------------|-------------------|---------------------|-------------------------------------|
+| `<Upstream>` | `<Downstream>` | <pattern> | <translation rules> |
+
+### Context Map Diagram
+
+```mermaid
+graph TB
+    <Replace with project context map diagram>
+```
+
+### Anti-Corruption Layers
+
+| ACL | Protects Context | From Context | Translation Rules |
+|-----|-----------------|--------------|-------------------|
+| `<ACL name>` | <protected context> | <external context> | <translation rules> |
 
 ---
 

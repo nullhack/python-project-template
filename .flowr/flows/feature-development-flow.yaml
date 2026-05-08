@@ -1,6 +1,6 @@
 flow: feature-development-flow
 version: 7.0.0
-params: [feature_name]
+params: [feature_id]
 
 exits:
   - needs_architecture

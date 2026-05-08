@@ -9,7 +9,7 @@ last-updated: 2026-04-29
 ## Key Takeaways
 
 - Delivery mechanism is the boundary between the domain and the outside world (Cockburn, 2005): HTTP, CLI, message queue, etc. It must be verified against the product definition before designing anything.
-- Architecture exists when technical_design.md and context_map.md both contain meaningful content aligned with the current domain.
+- Architecture exists when domain_model.md and product_definition.md both contain meaningful content aligned with the current domain.
 - If architecture exists but delivery mechanism mismatches, record it as an ADR before proceeding.
 - Hexagonal architecture (Ports & Adapters, Cockburn, 2005) keeps the domain independent of delivery mechanism. Verify this is followed.
 - SA conducts an assessment interview to verify and correct quality attributes, deployment constraints, and hidden requirements before routing.
@@ -18,7 +18,7 @@ last-updated: 2026-04-29
 
 **Delivery Mechanism Verification**: Before designing a feature, the architect must verify that the delivery mechanism stated in the product definition (e.g., "web application", "CLI tool", "API service") matches the actual codebase implementation. A mismatch (e.g., product says "web" but codebase is CLI) must be recorded as an ADR and resolved before proceeding. This checkpoint prevents building on a foundation that doesn't match the product's intent.
 
-**Architecture Existence Check**: Architecture is considered to exist when two documents contain meaningful, aligned content: technical_design.md (technical decisions, active constraints, key decisions) and context_map.md (bounded context relationships). Empty or placeholder content does not count. If both exist and are coherent, the architect evaluates whether the existing architecture covers the new feature or needs updating.
+**Architecture Existence Check**: Architecture is considered to exist when two documents contain meaningful, aligned content: domain_model.md (bounded contexts, entities, relationships, context map) and product_definition.md (quality attributes, technology stack, dependencies). Empty or placeholder content does not count. If both exist and are coherent, the architect evaluates whether the existing architecture covers the new feature or needs updating.
 
 **Hexagonal Architecture (Ports & Adapters, Cockburn, 2005)**: The domain core must not depend on infrastructure. Ports define what the domain needs; adapters provide concrete implementations. When reviewing architecture, verify that external dependencies (databases, frameworks, APIs) are behind Protocol interfaces, not directly referenced in domain code.
 

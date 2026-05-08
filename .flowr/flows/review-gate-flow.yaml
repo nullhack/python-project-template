@@ -1,6 +1,6 @@
 flow: review-gate-flow
-version: 4.0.0
-params: [feature_name]
+version: 6.0.0
+params: [feature_id]
 exits:
   - pass
   - fail
@@ -14,12 +14,10 @@ states:
       skills:
         - review-design
       in:
+        - features/<feature_id>.feature
         - domain_model.md
         - glossary.md
-        - technical_design.md
-        - context_map.md
         - product_definition.md
-        - "adr/*.md"  # optional
         - refactored_source
       out:
         - design_review_evidence
@@ -45,7 +43,7 @@ states:
         - coverage_reports
         - test_output
         - refactored_source
-        - features/<feature_name>.feature
+        - features/<feature_id>.feature
         - domain_model.md
         - glossary.md
       out:

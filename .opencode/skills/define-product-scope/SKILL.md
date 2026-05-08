@@ -5,7 +5,7 @@ description: "Define what the product IS and IS NOT, who the users are, and the 
 
 # Define Product Scope
 
-Available knowledge: [[architecture/quality-attributes#key-takeaways]], [[requirements/pre-mortem#key-takeaways]]. `in` artifacts: discover and read on demand as needed.
+Available knowledge: [[architecture/quality-attributes#key-takeaways]], [[requirements/pre-mortem#key-takeaways]]. `in` artifacts: read all before starting work.
 
 1. Define product scope per the domain model and glossary.
 2. Define quality attributes per [[architecture/quality-attributes#concepts]].

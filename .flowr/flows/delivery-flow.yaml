@@ -1,6 +1,6 @@
 flow: delivery-flow
 version: 5.0.0
-params: [feature_name]
+params: [feature_id]
 
 exits:
   - next-feature
@@ -18,8 +18,9 @@ states:
         - accept-feature
         - verify-traceability
       in:
-        - features/<feature_name>.feature
+        - features/<feature_id>.feature
         - product_definition.md
+        - glossary.md
       out:
         - acceptance_evidence
         - approval_record
@@ -42,7 +43,7 @@ states:
       in:
         - feature_commits
         - approval_record
-        - features/<feature_name>.feature
+        - features/<feature_id>.feature
       out:
         - merged_commits
     next:
@@ -72,7 +73,7 @@ states:
         - create-pr
       in:
         - merged_commits
-        - features/<feature_name>.feature
+        - features/<feature_id>.feature
       out: []
     conditions:
       merged:

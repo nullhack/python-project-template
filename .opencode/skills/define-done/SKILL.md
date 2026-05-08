@@ -5,7 +5,7 @@ description: "Define the quality gates that must pass before the feature is cons
 
 # Define Done
 
-Available knowledge: [[software-craft/code-review#key-takeaways]]. `in` artifacts: discover and read on demand as needed.
+Available knowledge: [[software-craft/code-review#key-takeaways]]. `in` artifacts: read all before starting work.
 
 1. Define quality gates per [[software-craft/code-review#key-takeaways]]: design correctness, test quality, and conventions.
 2. Incorporate quality attributes from the product definition into the gates.

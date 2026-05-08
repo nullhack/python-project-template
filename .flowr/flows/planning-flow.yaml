@@ -1,6 +1,6 @@
 flow: planning-flow
-version: 7.0.0
-params: [feature_name]
+version: 9.0.0
+params: [feature_id]
 exits:
   - complete
   - needs_architecture
@@ -16,7 +16,8 @@ states:
         - select-feature
       in:
         - product_definition.md
-        - technical_design.md
+        - domain_model.md
+        - "features/<feature_id>.feature"  # optional — discover available features
       out: []
     next:
       selected: feature-breakdown
@@ -31,11 +32,12 @@ states:
       skills:
         - break-down-feature
       in:
-        - features/<feature_name>.feature
+        - features/<feature_id>.feature
         - product_definition.md
-        - technical_design.md
+        - domain_model.md
+        - glossary.md
       out:
-        - features/<feature_name>.feature:
+        - features/<feature_id>.feature:
             - rules
     conditions:
       invest_passed:
@@ -59,12 +61,12 @@ states:
       skills:
         - write-bdd-features
       in:
-        - features/<feature_name>.feature
+        - features/<feature_id>.feature
         - product_definition.md
         - domain_model.md
         - glossary.md
       out:
-        - features/<feature_name>.feature:
+        - features/<feature_id>.feature:
             - examples
     conditions:
       examples_have_ids:
@@ -99,8 +101,7 @@ states:
       skills:
         - create-py-stubs
       in:
-        - features/<feature_name>.feature
-        - technical_design.md
+        - features/<feature_id>.feature
         - domain_model.md
         - glossary.md
       out:
@@ -120,7 +121,7 @@ states:
       skills:
         - define-done
       in:
-        - features/<feature_name>.feature
+        - features/<feature_id>.feature
         - product_definition.md
       out:
         - product_definition.md:
@@ -136,8 +137,9 @@ states:
       skills:
         - confirm-baseline
       in:
-        - features/<feature_name>.feature
+        - features/<feature_id>.feature
         - product_definition.md
+        - domain_model.md
       out: []
     conditions:
       feature_baselined:

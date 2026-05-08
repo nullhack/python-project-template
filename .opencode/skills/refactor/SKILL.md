@@ -5,7 +5,7 @@ description: "Improve code structure while keeping all tests passing, then cycle
 
 # Refactor
 
-Available knowledge: [[software-craft/tdd]], [[software-craft/refactoring]], [[software-craft/object-calisthenics]], [[software-craft/smell-catalogue]], [[software-craft/refactoring-techniques]]. `in` artifacts: discover and read on demand as needed. 
+Available knowledge: [[software-craft/tdd]], [[software-craft/refactoring]], [[software-craft/object-calisthenics]], [[software-craft/smell-catalogue]], [[software-craft/refactoring-techniques]]. `in` artifacts: read all before starting work. 
 
 1. Review the code for improvement opportunities while keeping all tests passing per [[software-craft/tdd#concepts]].
 2. Refactor only if there is a test that would break if the refactoring is wrong per [[software-craft/tdd#key-takeaways]].
@@ -21,6 +21,6 @@ Available knowledge: [[software-craft/tdd]], [[software-craft/refactoring]], [[s
 12. IF Data Clumps → Introduce Parameter Object per [[software-craft/smell-catalogue#concepts]].
 13. IF Shotgun Surgery or Divergent Change → Extract Class per [[software-craft/smell-catalogue#concepts]].
 14. IF no improvement is needed → skip refactoring and proceed to the next test.
-15. IF a spec gap or inconsistency is discovered during refactoring → do NOT modify specification documents (domain_model.md, technical_design.md, glossary.md, product_definition.md, context_map.md, ADRs, feature files). Flag it in output notes. The SE may ONLY modify production code and test code.
+15. IF a spec gap or inconsistency is discovered during refactoring → do NOT modify specification documents (domain_model.md, glossary.md, product_definition.md, ADRs, feature files). Flag it in output notes. The SE may ONLY modify production code and test code.
 16. Commit refactor changes separately from feature changes per [[software-craft/git-conventions#concepts]].
 17. Run `task test-fast` to confirm all tests remain green after refactoring.

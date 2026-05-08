@@ -1,0 +1,3 @@
+{
+  "mermaid": "stateDiagram-v2\n    state \"design-review\" as design-review\n    state \"structure-review\" as structure-review\n    state \"conventions-review\" as conventions-review\n    design-review --> structure-review : pass | alignment: ==domain_model_verified, adr_compliance: ==adrs_respected\n    design-review --> fail : fail\n    structure-review --> conventions-review : pass | coverage: ==threshold_met, traceability: ==all_ids_covered, coupling: ==behavior_not_implementation\n    structure-review --> fail : fail\n    conventions-review --> pass : pass | formatting: ==clean, naming: ==domain_language\n    conventions-review --> fail : fail"
+}

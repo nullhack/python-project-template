@@ -1,6 +1,6 @@
 flow: tdd-cycle-flow
-version: 3.0.0
-params: [feature_name]
+version: 4.0.0
+params: [feature_id]
 exits:
   - all_green
   - blocked
@@ -16,6 +16,9 @@ states:
       in:
         - test_skeletons
         - typed_source_stubs
+        - features/<feature_id>.feature
+        - domain_model.md
+        - glossary.md
       out:
         - test_implementations
     next:
@@ -32,6 +35,9 @@ states:
       in:
         - test_implementations
         - typed_source_stubs
+        - features/<feature_id>.feature
+        - domain_model.md
+        - glossary.md
       out:
         - source_implementations
     next:
@@ -47,6 +53,9 @@ states:
       in:
         - source_implementations
         - test_implementations
+        - features/<feature_id>.feature
+        - domain_model.md
+        - glossary.md
       out:
         - source_implementations
         - refactored_source

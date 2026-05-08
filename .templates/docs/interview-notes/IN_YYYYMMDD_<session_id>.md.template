@@ -1,4 +1,4 @@
-# IN_YYYYMMDD_<slug> — <short-description>
+# IN_YYYYMMDD_<session_id> — <short-description>
 
 > **Status:** IN-PROGRESS | COMPLETE
 > **Interviewer:** PO
@@ -19,7 +19,7 @@
 | Q6 | Failure — what must never happen? | ... |
 | Q7 | Out-of-scope — what are we explicitly not building? | ... |
 
-## <Group Name>
+## Domain Questions
 
 | ID | Question | Answer |
 |----|----------|--------|

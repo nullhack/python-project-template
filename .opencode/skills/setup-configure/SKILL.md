@@ -7,7 +7,7 @@ description: "Gather and confirm project parameters, validate template files exi
 
 Template resolution: templates live in `.templates/`. The instance path is the template path with `.templates/` prefix removed and `.template` suffix removed. Discover templates at runtime with `find .templates -name '*.template'`. Some templates contain `{variable}` tokens (e.g. `{project_name}`, `{YYYYMMDD}`) that the setup skill replaces with actual values.
 
-`in` artifacts: discover and read on demand as needed.
+`in` artifacts: read all before starting work.
 
 1. Check that all required template files exist and set evidence:
    - `pyproject_toml`: Check `pyproject.toml` exists

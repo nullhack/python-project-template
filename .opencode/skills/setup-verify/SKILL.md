@@ -5,7 +5,7 @@ description: "Verify transformations, clean template artifacts, and finalize the
 
 # Setup Verify
 
-`in` artifacts: discover and read on demand as needed.
+`in` artifacts: read all before starting work.
 
 1. Run smoke test: `uv sync --all-extras && uv run task test-fast`
 2. IF smoke test fails:

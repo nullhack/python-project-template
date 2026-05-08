@@ -2,7 +2,7 @@ import pytest
 
 
 @pytest.mark.skip(reason="not yet implemented")
-def test_<feature_stem>_<id>() -> None:
+def test_<rule_id>_<id>() -> None:
     """
     Given <initial context>
     When <event or action>
