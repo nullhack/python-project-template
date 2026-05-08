@@ -56,7 +56,7 @@ For each feature, starting with the feature that has the most entities from the 
 **Step 5: Map quality attributes to constraints.** For each quality attribute in product_definition.md:
 - Which feature(s) enforce this attribute? → Add Constraint to those features
 - Include measurable threshold from the quality attribute
-- If no feature enforces it → add to Questions table as a gap
+- If no feature enforces it → flag in interview notes as a gap
 
 ### Traceability Verification
 

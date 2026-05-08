@@ -39,7 +39,7 @@ Ask:
 
 > "Imagine the software-engineer builds this feature exactly as described, all tests pass, but the feature doesn't work for the user. What would be missing?"
 
-Record the findings in the feature's Questions section or as additional Rules.
+Record the findings as additional Rules or in interview notes.
 
 ### Behavior Pre-Mortem
 

@@ -13,7 +13,7 @@ Available knowledge: [[requirements/invest]], [[requirements/decomposition]], [[
    - CIT per [[requirements/interview-techniques#concepts]]: "When has this behavior gone wrong in practice?"
    - Laddering per [[requirements/interview-techniques#concepts]]: "Why is this rule important? What breaks without it?"
 3. Expand each validated rule into a full `Rule:` block with As a/I want/So that format.
-4. IF clarification is needed for a Rule → ask the stakeholder targeted questions. Record answers in the feature's Questions table.
+4. IF clarification is needed for a Rule → ask the stakeholder targeted questions. Record answers in the relevant interview notes.
 5. Validate each Rule per [[requirements/invest#concepts]].
 6. IF a story contains "and" → split into two Rules per [[requirements/decomposition#key-takeaways]].
 7. IF a story lacks a named user role or business value → reframe per [[requirements/invest#concepts]].
