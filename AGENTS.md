@@ -77,17 +77,7 @@ Artifact names in `in` and `out` lists use these conventions:
 | `dir/*.ext` | Multiple documents of that type available in `in` | `interview-notes/*.md`, `adr/*.md` |
 | `conceptual_name` | A runtime artifact that passes between states within a flow | `typed_source_stubs`, `test_implementations` |
 
-### Placeholder Naming Convention
-
-Placeholders in template filenames and flow artifact paths use the `<type_id>` pattern where **type** identifies the document kind and **_id** signals snake_case formatting:
-
-| Placeholder | Document type | Format | Example value |
-|---|---|---|---|
-| `<feature_id>` | Feature file | snake_case | `domain_value_objects`, `data_export` |
-| `<adr_id>` | Architectural decision record | snake_case | `protocol_adapters`, `read_write_split` |
-| `<session_id>` | Interview session | snake_case | `user_authentication`, `risk_requirements` |
-| `<pm_id>` | Post-mortem | snake_case | `gherkin_removal`, `invest_artifact_pollution` |
-| `<rule_id>` | BDD rule test | snake_case | `token_identity`, `order_lifecycle` |
+Placeholders in template filenames and flow artifact paths use the `<type_id>` pattern where **type** identifies the document kind and **_id** signals snake_case formatting. See template filenames for the canonical placeholder names.
 
 **File naming rule:** All filenames use **snake_case** (e.g., `domain_value_objects.feature`, `ADR_20260504_protocol_adapters.md`). **Doc folders** use kebab-case for multi-word names (e.g., `interview-notes/`, `post-mortem/`). **Python/test folders** use snake_case (e.g., `tests/features/`).
 
