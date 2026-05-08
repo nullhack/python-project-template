@@ -1,11 +1,12 @@
 flow: feature-development-flow
-version: 7.0.0
+version: 9.0.0
 params: [feature_id]
 
 exits:
   - needs-architecture
   - cancelled
   - completed
+  - rejected
 
 states:
   - id: planning
@@ -13,7 +14,7 @@ states:
       description: "Plan feature breakdown, BDD scenarios, and development readiness"
       git: main
     flow: planning-flow
-    flow-version: "^7"
+    flow-version: "^11"
     next:
       complete: development
       needs-architecture: needs-architecture
@@ -24,10 +25,9 @@ states:
       description: "Implement the feature through TDD cycles, review, and commit"
       git: feature
     flow: development-flow
-    flow-version: "^6"
+    flow-version: "^9"
     next:
       done: delivery
-      needs-planning: planning
 
   - id: delivery
     attrs:
@@ -37,17 +37,6 @@ states:
     flow-version: "^5"
     next:
       next-feature: planning
-      rejected: post-mortem
+      rejected: rejected
       needs-development: development
       cancelled: cancelled
-
-  - id: post-mortem
-    attrs:
-      description: "Investigate rejection, document findings, and determine corrective action"
-      git: main
-    flow: post-mortem-flow
-    flow-version: "^3"
-    next:
-      complete: planning
-      needs-architecture: needs-architecture
-      no-action: cancelled

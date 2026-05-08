@@ -26,7 +26,7 @@ states:
         - approval_record
     conditions:
       feature-accepted:
-        feature-status: ==ACCEPTED
+        acceptance-verified: ==verified
     next:
       approved:
         to: local-merge

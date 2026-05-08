@@ -1,9 +1,8 @@
 flow: tdd-cycle-flow
-version: 4.0.0
+version: 5.0.0
 params: [feature_id]
 exits:
   - all-green
-  - blocked
 
 states:
   - id: red
@@ -23,7 +22,6 @@ states:
         - test-implementations
     next:
       test-written: green
-      blocked: blocked
 
   - id: green
     attrs:

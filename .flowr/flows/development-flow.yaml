@@ -1,18 +1,17 @@
 flow: development-flow
-version: 8.0.0
+version: 9.0.0
 params: [feature_id]
 exits:
   - done
-  - needs-planning
 
 states:
-  - id: project-structuring
+  - id: feature-structuring
     attrs:
-      description: "SA creates the project skeleton — branch, package structure, port interfaces, aggregate root signatures — before any feature-specific stubs"
+      description: "SA creates the feature branch and feature-level structure — package directories, port interfaces, aggregate root signatures — before TDD cycles begin"
       owner: SA
       git: feature
       skills:
-        - structure-project
+        - structure-feature
       in:
         - features/<feature_id>.feature
         - domain_model.md
@@ -22,14 +21,13 @@ states:
         - git_branch
     next:
       ready: tdd-cycle
-      needs-planning: needs-planning
 
   - id: tdd-cycle
     attrs:
       description: "SE implements the feature through repeated RED-GREEN-REFACTOR cycles until all BDD examples pass"
       git: feature
     flow: tdd-cycle-flow
-    flow-version: "^4"
+    flow-version: "^5"
     conditions:
       design-declared:
         yagni: ==no-premature-abstractions
@@ -43,33 +41,25 @@ states:
       all-green:
         to: review-gate
         when: design-declared
-      blocked: project-structuring
 
   - id: review-gate
     attrs:
-      description: "R independently verifies implementation across three tiers — design, structure, and conventions — before commit"
-      git: feature
-    flow: review-gate-flow
-    flow-version: "^6"
-    next:
-      pass: commit
-      fail: tdd-cycle
-
-  - id: commit
-    attrs:
-      description: "SE commits the reviewed, passing implementation with traceability to feature files"
-      owner: SE
+      description: "R independently verifies implementation across three tiers — design, structure, conventions — then commits the passing implementation with @id traceability"
+      owner: R
       git: feature
       skills:
-        - commit-implementation
+        - review-gate
       in:
         - test-implementations
         - source-implementations
-        - design_review_evidence
-        - structure_review_evidence
-        - conventions_review_evidence
         - features/<feature_id>.feature
       out:
         - feature-commits
+    conditions:
+      commit-gate:
+        committed: ==verified
     next:
-      done: done
+      pass:
+        to: done
+        when: commit-gate
+      fail: tdd-cycle
