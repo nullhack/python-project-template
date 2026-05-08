@@ -5,7 +5,7 @@ description: "Verify test coverage, test quality, and behavior-vs-implementation
 
 # Review Structure
 
-Available knowledge: [[software-craft/test-design]], [[software-craft/tdd]], [[software-craft/code-review]]. `in` artifacts: discover and read on demand as needed. 
+Available knowledge: [[software-craft/test-design]], [[software-craft/tdd]], [[software-craft/code-review]]. `in` artifacts: read all before starting work. 
 
 1. This review tier checks test quality and coverage ONLY. Do not flag lint, docstring, or naming issues. Those belong to conventions review.
 2. Declare adversarial stance per [[software-craft/code-review#concepts]]: default hypothesis: "tests might be coupled to the wrong thing."

@@ -124,6 +124,26 @@ All criteria must be met before a feature is considered done.
 
 ---
 
+## Technology Stack
+
+> Version constraints in `pyproject.toml` are the source of truth. This table records technology choices and rationale only.
+
+| Layer | Technology | Rationale |
+|-------|-----------|-----------|
+| <e.g. Language> | <technology> | <why this choice> |
+
+---
+
+## Dependencies
+
+> Version constraints in `pyproject.toml` are the source of truth. This table records why each dependency was chosen.
+
+| Dependency | What it provides | Why not replaced |
+|------------|------------------|-----------------|
+| `<package>` | <what it provides> | <why it's needed> |
+
+---
+
 ## Scope Changes
 
 | Date | Session | Change | Reason |

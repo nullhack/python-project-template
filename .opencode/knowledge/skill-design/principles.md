@@ -54,7 +54,7 @@ description: "<one-line description of what this skill does>"
 
 # <Skill Title>
 
-Available knowledge: [[domain/concept]]. `in` artifacts: discover and read on demand as needed.
+Available knowledge: [[domain/concept]]. `in` artifacts: read all before starting work.
 
 1. <procedural step>
 2. <step referencing knowledge per [[domain/concept]]>  ← Link at point of use
@@ -103,7 +103,7 @@ Every skill that has `in` artifacts follows two rules:
 
 1. **Verify before proceeding.** Check that all `in` artifacts exist on disk. If any are missing, stop and flag the missing artifact rather than proceeding with assumed knowledge. This prevents the most common source of rework: building on assumptions about documents that don't exist or have been moved.
 
-2. **Read on demand, not eagerly.** Discover what's available first (`ls`, `find`), then read only the files and sections needed for the current step. The `in` list defines what you *may* read, not what you *must* read upfront. Loading all `in` artifacts before starting wastes context and causes middle-position attention degradation (Liu et al., 2023).
+2. **Read all `in` artifacts before starting work.** All `in` artifacts are mandatory context — read them in full before executing the skill's procedural steps. For wildcard patterns (`*.md`), list the directory first to discover what's available, then read all discovered files. The `in` list defines what you *must* read, not what you *may* optionally reference.
 
 ## Related
 

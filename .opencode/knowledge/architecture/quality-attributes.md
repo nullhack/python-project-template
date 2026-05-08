@@ -48,13 +48,12 @@ last-updated: 2026-04-29
 
 ### Quality Attributes in Architecture Documents
 
-When documenting quality attributes in `technical_design.md`:
+When documenting quality attributes in `product_definition.md`:
 - Each attribute must link to an architectural decision that addresses it
 - Each architectural decision must link to an ADR
 - Priority order must be explicit (which attribute wins when they conflict)
 
 ## Related
 
-- [[architecture/technical-design]]
-- [[architecture/adr]]
 - [[architecture/assessment]]
+- [[architecture/adr]]

@@ -5,7 +5,7 @@ description: "Verify formatting, docstrings, type hints, and lint rules"
 
 # Review Conventions
 
-Available knowledge: [[requirements/ubiquitous-language]], [[software-craft/code-review]]. `in` artifacts: discover and read on demand as needed. 
+Available knowledge: [[requirements/ubiquitous-language]], [[software-craft/code-review]]. `in` artifacts: read all before starting work. 
 
 1. This review tier runs after design and structure review have passed. The SE addresses convention findings only at this stage. The SE does not proactively run lint, format, or type checks during the TDD cycle.
 2. Declare fail-fast stance per [[software-craft/code-review#concepts]]: stop at the first failure.

@@ -25,7 +25,7 @@ last-updated: 2026-05-06
 
 **Enhanced `next` Output**: The `next` command shows **all** transitions (open and blocked) with status markers. Each transition has `trigger`, `target`, `status` (`"open"` or `"blocked"`), and `conditions` (null if unguarded, or a dict of condition expressions). This lets you identify what evidence is needed to unblock guarded transitions.
 
-**Evidence**: Some transitions are guarded by conditions (e.g., `feature_accepted: ==ACCEPTED`, `all_ids_have_stubs: ==true`). Set evidence with `--evidence key=value` or `--evidence-json '{"key":"value"}'` when advancing. If a transition is guarded and evidence is not set, the transition will fail.
+**Evidence**: Some transitions are guarded by conditions (e.g., `feature-accepted: ==ACCEPTED`, `all-ids-have-stubs: ==true`). Set evidence with `--evidence key=value` or `--evidence-json '{"key":"value"}'` when advancing. If a transition is guarded and evidence is not set, the transition will fail.
 
 **Choosing a Path**: After completing work, use `next` with your evidence. Transitions with `"status": "open"` are available; `"status": "blocked"` transitions show which conditions need evidence. Choose the path that matches your work outcome.
 

@@ -1,5 +1,5 @@
 flow: discovery-flow
-version: 6.0.0
+version: 11.0.0
 exits:
   - complete
 
@@ -13,74 +13,42 @@ states:
         - conduct-interview
       in:
         - "interview-notes/*.md"  # optional
+        - "domain_model.md"  # optional — for re-interview context
+        - "product_definition.md"  # optional — for re-interview context
       out:
-        - interview-notes/<session>.md:
-            - pain_points
-            - business_goals
-            - terms_to_define
-            - quality_attributes
+        - "interview-notes/<session_id>.md"
     next:
-      needs_full_discovery: event-storming
-      needs_scope_only: scope-boundary
-      already_known: complete
+      needs-full-discovery: domain-discovery
+      needs-scope-only: scope-boundary
+      already-known: complete
 
-  - id: event-storming
+  - id: domain-discovery
     attrs:
-      description: "DE facilitates an event storming workshop to surface domain events, commands, and aggregate candidates"
+      description: "DE facilitates event storming and co-emergent ubiquitous language definition, producing domain_model.md and glossary.md as paired outputs"
       owner: DE
       git: main
       skills:
         - facilitate-event-storming
-      in:
-        - interview-notes/*.md
-      out:
-        - event_storming.md:
-            - event_map
-            - context_candidates
-            - aggregate_candidates
-    next:
-      done: language-definition
-      needs_reinterview: stakeholder-interview
-
-  - id: language-definition
-    attrs:
-      description: "DE formalizes the ubiquitous language by defining domain terms into a glossary"
-      owner: DE
-      git: main
-      skills:
+        - domain-discovery
         - define-ubiquitous-language
       in:
         - interview-notes/*.md
-        - event_storming.md
-        - "domain_model.md"  # optional
-      out:
-        - glossary.md
-    next:
-      done: domain-modeling
-      needs_restorming: event-storming
-
-  - id: domain-modeling
-    attrs:
-      description: "DE formalizes candidates into proper bounded contexts, entities, relationships, and aggregate boundaries"
-      owner: DE
-      git: main
-      skills:
-        - model-domain
-      in:
-        - glossary.md
-        - event_storming.md
+        - "domain_model.md"  # optional — cumulative edit across iterations
+        - "glossary.md"  # optional — cumulative edit across iterations
       out:
         - domain_model.md:
+            - summary
             - bounded_contexts
+            - events_and_commands
             - entities
             - relationships
             - aggregate_boundaries
-            - summary
+            - context_map
+            - changes
         - glossary.md
     next:
       done: scope-boundary
-      contradiction_found: language-definition
-      needs_reinterview: stakeholder-interview
+      needs-reinterview: stakeholder-interview
 
   - id: scope-boundary
     attrs:
@@ -104,31 +72,32 @@ states:
             - deployment
     next:
       done: feature-discovery
-      needs_reinterview: stakeholder-interview
+      needs-reinterview: stakeholder-interview
 
   - id: feature-discovery
     attrs:
-      description: "PO synthesizes analysis artifacts into coherent feature boundaries with scoped business rules and constraints"
+      description: "PO identifies feature boundaries from the delivery order, then derives business rules and constraints from domain model artifacts"
       owner: PO
       git: main
       skills:
         - discover-features
+        - discover-rules
       in:
         - product_definition.md
         - domain_model.md
         - glossary.md
-        - "technical_design.md"  # optional
+        - "features/*.feature"  # optional — existing features for cumulative edit
       out:
-        - features/<feature_name>.feature:
+        - features/<feature_id>.feature:
             - title
             - description
             - rules_business
             - constraints
     conditions:
-      committed_to_main_locally:
-        committed_to_main_locally: ==verified
+      committed-to-main-locally:
+        committed-to-main-locally: ==verified
     next:
       done:
         to: complete
-        when: committed_to_main_locally
-      needs_reinterview: stakeholder-interview
+        when: committed-to-main-locally
+      needs-reinterview: stakeholder-interview

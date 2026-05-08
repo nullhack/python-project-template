@@ -1,9 +1,9 @@
 flow: feature-development-flow
 version: 7.0.0
-params: [feature_name]
+params: [feature_id]
 
 exits:
-  - needs_architecture
+  - needs-architecture
   - cancelled
   - completed
 
@@ -16,8 +16,8 @@ states:
     flow-version: "^7"
     next:
       complete: development
-      needs_architecture: needs_architecture
-      no_features: completed
+      needs-architecture: needs-architecture
+      no-features: completed
 
   - id: development
     attrs:
@@ -27,7 +27,7 @@ states:
     flow-version: "^6"
     next:
       done: delivery
-      needs_planning: planning
+      needs-planning: planning
 
   - id: delivery
     attrs:
@@ -38,7 +38,7 @@ states:
     next:
       next-feature: planning
       rejected: post-mortem
-      needs_development: development
+      needs-development: development
       cancelled: cancelled
 
   - id: post-mortem
@@ -49,5 +49,5 @@ states:
     flow-version: "^3"
     next:
       complete: planning
-      needs_architecture: needs_architecture
-      no_action: cancelled
+      needs-architecture: needs-architecture
+      no-action: cancelled

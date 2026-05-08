@@ -52,21 +52,21 @@ states:
         - docs/assets/logo.svg
         - docs/assets/banner.svg
     conditions:
-      monochrome_passed:
-        logo_monochrome: ==passes
-      scalability_passed:
-        logo_scalability: ==passes
-      blur_passed:
-        logo_blur_test: ==passes
-      assets_committed:
-        committed_to_main_locally: ==verified
+      monochrome-passed:
+        logo-monochrome: ==passes
+      scalability-passed:
+        logo-scalability: ==passes
+      blur-passed:
+        logo-blur-test: ==passes
+      assets-committed:
+        committed-to-main-locally: ==verified
     next:
       approved:
         to: branded
         when:
-          - monochrome_passed
-          - scalability_passed
-          - blur_passed
-          - assets_committed
+          - monochrome-passed
+          - scalability-passed
+          - blur-passed
+          - assets-committed
       revise: design-assets
       cancelled: cancelled

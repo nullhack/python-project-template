@@ -5,7 +5,7 @@ description: "Write concrete Given/When/Then BDD scenarios for each user story u
 
 # Write BDD Features
 
-Available knowledge: [[requirements/gherkin]], [[requirements/moscow]], [[requirements/pre-mortem]], [[requirements/decomposition]]. `in` artifacts: discover and read on demand as needed. 
+Available knowledge: [[requirements/gherkin]], [[requirements/moscow]], [[requirements/pre-mortem]], [[requirements/decomposition]]. `in` artifacts: read all before starting work. 
 
 1. Discover and read the feature file, product definition, domain model, and glossary from `in`.
 2. Run a pre-mortem per [[requirements/pre-mortem]] for each Rule before writing any Examples. All Rules must have their pre-mortems completed before any Examples are written.

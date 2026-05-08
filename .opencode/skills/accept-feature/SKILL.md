@@ -5,7 +5,7 @@ description: "Validate business behavior against BDD scenarios from the end user
 
 # Accept Feature
 
-Available knowledge: [[requirements/gherkin#key-takeaways]], [[software-craft/test-design#key-takeaways]]. `in` artifacts: discover and read on demand as needed.
+Available knowledge: [[requirements/gherkin#key-takeaways]], [[software-craft/test-design#key-takeaways]]. `in` artifacts: read all before starting work.
 
 1. Run `task test-build` to verify all tests pass with coverage.
 2. Verify all BDD scenarios pass from the end user's perspective, not the test harness, per [[software-craft/test-design#key-takeaways]].

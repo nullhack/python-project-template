@@ -29,18 +29,18 @@ states:
       out:
         - template-config.yaml
     conditions:
-      template_files_exist:
-        pyproject_toml: ==exists
-        readme_md: ==exists
-        github_workflows_ci_yml: ==exists
+      template-files-exist:
+        pyproject-toml: ==exists
+        readme-md: ==exists
+        github-workflows-ci-yml: ==exists
         license: ==exists
-        tests_unit_main_test_py: ==exists
-        app_directory: ==exists
+        tests-unit-main-test-py: ==exists
+        app-directory: ==exists
     next:
       confirmed:
         to: apply-substitutions
-        when: template_files_exist
-      missing_files: cancelled
+        when: template-files-exist
+      missing-files: cancelled
 
   - id: apply-substitutions
     attrs:
@@ -60,14 +60,14 @@ states:
         - template-config.yaml
         - package_directory
     conditions:
-      substitutions_successful:
-        no_stale_app_imports: ==verified
-        package_renamed: ==verified
-        version_reset: ==verified
+      substitutions-successful:
+        no-stale-app-imports: ==verified
+        package-renamed: ==verified
+        version-reset: ==verified
     next:
       applied:
         to: verify-and-finalize
-        when: substitutions_successful
+        when: substitutions-successful
       failed: cancelled
 
   - id: verify-and-finalize
@@ -82,16 +82,16 @@ states:
       out:
         - git_remote
     conditions:
-      verification_passed:
-        tests_pass: ==verified
-        imports_valid: ==verified
-        artifacts_cleaned: ==verified
-      committed_to_main_locally:
-        committed_to_main_locally: ==verified
+      verification-passed:
+        tests-pass: ==verified
+        imports-valid: ==verified
+        artifacts-cleaned: ==verified
+      committed-to-main-locally:
+        committed-to-main-locally: ==verified
     next:
       initialized:
         to: initialized
         when:
-          - verification_passed
-          - committed_to_main_locally
+          - verification-passed
+          - committed-to-main-locally
       failed: cancelled

@@ -5,7 +5,7 @@ description: "Verify implementation aligns with domain model, architectural deci
 
 # Review Design
 
-Available knowledge: [[architecture/reconciliation]], [[architecture/adr]], [[software-craft/code-review]], [[software-craft/refactoring]], [[software-craft/object-calisthenics]], [[software-craft/smell-catalogue]], [[software-craft/design-patterns]], [[software-craft/solid]], [[software-craft/tdd]]. `in` artifacts: discover and read on demand as needed. 
+Available knowledge: [[architecture/reconciliation]], [[architecture/adr]], [[software-craft/code-review]], [[software-craft/refactoring]], [[software-craft/object-calisthenics]], [[software-craft/smell-catalogue]], [[software-craft/design-patterns]], [[software-craft/solid]], [[software-craft/tdd]]. `in` artifacts: read all before starting work. 
 
 1. This review tier checks design correctness ONLY. Do not flag lint, coverage, docstring, or naming issues. Those belong to structure or conventions review.
 2. Declare adversarial stance per [[software-craft/code-review#concepts]]: default hypothesis: "it might be broken despite green tests."

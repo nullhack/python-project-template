@@ -5,9 +5,9 @@ description: "Refine coarse Rules into full Rule blocks with adversarial analysi
 
 # Break Down Feature
 
-Available knowledge: [[requirements/invest]], [[requirements/decomposition]], [[requirements/pre-mortem#key-takeaways]], [[requirements/interview-techniques#concepts]]. `in` artifacts: discover and read on demand as needed.
+Available knowledge: [[requirements/invest]], [[requirements/decomposition]], [[requirements/pre-mortem#key-takeaways]], [[requirements/interview-techniques#concepts]]. `in` artifacts: read all before starting work.
 
-1. Discover and read the feature file, product definition, technical design, domain model, and interview notes from `in`. The feature file contains coarse `Rules (Business)` bullet points from discovery. These are behavioral hypotheses, not validated stories.
+1. Discover and read the feature file, product definition, domain model, glossary, and interview notes from `in`. The feature file contains coarse `Rules (Business)` bullet points from discovery. These are behavioral hypotheses, not validated stories.
 2. For each coarse rule, apply adversarial analysis:
    - Pre-mortem per [[requirements/pre-mortem#key-takeaways]]: "Imagine this rule was built exactly as described, all tests pass, but it fails for the user. What would be missing?"
    - CIT per [[requirements/interview-techniques#concepts]]: "When has this behavior gone wrong in practice?"

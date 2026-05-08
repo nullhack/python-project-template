@@ -1,9 +1,9 @@
 flow: development-flow
-version: 6.0.0
-params: [feature_name]
+version: 8.0.0
+params: [feature_id]
 exits:
   - done
-  - needs_planning
+  - needs-planning
 
 states:
   - id: project-structuring
@@ -14,37 +14,35 @@ states:
       skills:
         - structure-project
       in:
-        - features/<feature_name>.feature
-        - technical_design.md
+        - features/<feature_id>.feature
         - domain_model.md
         - glossary.md
-        - context_map.md
         - product_definition.md
       out:
         - git_branch
     next:
       ready: tdd-cycle
-      needs_planning: needs_planning
+      needs-planning: needs-planning
 
   - id: tdd-cycle
     attrs:
       description: "SE implements the feature through repeated RED-GREEN-REFACTOR cycles until all BDD examples pass"
       git: feature
     flow: tdd-cycle-flow
-    flow-version: "^3"
+    flow-version: "^4"
     conditions:
-      design_declared:
-        yagni: ==no_premature_abstractions
-        kiss: ==simplest_solution
-        dry: ==no_duplicated_logic
-        objcal: ==calisthenics_followed
-        smells: ==all_smells_addressed
-        solid: ==principles_applied
-        patterns: ==patterns_justified
+      design-declared:
+        yagni: ==no-premature-abstractions
+        kiss: ==simplest-solution
+        dry: ==no-duplicated-logic
+        objcal: ==calisthenics-followed
+        smells: ==all-smells-addressed
+        solid: ==principles-applied
+        patterns: ==patterns-justified
     next:
-      all_green:
+      all-green:
         to: review-gate
-        when: design_declared
+        when: design-declared
       blocked: project-structuring
 
   - id: review-gate
@@ -52,7 +50,7 @@ states:
       description: "R independently verifies implementation across three tiers — design, structure, and conventions — before commit"
       git: feature
     flow: review-gate-flow
-    flow-version: "^4"
+    flow-version: "^6"
     next:
       pass: commit
       fail: tdd-cycle
@@ -65,13 +63,13 @@ states:
       skills:
         - commit-implementation
       in:
-        - test_implementations
-        - source_implementations
+        - test-implementations
+        - source-implementations
         - design_review_evidence
         - structure_review_evidence
         - conventions_review_evidence
-        - features/<feature_name>.feature
+        - features/<feature_id>.feature
       out:
-        - feature_commits
+        - feature-commits
     next:
       done: done

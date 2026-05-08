@@ -38,7 +38,7 @@ last-updated: 2026-04-29
 When a mismatch is found:
 
 1. **Record the mismatch**: Which two documents, which specific items, and how they disagree.
-2. **Determine which side changes**: If the architecture is wrong, update domain_model.md, technical_design.md, or the ADR. If the requirements are wrong, update the feature file or product definition.
+2. **Determine which side changes**: If the architecture is wrong, update domain_model.md, product_definition.md, or the ADR. If the requirements are wrong, update the feature file or product definition.
 3. **Update both documents**: Ensure the correction is reflected in all affected documents.
 4. **Re-run the affected check**: Verify the mismatch is resolved.
 
