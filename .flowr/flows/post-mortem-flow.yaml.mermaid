@@ -1,3 +1,0 @@
-{
-  "mermaid": "stateDiagram-v2\n    state \"root-cause-analysis\" as root-cause-analysis\n    state \"document-findings\" as document-findings\n    state \"extract-lessons\" as extract-lessons\n    state \"action-items\" as action-items\n    root-cause-analysis --> document-findings : issues-found\n    root-cause-analysis --> no-action : no-issues-found\n    document-findings --> extract-lessons : done\n    extract-lessons --> action-items : done\n    action-items --> complete : replan\n    action-items --> needs-architecture : architecture-issue\n    action-items --> no-action : abandon"
-}
