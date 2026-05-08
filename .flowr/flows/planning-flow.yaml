@@ -3,8 +3,8 @@ version: 9.0.0
 params: [feature_id]
 exits:
   - complete
-  - needs_architecture
-  - no_features
+  - needs-architecture
+  - no-features
 
 states:
   - id: feature-selection
@@ -21,8 +21,8 @@ states:
       out: []
     next:
       selected: feature-breakdown
-      needs_architecture: needs_architecture
-      no_features: no_features
+      needs-architecture: needs-architecture
+      no-features: no-features
 
   - id: feature-breakdown
     attrs:
@@ -40,18 +40,18 @@ states:
         - features/<feature_id>.feature:
             - rules
     conditions:
-      invest_passed:
-        independent: ==no_shared_data_or_side_effects
-        negotiable: ==scope_negotiated
-        valuable: ==user_value_clear
-        estimable: ==effort_estimated
-        small: ==fits_single_sprint
-        testable: ==acceptance_criteria_defined
+      invest-passed:
+        independent: ==no-shared-data-or-side-effects
+        negotiable: ==scope-negotiated
+        valuable: ==user-value-clear
+        estimable: ==effort-estimated
+        small: ==fits-single-sprint
+        testable: ==acceptance-criteria-defined
     next:
       done:
         to: feature-examples
-        when: invest_passed
-      needs_respecification: feature-breakdown
+        when: invest-passed
+      needs-respecification: feature-breakdown
 
   - id: feature-examples
     attrs:
@@ -69,29 +69,29 @@ states:
         - features/<feature_id>.feature:
             - examples
     conditions:
-      examples_have_ids:
-        all_examples_have_ids: ==verified
-      examples_have_gherkin:
-        all_examples_have_gherkin: ==verified
-      premortem_done:
-        premortem_done: ==verified
-      decomposition_valid:
+      examples-have-ids:
+        all-examples-have-ids: ==verified
+      examples-have-gherkin:
+        all-examples-have-gherkin: ==verified
+      premortem-done:
+        premortem-done: ==verified
+      decomposition-valid:
         concerns: <=2
-        must_examples: <=8
-      examples_complete:
-        all_examples_have_ids: ==verified
-        all_examples_have_gherkin: ==verified
-        premortem_done: ==verified
+        must-examples: <=8
+      examples-complete:
+        all-examples-have-ids: ==verified
+        all-examples-have-gherkin: ==verified
+        premortem-done: ==verified
         concerns: <=2
-        must_examples: <=8
-        all_examples_observable: ==each_then_describes_single_outcome
-        all_examples_declarative: ==behaviour_not_ui_steps
-        distinctness_verified: ==no_duplicate_observable_behaviours
+        must-examples: <=8
+        all-examples-observable: ==each-then-describes-single-outcome
+        all-examples-declarative: ==behaviour-not-ui-steps
+        distinctness-verified: ==no-duplicate-observable-behaviours
     next:
       done:
         to: create-py-stubs
-        when: examples_complete
-      needs_respecification: feature-breakdown
+        when: examples-complete
+      needs-respecification: feature-breakdown
 
   - id: create-py-stubs
     attrs:
@@ -105,11 +105,11 @@ states:
         - domain_model.md
         - glossary.md
       out:
-        - typed_source_stubs
-        - test_skeletons
+        - typed-source-stubs
+        - test-skeletons
     conditions:
-      stubs_traceable:
-        all_ids_have_stubs: ==verified
+      stubs-traceable:
+        all-ids-have-stubs: ==verified
     next:
       done: definition-of-done
 
@@ -142,13 +142,13 @@ states:
         - domain_model.md
       out: []
     conditions:
-      feature_baselined:
-        feature_status: ==BASELINED
-      committed_to_main_locally:
-        committed_to_main_locally: ==verified
+      feature-baselined:
+        feature-status: ==BASELINED
+      committed-to-main-locally:
+        committed-to-main-locally: ==verified
     next:
       done:
         to: complete
         when:
-          - feature_baselined
-          - committed_to_main_locally
+          - feature-baselined
+          - committed-to-main-locally

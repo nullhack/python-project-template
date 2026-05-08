@@ -18,9 +18,9 @@ states:
       out:
         - "interview-notes/<session_id>.md"
     next:
-      needs_full_discovery: domain-discovery
-      needs_scope_only: scope-boundary
-      already_known: complete
+      needs-full-discovery: domain-discovery
+      needs-scope-only: scope-boundary
+      already-known: complete
 
   - id: domain-discovery
     attrs:
@@ -48,7 +48,7 @@ states:
         - glossary.md
     next:
       done: scope-boundary
-      needs_reinterview: stakeholder-interview
+      needs-reinterview: stakeholder-interview
 
   - id: scope-boundary
     attrs:
@@ -72,7 +72,7 @@ states:
             - deployment
     next:
       done: feature-discovery
-      needs_reinterview: stakeholder-interview
+      needs-reinterview: stakeholder-interview
 
   - id: feature-discovery
     attrs:
@@ -94,10 +94,10 @@ states:
             - rules_business
             - constraints
     conditions:
-      committed_to_main_locally:
-        committed_to_main_locally: ==verified
+      committed-to-main-locally:
+        committed-to-main-locally: ==verified
     next:
       done:
         to: complete
-        when: committed_to_main_locally
-      needs_reinterview: stakeholder-interview
+        when: committed-to-main-locally
+      needs-reinterview: stakeholder-interview

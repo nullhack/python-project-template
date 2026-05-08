@@ -2,7 +2,7 @@ flow: tdd-cycle-flow
 version: 4.0.0
 params: [feature_id]
 exits:
-  - all_green
+  - all-green
   - blocked
 
 states:
@@ -14,15 +14,15 @@ states:
       skills:
         - write-test
       in:
-        - test_skeletons
-        - typed_source_stubs
+        - test-skeletons
+        - typed-source-stubs
         - features/<feature_id>.feature
         - domain_model.md
         - glossary.md
       out:
-        - test_implementations
+        - test-implementations
     next:
-      test_written: green
+      test-written: green
       blocked: blocked
 
   - id: green
@@ -33,15 +33,15 @@ states:
       skills:
         - implement-minimum
       in:
-        - test_implementations
-        - typed_source_stubs
+        - test-implementations
+        - typed-source-stubs
         - features/<feature_id>.feature
         - domain_model.md
         - glossary.md
       out:
-        - source_implementations
+        - source-implementations
     next:
-      test_passes: refactor
+      test-passes: refactor
 
   - id: refactor
     attrs:
@@ -51,14 +51,14 @@ states:
       skills:
         - refactor
       in:
-        - source_implementations
-        - test_implementations
+        - source-implementations
+        - test-implementations
         - features/<feature_id>.feature
         - domain_model.md
         - glossary.md
       out:
-        - source_implementations
-        - refactored_source
+        - source-implementations
+        - refactored-source
     next:
-      next_example: red
-      all_examples_pass: all_green
+      next-example: red
+      all-examples-pass: all-green

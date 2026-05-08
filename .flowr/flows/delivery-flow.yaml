@@ -5,7 +5,7 @@ params: [feature_id]
 exits:
   - next-feature
   - rejected
-  - needs_development
+  - needs-development
   - cancelled
 
 states:
@@ -25,12 +25,12 @@ states:
         - acceptance_evidence
         - approval_record
     conditions:
-      feature_accepted:
-        feature_status: ==ACCEPTED
+      feature-accepted:
+        feature-status: ==ACCEPTED
     next:
       approved:
         to: local-merge
-        when: feature_accepted
+        when: feature-accepted
       rejected: rejected
 
   - id: local-merge
@@ -41,14 +41,14 @@ states:
       skills:
         - merge-local
       in:
-        - feature_commits
+        - feature-commits
         - approval_record
         - features/<feature_id>.feature
       out:
-        - merged_commits
+        - merged-commits
     next:
       merged: publish-decision
-      conflict: needs_development
+      conflict: needs-development
 
   - id: publish-decision
     attrs:
@@ -58,7 +58,7 @@ states:
       skills:
         - decide-batch-action
       in:
-        - merged_commits
+        - merged-commits
       out: []
     next:
       accumulate: next-feature
@@ -72,16 +72,16 @@ states:
       skills:
         - create-pr
       in:
-        - merged_commits
+        - merged-commits
         - features/<feature_id>.feature
       out: []
     conditions:
       merged:
-        ci_passes: ==verified
-        no_changes_requested: ==verified
+        ci-passes: ==verified
+        no-changes-requested: ==verified
     next:
       approved:
         to: next-feature
         when: merged
-      changes_requested: needs_development
+      changes-requested: needs-development
       cancelled: cancelled

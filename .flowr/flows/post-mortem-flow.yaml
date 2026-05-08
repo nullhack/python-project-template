@@ -2,8 +2,8 @@ flow: post-mortem-flow
 version: 3.0.0
 exits:
   - complete
-  - needs_architecture
-  - no_action
+  - needs-architecture
+  - no-action
 
 states:
   - id: root-cause-analysis
@@ -15,10 +15,10 @@ states:
         - analyze-root-cause
       in: []
       out:
-        - root_cause_analysis
+        - root-cause-analysis
     next:
-      issues_found: document-findings
-      no_issues_found: no_action
+      issues-found: document-findings
+      no-issues-found: no-action
 
   - id: document-findings
     attrs:
@@ -28,7 +28,7 @@ states:
       skills:
         - document-post-mortem
       in:
-        - root_cause_analysis
+        - root-cause-analysis
       out:
         - post-mortem/PM_YYYYMMDD_<pm_id>.md:
             - failed_at
@@ -66,5 +66,5 @@ states:
             - restart_check
     next:
       replan: complete
-      architecture_issue: needs_architecture
-      abandon: no_action
+      architecture-issue: needs-architecture
+      abandon: no-action

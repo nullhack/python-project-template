@@ -3,7 +3,7 @@ version: 8.0.0
 params: [feature_id]
 exits:
   - done
-  - needs_planning
+  - needs-planning
 
 states:
   - id: project-structuring
@@ -22,7 +22,7 @@ states:
         - git_branch
     next:
       ready: tdd-cycle
-      needs_planning: needs_planning
+      needs-planning: needs-planning
 
   - id: tdd-cycle
     attrs:
@@ -31,18 +31,18 @@ states:
     flow: tdd-cycle-flow
     flow-version: "^4"
     conditions:
-      design_declared:
-        yagni: ==no_premature_abstractions
-        kiss: ==simplest_solution
-        dry: ==no_duplicated_logic
-        objcal: ==calisthenics_followed
-        smells: ==all_smells_addressed
-        solid: ==principles_applied
-        patterns: ==patterns_justified
+      design-declared:
+        yagni: ==no-premature-abstractions
+        kiss: ==simplest-solution
+        dry: ==no-duplicated-logic
+        objcal: ==calisthenics-followed
+        smells: ==all-smells-addressed
+        solid: ==principles-applied
+        patterns: ==patterns-justified
     next:
-      all_green:
+      all-green:
         to: review-gate
-        when: design_declared
+        when: design-declared
       blocked: project-structuring
 
   - id: review-gate
@@ -63,13 +63,13 @@ states:
       skills:
         - commit-implementation
       in:
-        - test_implementations
-        - source_implementations
+        - test-implementations
+        - source-implementations
         - design_review_evidence
         - structure_review_evidence
         - conventions_review_evidence
         - features/<feature_id>.feature
       out:
-        - feature_commits
+        - feature-commits
     next:
       done: done

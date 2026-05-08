@@ -20,7 +20,7 @@ states:
     flow-version: "^6"
     next:
       complete: feature-development
-      needs_discovery: discovery
+      needs-discovery: discovery
 
   - id: feature-development
     attrs:
@@ -29,6 +29,6 @@ states:
     flow: feature-development-flow
     flow-version: "^7"
     next:
-      needs_architecture: architecture
+      needs-architecture: architecture
       cancelled: cancelled
       completed: completed

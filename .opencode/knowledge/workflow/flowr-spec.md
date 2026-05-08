@@ -102,18 +102,18 @@ States may define a `conditions` block (sibling of `attrs` and `next`) containin
 
 ```yaml
 conditions:
-  invest_passed:
+  invest-passed:
     independent: ==true
     negotiable: ==true
     valuable: ==true
 next:
   done:
     to: next-state
-    when: invest_passed
+    when: invest-passed
   partial:
     to: review
     when:
-      - invest_passed
+      - invest-passed
       - { override: "==yes" }
 ```
 

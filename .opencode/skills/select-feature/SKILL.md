@@ -15,4 +15,4 @@ Available knowledge: [[requirements/wsjf]]. `in` artifacts: read all before star
    - Select the first feature by delivery order from `product_definition.md`. The delivery order was established during discovery and already reflects business priority and technical dependencies.
    - Skip WSJF scoring: there's nothing to compare against.
 6. IF features have `Status: BASELINED` (subsequent runs) → score per [[requirements/wsjf]] and select the highest WSJF score among Dependency=0 candidates.
-7. Set the `feature_name` session param to the selected feature's filename stem (without `.feature` extension).
+7. Set the `feature-id` session param to the selected feature's filename stem (without `.feature` extension).
