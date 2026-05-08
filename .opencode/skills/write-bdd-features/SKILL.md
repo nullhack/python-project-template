@@ -11,8 +11,13 @@ Available knowledge: [[requirements/gherkin]], [[requirements/moscow]], [[requir
 2. Run a pre-mortem per [[requirements/pre-mortem]] for each Rule before writing any Examples. All Rules must have their pre-mortems completed before any Examples are written.
 3. IF hidden failure modes surface from the pre-mortem → add Examples to cover them per [[requirements/gherkin#key-takeaways]].
 4. Write Example blocks per [[requirements/gherkin#concepts]]: declarative, single observable outcome per Then, using `Example:` keyword not `Scenario:`.
-5. Classify each Example per [[requirements/moscow#concepts]]; MoSCoW classification is for internal triage only: do NOT add Must/Should/Could tags to Examples in the .feature file.
-6. IF a Rule has more than 8 Must Examples → split the Rule per [[requirements/decomposition#key-takeaways]].
-7. IF a Rule spans more than 2 concerns → split per [[requirements/decomposition#key-takeaways]].
-8. Assign `@id` tags to all Examples that don't already have one. If the feature file already uses an ID format (e.g., sequential, semantic, custom), respect it. If no format is established, use 8-char random hex. After a feature is BASELINED, all Example blocks are immutable. Changes require `@deprecated` on the old Example (preserving the original @id) and a new Example with a new @id. `@id` tags are for traceability only; do NOT add priority tags (e.g. @must, @should) to Examples.
-9. Evaluate each Rule's Examples for quality: observable (single outcome per Then), declarative (behaviour not steps), distinct (no duplicate coverage), and pre-mortem coverage. Every criterion that fails is a hard blocker: fix before advancing.
+5. For each Rule, verify Examples cover distinct behaviours per [[requirements/gherkin#concepts]]:
+   a) Group Examples by `Then` outcome. Same outcome = same behaviour. Keep one representative per outcome. Discard duplicates.
+   b) For each distinct outcome, run the behavior-level pre-mortem per [[requirements/pre-mortem#concepts]].
+   c) Add Examples targeting the failure modes surfaced.
+   d) Structural (invariant) rules: one representative Example suffices. Defer full coverage to a Hypothesis property test per [[software-craft/test-design#concepts]].
+6. Classify each Example per [[requirements/moscow#concepts]]; MoSCoW classification is for internal triage only: do NOT add Must/Should/Could tags to Examples in the .feature file.
+7. IF a Rule has more than 8 Must Examples → split the Rule per [[requirements/decomposition#key-takeaways]].
+8. IF a Rule spans more than 2 concerns → split per [[requirements/decomposition#key-takeaways]].
+9. Assign `@id` tags to all Examples that don't already have one. If the feature file already uses an ID format (e.g., sequential, semantic, custom), respect it. If no format is established, use 8-char random hex. After a feature is BASELINED, all Example blocks are immutable. Changes require `@deprecated` on the old Example (preserving the original @id) and a new Example with a new @id. `@id` tags are for traceability only; do NOT add priority tags (e.g. @must, @should) to Examples.
+10. Evaluate each Rule's Examples for quality: observable (single outcome per Then), declarative (behaviour not steps), distinct (no duplicate coverage), and pre-mortem coverage. Every criterion that fails is a hard blocker: fix before advancing.

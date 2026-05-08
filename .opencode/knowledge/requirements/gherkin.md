@@ -13,6 +13,7 @@ last-updated: 2026-04-29
 - `Then` must be a single, observable, measurable outcome; no "and" combining multiple behaviours in one `Then`.
 - Bug Examples use `@bug` and require both a specific feature test and a Hypothesis property test.
 - After criteria commit, Examples are frozen; changes require `@deprecated` on the old Example and a new Example with a new `@id`.
+- Two Examples with the same `Then` outcome but different input values test the same behaviour; partition by behaviour outcome, not by input value (Wynne, 2015; Adzic, 2011).
 
 ## Concepts
 
@@ -25,6 +26,8 @@ last-updated: 2026-04-29
 **Frozen Examples**: After criteria commit, Examples are frozen. Changes require `@deprecated` on the old Example and a new Example with a new `@id`. No editing or deleting committed Examples. This prevents scope creep and maintains traceability from test to acceptance criterion.
 
 **Bug Examples**: When a defect is reported, add an `@bug` Example. Implement both a specific `@id` test and a Hypothesis property test covering the whole class of inputs. Both are required.
+
+**Behavioral Distinctness**: Two Examples are behavior-distinct only when they produce different `Then` outcomes (Wynne, 2015; Adzic, 2011). Partitioning by behaviour outcome rather than by input value avoids the combinatorial explosion of value-distinct testing. Two Examples with the same `Then` but different input values test the same behaviour — keep one, discard the duplicates. For action and behavioural rules, each distinct outcome gets one representative Example. For structural (invariant) rules, one representative Example suffices because the invariant holds across all inputs; full coverage is deferred to a Hypothesis property test per [[software-craft/test-design#concepts]].
 
 ## Content
 
@@ -84,6 +87,7 @@ Implement both:
 - Multiple behaviours in one Example: split them
 - Examples that test implementation details ("Then: the Strategy pattern is used")
 - Imperative UI steps instead of declarative behaviour descriptions
+- Two examples with the same `Then` but different input values: duplicate behaviour coverage per [[requirements/gherkin#concepts]]
 
 ### Feature File Path Convention
 
@@ -99,3 +103,4 @@ Test path conventions (`tests/features/<feature_slug>/`), the feature-test vs un
 - [[requirements/moscow]]: prioritizing Examples as Must/Should/Could
 - [[requirements/decomposition]]: splitting Rules with too many Examples
 - [[requirements/pre-mortem]]: finding hidden failure modes in rules
+- [[software-craft/test-design]]: property-based testing for invariant rules

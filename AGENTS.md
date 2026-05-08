@@ -20,7 +20,7 @@ Post-mortem analysis shows these practices prevent most project failures. Violat
 
 When creating a document, use the template in `.templates/` that matches the artifact type. Strip the `.templates/` prefix and `.template` suffix to determine the destination path. For example:
 - `.templates/docs/adr/ADR_YYYYMMDD_<adr_id>.md.template` → `docs/adr/ADR_20260430_my_decision.md`
-- `.templates/docs/features/feature.feature.template` → `docs/features/my_feature.feature`
+- `.templates/docs/features/<feature_name>.feature.template` → `docs/features/my_feature.feature`
 - `.templates/docs/interview-notes/IN_YYYYMMDD_<session_id>.md.template` → `docs/interview-notes/IN_20260430_session_management.md`
 
 If no template exists for an artifact type, create the document without one.

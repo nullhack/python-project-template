@@ -143,7 +143,7 @@ states:
       out: []
     conditions:
       feature-baselined:
-        feature-status: ==BASELINED
+        baseline-confirmed: ==verified
       committed-to-main-locally:
         committed-to-main-locally: ==verified
     next:

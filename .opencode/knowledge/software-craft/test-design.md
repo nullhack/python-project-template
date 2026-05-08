@@ -13,6 +13,7 @@ last-updated: 2026-04-29
 - Test coupling exists on a spectrum: feature tests (most resilient) > unit contract tests > property-based tests > white-box tests (most brittle, avoid).
 - One observable behaviour per test: each test should fail for exactly one reason and pass for exactly one reason.
 - Hard-coded values are acceptable when the test only requires that value; parameterising prematurely couples the test to assumptions about future needs.
+- Property tests: all invariant/structural rules, not just @bug Examples. Examples alone cannot prove an invariant (MacIver, 2016).
 
 ## Concepts
 
@@ -26,6 +27,8 @@ last-updated: 2026-04-29
 
 **Semantic Depth**. A test that exists for an @id tag but exercises domain logic directly instead of through the entry point described in the acceptance criterion has correct structural traceability but wrong semantic depth. Every @id test must exercise the entry point the AC describes: if the AC specifies a command-line invocation, the test must invoke the command handler; if the AC specifies an API call, the test must call the API endpoint. Structural traceability (every @id has a test function) without semantic depth (every @id test exercises the right entry point) creates a false sense of coverage. Tests exist for every example but don't verify the actual user-facing behavior.
 
+**Invariant Property Tests**. Structural (invariant) rules describe properties that must hold across all inputs, not specific behaviours. Examples alone cannot prove an invariant — they only confirm it holds for the selected cases (MacIver, 2016). When a Rule asserts an invariant (e.g., "total must equal sum of parts," "output must be sorted," "balance must never go negative"), the specification pre-mortem and behavior pre-mortem surface candidate counterexamples. These counterexamples become assertions in a Hypothesis property test (`tests/unit/`) that verifies the invariant across a generated range of inputs, catching failure modes that no finite set of hand-picked Examples could have found.
+
 ## Content
 
 ### Test Coupling Spectrum
@@ -34,7 +37,7 @@ last-updated: 2026-04-29
 |---|---|---|---|
 | Feature test | Observable behaviour through public interface | Highest | Every @id acceptance criterion |
 | Unit contract test | Module protocol (inputs, outputs, invariants) | High | Complex domain logic with clear contracts |
-| Property test | Invariants across input ranges | Moderate | Bug @id requirements; edge-case classes |
+| Property test | Invariants across input ranges | Moderate | Bug @id requirements; all structural/invariant rules |
 | White-box test | Internal state or private methods | Lowest | Legacy characterization only |
 
 ### Semantic Alignment Examples
@@ -58,7 +61,7 @@ last-updated: 2026-04-29
 |-----------|----------|-------------|
 | `tests/features/<feature_slug>/` | BDD scenario tests: one test per `@id` tag in the feature file | `@id` tag required |
 | `tests/unit/` | Unit contract tests: coverage-boosting tests for implementation branches not covered by BDD examples | No `@id` tag |
-| `tests/unit/` | Property tests: invariant verification across input ranges | No `@id` tag (except `@bug` examples) |
+| `tests/unit/` | Property tests: invariant verification across input ranges | No `@id` tag (except `@bug` examples); all structural/invariant rules must have one |
 
 **Rule:** `tests/features/` is exclusively for BDD scenario tests that trace back to `@id` tags in the feature file. Coverage-boosting tests that exercise implementation branches not covered by any `@id` example are unit contract tests and belong in `tests/unit/`, not `tests/features/`. A test without an `@id` tag in `tests/features/` violates the traceability contract.
 
@@ -68,3 +71,4 @@ last-updated: 2026-04-29
 - [[software-craft/code-review]]: reviewing whether tests meet these quality criteria
 - [[requirements/gherkin]]: the specification format that drives test design
 - [[software-craft/stub-design]]: creating typed stubs that maintain semantic alignment
+- [[requirements/pre-mortem]]: behavior pre-mortem surfaces counterexamples for property tests
