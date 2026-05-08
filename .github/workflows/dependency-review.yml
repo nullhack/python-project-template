@@ -39,7 +39,7 @@ jobs:
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v4.1.1
         
       - name: Install uv
-        uses: astral-sh/setup-uv@c0c76fcf76c37099e6a452584d04b015240faefc # v4.0.0
+        uses: astral-sh/setup-uv@05143d3dcd540a42aa638bb0920ac4e3123808a5 # v4.0.0
         
       - name: Set up Python
         run: uv python install 3.13
