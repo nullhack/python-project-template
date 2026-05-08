@@ -13,25 +13,31 @@ description: "Select the next feature to develop by detecting delivery status fr
 4. For each feature slug in delivery order, determine delivery status with a single pipeline
    — do NOT open or read individual feature or test files:
 
-   a. Extract every @id tag from the feature file and the matching test function
+    a. Count @id tags in the feature file. If zero, the feature has not been
+       broken down into BDD examples yet → feature is incomplete (select it).
+
+         grep -c '@id:' docs/features/<slug>.feature
+
+    b. Extract every @id tag from the feature file and the matching test function
       hex suffixes from the test directory, then compare:
 
         diff \
           <(grep -oP '@id:\K\w+' docs/features/<slug>.feature | sort -u) \
           <(grep -rh "def test_<slug>_" tests/features/<slug>/ 2>/dev/null \
-             | grep -oP 'test_<slug>_\K\w+' | sort)
+             | grep -oP 'test_<slug>_\K\w+' | sort -u)
 
       - Diff produces output → some @id tags lack matching test functions →
         feature is incomplete (select it).
       - Diff is clean → all @id tags have matching test functions.
 
-   b. If diff is clean, run the tests scoped to that feature's test directory
+    c. If diff is clean, run the tests scoped to that feature's test directory
       using the project's test runner (see Project Commands table).
       - Any failures → feature is incomplete (select it).
       - All pass → feature is delivered (skip).
 
-   c. If the test directory does not exist (grep returns nothing), the
-      diff will fail → feature is incomplete (select it).
+    d. If the test directory does not exist, grep returns nothing and diff
+       exits non-zero → feature is incomplete (select it). This also covers
+       the case where no test files exist to match @id tags.
 
 5. Select the first incomplete feature by delivery order.
 6. IF every feature in the delivery order is delivered (diff clean + tests pass for all) →

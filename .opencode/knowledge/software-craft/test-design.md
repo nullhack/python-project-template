@@ -70,5 +70,5 @@ last-updated: 2026-04-29
 - [[software-craft/tdd]]: the RED-GREEN-REFACTOR cycle that produces these tests
 - [[software-craft/code-review]]: reviewing whether tests meet these quality criteria
 - [[requirements/gherkin]]: the specification format that drives test design
-- [[software-craft/stub-design]]: creating typed stubs that maintain semantic alignment
+- [[software-craft/source-stubs]]: creating typed stubs that maintain semantic alignment
 - [[requirements/pre-mortem]]: behavior pre-mortem surfaces counterexamples for property tests

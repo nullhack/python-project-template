@@ -1,6 +1,6 @@
 flow: main-flow
-version: 9.0.0
-exits: [completed, cancelled]
+version: 10.0.0
+exits: [completed, cancelled, rejected]
 
 states:
   - id: discovery
@@ -8,7 +8,7 @@ states:
       description: "Understand the domain, define scope, and establish ubiquitous language through stakeholder interviews and domain modeling"
       git: main
     flow: discovery-flow
-    flow-version: "^6"
+    flow-version: "^11"
     next:
       complete: architecture
 
@@ -17,7 +17,7 @@ states:
       description: "Design technical architecture, context boundaries, and API contracts for the entire project"
       git: main
     flow: architecture-flow
-    flow-version: "^6"
+    flow-version: "^8"
     next:
       complete: feature-development
       needs-discovery: discovery
@@ -27,8 +27,9 @@ states:
       description: "Feature-level loop: Planning → Development → Acceptance → Delivery per feature"
       git: feature
     flow: feature-development-flow
-    flow-version: "^7"
+    flow-version: "^9"
     next:
       needs-architecture: architecture
       cancelled: cancelled
       completed: completed
+      rejected: rejected

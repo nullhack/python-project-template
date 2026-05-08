@@ -1,0 +1,3 @@
+{
+  "mermaid": "stateDiagram-v2\n    state \"feature-structuring\" as feature-structuring\n    tdd-cycle --> tdd-cycle-flow\n    note right of tdd-cycle: invokes tdd-cycle-flow\n    state \"tdd-cycle\" as tdd-cycle\n    state \"review-gate\" as review-gate\n    feature-structuring --> tdd-cycle : ready\n    tdd-cycle --> review-gate : all-green | yagni: ==no-premature-abstractions, kiss: ==simplest-solution, dry: ==no-duplicated-logic, objcal: ==calisthenics-followed, smells: ==all-smells-addressed, solid: ==principles-applied, patterns: ==patterns-justified\n    review-gate --> done : pass\n    review-gate --> tdd-cycle : fail"
+}

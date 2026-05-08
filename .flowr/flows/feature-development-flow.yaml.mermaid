@@ -1,0 +1,3 @@
+{
+  "mermaid": "stateDiagram-v2\n    planning --> planning-flow\n    note right of planning: invokes planning-flow\n    state \"planning\" as planning\n    development --> development-flow\n    note right of development: invokes development-flow\n    state \"development\" as development\n    delivery --> delivery-flow\n    note right of delivery: invokes delivery-flow\n    state \"delivery\" as delivery\n    planning --> development : complete\n    planning --> needs-architecture : needs-architecture\n    planning --> completed : no-features\n    development --> delivery : done\n    delivery --> planning : next-feature\n    delivery --> rejected : rejected\n    delivery --> development : needs-development\n    delivery --> cancelled : cancelled"
+}
