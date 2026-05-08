@@ -3,8 +3,6 @@ Feature: <Feature title>
   <2–4 sentence description of what this feature does and why it exists.
   Written in plain language, always kept current by the PO.>
 
-  Status: ELICITING | BASELINED (YYYY-MM-DD)
-
   Rules (Business):
   - <Business rule that applies across multiple Examples>
 
