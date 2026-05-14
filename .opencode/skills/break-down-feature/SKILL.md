@@ -7,12 +7,12 @@ description: "Verify simulation-discovered rules are specific enough and write t
 
 Available knowledge: [[requirements/invest]], [[requirements/decomposition]]. `in` artifacts: read all before starting work.
 
-1. Discover and read the feature file, product definition, behavioral spec, simulation results, and glossary from `in`. The feature file contains coarse business rules as Gherkin comments (`# Business rules:` bullet points) from discover-rules. These rules were discovered during spec simulation — they are already validated behavioral statements, not hypotheses.
+1. Discover and read the feature file, product definition, domain spec, simulation results, and glossary from `in`. The feature file contains coarse business rules as Gherkin comments (`# Business rules:` bullet points) from discover-rules. These rules were discovered during spec simulation — they are already validated behavioral statements, not hypotheses.
 2. For each coarse rule from the `# Business rules:` comments:
    a. Verify the rule is specific enough to generate at least one Example. IF the rule is vague (e.g. "the system should handle errors") → flag for clarification.
-   b. Verify the rule is not contradicted by another rule or by the behavioral spec.
-   c. Verify the rule maps to at least one entity and state in the behavioral spec.
-3. Convert each verified rule into a `Rule:` block in the .feature file. The Rule title is the rule statement itself — descriptive, unique, no special characters. No As a/I want/So that format. Example:
+   b. Verify the rule is not contradicted by another rule or by the domain spec.
+   c. Verify the rule maps to at least one entity and state in the domain spec.
+3. Convert each verified rule into a `Rule:` block in the .feature file. The Rule title must be 3–8 words, descriptive, unique within the feature file, and contain no special characters. If the rule statement is too long, rephrase to fit the 3–8 word constraint while preserving meaning. Example:
    ```
    Rule: Order must contain at least one item
    ```

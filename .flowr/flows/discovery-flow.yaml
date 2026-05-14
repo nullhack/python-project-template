@@ -13,7 +13,7 @@ states:
         - conduct-interview
       in:
         - "interview-notes/*.md"  # optional
-        - "behavioral_spec.md"  # optional — for re-interview context
+        - "domain_spec.md"  # optional — for re-interview context
         - "product_definition.md"  # optional — for re-interview context
       out:
         - "interview-notes/<session_id>.md"
@@ -23,16 +23,15 @@ states:
 
   - id: spec-creation
     attrs:
-      description: "SA and DE create a structural behavioral specification per bounded context from interview notes"
+      description: "SA and DE create a structural domain specification per bounded context from interview notes"
       owner: SA
       git: dev
       skills:
-        - create-behavioral-spec
+        - create-domain-spec
         - define-ubiquitous-language
       in:
         - interview-notes/*.md
-        - "behavioral_spec.md"  # optional — cumulative edit across iterations
-        - "domain_model.md"  # optional — cumulative edit across iterations
+        - "domain_spec.md"  # optional — cumulative edit across iterations
         - "glossary.md"  # optional — cumulative edit across iterations
         - "product_definition.md"  # optional — cumulative edit across iterations
       out:
@@ -44,15 +43,12 @@ states:
             - out_of_scope
             - delivery_order
             - quality_attributes
-        - domain_model.md:
-            - summary
-            - bounded_contexts
+        - domain_spec.md:
+            - context_map
+            - context
             - entities
             - relationships
             - aggregate_boundaries
-        - behavioral_spec.md:
-            - context
-            - entities
             - data_shapes
             - integration_points
             - external_contracts

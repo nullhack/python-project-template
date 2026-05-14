@@ -12,19 +12,19 @@ last-updated: 2026-05-08
 - Definitions use genus-differentia format: state the category, then the distinguishing characteristic. Example: "A Fill is an execution event that records price, quantity, and fee of a completed order match."
 - Extract terms by scanning domain events, commands, entity names, and interview transcripts for domain-specific nouns and verbs carrying business meaning.
 - The glossary is append-only: never delete entries; mark retired with a reference to the replacement. Aliases (different words for the same concept) must be documented.
-- Cross-reference every term against the domain model and feature files. A term serving double duty across contexts indicates a missing context boundary.
+- Cross-reference every term against the domain spec and feature files. A term serving double duty across contexts indicates a missing context boundary.
 
 ## Concepts
 
-**Ubiquitous Language**. A shared vocabulary between domain experts and developers where every term has exactly one meaning within a bounded context (Evans, 2003). When a term changes meaning across contexts, that boundary must be explicit in the domain model's context map.
+**Ubiquitous Language**. A shared vocabulary between domain experts and developers where every term has exactly one meaning within a bounded context (Evans, 2003). When a term changes meaning across contexts, that boundary must be explicit in the domain spec's context map.
 
 **Genus-Differentia Format**. Every definition follows: "[Term] is a [genus/category] that [differentia/distinguishing characteristic]." The genus places it in a known category; the differentia distinguishes it from other category members.
 
-**Term Extraction**. Terms come from three sources: domain events and commands (OrderPlaced → "Order", "Fill"), entity and value object names from the domain model, and interview transcripts (domain-specific nouns stakeholders emphasize or repeat). Technical terms (API, database) are excluded unless they carry domain meaning.
+**Term Extraction**. Terms come from three sources: domain events and commands (OrderPlaced → "Order", "Fill"), entity and value object names from the domain spec, and interview transcripts (domain-specific nouns stakeholders emphasize or repeat). Technical terms (API, database) are excluded unless they carry domain meaning.
 
 **Append-Only Glossary**. When understanding shifts, the old entry is marked retired (not deleted) and a new entry is written. This preserves domain understanding history and prevents confusion with superseded terms.
 
-**Cross-Referencing**. Verify each glossary term against domain model and feature files. A term in glossary but not domain model is either a missing entity, a concept that should be added, or stale. A term in domain model but not glossary is an incomplete glossary. Cross-context ambiguity flags context boundaries.
+**Cross-Referencing**. Verify each glossary term against domain spec and feature files. A term in glossary but not domain spec is either a missing entity, a concept that should be added, or stale. A term in domain spec but not glossary is an incomplete glossary. Cross-context ambiguity flags context boundaries.
 
 ## Content
 
@@ -70,7 +70,7 @@ Exclude: programming terms (class, method, dict), infrastructure terms (API, HTT
 When the same word has different meanings in different bounded contexts:
 - Document each meaning separately with its context
 - Note the context boundary in the glossary entry
-- Verify the domain model's context map reflects this boundary
+- Verify the domain spec's context map reflects this boundary
 
 ## Related
 

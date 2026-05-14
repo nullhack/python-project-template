@@ -7,9 +7,9 @@ description: "Adversarial review of simulation results: find missed scenarios, v
 
 Available knowledge: [[requirements/spec-simulation#concepts]], [[architecture/reconciliation#key-takeaways]]. `in` artifacts: read all before starting work.
 
-1. Read `simulation_results.md` and `behavioral_spec.md` (all contexts).
+1. Read `simulation_results.md` and `domain_spec.md` (all contexts).
 2. Declare adversarial stance per [[architecture/reconciliation#concepts]]: "I will actively search for missed scenarios and invalid pain points, not confirm the simulation's completeness."
-3. **Scenario coverage check**: For each context in behavioral_spec.md, for each entity, verify at least one happy path, one edge case, and one error path was simulated. For each integration point, verify at least one success and one failure scenario. For cross-context integration points, verify both sides of the bilateral relationship were tested. Flag any gaps.
+3. **Scenario coverage check**: For each context in domain_spec.md, for each entity, verify at least one happy path, one edge case, and one error path was simulated. For each integration point, verify at least one success and one failure scenario. For cross-context integration points, verify both sides of the bilateral relationship were tested. Flag any gaps.
 4. **Pain point validation**: For each pain point in simulation_results.md, verify it is real and correctly classified. A pain point is invalid if the spec actually covers the scenario (reviewer misread) or if the scenario is out of scope per product_definition.md. Remove invalid pain points. Add any missed pain points.
 5. **Rule quality check**: For each discovered rule, verify it is:
    - Specific enough to be testable (not vague like "the system should handle errors").

@@ -1,5 +1,5 @@
 flow: delivery-flow
-version: 8.0.0
+version: 9.0.0
 params: [feature_id]
 
 exits:
@@ -20,7 +20,7 @@ states:
       in:
         - features/<feature_id>.feature
         - product_definition.md
-        - behavioral_spec.md
+        - domain_spec.md
         - glossary.md
         - "interview-notes/*.md"  # optional — for requirement traceability
       out:
@@ -30,9 +30,25 @@ states:
         acceptance-verified: ==verified
     next:
       approved:
-        to: local-merge
+        to: polish
         when: feature-accepted
       rejected: rejected
+
+  - id: polish
+    attrs:
+      description: "SE applies full project conventions — naming, docstrings, formatting, type annotations — now that the feature is functionally complete"
+      owner: SE
+      git: feature
+      skills:
+        - polish-code
+      in:
+        - source-implementations
+        - test-implementations
+        - features/<feature_id>.feature
+      out:
+        - polished-source
+    next:
+      polished: local-merge
 
   - id: local-merge
     attrs:
@@ -42,6 +58,7 @@ states:
       skills:
         - merge-local
       in:
+        - polished-source
         - feature-commits
         - approval_record
         - features/<feature_id>.feature

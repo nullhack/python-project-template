@@ -7,7 +7,7 @@ description: "Distribute simulation-discovered rules and constraints into featur
 
 Available knowledge: [[requirements/feature-discovery#concepts]], [[requirements/gherkin#key-takeaways]]. `in` artifacts: read all before starting work.
 
-1. Read product_definition.md, behavioral_spec.md, simulation_results.md, glossary.md, and all `.feature` files (created by discover-features in this same state) from `in` artifacts.
+1. Read product_definition.md, domain_spec.md, simulation_results.md, glossary.md, and all `.feature` files (created by discover-features in this same state) from `in` artifacts.
 2. List all rules discovered across all simulation iterations from simulation_results.md.
 3. For each rule, identify which feature it belongs to based on the bounded context and entities it involves. IF a rule spans multiple features → flag for cross-cutting handling.
 4. Write each rule as a coarse bullet under the `# Business rules:` comment block in the relevant `.feature` file. Rules are descriptive statements — no numbered prefixes. They map directly to Example titles written later by write-bdd-features.

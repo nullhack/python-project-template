@@ -17,9 +17,8 @@ states:
         - discover-rules
       in:
         - product_definition.md
-        - behavioral_spec.md
+        - domain_spec.md
         - simulation_results.md
-        - domain_model.md
         - glossary.md
         - "features/*.feature"  # optional — may not exist on first cycle
       out:
@@ -46,7 +45,7 @@ states:
         - select-feature
       in:
         - product_definition.md
-        - behavioral_spec.md
+        - domain_spec.md
         - simulation_results.md
         - "features/<feature_id>.feature"  # optional — discover available features
       out: []
@@ -65,9 +64,8 @@ states:
       in:
         - features/<feature_id>.feature
         - product_definition.md
-        - behavioral_spec.md
+        - domain_spec.md
         - simulation_results.md
-        - domain_model.md
         - glossary.md
       out:
         - features/<feature_id>.feature:
@@ -90,7 +88,7 @@ states:
       in:
         - features/<feature_id>.feature
         - product_definition.md
-        - behavioral_spec.md
+        - domain_spec.md
         - simulation_results.md
         - glossary.md
       out:
@@ -114,9 +112,8 @@ states:
       in:
         - features/<feature_id>.feature
         - product_definition.md
-        - behavioral_spec.md
+        - domain_spec.md
         - simulation_results.md
-        - domain_model.md
         - glossary.md
       out: []
     conditions:
@@ -138,9 +135,8 @@ states:
       in:
         - features/<feature_id>.feature
         - product_definition.md
-        - behavioral_spec.md
+        - domain_spec.md
         - simulation_results.md
-        - domain_model.md
         - glossary.md
       out:
         - typed-source-stubs

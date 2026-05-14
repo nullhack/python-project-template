@@ -21,6 +21,6 @@ Available knowledge: [[software-craft/tdd]], [[software-craft/refactoring]], [[s
 12. IF Data Clumps → Introduce Parameter Object per [[software-craft/smell-catalogue#concepts]].
 13. IF Shotgun Surgery or Divergent Change → Extract Class per [[software-craft/smell-catalogue#concepts]].
 14. IF no improvement is needed → skip refactoring and proceed to the next test.
-15. IF a spec gap or inconsistency is discovered during refactoring → do NOT modify specification documents (domain_model.md, glossary.md, product_definition.md, ADRs, feature files). Flag it in output notes. The SE may ONLY modify production code and test code.
+15. IF a spec gap or inconsistency is discovered during refactoring → do NOT modify specification documents (domain_spec.md, glossary.md, product_definition.md, ADRs, feature files). Flag it in output notes. The SE may ONLY modify production code and test code.
 16. Commit refactor changes separately from feature changes per [[software-craft/git-conventions#concepts]].
 17. Run `task test-fast` to confirm all tests remain green after refactoring.

@@ -8,7 +8,7 @@ last-updated: 2026-05-14
 
 ## Key Takeaways
 
-- External Contracts define how users and external systems interact with a bounded context. They are the primary simulation target: "given this input, the system produces this output." All contracts for all contexts live in a single monolithic behavioral_spec.md file.
+- External Contracts define how users and external systems interact with a bounded context. They are the primary simulation target: "given this input, the system produces this output." All contracts for all contexts live in a single monolithic domain_spec.md file.
 - Each contract has seven fields: Actor, Trigger, Input, Output, Errors, Side Effects, Preconditions. Contracts are `#### <Contract Name>` headings within each context's `### External Contracts` section.
 - Contracts start with ? for unknowns at iteration 0. Simulation fills in specifics through scenario walkthrough.
 - Contracts are NOT API specifications — they are behavioral descriptions that may map to CLI commands, HTTP endpoints, event handlers, or internal operations.
@@ -24,7 +24,7 @@ last-updated: 2026-05-14
 - **Side Effects**: state changes, events emitted, notifications sent, or other context mutations. Discovered during simulation.
 - **Preconditions**: what must be true before this contract can succeed. Derived from invariants and state machine guards.
 
-**Contract vs Integration Point**: Integration Points describe context-to-context communication (how bounded contexts talk to each other). External Contracts describe how the outside world talks to THIS context. Both are in the behavioral spec but serve different purposes.
+**Contract vs Integration Point**: Integration Points describe context-to-context communication (how bounded contexts talk to each other). External Contracts describe how the outside world talks to THIS context. Both are in the domain spec but serve different purposes.
 
 **Simulation Target**: The SA walks through each External Contract with happy/edge/error scenarios, mentally executing the contract against the spec. The contract's Input/Output fields provide the I/O shape for /tmp/sim/ evidence files. Pain points discovered here drive spec fixes.
 

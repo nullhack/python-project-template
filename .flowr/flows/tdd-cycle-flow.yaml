@@ -16,8 +16,7 @@ states:
         - test-skeletons
         - typed-source-stubs
         - features/<feature_id>.feature
-        - domain_model.md
-        - behavioral_spec.md
+        - domain_spec.md
         - glossary.md
       out:
         - test-implementations
@@ -35,8 +34,7 @@ states:
         - test-implementations
         - typed-source-stubs
         - features/<feature_id>.feature
-        - domain_model.md
-        - behavioral_spec.md
+        - domain_spec.md
         - glossary.md
       out:
         - source-implementations
@@ -54,8 +52,7 @@ states:
         - source-implementations
         - test-implementations
         - features/<feature_id>.feature
-        - domain_model.md
-        - behavioral_spec.md
+        - domain_spec.md
         - glossary.md
       out:
         - source-implementations

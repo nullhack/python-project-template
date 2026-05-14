@@ -1,7 +1,7 @@
 ---
 domain: software-craft
-tags: [code-review, adversarial-review, self-declaration, three-tier-review, inspection]
-last-updated: 2026-04-30
+tags: [code-review, adversarial-review, self-declaration, two-tier-review, inspection]
+last-updated: 2026-05-14
 ---
 
 # Code Review
@@ -12,9 +12,9 @@ last-updated: 2026-04-30
 - Fail-fast: stop at the first failure, write a minimal REJECTED report. Do not continue reviewing after finding a defect: the defect may invalidate subsequent findings.
 - The reviewer MUST NOT modify any files. Produce APPROVED or REJECTED report only.
 - "Minor" is not a pass: code smells that are acknowledged must still be listed as findings.
-- Lint and type errors are convention concerns, verified in the conventions tier of three-tier review.
+- Lint and type errors are convention concerns, verified in the polish state after feature acceptance.
 - Self-declaration checklists (AGREE/DISAGREE on specific criteria) force the reviewer to articulate exactly what passes and what fails, preventing vague "looks good" approval (Hattie & Timperley, 2007; Fagan, 1976).
-- Three-tier review separates concerns: design (does it do the right thing?), structure (are tests good enough?), conventions (does it follow project standards?).
+- Two-tier review separates concerns: design (does it do the right thing?), structure (are tests good enough, does it pass functional lint?). Conventions (naming, docstrings, formatting) are enforced in a separate polish state after feature acceptance.
 
 ## Concepts
 
@@ -22,20 +22,21 @@ last-updated: 2026-04-30
 
 **Fail-Fast Protocol**. Stop reviewing at the first defect found. Write a minimal REJECTED report containing: the defect, its file:line evidence, and the required action. Do not accumulate multiple findings. The first defect may invalidate everything that follows. Fix the defect, re-submit, and the reviewer starts over.
 
-**Three-Tier Review**. Each tier checks a different quality dimension with different knowledge. Design review verifies alignment with domain model, ADRs, and quality attributes. Structure review verifies test coverage, test quality, and abstraction level matching. Conventions review verifies formatting, naming, docstrings, and lint. The tiers are ordered by impact: a design defect invalidates tests, but a conventions defect does not invalidate design.
+**Two-Tier Review**. Each tier checks a different quality dimension with different knowledge. Design review verifies alignment with domain spec, ADRs, and quality attributes. Structure review verifies test coverage, test quality, abstraction level matching, and functional lint (bug-catching rules only). Conventions (naming, docstrings, formatting, type annotations) are enforced in a separate polish state after feature acceptance, not during review.
 
 **Self-Declaration as Commitment Device** (Hattie & Timperley, 2007; Cialdini, 2001). Before handoff, the developer declares specific quality attributes as AGREE/DISAGREE. This forces explicit judgment on each criterion, preventing the "I skimmed it and nothing jumped out" pattern. DISAGREE is not automatic rejection. The developer states the reason, and the reviewer evaluates whether the reason is acceptable.
 
 
 ## Content
 
-### Three-Tier Review Structure
+### Two-Tier Review Structure
 
 | Tier | Checks | Key Knowledge |
 |---|---|---|
 | Design | Domain alignment, ADR consistency, quality attributes, design principle priority | [[architecture/reconciliation]], [[architecture/adr]] |
-| Structure | Test coverage, test quality, abstraction level, observable behaviour | [[software-craft/test-design]], [[software-craft/tdd]] |
-| Conventions | Formatting, naming, docstrings, lint, type hints | [[requirements/ubiquitous-language]] |
+| Structure | Test coverage, test quality, abstraction level, observable behaviour, functional lint | [[software-craft/test-design]], [[software-craft/tdd]] |
+
+Conventions (naming, docstrings, formatting, type annotations, full lint) are enforced in a separate polish state after feature acceptance via `task conventions`, `ruff format`, and `task static-check`.
 
 ### Review Stance Declaration
 
@@ -59,10 +60,10 @@ A REJECTED report contains: the first failure found, its evidence, and the requi
 
 During design review, distinguish between planned code and dead code:
 
-- **Planned code** matches the domain model, technical design, or interview notes but has not been exercised by a test yet. Flag as WARN (planned-not-reached), not REJECT. The stubs created at feature planning time are breadcrumbs from the domain model: the SE will reach them as TDD progresses through examples.
+- **Planned code** matches the domain spec, technical design, or interview notes but has not been exercised by a test yet. Flag as WARN (planned-not-reached), not REJECT. The stubs created at feature planning time are breadcrumbs from the domain spec: the SE will reach them as TDD progresses through examples.
 - **Dead code** contradicts the architecture or was superseded by a design decision. Flag as REJECT and require removal.
 
-Before flagging code as dead or unnecessary, verify against domain model, technical design, and interview notes. Code that matches the architecture is planned, even if no test exercises it yet.
+Before flagging code as dead or unnecessary, verify against domain spec, technical design, and interview notes. Code that matches the architecture is planned, even if no test exercises it yet.
 
 ## Related
 

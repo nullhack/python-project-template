@@ -4,7 +4,7 @@ Post-mortem analysis shows these practices prevent most project failures. Violat
 
 1. **Never skip a flow state.** Every state boundary goes through flowr check → dispatch to owner → flowr transition. No shortcuts, no manual session edits, no jumping ahead.
 2. **Never bypass owner dispatch.** Each state has an owner agent. The orchestrator dispatches to that agent with skills loaded. It never does the work itself. One agent, one hat at a time.
-3. **Never collapse progressive gates.** Multi-step gates (review: design → structure → conventions) are separate for a reason. Each one can fail independently and send work back.
+3. **Never collapse progressive gates.** Multi-step gates (review: design → structure) are separate for a reason. Each one can fail independently and send work back. Conventions (naming, docstrings, formatting) are enforced in a separate polish state after feature acceptance.
 4. **Never decompose a feature without stakeholder approval.** If a feature is too large for INVEST, propose the split to the stakeholder with rationale. They decide what's core vs. deferred.
 5. **Verify inputs exist before entering a state.** Every state's `in` artifacts must be readable on disk. If they're missing, stop and reconstruct them. Don't proceed with assumed knowledge.
 6. **A feature is not done until every interview requirement is traced.** Every stakeholder Q&A must map to either a passing @id test or an explicit stakeholder deferral. Untraced requirements = incomplete delivery.
@@ -72,7 +72,7 @@ Artifact names in `in` and `out` lists use these conventions:
 
 | Pattern | Meaning | Example |
 |---------|---------|---------|
-| `filename.md` | A specific document | `domain_model.md`, `product_definition.md` |
+| `filename.md` | A specific document | `domain_spec.md`, `product_definition.md` |
 | `dir/<param>.ext` | A specific instance identified by parameter | `features/<feature_id>.feature`, `interview-notes/<session_id>.md`, `adr/<adr_id>.md` |
 | `dir/*.ext` | Multiple documents of that type available in `in` | `interview-notes/*.md`, `adr/*.md` |
 | `conceptual_name` | A runtime artifact that passes between states within a flow | `typed-source-stubs`, `test-implementations` |
@@ -123,7 +123,6 @@ Check `pyproject.toml` for taskipy tasks and tool configuration. Common commands
 |---------|---------|
 | `task test` | Run tests with short tracebacks |
 | `task test-fast` | Run fast tests only (excludes slow marker) |
-| `task test-coverage` | Run tests with coverage report |
 | `task test-build` | Run full test suite with coverage, hypothesis stats, and HTML report |
 | `task run` | Run the application |
 
@@ -131,9 +130,9 @@ Linting and formatting:
 
 | Command | Purpose |
 |---------|---------|
-| `ruff check .` | Lint check |
+| `ruff check .` | Functional lint (bugs, security, complexity) |
+| `task conventions` | Full lint (all rules including naming, docstrings, formatting) |
 | `ruff format .` | Auto-format |
-| `ruff check --fix .` | Auto-fix lint issues |
 
 ## Session Protocol
 
@@ -146,14 +145,14 @@ Every state transition must go through flowr. Do not skip steps or guess transit
 
 ### Convention Boundary
 
-Convention checks (ruff, pyright, lint, format, docstring, import sorting, type checking) are **prohibited** during design-phase states (create-py-stubs, write-test, implement-minimum, refactor). Only `test-fast` is permitted. Design changes invalidate convention work. Enforce this boundary during dispatch.
+Convention checks (full lint via `task conventions`, `ruff format`, pyright, docstrings, type annotations) are **prohibited** during design-phase states (create-py-stubs, write-test, implement-minimum, refactor, review-gate). Only `task test-fast` is permitted. The default `ruff check .` runs functional rules only (bug-catching, security, complexity). Design changes invalidate convention work. Conventions are applied in the polish state after feature acceptance.
 
 When dispatching an agent during design phase:
-- Do NOT include any convention tool commands in the prompt
+- Do NOT include convention tool commands in the prompt
 - Only include verification steps that the skill explicitly defines
 - The skill's verification steps are the ceiling, not the floor
 
-Exception: When the reviewer agent explicitly requests convention fixes during review-conventions state, those specific convention commands may be included in the dispatch.
+Exception: The polish-code skill explicitly runs convention commands (`task conventions`, `ruff format`, `task static-check`) after feature acceptance.
 
 ### Procedural Contract
 
@@ -198,14 +197,14 @@ Announce the state once at the top, then go quiet:
   - `out`: May create or edit. Section sub-lists indicate which sections the state should produce or update. Follow the **out artifact protocol** (see below).
   - Files not in `out` must not be written to. If findings affect an artifact outside the output contract, flag them in output notes and defer the change to the step that owns that artifact.
   - The flow contract must always be followed unless the stakeholder explicitly asks to break it.
-  - **Cumulative editing:** When a flow loops back to a state that was previously executed (e.g., `needs-reinterview` → `stakeholder-interview` → `domain-discovery`), the `out` artifact is **edited**, not recreated. The agent reads the existing file, incorporates new information, and adjusts existing content. This is especially important for `domain_model.md` and `glossary.md` which accumulate knowledge across multiple discovery iterations.
+  - **Cumulative editing:** When a flow loops back to a state that was previously executed (e.g., `needs-reinterview` → `stakeholder-interview` → `domain-discovery`), the `out` artifact is **edited**, not recreated. The agent reads the existing file, incorporates new information, and adjusts existing content. This is especially important for `domain_spec.md` and `glossary.md` which accumulate knowledge across multiple discovery iterations.
 - **Out artifact protocol:** Before writing to any `out` artifact:
   1. Check if the file exists on disk.
   2. **If it exists** → read it, then edit only the sections declared in the flow's `out` section sub-lists. Preserve existing content outside those sections.
-  3. **If it does not exist** → resolve the template path: take the destination path, prepend `.templates/`, append `.template` (e.g., `docs/spec/domain_model.md` → `.templates/docs/spec/domain_model.md.template`). Copy the template to the destination path, then edit the declared sections. Strip any template placeholders during editing.
+  3. **If it does not exist** → resolve the template path: take the destination path, prepend `.templates/`, append `.template` (e.g., `docs/spec/domain_spec.md` → `.templates/docs/spec/domain_spec.md.template`). Copy the template to the destination path, then edit the declared sections. Strip any template placeholders during editing.
   4. **If no template exists** for a non-Python file referenced in `in`/`out`, raise an error for the stakeholder to decide.
   5. **Environment artifacts** (e.g., `coverage-reports`, `test-output`, `linter-output`) are produced by tooling rather than flow states. They exist on disk after running the relevant tool and are referenced in `in` but not in any state's `out`.
 - **Specification documents are read-only during development.** During TDD and review cycles, the SE and reviewer may ONLY modify production code and test code. Spec document inconsistencies must be FLAGGED in output notes, not fixed directly. Spec docs are owned by other flow states and can only be changed through the appropriate flow step, after code is reviewed and approved.
-- **Flag issues with precise citations.** When flagging a problem during review or adversarial analysis, include file:line references (e.g., "domain_model.md:23 conflicts with login.feature:15"). Vague findings create rework.
+- **Flag issues with precise citations.** When flagging a problem during review or adversarial analysis, include file:line references (e.g., "domain_spec.md:23 conflicts with login.feature:15"). Vague findings create rework.
 - **Do the work with the fewest, quietest commands.** Suppress verbose output. If a command can be scoped with a flag, pipe, or limit, use it. Don't dump full files or directory listings when a targeted query answers the question.
 - **No narration between steps.** The command and its output are the conversation. Don't echo what you're about to do or what you just did.
