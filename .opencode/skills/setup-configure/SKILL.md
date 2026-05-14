@@ -10,12 +10,12 @@ Template resolution: templates live in `.templates/`. The instance path is the t
 `in` artifacts: read all before starting work.
 
 1. Check that all required template files exist and set evidence:
-   - `pyproject_toml`: Check `pyproject.toml` exists
-   - `readme_md`: Check `README.md` exists
-   - `github_workflows_ci_yml`: Check `.github/workflows/ci.yml` exists
+   - `pyproject-toml`: Check `pyproject.toml` exists
+   - `readme-md`: Check `README.md` exists
+   - `github-workflows-ci-yml`: Check `.github/workflows/ci.yml` exists
    - `license`: Check `LICENSE` exists
-   - `tests_unit_main_test_py`: Check `tests/unit/main_test.py` exists
-   - `app_directory`: Check `app/` directory exists
+   - `tests-unit-main-test-py`: Check `tests/unit/main_test.py` exists
+   - `app-directory`: Check `app/` directory exists
 2. IF any template files are missing → set evidence to false, exit `missing_files`.
 3. Read `template-config.yaml` defaults section.
 4. Present the 6 current values to the user based on the assessment:

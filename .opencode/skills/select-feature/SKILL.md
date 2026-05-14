@@ -13,33 +13,22 @@ description: "Select the next feature to develop by detecting delivery status fr
 4. For each feature slug in delivery order, determine delivery status with a single pipeline
    — do NOT open or read individual feature or test files:
 
-    a. Count @id tags in the feature file. If zero, the feature has not been
-       broken down into BDD examples yet → feature is incomplete (select it).
+    a. Check if the feature file has Example blocks (any line starting with `Example:`).
+       If none, the feature has not been broken down into BDD examples yet → feature is incomplete (select it).
 
-         grep -c '@id:' docs/features/<slug>.feature
+    b. Run `beehave check <slug>` to verify structural traceability:
+       - Any output (errors) → some Examples lack matching test functions or there are orphan tests → feature is incomplete (select it).
+       - No output (clean) → all Examples have matching test functions.
 
-    b. Extract every @id tag from the feature file and the matching test function
-      hex suffixes from the test directory, then compare:
-
-        diff \
-          <(grep -oP '@id:\K\w+' docs/features/<slug>.feature | sort -u) \
-          <(grep -rh "def test_<slug>_" tests/features/<slug>/ 2>/dev/null \
-             | grep -oP 'test_<slug>_\K\w+' | sort -u)
-
-      - Diff produces output → some @id tags lack matching test functions →
-        feature is incomplete (select it).
-      - Diff is clean → all @id tags have matching test functions.
-
-    c. If diff is clean, run the tests scoped to that feature's test directory
+    c. If beehave check is clean, run the tests scoped to that feature's test directory
       using the project's test runner (see Project Commands table).
       - Any failures → feature is incomplete (select it).
       - All pass → feature is delivered (skip).
 
-    d. If the test directory does not exist, grep returns nothing and diff
-       exits non-zero → feature is incomplete (select it). This also covers
-       the case where no test files exist to match @id tags.
+    d. If the test directory does not exist, beehave check will report errors
+       → feature is incomplete (select it).
 
 5. Select the first incomplete feature by delivery order.
 6. IF every feature in the delivery order is delivered (diff clean + tests pass for all) →
    exit via `no-features`.
-7. Set the `feature-id` session param to the selected feature's filename stem (without `.feature` extension).
+7. Set the `feature_id` session param to the selected feature's filename stem (without `.feature` extension).

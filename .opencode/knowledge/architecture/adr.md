@@ -11,7 +11,7 @@ last-updated: 2026-04-29
 - ADRs document architecturally significant decisions: decisions that are hard to change and affect multiple components (Nygard, 2011).
 - Each ADR follows a fixed structure: Status, Context, Decision, Reason, Alternatives, Consequences (Nygard, 2011).
 - ADRs are append-only. Once written, they are never edited. Superseded ADRs get a new "Superseded by" reference, not a revision.
-- ADRs must be consistent with feature requirements. Every ADR should reference the `@id` criteria it addresses.
+- ADRs must be consistent with feature requirements. Every ADR should reference the Example criteria it addresses.
 - ADR risk assessment uses Probability × Impact classification (Boehm, 1991) to prioritise mitigation effort on the highest-exposure risks.
 
 ## Concepts
@@ -22,7 +22,7 @@ last-updated: 2026-04-29
 
 **Append-Only Discipline**: ADRs capture the decision as it was made at the time. If understanding changes, write a new ADR that supersedes the old one. This preserves the history of architectural reasoning and prevents retroactive justification.
 
-**ADR Consistency**: Every ADR must be consistent with the feature requirements it addresses. During review, check that each ADR aligns with the `@id` criteria in the feature file. An ADR that contradicts a requirement is a signal that either the ADR or the requirement needs updating. Architecture review is adversarial: the reviewer actively seeks inconsistencies and gaps, using accountability to an unknown audience (Tetlock, 1985) to produce more rigorous decisions.
+**ADR Consistency**: Every ADR must be consistent with the feature requirements it addresses. During review, check that each ADR aligns with the Examples in the feature file. An ADR that contradicts a requirement is a signal that either the ADR or the requirement needs updating. Architecture review is adversarial: the reviewer actively seeks inconsistencies and gaps, using accountability to an unknown audience (Tetlock, 1985) to produce more rigorous decisions.
 
 **Risk Assessment** (Boehm, 1991): Each ADR's Risk Assessment table uses Probability × Impact to classify and prioritise risks. Probability (Low/Medium/High) estimates how likely the risk is to materialise. Impact (Low/Medium/High) estimates how severe the consequence would be. Risks with High Probability and High Impact demand explicit mitigations or rejection of the decision. Risks with Low Probability and Low Impact may be accepted without mitigation. Risk leverage, the ratio of risk reduction to mitigation cost, helps prioritise which mitigations to invest in first.
 

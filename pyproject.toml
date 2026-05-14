@@ -1,9 +1,9 @@
 [project]
 name = "temple8"
-version = "8.3.0"
-description = "Python template with some awesome tools to quickstart any Python project"
+version = "8.4.0"
+description = "Spec-driven agent orchestration template with YAML flow definitions, multi-agent dispatch, and BDD traceability"
 readme = "README.md"
-requires-python = ">=3.13"
+requires-python = ">=3.14"
 license = { file = "LICENSE" }
 authors = [
     { name = "eol", email = "nullhack@users.noreply.github.com" }
@@ -15,6 +15,7 @@ dependencies = [
 ]
 
 [project.urls]
+Homepage = "https://nullhack.github.io/temple8/"
 Repository = "https://github.com/nullhack/temple8"
 Documentation = "https://github.com/nullhack/temple8/tree/main/docs/api/"
 
@@ -31,7 +32,8 @@ dev = [
     "pyright>=1.1.407",
     "ghp-import>=2.1.0",
     "flowr>=1.0.0",
-    "gherkin-official>=39.0.0",
+    "beehave>=0.4.0",
+    "pytest-beehave>=0.2.2",
     "safety>=3.7.0",
 ]
 
@@ -40,6 +42,10 @@ flows_dir = ".flowr/flows"
 sessions_dir = ".flowr/sessions"
 default_flow = "main-flow"
 default_session = "default"
+
+[tool.beehave]
+features_dir = "docs/features"
+tests_dir = "tests/features"
 
 [tool.setuptools]
 packages = ["app"]
@@ -88,7 +94,7 @@ pydocstyle.convention = "google"
 minversion = "6.0"
 markers = [
     "slow: marks tests as slow (deselect with '-m \"not slow\"')",
-    "deprecated: marks tests for deprecated AC; automatically skipped (deselect with '-m \"not deprecated\"')",
+    "deprecated: marks tests for deprecated AC; automatically skipped by pytest-beehave (deselect with '-m \"not deprecated\"')",
     "bug: marks tests that reproduce a reported defect (deselect with '-m \"not bug\"')",
 ]
 addopts = """

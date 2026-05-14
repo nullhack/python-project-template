@@ -1,33 +1,10 @@
 Feature: <Feature title>
 
-  <2–4 sentence description of what this feature does and why it exists.
+  <2-4 sentence description of what this feature does and why it exists.
   Written in plain language, always kept current by the PO.>
 
-  Rules (Business):
-  - <Business rule that applies across multiple Examples>
+  # Business rules:
+  # - <Business rule that applies across multiple Examples>
 
-  Constraints:
-  - <Non-functional requirement specific to this feature — reference product_definition.md#quality_attributes for measurable targets>
-
-  ## Changes
-
-  | Session | Change |
-  |---------|--------|
-  | YYYY-MM-DD SN | Created: <summary> |
-
-  Rule: <User story title>
-    As a <role>
-    I want <goal>
-    So that <benefit>
-
-    @id:3a7f1b2c
-    Example: <Concrete scenario title>
-      Given <initial context>
-      When <event or action>
-      Then <observable outcome>
-
-    @deprecated @id:a1b2c3d4
-    Example: <Replaced scenario>
-      Given ...
-      When ...
-      Then ...
+  # Constraints:
+  # - <Non-functional requirement specific to this feature>

@@ -1,0 +1,70 @@
+flow: spec-validation-flow
+version: 2.0.0
+exits:
+  - validated
+  - needs-reinterview
+
+states:
+  - id: simulate-spec
+    attrs:
+      description: "SA walks through behavioral spec scenarios mentally, creates I/O evidence, discovers rules and pain points"
+      owner: SA
+      git: dev
+      skills:
+        - simulate-spec
+      in:
+        - behavioral_spec.md
+        - product_definition.md
+        - glossary.md
+        - "simulation_results.md"  # optional — may not exist on first iteration
+      out:
+        - simulation_results.md
+    next:
+      done: review-simulation
+
+  - id: review-simulation
+    attrs:
+      description: "R adversarially reviews simulation results, validates pain points, decides PASS or FAIL"
+      owner: R
+      git: dev
+      skills:
+        - review-simulation
+      in:
+        - simulation_results.md
+        - behavioral_spec.md
+        - product_definition.md
+        - glossary.md
+      out:
+        - simulation_results.md:
+            - summary
+    conditions:
+      simulation-approved:
+        simulation-approved: ==verified
+      committed-to-dev-locally:
+        committed-to-dev-locally: ==verified
+    next:
+      approved:
+        to: validated
+        when:
+          - simulation-approved
+          - committed-to-dev-locally
+      needs-fix: fix-spec
+      max-iterations-reached: needs-reinterview
+
+  - id: fix-spec
+    attrs:
+      description: "SA and DE rewrite behavioral spec addressing all pain points from simulation, full rewrite for coherence"
+      owner: SA
+      git: dev
+      skills:
+        - fix-spec
+      in:
+        - simulation_results.md
+        - behavioral_spec.md
+        - product_definition.md
+        - glossary.md
+      out:
+        - behavioral_spec.md
+        - simulation_results.md
+    next:
+      done: simulate-spec

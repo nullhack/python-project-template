@@ -1,40 +1,25 @@
 # Domain Model: <project-name>
 
-> Current understanding of the business domain.
+> Structural view of the business domain.
 > Updated by the Domain Expert when domain understanding evolves.
-> This document captures what code cannot express: WHY entities exist, HOW aggregates are bounded, and WHAT business capabilities each context serves.
+> This document captures WHAT exists: entities, relationships, aggregate boundaries,
+> and the context map. HOW things behave is captured in behavioral_spec.md per context.
 >
-> **Evolving document:** Domain Modeling formalizes understanding into the sections below. The Bounded Contexts, Events and Commands, Entities, Relationships, Aggregate Boundaries, and Context Map sections are the canonical structural spec.
+> **Evolving document:** Updated during spec creation and refined during architecture.
 
 ---
 
 ## Summary
 
-<3–5 sentence description of the domain, its core concepts, and primary business capabilities.>
+<3-8 sentence description of the domain, its core concepts, and primary business capabilities.>
 
 ---
 
 ## Bounded Contexts
 
-| Context | Responsibility | Key Entities | Business Capability | Why Separate | Integration Points |
-|---------|----------------|--------------|---------------------|-------------|-------------------|
-| `<Context>` | <responsibility> | `<Entity1>`, `<Entity2>` | <what business need it serves> | <why it can't be merged with another context> | <how it connects to other contexts> |
-
----
-
-## Events and Commands
-
-### Domain Events
-
-| Event | Bounded Context | Description | Trigger Command |
-|-------|-----------------|-------------|-----------------|
-| `<EventVerbEd>` | `<Context>` | <what happened in the domain> | `<CommandVerb>` or External |
-
-### Commands
-
-| Command | Bounded Context | Actor | Read Model | Produces Event(s) | Rejection Event |
-|---------|-----------------|-------|------------|---------------------|-------------------|
-| `<CommandVerb>` | `<Context>` | <who/what triggers> | <decision info needed> | `<EventVerbEd>` | `<EventVerbEd>Rejected>` or None |
+| Context | Responsibility | Key Entities | Business Capability | Why Separate |
+|---------|----------------|--------------|---------------------|-------------|
+| `<Context>` | <responsibility> | `<Entity1>`, `<Entity2>` | <what business need it serves> | <why it can't be merged with another context> |
 
 ---
 
@@ -51,7 +36,7 @@
 
 | Subject | Relation | Object | Cardinality | Notes |
 |---------|----------|--------|-------------|-------|
-| `<A>` | <has / uses / emits> | `<B>` | <1:1 / 1:N / M:N> | <notes> |
+| `<A>` | <has / uses / references> | `<B>` | <1:1 / 1:N / M:N> | <notes> |
 
 ---
 
@@ -83,11 +68,3 @@ graph TB
 | ACL | Protects Context | From Context | Translation Rules |
 |-----|-----------------|--------------|-------------------|
 | `<ACL name>` | <protected context> | <external context> | <translation rules> |
-
----
-
-## Changes
-
-| Date | Source | Change | Reason |
-|------|--------|--------|--------|
-| YYYY-MM-DD | <session or feature ref> | <what changed> | <why> |

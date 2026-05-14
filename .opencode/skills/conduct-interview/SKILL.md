@@ -14,3 +14,4 @@ Available knowledge: [[requirements/interview-techniques#key-takeaways]]. `in` a
    define feature names and rough boundaries per [[requirements/interview-techniques#concepts]].
 4. If >2 concerns emerge for a single feature, split per [[requirements/decomposition]].
 5. Write confirmation gate before any file writes.
+6. Write interview notes to `docs/interview-notes/IN_YYYYMMDD_<session_id>.md` from the template at `.templates/docs/interview-notes/IN_YYYYMMDD_<session_id>.md.template`.

@@ -1,5 +1,5 @@
 flow: branding-flow
-version: 3.0.0
+version: 4.0.0
 exits:
   - branded
   - cancelled
@@ -9,7 +9,7 @@ states:
     attrs:
       description: "Interview stakeholder to establish brand identity: personality, visual metaphor, wording, and release naming"
       owner: Design Agent
-      git: main
+      git: dev
       skills:
         - setup-branding
       in: []
@@ -26,7 +26,7 @@ states:
     attrs:
       description: "Select and validate a colour palette with WCAG contrast, dark-mode counterparts, and hue semantics"
       owner: Design Agent
-      git: main
+      git: dev
       skills:
         - design-colors
       in:
@@ -43,14 +43,20 @@ states:
     attrs:
       description: "Create logo and banner using favicon-first, monochrome-first, progressive-simplification process"
       owner: Design Agent
-      git: main
+      git: dev
       skills:
         - design-assets
       in:
         - branding.md
       out:
         - docs/assets/logo.svg
+        - docs/assets/logo-dark.svg
         - docs/assets/banner.svg
+        - docs/assets/favicon.ico
+        - docs/assets/icon.svg
+        - docs/assets/apple-touch-icon.png
+        - docs/assets/icon-192.png
+        - docs/assets/icon-512.png
     conditions:
       monochrome-passed:
         logo-monochrome: ==passes
@@ -59,7 +65,7 @@ states:
       blur-passed:
         logo-blur-test: ==passes
       assets-committed:
-        committed-to-main-locally: ==verified
+        committed-to-dev-locally: ==verified
     next:
       approved:
         to: branded

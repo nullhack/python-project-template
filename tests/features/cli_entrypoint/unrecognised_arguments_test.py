@@ -4,7 +4,7 @@ import subprocess
 import sys
 
 
-def test_cli_entrypoint_e7f8a9b0() -> None:
+def test_unrecognised_flag_exits_with_code_2() -> None:
     """
     Given: the application package is installed
     When: the user runs `python -m app --unknown-flag`
@@ -18,7 +18,7 @@ def test_cli_entrypoint_e7f8a9b0() -> None:
     assert result.returncode == 2
 
 
-def test_cli_entrypoint_b1c2d3e4() -> None:
+def test_no_arguments_exits_with_code_0() -> None:
     """
     Given: the application package is installed
     When: the user runs `python -m app` with no arguments

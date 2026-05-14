@@ -5,7 +5,7 @@ import subprocess
 import sys
 
 
-def test_cli_entrypoint_c9d0e1f2() -> None:
+def test_version_output_contains_app_name_and_version() -> None:
     """
     Given: the application package is installed
     When: the user runs `python -m app --version`
@@ -24,7 +24,7 @@ def test_cli_entrypoint_c9d0e1f2() -> None:
     assert result.returncode == 0
 
 
-def test_cli_entrypoint_a3b4c5d6() -> None:
+def test_version_output_matches_metadata() -> None:
     """
     Given: the application package is installed
     When: the user runs `python -m app --version`

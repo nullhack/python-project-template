@@ -20,6 +20,6 @@ description: "Apply text substitutions, rename package directory, and write temp
 5. Verify no stale references remain: `grep -rn "from app" tests/` must return empty.
 6. Verify package directory was renamed: old `app/` must not exist, new `{package_name}/` must exist.
 7. Set evidence:
-    - `no_stale_app_imports`: verified if grep returns empty
-    - `package_renamed`: verified if old `app/` is gone and new directory exists
-    - `version_reset`: verified if pyproject.toml version is `0.1.0`
+    - `no-stale-app-imports`: verified if grep returns empty
+    - `package-renamed`: verified if old `app/` is gone and new directory exists
+    - `version-reset`: verified if pyproject.toml version is `0.1.0`

@@ -1,7 +1,7 @@
 ---
 domain: software-craft
 tags: [test-design, observable-behavior, test-coupling, semantic-alignment, abstraction-level]
-last-updated: 2026-04-29
+last-updated: 2026-05-14
 ---
 
 # Test Design
@@ -25,7 +25,7 @@ last-updated: 2026-04-29
 
 **Characterization Tests** (Feathers, 2004). When modifying code without existing tests, write characterization tests first: tests that document what the code currently does, not what it should do. This creates a regression net before any changes. Characterization tests are temporary. Once the code is under test, replace them with specification tests that assert desired behaviour.
 
-**Semantic Depth**. A test that exists for an @id tag but exercises domain logic directly instead of through the entry point described in the acceptance criterion has correct structural traceability but wrong semantic depth. Every @id test must exercise the entry point the AC describes: if the AC specifies a command-line invocation, the test must invoke the command handler; if the AC specifies an API call, the test must call the API endpoint. Structural traceability (every @id has a test function) without semantic depth (every @id test exercises the right entry point) creates a false sense of coverage. Tests exist for every example but don't verify the actual user-facing behavior.
+**Semantic Depth**. A test that exists for an Example but exercises domain logic directly instead of through the entry point described in the acceptance criterion has correct structural traceability but wrong semantic depth. Every feature test must exercise the entry point the AC describes: if the AC specifies a command-line invocation, the test must invoke the command handler; if the AC specifies an API call, the test must call the API endpoint. Structural traceability (every Example has a test function) without semantic depth (every test exercises the right entry point) creates a false sense of coverage.
 
 **Invariant Property Tests**. Structural (invariant) rules describe properties that must hold across all inputs, not specific behaviours. Examples alone cannot prove an invariant — they only confirm it holds for the selected cases (MacIver, 2016). When a Rule asserts an invariant (e.g., "total must equal sum of parts," "output must be sorted," "balance must never go negative"), the specification pre-mortem and behavior pre-mortem surface candidate counterexamples. These counterexamples become assertions in a Hypothesis property test (`tests/unit/`) that verifies the invariant across a generated range of inputs, catching failure modes that no finite set of hand-picked Examples could have found.
 
@@ -35,9 +35,9 @@ last-updated: 2026-04-29
 
 | Level | What it tests | Resilience | When to use |
 |---|---|---|---|
-| Feature test | Observable behaviour through public interface | Highest | Every @id acceptance criterion |
+| Feature test | Observable behaviour through public interface | Highest | Every Example acceptance criterion |
 | Unit contract test | Module protocol (inputs, outputs, invariants) | High | Complex domain logic with clear contracts |
-| Property test | Invariants across input ranges | Moderate | Bug @id requirements; all structural/invariant rules |
+| Property test | Invariants across input ranges | Moderate | Bug requirements; all structural/invariant rules |
 | White-box test | Internal state or private methods | Lowest | Legacy characterization only |
 
 ### Semantic Alignment Examples
@@ -53,17 +53,17 @@ last-updated: 2026-04-29
 - Each test should fail for exactly one reason
 - Each test should pass for exactly one reason
 - If a test has multiple assertions, they must all verify the same behaviour from different angles
-- Multiple behaviours → multiple tests, each with its own @id traceability
+- Multiple behaviours → multiple tests, each traced via title-based mapping
 
 ### Test Location Convention
 
 | Directory | Contents | Traceability |
 |-----------|----------|-------------|
-| `tests/features/<feature_slug>/` | BDD scenario tests: one test per `@id` tag in the feature file | `@id` tag required |
-| `tests/unit/` | Unit contract tests: coverage-boosting tests for implementation branches not covered by BDD examples | No `@id` tag |
-| `tests/unit/` | Property tests: invariant verification across input ranges | No `@id` tag (except `@bug` examples); all structural/invariant rules must have one |
+| `tests/features/<feature_slug>/` | BDD scenario tests: one test per Example in the feature file | Title-based mapping (pytest-beehave) |
+| `tests/unit/` | Unit contract tests: coverage-boosting tests for implementation branches not covered by BDD examples | No Example mapping |
+| `tests/unit/` | Property tests: invariant verification across input ranges | No Example mapping (except `@bug` examples); all structural/invariant rules must have one |
 
-**Rule:** `tests/features/` is exclusively for BDD scenario tests that trace back to `@id` tags in the feature file. Coverage-boosting tests that exercise implementation branches not covered by any `@id` example are unit contract tests and belong in `tests/unit/`, not `tests/features/`. A test without an `@id` tag in `tests/features/` violates the traceability contract.
+**Rule:** `tests/features/` is exclusively for BDD scenario tests that trace back to Examples in the feature file via pytest-beehave's title-based mapping. Coverage-boosting tests that exercise implementation branches not covered by any Example are unit contract tests and belong in `tests/unit/`, not `tests/features/`. A test not mapped to an Example in `tests/features/` violates the traceability contract enforced by `beehave check`.
 
 ## Related
 

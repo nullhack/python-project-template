@@ -1,5 +1,5 @@
 flow: delivery-flow
-version: 5.0.0
+version: 8.0.0
 params: [feature_id]
 
 exits:
@@ -20,9 +20,10 @@ states:
       in:
         - features/<feature_id>.feature
         - product_definition.md
+        - behavioral_spec.md
         - glossary.md
+        - "interview-notes/*.md"  # optional — for requirement traceability
       out:
-        - acceptance_evidence
         - approval_record
     conditions:
       feature-accepted:
@@ -35,9 +36,9 @@ states:
 
   - id: local-merge
     attrs:
-      description: "SE squash-merges feature commits into local main and resolves any conflicts"
+      description: "SE squash-merges feature commits into local dev branch and resolves any conflicts"
       owner: SE
-      git: main
+      git: dev
       skills:
         - merge-local
       in:
@@ -52,9 +53,9 @@ states:
 
   - id: publish-decision
     attrs:
-      description: "PO decides whether to publish the accumulated batch as a PR or continue accumulating features on local main"
+      description: "PO decides whether to publish the accumulated batch as a PR or continue accumulating features on local dev"
       owner: PO
-      git: main
+      git: dev
       skills:
         - decide-batch-action
       in:
@@ -66,9 +67,9 @@ states:
 
   - id: pr-creation
     attrs:
-      description: "SE creates an administrative PR for changes already on local main"
+      description: "SE creates an administrative PR for changes already on local dev"
       owner: SE
-      git: main
+      git: dev
       skills:
         - create-pr
       in:
