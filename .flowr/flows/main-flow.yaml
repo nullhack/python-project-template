@@ -1,33 +1,43 @@
 flow: main-flow
-version: 10.0.0
+version: 11.0.0
 exits: [completed, cancelled, rejected]
 
 states:
   - id: discovery
     attrs:
-      description: "Understand the domain, define scope, and establish ubiquitous language through stakeholder interviews and domain modeling"
-      git: main
+      description: "Interview stakeholders and create structural behavioral specification"
+      git: dev
     flow: discovery-flow
-    flow-version: "^11"
+    flow-version: "^12"
     next:
-      complete: architecture
+      complete: spec-validation
+
+  - id: spec-validation
+    attrs:
+      description: "Iteratively simulate behavioral spec, discover rules and pain points, fix until clean"
+      git: dev
+    flow: spec-validation-flow
+    flow-version: "^2"
+    next:
+      validated: architecture
+      needs-reinterview: discovery
 
   - id: architecture
     attrs:
       description: "Design technical architecture, context boundaries, and API contracts for the entire project"
-      git: main
+      git: dev
     flow: architecture-flow
-    flow-version: "^8"
+    flow-version: "^10"
     next:
       complete: feature-development
       needs-discovery: discovery
 
   - id: feature-development
     attrs:
-      description: "Feature-level loop: Planning → Development → Acceptance → Delivery per feature"
+      description: "Feature-level loop: Planning -> Development -> Acceptance -> Delivery per feature"
       git: feature
     flow: feature-development-flow
-    flow-version: "^9"
+    flow-version: "^12"
     next:
       needs-architecture: architecture
       cancelled: cancelled

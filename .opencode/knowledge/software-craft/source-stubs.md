@@ -13,7 +13,7 @@ last-updated: 2026-05-08
 - Source stubs contain the absolute minimum to compile and trace: Protocol signatures with `raise NotImplementedError` bodies, no docstrings, no type hints beyond the contract.
 - Package structure mirrors the module structure from technical design; the domain package depends on nothing.
 - Feature branches are created from the latest main.
-- Create artifacts in scaffold order: branch, directories, port interfaces, Protocol stubs, test stubs, verify @ids.
+- Create artifacts in this order: branch, directories, port interfaces, Protocol stubs, run beehave generate to create test stubs, run beehave check.
 
 ## Concepts
 
@@ -27,10 +27,10 @@ last-updated: 2026-05-08
 
 **Branch Setup**. Implementation begins on a feature branch (`feat/<stem>`) created from the latest main. Branch naming follows [[software-craft/git-conventions]].
 
-**Scaffolding Order**. Create artifacts in this order: (1) feature branch from main, (2) package directories from module structure, (3) port interfaces and aggregate root signatures, (4) per-feature: Protocol stubs from contracts + test stubs from @id tags per [[software-craft/test-stubs#key-takeaways]], (5) verify all @ids have corresponding test stubs.
+**Creation Order**. Create artifacts in this order: (1) feature branch from main, (2) package directories from module structure, (3) port interfaces and aggregate root signatures, (4) per-feature: Protocol stubs from contracts + run `beehave generate <feature_id>` to create test stubs per [[software-craft/test-stubs#key-takeaways]], (5) run `beehave check` to verify all Examples have corresponding test stubs.
 
 ## Related
 
 - [[architecture/contract-design]]: the three contract types that define stub shapes
 - [[architecture/technical-design]]: module structure and package layout
-- [[software-craft/test-stubs]]: test stub format and @id traceability chain
+- [[software-craft/test-stubs]]: test stub format and title-based traceability chain

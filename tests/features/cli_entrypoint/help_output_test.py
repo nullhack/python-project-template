@@ -5,7 +5,7 @@ import subprocess
 import sys
 
 
-def test_cli_entrypoint_c1a2b3d4() -> None:
+def test_help_output_contains_app_name_and_tagline() -> None:
     """
     Given: the application package is installed
     When: the user runs `python -m app --help`
@@ -24,7 +24,7 @@ def test_cli_entrypoint_c1a2b3d4() -> None:
     assert result.returncode == 0
 
 
-def test_cli_entrypoint_e5f6a7b8() -> None:
+def test_help_output_lists_help_and_version_flags() -> None:
     """
     Given: the application package is installed
     When: the user runs `python -m app --help`

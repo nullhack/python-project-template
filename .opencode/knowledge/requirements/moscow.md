@@ -39,7 +39,7 @@ At the story level, Musts should not exceed 60% of total effort (DSDM). If a sto
 
 ### When to Apply
 
-MoSCoW triage classifies each candidate Example as Must/Should/Could for internal prioritization, to decide which Examples to include and which to defer. MoSCoW labels must NOT appear as Gherkin tags, in `@id` tags, or anywhere in the .feature file.
+MoSCoW triage classifies each candidate Example as Must/Should/Could for internal prioritization, to decide which Examples to include and which to defer. MoSCoW labels must NOT appear as Gherkin tags, as Example titles, or anywhere in the .feature file.
 
 ## Related
 

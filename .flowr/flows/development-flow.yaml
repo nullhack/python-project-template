@@ -1,5 +1,5 @@
 flow: development-flow
-version: 9.0.0
+version: 12.0.0
 params: [feature_id]
 exits:
   - done
@@ -15,6 +15,8 @@ states:
       in:
         - features/<feature_id>.feature
         - domain_model.md
+        - behavioral_spec.md
+        - simulation_results.md
         - glossary.md
         - product_definition.md
       out:
@@ -27,7 +29,7 @@ states:
       description: "SE implements the feature through repeated RED-GREEN-REFACTOR cycles until all BDD examples pass"
       git: feature
     flow: tdd-cycle-flow
-    flow-version: "^5"
+    flow-version: "^8"
     conditions:
       design-declared:
         yagni: ==no-premature-abstractions
@@ -37,14 +39,18 @@ states:
         smells: ==all-smells-addressed
         solid: ==principles-applied
         patterns: ==patterns-justified
+      traceability-verified:
+        beehave-check: ==passed
     next:
       all-green:
         to: review-gate
-        when: design-declared
+        when:
+          - design-declared
+          - traceability-verified
 
   - id: review-gate
     attrs:
-      description: "R independently verifies implementation across three tiers — design, structure, conventions — then commits the passing implementation with @id traceability"
+      description: "R independently verifies implementation across three tiers — design, structure, conventions — with traceability verified by beehave check"
       owner: R
       git: feature
       skills:
@@ -53,13 +59,31 @@ states:
         - test-implementations
         - source-implementations
         - features/<feature_id>.feature
+        - domain_model.md
+        - behavioral_spec.md
+        - "adr/*.md"  # optional
+      out: []
+    next:
+      pass: commit-reviewed
+      fail: tdd-cycle
+
+  - id: commit-reviewed
+    attrs:
+      description: "SE commits the passing implementation with traceability to Example titles"
+      owner: SE
+      git: feature
+      skills:
+        - commit-implementation
+      in:
+        - source-implementations
+        - test-implementations
+        - features/<feature_id>.feature
       out:
         - feature-commits
     conditions:
-      commit-gate:
+      committed:
         committed: ==verified
     next:
-      pass:
+      done:
         to: done
-        when: commit-gate
-      fail: tdd-cycle
+        when: committed

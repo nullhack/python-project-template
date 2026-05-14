@@ -1,5 +1,5 @@
 flow: tdd-cycle-flow
-version: 5.0.0
+version: 8.0.0
 params: [feature_id]
 exits:
   - all-green
@@ -17,6 +17,7 @@ states:
         - typed-source-stubs
         - features/<feature_id>.feature
         - domain_model.md
+        - behavioral_spec.md
         - glossary.md
       out:
         - test-implementations
@@ -35,6 +36,7 @@ states:
         - typed-source-stubs
         - features/<feature_id>.feature
         - domain_model.md
+        - behavioral_spec.md
         - glossary.md
       out:
         - source-implementations
@@ -53,10 +55,10 @@ states:
         - test-implementations
         - features/<feature_id>.feature
         - domain_model.md
+        - behavioral_spec.md
         - glossary.md
       out:
         - source-implementations
-        - refactored-source
     next:
       next-example: red
       all-examples-pass: all-green

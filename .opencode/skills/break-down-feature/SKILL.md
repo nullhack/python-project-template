@@ -1,22 +1,23 @@
 ---
 name: break-down-feature
-description: "Refine coarse Rules into full Rule blocks with adversarial analysis and INVEST validation"
+description: "Verify simulation-discovered rules are specific enough and write them as Rule blocks in the feature file"
 ---
 
 # Break Down Feature
 
-Available knowledge: [[requirements/invest]], [[requirements/decomposition]], [[requirements/pre-mortem#key-takeaways]], [[requirements/interview-techniques#concepts]]. `in` artifacts: read all before starting work.
+Available knowledge: [[requirements/invest]], [[requirements/decomposition]]. `in` artifacts: read all before starting work.
 
-1. Discover and read the feature file, product definition, domain model, glossary, and interview notes from `in`. The feature file contains coarse `Rules (Business)` bullet points from discovery. These are behavioral hypotheses, not validated stories.
-2. For each coarse rule, apply adversarial analysis:
-   - Pre-mortem per [[requirements/pre-mortem#key-takeaways]]: "Imagine this rule was built exactly as described, all tests pass, but it fails for the user. What would be missing?"
-   - CIT per [[requirements/interview-techniques#concepts]]: "When has this behavior gone wrong in practice?"
-   - Laddering per [[requirements/interview-techniques#concepts]]: "Why is this rule important? What breaks without it?"
-3. Expand each validated rule into a full `Rule:` block with As a/I want/So that format.
-4. IF clarification is needed for a Rule → ask the stakeholder targeted questions. Record answers in the relevant interview notes.
-5. Validate each Rule per [[requirements/invest#concepts]].
-6. IF a story contains "and" → split into two Rules per [[requirements/decomposition#key-takeaways]].
-7. IF a story lacks a named user role or business value → reframe per [[requirements/invest#concepts]].
-8. IF a Rule spans more than 2 concerns or has more than 8 candidate Examples → split per [[requirements/decomposition#key-takeaways]].
-9. Evaluate each Rule against INVEST criteria (Independent, Negotiable, Valuable, Estimable, Small, Testable) per [[requirements/invest#concepts]]. Every criterion that fails is a hard blocker: fix before writing the Rule to the feature file.
-10. IF the feature cannot pass INVEST as a single story → propose the split to the stakeholder with rationale per [[requirements/decomposition#key-takeaways]]. Stakeholder decides what's core vs. deferred. Document their decision in the feature file.
+1. Discover and read the feature file, product definition, behavioral spec, simulation results, and glossary from `in`. The feature file contains coarse business rules as Gherkin comments (`# Business rules:` bullet points) from discover-rules. These rules were discovered during spec simulation — they are already validated behavioral statements, not hypotheses.
+2. For each coarse rule from the `# Business rules:` comments:
+   a. Verify the rule is specific enough to generate at least one Example. IF the rule is vague (e.g. "the system should handle errors") → flag for clarification.
+   b. Verify the rule is not contradicted by another rule or by the behavioral spec.
+   c. Verify the rule maps to at least one entity and state in the behavioral spec.
+3. Convert each verified rule into a `Rule:` block in the .feature file. The Rule title is the rule statement itself — descriptive, unique, no special characters. No As a/I want/So that format. Example:
+   ```
+   Rule: Order must contain at least one item
+   ```
+4. IF clarification is needed for a rule → ask the stakeholder targeted questions. Record answers in the relevant interview notes.
+5. IF a rule contains "and" or spans more than 2 concerns → split into separate Rule blocks per [[requirements/decomposition#key-takeaways]].
+6. IF the feature has more than 8 rules → propose the split to the stakeholder with rationale per [[requirements/decomposition#key-takeaways]]. Stakeholder decides what's core vs. deferred.
+7. Remove the `# Business rules:` comment block — the rules are now formalized as Rule blocks. Leave the `# Constraints:` comment block in place — these are non-functional requirements (performance, security, accessibility) that are not convertible to Gherkin Rules but must remain visible for the reviewer and implementer.
+8. Validate the feature passes INVEST criteria per [[requirements/invest#concepts]]. Every criterion that fails is a hard blocker: fix before advancing.

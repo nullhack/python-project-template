@@ -26,7 +26,7 @@ last-updated: 2026-04-30
 
 **Specific Feedback Drives Improvement** (Hattie & Timperley, 2007). The most effective feedback is specific about what needs to change and how. Self-declaration checklists (AGREE/DISAGREE on specific criteria) are more effective than vague "looks good" reviews because they force the reviewer to articulate exactly what passes and what fails.
 
-**Test List Mechanics**. Build the test list from `@id` tags in the feature file. Order tests by dependency: fewest dependencies first, most impactful within that set. Work on one `@id` at a time (WIP limit of 1 per `@id`). Each `@id` gets a full RED-GREEN-REFACTOR cycle before moving to the next.
+**Test List Mechanics**. Build the test list from Example titles in the feature file (each Example maps to a `test_<slug>` function via pytest-beehave). Order tests by dependency: fewest dependencies first, most impactful within that set. Work on one Example at a time (WIP limit of 1). Each Example gets a full RED-GREEN-REFACTOR cycle before moving to the next.
 
 **Commit Discipline**. Refactor commits are separate from feature commits. Never mix a structural change with a behavior addition in one commit. This keeps history bisectable and every commit leaves tests green. See [[software-craft/git-conventions]] for granular and squashed commit formats.
 
@@ -57,10 +57,10 @@ last-updated: 2026-04-30
 
 ### Test List
 
-- List all `@id` tags from the feature file before starting
+- List all Examples from the feature file before starting
 - Order by fewest dependencies first; most impactful within that set
-- Mark each `@id` as pending, in-progress, or done
-- WIP limit: exactly one `@id` in-progress at a time
+- Mark each Example as pending, in-progress, or done
+- WIP limit: exactly one Example in-progress at a time
 
 ### During TDD Cycles
 
@@ -71,7 +71,7 @@ last-updated: 2026-04-30
 
 ### After Design Approval
 
-- Add coverage unit tests for uncovered branches in `tests/unit/`, never in `tests/features/`. The `tests/features/` directory is exclusively for `@id`-linked BDD scenario tests. Coverage-boosting tests for implementation branches are unit contract tests, not feature tests
+- Add coverage unit tests for uncovered branches in `tests/unit/`, never in `tests/features/`. The `tests/features/` directory is exclusively for BDD scenario tests mapped to Examples via pytest-beehave. Coverage-boosting tests for implementation branches are unit contract tests, not feature tests
 - Run lint (`uv run task lint`), pyright (`uv run task static-check`), full test suite
 - Add docstrings to all public classes and methods
 - Add type annotations to all public signatures
@@ -79,7 +79,7 @@ last-updated: 2026-04-30
 
 ### Commit Strategy
 
-- Feature commits: one per `@id` achievement (RED→GREEN→REFACTOR)
+- Feature commits: one per Example achievement (RED→GREEN→REFACTOR)
 - Refactor commits: separate from feature commits, one per catalogue entry
 - See [[software-craft/git-conventions]] for commit message format
 

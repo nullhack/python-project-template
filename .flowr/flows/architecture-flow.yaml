@@ -1,5 +1,5 @@
 flow: architecture-flow
-version: 8.0.0
+version: 10.0.0
 exits:
   - complete
   - needs-discovery
@@ -9,12 +9,13 @@ states:
     attrs:
       description: "SA evaluates whether the feature requires new architecture or fits the existing system, potentially overriding deployment decisions"
       owner: SA
-      git: main
+      git: dev
       skills:
         - assess-architecture
       in:
         - product_definition.md
-        - domain_model.md
+        - behavioral_spec.md
+        - simulation_results.md
       out:
         - product_definition.md:
             - deployment
@@ -23,18 +24,15 @@ states:
       architecture-complete:
         architecture-complete: ==verified
       architecture-exists:
-        domain-model-md: ==exists
+        behavioral-spec-md: ==exists
       no-architecture-exists:
-        domain-model-md: ==missing
+        behavioral-spec-md: ==missing
     next:
       no-architecture-needed:
         to: complete
         when: architecture-complete
       needs-context-update:
         to: context-mapping
-        when: architecture-exists
-      needs-technical-design:
-        to: technical-design
         when: architecture-exists
       greenfield:
         to: context-mapping
@@ -44,19 +42,21 @@ states:
 
   - id: context-mapping
     attrs:
-      description: "SA maps bounded context relationships, Vernon patterns, and anti-corruption layers into domain_model.md"
+      description: "SA maps bounded context relationships, Vernon patterns, and anti-corruption layers"
       owner: SA
-      git: main
+      git: dev
       skills:
         - map-contexts
       in:
-        - domain_model.md
+        - behavioral_spec.md
         - product_definition.md
         - glossary.md
+        - domain_model.md
       out:
         - domain_model.md:
             - context_map
-            - changes
+        - behavioral_spec.md:
+            - integration_points
     next:
       done: technical-design
       needs-discovery: needs-discovery
@@ -65,12 +65,12 @@ states:
     attrs:
       description: "SA selects technology stack, documents dependencies, and drafts ADRs for architectural decisions"
       owner: SA
-      git: main
+      git: dev
       skills:
         - design-technical-solution
         - draft-adr
       in:
-        - domain_model.md
+        - behavioral_spec.md
         - glossary.md
         - product_definition.md
       out:
@@ -83,28 +83,29 @@ states:
 
   - id: review-signoff
     attrs:
-      description: "R independently verifies architecture alignment with domain model and requirements, and cross-document consistency, before implementation begins"
+      description: "R independently verifies architecture alignment with behavioral spec and requirements, and cross-document consistency, before implementation begins"
       owner: R
-      git: main
+      git: dev
       skills:
         - review-architecture
       in:
         - "adr/<adr_id>.md"  # optional
         - product_definition.md
-        - domain_model.md
+        - behavioral_spec.md
+        - simulation_results.md
         - glossary.md
       out: []
     conditions:
       architecture-approved:
-        alignment: ==domain-model-verified
+        alignment: ==behavioral-spec-verified
         adr-compliance: ==adrs-respected
-      committed-to-main-locally:
-        committed-to-main-locally: ==verified
+      committed-to-dev-locally:
+        committed-to-dev-locally: ==verified
     next:
       approved:
         to: complete
         when:
           - architecture-approved
-          - committed-to-main-locally
+          - committed-to-dev-locally
       inconsistent: architecture-assessment
       needs-discovery: needs-discovery

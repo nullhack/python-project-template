@@ -1,17 +1,20 @@
 ---
 name: discover-rules
-description: "Derive business rules and constraints from domain model artifacts (events, invariants, commands) and map them to feature files"
+description: "Distribute simulation-discovered rules and constraints into feature files from simulation results"
 ---
 
 # Discover Rules
 
-Available knowledge: [[requirements/rule-derivation]], [[requirements/feature-discovery#concepts]]. `in` artifacts: read all before starting work.
+Available knowledge: [[requirements/feature-discovery#concepts]], [[requirements/gherkin#key-takeaways]]. `in` artifacts: read all before starting work.
 
-1. Read product_definition.md, domain_model.md, glossary.md, and all `.feature` files (created by discover-features in this same state) from `in` artifacts.
-2. Assign domain model artifacts to features per [[requirements/rule-derivation#content]]: using the bounded context column in the domain model's entity table, assign each entity, event, and command to the feature corresponding to its context.
-3. For each feature, derive behavioral rules from domain events per [[requirements/rule-derivation#key-takeaways]]: "When [event], then [consequence]." Write each as a coarse bullet under `Rules (Business)`.
-4. For each feature, derive structural rules from aggregate invariants per [[requirements/rule-derivation#key-takeaways]]: "[Entity] must always [condition]." Write each as a coarse bullet under `Rules (Business)`.
-5. For each feature, derive action rules from commands per [[requirements/rule-derivation#key-takeaways]]: "[Actor] can [action] when [precondition]." Write each as a coarse bullet under `Rules (Business)`.
-6. For each quality attribute in product_definition.md, map it to the feature(s) that enforce it per [[requirements/rule-derivation#key-takeaways]]. Write each as a Constraint with a measurable threshold.
-7. Run traceability verification per [[requirements/rule-derivation#content]]: every event → at least one rule, every invariant → at least one rule, every command → at least one rule, every quality attribute → at least one constraint. IF any gap → flag it in the relevant interview notes. Do NOT silently fill gaps with assumed rules.
-8. Write all Rules (Business) bullets and Constraints into each `.feature` file. Do NOT write full `Rule:` blocks (As a/I want/So that) or `Example:` blocks — those require the adversarial analysis of breakdown.
+1. Read product_definition.md, behavioral_spec.md, simulation_results.md, glossary.md, and all `.feature` files (created by discover-features in this same state) from `in` artifacts.
+2. List all rules discovered across all simulation iterations from simulation_results.md.
+3. For each rule, identify which feature it belongs to based on the bounded context and entities it involves. IF a rule spans multiple features → flag for cross-cutting handling.
+4. Write each rule as a coarse bullet under the `# Business rules:` comment block in the relevant `.feature` file. Rules are descriptive statements — no numbered prefixes. They map directly to Example titles written later by write-bdd-features.
+5. For each quality attribute in product_definition.md, map it to the feature(s) that enforce it. Write each as a Constraint with a measurable threshold under `# Constraints:` in the relevant `.feature` file.
+6. Run traceability verification:
+   - Every simulation rule → at least one feature's business rules.
+   - Every quality attribute → at least one feature's constraints.
+   - Every feature → at least one business rule.
+   IF any gap → flag it. Do NOT silently fill gaps with assumed rules.
+7. Write all `# Business rules:` bullets and `# Constraints:` into each `.feature` file. Do NOT write full `Rule:` blocks (As a/I want/So that) or `Example:` blocks — those require the adversarial analysis of breakdown.

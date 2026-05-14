@@ -12,7 +12,7 @@ last-updated: 2026-04-29
 - Apply the pre-mortem at four levels of granularity: specification (missing observable behaviours), behavior (failure modes per distinct outcome), architecture (design principle violations), and implementation (design self-declaration).
 - At specification: "Imagine this feature was built exactly as described, all tests pass, but it doesn't work for the user. What would be missing?"
 - At behavior: "Imagine this specific behaviour went wrong in production — how?" Run per distinct `Then` outcome after grouping Examples per [[requirements/gherkin#concepts]]; add Examples for surfaced failure modes.
-- At architecture: for each candidate class check [[software-craft/object-calisthenics#key-takeaways]] and [[software-craft/solid#key-takeaways]]; for each external dependency check [[architecture/hexagonal#key-takeaways]]; for each noun check if it serves double duty across modules.
+- At architecture: for each candidate class check [[software-craft/object-calisthenics#key-takeaways]] and [[software-craft/solid#key-takeaways]]; for each external dependency check [[architecture/technical-design#key-takeaways]]; for each noun check if it serves double duty across modules.
 - All pre-mortems are enforced by condition gates in the flow: they are not optional exercises.
 
 ## Concepts
@@ -27,7 +27,7 @@ last-updated: 2026-04-29
 - **Structural/invariant rules**: "This invariant must always hold. What counterexamples would break it?" — surface candidate counterexamples, then capture them in a Hypothesis property test per [[software-craft/test-design#concepts]] rather than as additional BDD Examples.
 Add Examples for the failure modes surfaced. This is a distinct level from specification pre-mortem: specification asks "what behaviours are missing from the rule?"; behavior asks "how could this specific outcome fail in production?" per the prospective hindsight mechanism (Klein, 1998).
 
-**Architecture Pre-Mortem**: Ask "In 6 months this design is a mess. What mistakes did we make?" Check each candidate class per [[software-craft/object-calisthenics]] and [[software-craft/solid]]. Check each external dependency per [[architecture/hexagonal]]. Check each noun for cross-module double duty.
+**Architecture Pre-Mortem**: Ask "In 6 months this design is a mess. What mistakes did we make?" Check each candidate class per [[software-craft/object-calisthenics]] and [[software-craft/solid]]. Check each external dependency per [[architecture/technical-design]]. Check each noun for cross-module double duty.
 
 **Flow Condition Gates**: Pre-mortem completion is enforced by condition gates in the flow YAML. Self-declaration uses explicit AGREE/DISAGREE commitments (a commitment device (Cialdini, 2001) that makes the declaration psychologically binding). Adversarial framing during pre-mortem analysis ("find what's wrong" rather than "confirm it's right") uses adversarial collaboration (Mellers et al., 2001) to produce stronger reasoning.
 
@@ -59,7 +59,7 @@ Ask:
 
 For each candidate class, check per [[software-craft/object-calisthenics#concepts]] and [[software-craft/solid#concepts]].
 
-For each external dependency, check per [[architecture/hexagonal#concepts]].
+For each external dependency, check per [[architecture/technical-design#concepts]].
 
 For each noun, check for cross-module double duty.
 

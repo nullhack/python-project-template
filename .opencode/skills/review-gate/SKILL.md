@@ -1,6 +1,6 @@
 ---
 name: review-gate
-description: "Three-tier review with fail-fast: design → structure → conventions"
+description: "Three-tier review with fail-fast: design -> structure -> conventions"
 ---
 
 # Review Gate
@@ -18,7 +18,7 @@ Available knowledge: [[software-craft/code-review]], [[software-craft/test-desig
 
 ## Tier 2: Structure Review
 
-5. Verify test coverage per [[software-craft/test-design#concepts]]: all @id tags have test implementations, no missing edge cases.
+5. Verify structural traceability: run `beehave check` to confirm every Example in the feature file has a corresponding test and there are no orphan tests. pytest-beehave enforces this via title-based mapping.
 6. Verify test quality per [[software-craft/test-design#concepts]]: tests follow AAA pattern, clear assertions, behavior-focused not implementation-coupled.
 7. Run `task test-coverage` and verify coverage meets project standards.
 8. **FAIL-FAST**: If any structure violations found → exit `fail` with specific citations. Do NOT proceed to conventions review.

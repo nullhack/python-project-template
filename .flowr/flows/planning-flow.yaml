@@ -1,5 +1,5 @@
 flow: planning-flow
-version: 11.0.0
+version: 15.0.0
 params: [feature_id]
 exits:
   - complete
@@ -7,16 +7,47 @@ exits:
   - no-features
 
 states:
+  - id: feature-discovery
+    attrs:
+      description: "PO discovers features from simulation results and distributes rules into feature files"
+      owner: PO
+      git: dev
+      skills:
+        - discover-features
+        - discover-rules
+      in:
+        - product_definition.md
+        - behavioral_spec.md
+        - simulation_results.md
+        - domain_model.md
+        - glossary.md
+        - "features/*.feature"  # optional — may not exist on first cycle
+      out:
+        - "features/<feature_id>.feature"
+    conditions:
+      features-discovered:
+        features-discovered: ==verified
+      committed-to-dev-locally:
+        committed-to-dev-locally: ==verified
+    next:
+      done:
+        to: feature-selection
+        when:
+          - features-discovered
+          - committed-to-dev-locally
+      no-features: no-features
+
   - id: feature-selection
     attrs:
       description: "PO selects the next feature — by delivery order for first feature, by WSJF for subsequent features"
       owner: PO
-      git: main
+      git: dev
       skills:
         - select-feature
       in:
         - product_definition.md
-        - domain_model.md
+        - behavioral_spec.md
+        - simulation_results.md
         - "features/<feature_id>.feature"  # optional — discover available features
       out: []
     next:
@@ -26,14 +57,16 @@ states:
 
   - id: feature-breakdown
     attrs:
-      description: "PO refines coarse Rules from discovery into full Rule blocks with INVEST validation, adding detail through targeted clarification"
+      description: "PO verifies simulation-discovered rules are specific enough and writes them as Rule blocks in the feature file"
       owner: PO
-      git: main
+      git: dev
       skills:
         - break-down-feature
       in:
         - features/<feature_id>.feature
         - product_definition.md
+        - behavioral_spec.md
+        - simulation_results.md
         - domain_model.md
         - glossary.md
       out:
@@ -49,15 +82,16 @@ states:
 
   - id: feature-examples
     attrs:
-      description: "PO writes concrete Given/When/Then Example blocks for each Rule in the feature file using ubiquitous language from the glossary"
+      description: "PO writes concrete Given/When/Then Example blocks for each Rule in the feature file"
       owner: PO
-      git: main
+      git: dev
       skills:
         - write-bdd-features
       in:
         - features/<feature_id>.feature
         - product_definition.md
-        - domain_model.md
+        - behavioral_spec.md
+        - simulation_results.md
         - glossary.md
       out:
         - features/<feature_id>.feature:
@@ -74,12 +108,14 @@ states:
     attrs:
       description: "R independently verifies the feature spec for cross-document consistency, domain alignment, BDD quality, and pre-mortem coverage"
       owner: R
-      git: main
+      git: dev
       skills:
         - review-spec
       in:
         - features/<feature_id>.feature
         - product_definition.md
+        - behavioral_spec.md
+        - simulation_results.md
         - domain_model.md
         - glossary.md
       out: []
@@ -94,14 +130,16 @@ states:
 
   - id: create-py-stubs
     attrs:
-      description: "SA creates typed stubs and test stubs from the feature file and verifies all planning artifacts are complete before baseline"
+      description: "SA creates typed source stubs and generates test stubs via pytest-beehave, then verifies all planning artifacts are complete before baseline"
       owner: SA
-      git: main
+      git: dev
       skills:
         - create-py-stubs
       in:
         - features/<feature_id>.feature
         - product_definition.md
+        - behavioral_spec.md
+        - simulation_results.md
         - domain_model.md
         - glossary.md
       out:
@@ -109,15 +147,15 @@ states:
         - test-skeletons
     conditions:
       stubs-traceable:
-        all-ids-have-stubs: ==verified
+        beehave-check-passes: ==verified
       baseline-confirmed:
         baseline-confirmed: ==verified
-      committed-to-main-locally:
-        committed-to-main-locally: ==verified
+      committed-to-dev-locally:
+        committed-to-dev-locally: ==verified
     next:
       done:
         to: complete
         when:
           - stubs-traceable
           - baseline-confirmed
-          - committed-to-main-locally
+          - committed-to-dev-locally

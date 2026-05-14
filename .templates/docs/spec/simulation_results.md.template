@@ -1,0 +1,73 @@
+# Simulation Results — Iteration <N>
+
+> One file per simulation iteration, covering all bounded contexts.
+> This document captures what the simulation found: scenarios walked,
+> rules discovered, and pain points requiring spec fixes.
+
+---
+
+## <Context Name>
+
+### Scenarios Walked
+
+| # | Scenario | Type | Outcome |
+|---|----------|------|---------|
+| 1 | <happy path description> | happy | PASS / FAIL: <reason> |
+| 2 | <edge case description> | edge | PASS / FAIL: <reason> |
+| 3 | <error path description> | error | PASS / FAIL: <reason> |
+
+#### I/O Evidence
+
+Scenarios are backed by I/O pairs in /tmp/sim/<context>/:
+
+- `/tmp/sim/<context>/scenario_001_in.json` — input
+- `/tmp/sim/<context>/scenario_001_out.json` — expected output
+- `/tmp/sim/<context>/scenario_002_in.json` — input
+- `/tmp/sim/<context>/scenario_002_out.json` — expected output
+
+### Rules Discovered
+
+< descriptive statements, no numbered prefixes — these map to Example titles in .feature files >
+
+- <rule statement in plain language> — from scenario: <scenario title>
+- <rule statement in plain language> — from scenario: <scenario title>
+
+### Pain Points
+
+< descriptive statements, no numbered prefixes >
+
+- <description> — <spec section> — <classification: ambiguous / contradictory / missing / edge-case>
+- <description> — <spec section> — <classification>
+
+### E2E Test Candidates
+
+< Scenarios that should become acceptance tests after validation.
+  Each becomes an Example: title in the .feature file. >
+
+- <descriptive title for the test> — from scenario: <scenario title>
+- <descriptive title for the test> — from scenario: <scenario title>
+
+### Resolution Status
+
+| Pain Point | Resolved | How |
+|------------|----------|-----|
+| <description> | Yes/No | <how resolved, or "deferred to next iteration"> |
+
+---
+
+## <Next Context Name>
+
+< Repeat the same section structure for each bounded context. >
+
+---
+
+## Summary
+
+- Iteration: <N> of max 5
+- Contexts simulated: <count>
+- Scenarios walked: <count>
+- Rules discovered: <count>
+- Pain points found: <count>
+- Pain points resolved: <count>
+- Pain points unresolved: <count>
+- Reviewer decision: PASS / FAIL (needs iteration <N+1>)

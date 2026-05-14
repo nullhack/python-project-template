@@ -1,5 +1,5 @@
 flow: feature-development-flow
-version: 9.0.0
+version: 11.0.0
 params: [feature_id]
 
 exits:
@@ -12,9 +12,9 @@ states:
   - id: planning
     attrs:
       description: "Plan feature breakdown, BDD scenarios, and development readiness"
-      git: main
+      git: dev
     flow: planning-flow
-    flow-version: "^11"
+    flow-version: "^15"
     next:
       complete: development
       needs-architecture: needs-architecture
@@ -25,7 +25,7 @@ states:
       description: "Implement the feature through TDD cycles, review, and commit"
       git: feature
     flow: development-flow
-    flow-version: "^9"
+    flow-version: "^12"
     next:
       done: delivery
 
@@ -34,7 +34,7 @@ states:
       description: "Accept, merge, and publish the completed feature"
       git: feature
     flow: delivery-flow
-    flow-version: "^5"
+    flow-version: "^8"
     next:
       next-feature: planning
       rejected: rejected

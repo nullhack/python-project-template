@@ -1,65 +1,40 @@
 flow: discovery-flow
-version: 11.0.0
+version: 12.0.0
 exits:
   - complete
 
 states:
   - id: stakeholder-interview
     attrs:
-      description: "PO interviews stakeholders to understand pain points, business goals, and domain terms, then decides how much discovery is needed"
+      description: "PO interviews stakeholders to understand pain points, business goals, and domain terms"
       owner: PO
-      git: main
+      git: dev
       skills:
         - conduct-interview
       in:
         - "interview-notes/*.md"  # optional
-        - "domain_model.md"  # optional — for re-interview context
+        - "behavioral_spec.md"  # optional — for re-interview context
         - "product_definition.md"  # optional — for re-interview context
       out:
         - "interview-notes/<session_id>.md"
     next:
-      needs-full-discovery: domain-discovery
-      needs-scope-only: scope-boundary
+      needs-spec: spec-creation
       already-known: complete
 
-  - id: domain-discovery
+  - id: spec-creation
     attrs:
-      description: "DE facilitates event storming and co-emergent ubiquitous language definition, producing domain_model.md and glossary.md as paired outputs"
-      owner: DE
-      git: main
+      description: "SA and DE create a structural behavioral specification per bounded context from interview notes"
+      owner: SA
+      git: dev
       skills:
-        - facilitate-event-storming
-        - domain-discovery
+        - create-behavioral-spec
         - define-ubiquitous-language
       in:
         - interview-notes/*.md
+        - "behavioral_spec.md"  # optional — cumulative edit across iterations
         - "domain_model.md"  # optional — cumulative edit across iterations
         - "glossary.md"  # optional — cumulative edit across iterations
-      out:
-        - domain_model.md:
-            - summary
-            - bounded_contexts
-            - events_and_commands
-            - entities
-            - relationships
-            - aggregate_boundaries
-            - context_map
-            - changes
-        - glossary.md
-    next:
-      done: scope-boundary
-      needs-reinterview: stakeholder-interview
-
-  - id: scope-boundary
-    attrs:
-      description: "PO defines what the product IS and IS NOT, who the users are, and the delivery order"
-      owner: PO
-      git: main
-      skills:
-        - define-product-scope
-      in:
-        - domain_model.md
-        - glossary.md
+        - "product_definition.md"  # optional — cumulative edit across iterations
       out:
         - product_definition.md:
             - what_is
@@ -69,35 +44,24 @@ states:
             - out_of_scope
             - delivery_order
             - quality_attributes
-            - deployment
-    next:
-      done: feature-discovery
-      needs-reinterview: stakeholder-interview
-
-  - id: feature-discovery
-    attrs:
-      description: "PO identifies feature boundaries from the delivery order, then derives business rules and constraints from domain model artifacts"
-      owner: PO
-      git: main
-      skills:
-        - discover-features
-        - discover-rules
-      in:
-        - product_definition.md
-        - domain_model.md
+        - domain_model.md:
+            - summary
+            - bounded_contexts
+            - entities
+            - relationships
+            - aggregate_boundaries
+        - behavioral_spec.md:
+            - context
+            - entities
+            - data_shapes
+            - integration_points
+            - external_contracts
         - glossary.md
-        - "features/*.feature"  # optional — existing features for cumulative edit
-      out:
-        - features/<feature_id>.feature:
-            - title
-            - description
-            - rules_business
-            - constraints
     conditions:
-      committed-to-main-locally:
-        committed-to-main-locally: ==verified
+      committed-to-dev-locally:
+        committed-to-dev-locally: ==verified
     next:
       done:
         to: complete
-        when: committed-to-main-locally
+        when: committed-to-dev-locally
       needs-reinterview: stakeholder-interview

@@ -1,0 +1,91 @@
+# Behavioral Specification
+
+> **Status:** DRAFT | VALIDATED (YYYY-MM-DD)
+> Monolithic: all bounded contexts in one file.
+> Each `## <Context Name>` section is a context boundary.
+> Evolves through spec simulation: rules, state machines, and error handling
+> are DISCOVERED, not pre-written.
+> NO Given/When/Then here — that belongs in .feature files after validation.
+
+---
+
+## <Context Name>
+
+### Context
+
+<2-3 sentences: what this bounded context does, what business need it serves, and why it exists as a separate context.>
+
+### Entities
+
+#### <Entity Name>
+- Purpose: <why this entity exists>
+- Lifecycle: <rough phases, e.g. "created -> submitted -> completed"> (refined by simulation)
+
+#### <Value Object Name>
+- Purpose: <why this value object exists>
+- Defined by: <attributes that define identity>
+
+### Data Shapes
+
+#### <Entity Name>
+
+| Field | Type | Required | Constraints |
+|-------|------|----------|-------------|
+| <field> | <type> | Yes/No | <constraint or ?> |
+
+### Integration Points
+
+#### <This Context> -> <Other Context>
+- Purpose: <why these contexts communicate>
+- Trigger: <what initiates the communication>
+- Payload: {<field>: <type>} (may have ? for unknowns)
+- Response: {<field>: <type>} (may have ? for unknowns)
+
+### External Contracts
+
+< How users and external systems interact with this bounded context.
+  This is the primary simulation target: "given this input, the system produces this output."
+  Define every entry point into this context. >
+
+#### <Contract Name: e.g. "Submit Order", "CLI: --version", "GET /orders/{id}">
+
+- **Actor**: <who or what invokes this — user, external system, CLI, timer>
+- **Trigger**: <what initiates the interaction — command, HTTP request, CLI invocation, event>
+- **Input**: {<field>: <type>} (may have ? for unknowns)
+- **Output**: {<field>: <type>} on success (may have ? for unknowns)
+- **Errors**:
+  - <error condition> -> <error response>
+- **Side Effects**: <state changes, events emitted, notifications sent>
+- **Preconditions**: <what must be true before this can succeed>
+
+### State Machines
+
+< emerge from simulation — empty at iteration 0 >
+
+#### <Entity Name>
+States: <discovered by simulation>
+Transitions:
+
+| From | When | To | Guard |
+|------|------|----|-------|
+| <discovered by simulation> | | | |
+
+### Error Handling
+
+< discovered during simulation — empty at iteration 0 >
+
+| Scenario | Response |
+|----------|----------|
+| <discovered by simulation> | |
+
+### Invariants
+
+< discovered during simulation — empty at iteration 0 >
+
+- <entity> must always <condition>
+
+---
+
+## <Next Context Name>
+
+< Repeat the same section structure for each bounded context. >
