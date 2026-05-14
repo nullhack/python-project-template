@@ -1,6 +1,5 @@
 """Tests for help output story."""
 
-import importlib.metadata
 import subprocess
 import sys
 
@@ -13,7 +12,6 @@ def test_help_output_contains_app_name_and_tagline() -> None:
     And: the output contains the tagline
     And: the process exits with code 0
     """
-    tagline = importlib.metadata.metadata("temple8")["Summary"]
     result = subprocess.run(
         [sys.executable, "-m", "app", "--help"],
         capture_output=True,
