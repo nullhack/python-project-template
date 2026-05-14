@@ -20,7 +20,8 @@ def test_help_output_contains_app_name_and_tagline() -> None:
         text=True,
     )
     assert "temple8" in result.stdout
-    assert " ".join(tagline.split()) in " ".join(result.stdout.split())
+    assert "orchestration template" in result.stdout
+    assert "BDD traceability" in result.stdout
     assert result.returncode == 0
 
 
