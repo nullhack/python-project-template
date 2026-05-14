@@ -8,7 +8,7 @@ last-updated: 2026-05-08
 
 ## Key Takeaways
 
-- Feature boundaries are derived from the delivery order in product_definition.md, validated against bounded context and aggregate boundaries from the domain model. Each delivery step becomes a feature candidate.
+- Feature boundaries are derived from the delivery order in product_definition.md, validated against bounded context and aggregate boundaries from the domain spec. Each delivery step becomes a feature candidate.
 - A feature should belong to primarily one bounded context. If a delivery step spans two or more contexts, split it along context boundaries.
 - A feature should not span multiple aggregate transactional consistency boundaries. If it does, split along aggregate lines.
 - Feature names follow the `[Capability]` pattern from the delivery step. Descriptions answer: what it provides, which context it serves, why it exists, and key entities.
@@ -18,13 +18,13 @@ last-updated: 2026-05-08
 
 **Delivery Order as Backbone**: Patton (2014) recommends mapping the user's narrative flow as a backbone, then slicing vertically into releasable increments. The delivery order in product_definition.md is exactly this backbone: each step represents a cohesive capability the system must deliver. Using delivery steps as feature candidates ensures each feature is independently deliverable and follows the dependency graph.
 
-**Context Alignment Validation**: Each feature candidate must be checked against the domain model's bounded context table. A feature that touches entities from two or more contexts has a boundary problem. Split it: each context gets its own feature. The domain model's "Why Separate" column explains why the contexts were split — the feature split must respect the same reasoning.
+**Context Alignment Validation**: Each feature candidate must be checked against the domain spec's bounded context table. A feature that touches entities from two or more contexts has a boundary problem. Split it: each context gets its own feature. The domain spec's "Why Separate" column explains why the contexts were split — the feature split must respect the same reasoning.
 
 **Aggregate Boundary Validation**: Aggregates define transactional consistency boundaries. A feature that modifies data across two aggregates in one transaction violates aggregate design. If a delivery step spans multiple aggregates, split the feature so each aggregate's invariants are tested within one feature.
 
-**Naming and Description Convention**: Feature names come from the delivery step name, validated for clarity. Good names are specific enough that a developer knows what to build and a tester knows what to verify. Descriptions follow a four-part pattern: (1) what the feature provides, (2) which bounded context it serves, (3) why it exists — the business need, (4) key entities from the domain model that belong to this feature.
+**Naming and Description Convention**: Feature names come from the delivery step name, validated for clarity. Good names are specific enough that a developer knows what to build and a tester knows what to verify. Descriptions follow a four-part pattern: (1) what the feature provides, (2) which bounded context it serves, (3) why it exists — the business need, (4) key entities from the domain spec that belong to this feature.
 
-**Cross-Cutting Concerns**: Risk management, error handling, logging, and observability span multiple contexts. These are not separate features. Instead, they appear as Constraints in the features where they are implemented. The domain model's context map shows which contexts have safety or error-handling responsibilities. Map those responsibilities to Constraints, not to separate features.
+**Cross-Cutting Concerns**: Risk management, error handling, logging, and observability span multiple contexts. These are not separate features. Instead, they appear as Constraints in the features where they are implemented. The domain spec's context map shows which contexts have safety or error-handling responsibilities. Map those responsibilities to Constraints, not to separate features.
 
 **Exceptions to Context Splitting**: Three patterns justify a feature spanning multiple bounded contexts: (1) Foundational shared types (e.g., "Domain value objects") that all contexts depend on — these belong to a separate shared-kernel feature whose entities have `Domain (shared)` as their context. (2) Orchestrator contexts (e.g., "Execution engine") that coordinate multiple contexts but own no business logic — these are a single feature because splitting the orchestrator would create circular dependencies. (3) Tightly coupled co-deployed contexts (e.g., "Strategy framework" spanning Pricing + Strategy) that share a ubiquitous language and deployment boundary — these are one feature when their integration point is a single protocol call.
 
@@ -34,13 +34,13 @@ last-updated: 2026-05-08
 
 1. **List delivery steps as feature candidates**: Read product_definition.md delivery order. Each numbered step is a feature candidate. Record: step number, name, module, and summary.
 
-2. **Map each candidate to bounded contexts**: For each candidate, identify which bounded contexts its entities belong to using the domain model's entity table. If a candidate spans multiple contexts, split it.
+2. **Map each candidate to bounded contexts**: For each candidate, identify which bounded contexts its entities belong to using the domain spec's entity table. If a candidate spans multiple contexts, split it.
 
-3. **Map each candidate to aggregates**: For each candidate, identify which aggregate boundaries its entities belong to using the domain model's aggregate boundary table. If a candidate spans multiple aggregates, validate that the feature does not require cross-aggregate transactions. If it does, split it.
+3. **Map each candidate to aggregates**: For each candidate, identify which aggregate boundaries its entities belong to using the domain spec's aggregate boundary table. If a candidate spans multiple aggregates, validate that the feature does not require cross-aggregate transactions. If it does, split it.
 
 4. **Validate naming**: Each feature name should be a noun phrase that names a cohesive capability. Avoid vague names ("Core", "Utils", "Infrastructure" without qualification). Prefer specific names ("Domain value objects", "Data infrastructure", "Payment adapter").
 
-5. **Write descriptions**: Each description answers four questions: What does this feature provide? Which bounded context does it serve? Why does it exist? Which key entities from the domain model belong to it?
+5. **Write descriptions**: Each description answers four questions: What does this feature provide? Which bounded context does it serve? Why does it exist? Which key entities from the domain spec belong to it?
 
 ### Splitting Criteria
 
@@ -57,7 +57,7 @@ When a delivery step spans multiple contexts or aggregates:
 
 For quality attributes that span contexts (risk, error handling, observability):
 
-1. Check the domain model context map for which contexts participate in the cross-cutting concern
+1. Check the domain spec context map for which contexts participate in the cross-cutting concern
 2. For each participating context, add a Constraint to that context's feature
 3. Do NOT create a separate "Risk Management" feature — distribute the constraints
 

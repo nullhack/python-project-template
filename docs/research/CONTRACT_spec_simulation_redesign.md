@@ -107,11 +107,11 @@ Keep: Vision, Why, Users, IS/IS NOT, Quality Attributes, Out of Scope, Delivery 
 
 ### domain_model.md (KEEP, trimmed)
 
-Keep `domain_model.md.template` for the structural domain model (entities, relationships, bounded contexts, aggregates, context map). This is the project-wide WHAT EXISTS view. Remove events/commands tables (those concepts feed into behavioral_spec). Updated template removes:
-- Events and Commands section (behavioral -> behavioral_spec)
+Keep `domain_model.md.template` for the structural domain model (entities, relationships, bounded contexts, aggregates, context map). This is the project-wide WHAT EXISTS view. Remove events/commands tables (those concepts feed into domain_spec). Updated template removes:
+- Events and Commands section (behavioral -> domain_spec)
 - Changes table (use git log)
 
-### behavioral_spec.md (NEW)
+### domain_spec.md (NEW)
 
 Per bounded context. Starts minimal (iteration 0), evolves through simulation. Template sections:
 
@@ -152,12 +152,12 @@ Per simulation iteration. Contains:
 - Identifies bounded contexts from interview data
 - Creates product_definition.md (trimmed template)
 - Creates domain_model.md (structural: entities, relationships, aggregates, contexts)
-- Creates behavioral_spec.md per bounded context (structural skeleton + external contracts only)
+- Creates domain_spec.md per bounded context (structural skeleton + external contracts only)
 - Creates glossary.md with initial terms
 - NO rules, NO state machines, NO Given/When/Then
 
 **simulate-spec** (owner: SA):
-- Reads behavioral_spec.md for a bounded context
+- Reads domain_spec.md for a bounded context
 - Primary simulation against external contracts: walk each contract's input -> output
 - Walks through scenarios mentally: happy paths, edge cases, error paths
 - Creates I/O pairs in /tmp/sim/<context>/ as evidence
@@ -172,7 +172,7 @@ Per simulation iteration. Contains:
 - Exit criteria: zero unresolved pain points, all external contracts covered, all state transitions covered, all error paths specified
 
 **fix-spec** (owner: SA+DE):
-- Rewrites behavioral_spec.md addressing all pain points from simulation
+- Rewrites domain_spec.md addressing all pain points from simulation
 - Full rewrite for coherence, not patches
 - Incorporates discovered rules
 - Fills in `?` constraints
@@ -203,13 +203,13 @@ Per simulation iteration. Contains:
 - Same Example quality criteria (observable, declarative, distinct, pre-mortem coverage)
 
 **conduct-interview**:
-- `domain_model.md` references -> `behavioral_spec.md` + `domain_model.md`
+- `domain_model.md` references -> `domain_spec.md` + `domain_model.md`
 
 **map-contexts** (architecture-flow):
-- in: behavioral_spec.md + domain_model.md (was domain_model.md only)
+- in: domain_spec.md + domain_model.md (was domain_model.md only)
 
 **define-ubiquitous-language**:
-- References change from domain_model.md to domain_model.md + behavioral_spec.md
+- References change from domain_model.md to domain_model.md + domain_spec.md
 
 **merge-local**:
 - Squash-merges feature -> `dev` (was feature -> main)
@@ -237,7 +237,7 @@ Per simulation iteration. Contains:
 
 **requirements/rule-derivation.md**: Sources change from domain model events/invariants/commands -> simulation discovered rules. Traceability: simulation rule -> feature rule -> Example.
 
-**architecture/reconciliation.md**: domain_model.md references stay (structural model is kept). Add behavioral_spec.md to cross-document checks. Cross-document checks updated.
+**architecture/reconciliation.md**: domain_model.md references stay (structural model is kept). Add domain_spec.md to cross-document checks. Cross-document checks updated.
 
 **software-craft/git-conventions.md**: main -> dev branch model. Squash-merge to dev. PR from dev -> main. Local dev as staging area (was local main).
 
@@ -256,7 +256,7 @@ States:
 2. spec-creation (SA, skills: create-behavioral-spec, define-ubiquitous-language) -> git: dev
 
 Exits: complete
-Out: product_definition.md, domain_model.md, behavioral_spec.md, glossary.md
+Out: product_definition.md, domain_model.md, domain_spec.md, glossary.md
 
 ### spec-validation-flow.yaml (NEW: 3 states + loop) [DONE]
 
@@ -276,11 +276,11 @@ All git: dev (except feature-development which is git: feature)
 
 ### architecture-flow.yaml (UPDATE) [DONE]
 
-All git: dev. domain_model.md references stay. behavioral_spec.md added to in. simulation_results.md added to in. committed-to-dev-locally.
+All git: dev. domain_model.md references stay. domain_spec.md added to in. simulation_results.md added to in. committed-to-dev-locally.
 
 ### planning-flow.yaml (UPDATE) [DONE]
 
-All git: dev. domain_model.md -> behavioral_spec.md + simulation_results.md. committed-to-dev-locally.
+All git: dev. domain_model.md -> domain_spec.md + simulation_results.md. committed-to-dev-locally.
 
 ### feature-development-flow.yaml (UPDATE) [PENDING]
 
@@ -311,7 +311,7 @@ These operate on feature branches. git: feature stays.
 ## 10. Files Summary
 
 ### Create (9 files)
-- `.templates/docs/spec/behavioral_spec.md.template` [DONE]
+- `.templates/docs/spec/domain_spec.md.template` [DONE]
 - `.templates/docs/spec/simulation_results.md.template` [DONE]
 - `.flowr/flows/spec-validation-flow.yaml` [DONE]
 - `.opencode/skills/create-behavioral-spec/SKILL.md` [DONE]
@@ -362,7 +362,7 @@ These operate on feature branches. git: feature stays.
 ## 11. Rules
 
 1. No "scaffold" word anywhere — use "create", "generate", "build", "set up".
-2. No Given/When/Then in behavioral_spec.md — it belongs only in .feature files.
+2. No Given/When/Then in domain_spec.md — it belongs only in .feature files.
 3. No As a/I want/So that anywhere — rules are descriptive statements with unique titles.
 4. No @id tags — title-based mapping via pytest-beehave.
 5. No numbered prefixes for rules/pain points (R001, SIM-001) — use descriptive text.

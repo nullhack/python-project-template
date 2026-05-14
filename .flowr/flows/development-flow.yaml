@@ -14,8 +14,7 @@ states:
         - structure-feature
       in:
         - features/<feature_id>.feature
-        - domain_model.md
-        - behavioral_spec.md
+        - domain_spec.md
         - simulation_results.md
         - glossary.md
         - product_definition.md
@@ -50,7 +49,7 @@ states:
 
   - id: review-gate
     attrs:
-      description: "R independently verifies implementation across three tiers — design, structure, conventions — with traceability verified by beehave check"
+      description: "R independently verifies implementation across two tiers — design, structure — with traceability verified by beehave check"
       owner: R
       git: feature
       skills:
@@ -59,8 +58,7 @@ states:
         - test-implementations
         - source-implementations
         - features/<feature_id>.feature
-        - domain_model.md
-        - behavioral_spec.md
+        - domain_spec.md
         - "adr/*.md"  # optional
       out: []
     next:

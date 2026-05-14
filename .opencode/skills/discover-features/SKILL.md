@@ -7,11 +7,11 @@ description: "Identify feature boundaries from the delivery order and simulation
 
 Available knowledge: [[requirements/feature-boundaries]], [[requirements/feature-discovery#concepts]]. `in` artifacts: read all before starting work.
 
-1. Read product_definition.md, behavioral_spec.md, simulation_results.md, and glossary.md from `in` artifacts.
+1. Read product_definition.md, domain_spec.md, simulation_results.md, and glossary.md from `in` artifacts.
 2. List the delivery order steps from product_definition.md. Each step is a feature candidate per [[requirements/feature-boundaries#key-takeaways]].
 3. List all discovered rules from simulation_results.md. These are the rules that must be distributed to features.
-4. For each candidate, map it to bounded contexts from the behavioral spec. IF a candidate spans multiple contexts → flag for splitting per [[requirements/feature-boundaries#key-takeaways]].
-5. For each candidate, map it to entities and state machines from the behavioral spec. IF a candidate requires cross-aggregate transactions → flag for splitting per [[requirements/feature-boundaries#key-takeaways]].
+4. For each candidate, map it to bounded contexts from the domain spec. IF a candidate spans multiple contexts → flag for splitting per [[requirements/feature-boundaries#key-takeaways]].
+5. For each candidate, map it to entities and state machines from the domain spec. IF a candidate requires cross-aggregate transactions → flag for splitting per [[requirements/feature-boundaries#key-takeaways]].
 6. Distribute simulation rules to features: each rule from simulation_results.md belongs to the feature whose context and entities it involves. IF a rule spans multiple features → split the rule or flag for cross-cutting handling.
 7. Name each feature per [[requirements/feature-boundaries#content]]: use the delivery step name, validated for clarity and specificity. The Feature title slug MUST match the .feature filename stem per [[requirements/gherkin#concepts]].
 8. Write a description for each feature per [[requirements/feature-boundaries#content]]: what it provides, which context it serves, why it exists, key entities.

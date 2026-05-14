@@ -1,7 +1,7 @@
 ---
 domain: software-craft
 tags: [tdd, yagni, kiss, red-green-refactor, test-first]
-last-updated: 2026-04-30
+last-updated: 2026-05-14
 ---
 
 # Test-Driven Development
@@ -71,11 +71,9 @@ last-updated: 2026-04-30
 
 ### After Design Approval
 
-- Add coverage unit tests for uncovered branches in `tests/unit/`, never in `tests/features/`. The `tests/features/` directory is exclusively for BDD scenario tests mapped to Examples via pytest-beehave. Coverage-boosting tests for implementation branches are unit contract tests, not feature tests
-- Run lint (`uv run task lint`), pyright (`uv run task static-check`), full test suite
-- Add docstrings to all public classes and methods
-- Add type annotations to all public signatures
-- Only after design approval, never before
+- The polish state (after feature acceptance) applies conventions: run `task conventions` for full lint, `ruff format .` for formatting, add docstrings to all public classes and methods, add type annotations to all public signatures, run `task static-check` for pyright
+- IF coverage drops below threshold after polish → run `task test-build` to see missing lines, then add coverage tests in `tests/unit/`
+- Conventions are only applied after feature acceptance, never before
 
 ### Commit Strategy
 

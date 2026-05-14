@@ -8,16 +8,16 @@ last-updated: 2026-05-14
 
 ## Key Takeaways
 
-- Rules come from two sources: simulation-discovered rules (behavioral, from walking scenarios) and structural rules from the domain model (invariants, relationships, aggregate boundaries).
+- Rules come from two sources: simulation-discovered rules (behavioral, from walking scenarios) and structural rules from the domain spec (invariants, relationships, aggregate boundaries).
 - Simulation rules are descriptive statements discovered by walking External Contracts through happy/edge/error scenarios. Each rule cites the scenario and External Contract that produced it.
 - Structural rules come from aggregate invariants: "[Entity] must always [condition]." These are non-negotiable consistency boundaries.
 - Quality attributes from product_definition.md constrain rules: each attribute produces at least one Constraint that bounds the feature's behavior with a measurable threshold.
 
 ## Concepts
 
-**Simulation-Discovered Rules**: The primary source of behavioral rules. As the SA walks through External Contracts in the behavioral spec with happy/edge/error scenarios, rules emerge about what the system must do, must not do, and what happens when things go wrong. These rules are recorded in simulation_results.md and distributed to features during discovery.
+**Simulation-Discovered Rules**: The primary source of behavioral rules. As the SA walks through External Contracts in the domain spec with happy/edge/error scenarios, rules emerge about what the system must do, must not do, and what happens when things go wrong. These rules are recorded in simulation_results.md and distributed to features during discovery.
 
-**Structural Rules from Domain Model**: Aggregate invariants from the domain model produce structural rules — non-negotiable consistency boundaries. These rules are already present in the domain model and are distributed to features alongside simulation rules during discovery.
+**Structural Rules from Domain Spec**: Aggregate invariants from the domain spec produce structural rules — non-negotiable consistency boundaries. These rules are already present in the domain spec and are distributed to features alongside simulation rules during discovery.
 
 **Quality Attribute -> Constraint Mapping**: Each quality attribute in product_definition.md (latency, reliability, safety) constrains feature behavior. Map each attribute to the feature(s) responsible for enforcing it. If no feature enforces a quality attribute, it is a gap. Constraints include measurable thresholds: "Latency: tick-to-order under 100ms", "Reliability: no orphaned orders after crash."
 
@@ -27,11 +27,11 @@ last-updated: 2026-05-14
 
 ### Distribution Procedure
 
-For each feature, starting with the feature that has the most entities from the behavioral spec:
+For each feature, starting with the feature that has the most entities from the domain spec:
 
 **Step 1: Assign simulation rules to features.** Using the bounded context and entity information in simulation_results.md, assign each rule to the feature that corresponds to its context and entities.
 
-**Step 2: Assign structural rules from domain model.** For each aggregate invariant in the domain model, assign it to the feature that contains the aggregate root. These are non-negotiable consistency boundaries.
+**Step 2: Assign structural rules from domain spec.** For each aggregate invariant in the domain spec, assign it to the feature that contains the aggregate root. These are non-negotiable consistency boundaries.
 
 **Step 3: Map quality attributes to constraints.** For each quality attribute in product_definition.md:
 - Which feature(s) enforce this attribute? → Add Constraint to those features

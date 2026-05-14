@@ -9,7 +9,7 @@ last-updated: 2026-05-14
 ## Key Takeaways
 
 - Reconciliation is an adversarial cross-document consistency check. The reviewer actively seeks inconsistencies, not confirms consistency (Tetlock, 1985).
-- Five cross-document consistency checks verify alignment: behavioral_spec↔glossary, behavioral_spec↔feature, ADRs↔feature, glossary↔feature, product_definition↔scope.
+- Five cross-document consistency checks verify alignment: domain_spec↔glossary, domain_spec↔feature, ADRs↔feature, glossary↔feature, product_definition↔scope.
 - Every inconsistency is a signal that either the architecture or the requirements need updating. The reviewer does not decide which side changes, only that a mismatch exists.
 - Reconciliation gates prevent forward progress until all five checks pass; this is the last chance to catch misalignment before implementation begins.
 
@@ -27,8 +27,8 @@ last-updated: 2026-05-14
 
 | # | Check | Verify | Mismatch Signal |
 |---|---|---|---|
-| 1 | behavioral_spec ↔ glossary | Every glossary term matches how it is used in behavioral_spec.md and domain_model.md | A term defined in the glossary is used with a different meaning in the spec |
-| 2 | behavioral_spec ↔ feature | Every entity, External Contract, and relationship in behavioral_spec.md matches feature requirements | An entity appears in the spec but not in any feature, or vice versa |
+| 1 | domain_spec ↔ glossary | Every glossary term matches how it is used in domain_spec.md | A term defined in the glossary is used with a different meaning in the spec |
+| 2 | domain_spec ↔ feature | Every entity, External Contract, and relationship in domain_spec.md matches feature requirements | An entity appears in the spec but not in any feature, or vice versa |
 | 3 | ADRs ↔ feature | Every ADR aligns with feature requirements; each ADR references specific Example criteria | An ADR contradicts a feature requirement, or a feature requirement has no ADR addressing it |
 | 4 | glossary ↔ feature | Every domain term in the feature file matches its glossary definition | A term used in the feature has no glossary entry, or the glossary definition contradicts the feature's usage |
 | 5 | product_definition ↔ scope | Scope in the product definition stays within the stated boundaries (what_is, what_is_not, out_of_scope) | A feature requirement exceeds the product definition's stated scope |
@@ -38,7 +38,7 @@ last-updated: 2026-05-14
 When a mismatch is found:
 
 1. **Record the mismatch**: Which two documents, which specific items, and how they disagree.
-2. **Determine which side changes**: If the architecture is wrong, update behavioral_spec.md, domain_model.md, product_definition.md, or the ADR. If the requirements are wrong, update the feature file or product definition.
+2. **Determine which side changes**: If the architecture is wrong, update domain_spec.md, product_definition.md, or the ADR. If the requirements are wrong, update the feature file or product definition.
 3. **Update both documents**: Ensure the correction is reflected in all affected documents.
 4. **Re-run the affected check**: Verify the mismatch is resolved.
 

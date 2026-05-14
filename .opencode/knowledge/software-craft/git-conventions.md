@@ -87,4 +87,4 @@ Before any merge, verify the feature works in its delivery context:
 
 - [[software-craft/tdd]]: commit discipline (separate refactor from feature)
 - [[software-craft/source-stubs]]: branch setup during project structuring
-- [[software-craft/code-review]]: three-tier review before merge
+- [[software-craft/code-review]]: two-tier review before merge

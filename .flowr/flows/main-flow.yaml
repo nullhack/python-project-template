@@ -5,7 +5,7 @@ exits: [completed, cancelled, rejected]
 states:
   - id: discovery
     attrs:
-      description: "Interview stakeholders and create structural behavioral specification"
+      description: "Interview stakeholders and create structural domain specification"
       git: dev
     flow: discovery-flow
     flow-version: "^12"
@@ -14,7 +14,7 @@ states:
 
   - id: spec-validation
     attrs:
-      description: "Iteratively simulate behavioral spec, discover rules and pain points, fix until clean"
+      description: "Iteratively simulate domain spec, discover rules and pain points, fix until clean"
       git: dev
     flow: spec-validation-flow
     flow-version: "^2"

@@ -8,15 +8,15 @@ last-updated: 2026-05-14
 
 ## Key Takeaways
 
-- Spec simulation walks through behavioral spec scenarios mentally before any code is written, discovering rules, pain points, and E2E test candidates. The behavioral spec is monolithic: one file containing all bounded contexts as `## <Context Name>` sections.
-- Simulation iterates over all bounded contexts in the single behavioral_spec.md file. I/O evidence is per-context in /tmp/sim/<context>/. These files are NOT committed — they are ephemeral evidence of the simulation process.
+- Spec simulation walks through domain spec scenarios mentally before any code is written, discovering rules, pain points, and E2E test candidates. The domain spec is monolithic: one file containing all bounded contexts as `## <Context Name>` sections.
+- Simulation iterates over all bounded contexts in the single domain_spec.md file. I/O evidence is per-context in /tmp/sim/<context>/. These files are NOT committed — they are ephemeral evidence of the simulation process.
 - Pain points are classified as: ambiguous (multiple readings), contradictory (conflicting specs), missing (not covered at all), or edge-case (happy path covered but not this boundary).
 - Rules are discovered as descriptive statements in plain language — no numbered prefixes. Each rule cites the scenario that discovered it.
 - The simulation loop (simulate → review → fix → re-simulate) caps at 5 iterations. If unresolved pain points remain, the flow escalates to needs-reinterview.
 
 ## Concepts
 
-**Scenario Types**: Three categories ensure comprehensive coverage across all bounded contexts in the monolithic behavioral_spec.md:
+**Scenario Types**: Three categories ensure comprehensive coverage across all bounded contexts in the monolithic domain_spec.md:
 - **Happy paths**: primary use cases from interview data, one per user persona. These prove the spec works for the common case.
 - **Edge cases**: boundary conditions — empty inputs, maximum values, concurrent operations, out-of-order events. These prove the spec handles realistic variation.
 - **Error paths**: invalid inputs, precondition failures, integration point failures, timeout scenarios. These prove the spec handles failure gracefully.

@@ -7,13 +7,13 @@ exits:
 states:
   - id: simulate-spec
     attrs:
-      description: "SA walks through behavioral spec scenarios mentally, creates I/O evidence, discovers rules and pain points"
+      description: "SA walks through domain spec scenarios mentally, creates I/O evidence, discovers rules and pain points"
       owner: SA
       git: dev
       skills:
         - simulate-spec
       in:
-        - behavioral_spec.md
+        - domain_spec.md
         - product_definition.md
         - glossary.md
         - "simulation_results.md"  # optional — may not exist on first iteration
@@ -31,7 +31,7 @@ states:
         - review-simulation
       in:
         - simulation_results.md
-        - behavioral_spec.md
+        - domain_spec.md
         - product_definition.md
         - glossary.md
       out:
@@ -53,18 +53,18 @@ states:
 
   - id: fix-spec
     attrs:
-      description: "SA and DE rewrite behavioral spec addressing all pain points from simulation, full rewrite for coherence"
+      description: "SA and DE rewrite domain spec addressing all pain points from simulation, full rewrite for coherence"
       owner: SA
       git: dev
       skills:
         - fix-spec
       in:
         - simulation_results.md
-        - behavioral_spec.md
+        - domain_spec.md
         - product_definition.md
         - glossary.md
       out:
-        - behavioral_spec.md
+        - domain_spec.md
         - simulation_results.md
     next:
       done: simulate-spec

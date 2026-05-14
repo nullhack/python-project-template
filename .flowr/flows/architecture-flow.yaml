@@ -14,7 +14,7 @@ states:
         - assess-architecture
       in:
         - product_definition.md
-        - behavioral_spec.md
+        - domain_spec.md
         - simulation_results.md
       out:
         - product_definition.md:
@@ -24,9 +24,9 @@ states:
       architecture-complete:
         architecture-complete: ==verified
       architecture-exists:
-        behavioral-spec-md: ==exists
+        domain-spec-md: ==exists
       no-architecture-exists:
-        behavioral-spec-md: ==missing
+        domain-spec-md: ==missing
     next:
       no-architecture-needed:
         to: complete
@@ -48,14 +48,12 @@ states:
       skills:
         - map-contexts
       in:
-        - behavioral_spec.md
+        - domain_spec.md
         - product_definition.md
         - glossary.md
-        - domain_model.md
       out:
-        - domain_model.md:
+        - domain_spec.md:
             - context_map
-        - behavioral_spec.md:
             - integration_points
     next:
       done: technical-design
@@ -70,7 +68,7 @@ states:
         - design-technical-solution
         - draft-adr
       in:
-        - behavioral_spec.md
+        - domain_spec.md
         - glossary.md
         - product_definition.md
       out:
@@ -83,7 +81,7 @@ states:
 
   - id: review-signoff
     attrs:
-      description: "R independently verifies architecture alignment with behavioral spec and requirements, and cross-document consistency, before implementation begins"
+      description: "R independently verifies architecture alignment with domain spec and requirements, and cross-document consistency, before implementation begins"
       owner: R
       git: dev
       skills:
@@ -91,13 +89,13 @@ states:
       in:
         - "adr/<adr_id>.md"  # optional
         - product_definition.md
-        - behavioral_spec.md
+        - domain_spec.md
         - simulation_results.md
         - glossary.md
       out: []
     conditions:
       architecture-approved:
-        alignment: ==behavioral-spec-verified
+        alignment: ==domain-spec-verified
         adr-compliance: ==adrs-respected
       committed-to-dev-locally:
         committed-to-dev-locally: ==verified
