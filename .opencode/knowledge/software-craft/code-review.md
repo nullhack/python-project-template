@@ -22,7 +22,7 @@ last-updated: 2026-05-14
 
 **Fail-Fast Protocol**. Stop reviewing at the first defect found. Write a minimal REJECTED report containing: the defect, its file:line evidence, and the required action. Do not accumulate multiple findings. The first defect may invalidate everything that follows. Fix the defect, re-submit, and the reviewer starts over.
 
-**Two-Tier Review**. Each tier checks a different quality dimension with different knowledge. Design review verifies alignment with domain spec, ADRs, and quality attributes. Structure review verifies test coverage, test quality, abstraction level matching, and functional lint (bug-catching rules only). Conventions (naming, docstrings, formatting, type annotations) are enforced in a separate polish state after feature acceptance, not during review.
+**Two-Tier Review**. Each tier checks a different quality dimension with different knowledge. Design review verifies alignment with domain spec, ADRs, and quality attributes, then independently verifies design principles (YAGNI > KISS > DRY > ObjCal > Smells > SOLID > patterns) by loading the relevant knowledge files. Structure review verifies test coverage, test quality, abstraction level matching, and functional lint (bug-catching rules only). Conventions (naming, docstrings, formatting, type annotations) are enforced in a separate polish state after feature acceptance, not during review.
 
 **Self-Declaration as Commitment Device** (Hattie & Timperley, 2007; Cialdini, 2001). Before handoff, the developer declares specific quality attributes as AGREE/DISAGREE. This forces explicit judgment on each criterion, preventing the "I skimmed it and nothing jumped out" pattern. DISAGREE is not automatic rejection. The developer states the reason, and the reviewer evaluates whether the reason is acceptable.
 
@@ -33,7 +33,7 @@ last-updated: 2026-05-14
 
 | Tier | Checks | Key Knowledge |
 |---|---|---|
-| Design | Domain alignment, ADR consistency, quality attributes, design principle priority | [[architecture/reconciliation]], [[architecture/adr]] |
+| Design | Domain alignment, ADR consistency, quality attributes, design principles (YAGNI > KISS > DRY > ObjCal > Smells > SOLID > patterns) | [[architecture/reconciliation]], [[architecture/adr]], [[software-craft/tdd]], [[software-craft/object-calisthenics]], [[software-craft/smell-catalogue]], [[software-craft/solid]], [[software-craft/design-patterns]] |
 | Structure | Test coverage, test quality, abstraction level, observable behaviour, functional lint | [[software-craft/test-design]], [[software-craft/tdd]] |
 
 Conventions (naming, docstrings, formatting, type annotations, full lint) are enforced in a separate polish state after feature acceptance via `task conventions`, `ruff format`, and `task static-check`.
