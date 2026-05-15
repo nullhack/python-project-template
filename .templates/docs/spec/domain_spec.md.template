@@ -76,6 +76,11 @@ and why it exists as a separate context.>
 
 ### Integration Points
 
+#### Technology Requirements
+| Context | Requirement | Verification |
+|---------|-------------|-------------|
+| `<Context Name>` | `<technology or pattern>` | `<how reviewer verifies: grep import, check file exists, inspect config>` |
+
 #### <This Context> -> <Other Context>
 - Purpose: <why these contexts communicate>
 - Trigger: <what initiates the communication>

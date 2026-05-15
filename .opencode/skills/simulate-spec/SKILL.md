@@ -5,7 +5,7 @@ description: "Walk through all domain spec contexts mentally, create I/O evidenc
 
 # Simulate Spec
 
-Available knowledge: [[requirements/spec-simulation]]. `in` artifacts: read all before starting work. `out` artifacts: `features/*.feature` (one per bounded context, created from template with Feature title and Rule blocks), `simulation_results.md`.
+Available knowledge: [[requirements/spec-simulation]], [[requirements/gherkin#key-takeaways]]. `in` artifacts: read all before starting work. `out` artifacts: `features/*.feature` (one per bounded context, created from template with Feature title and Rule blocks), `simulation_results.md`.
 
 1. Read `domain_spec.md` (all bounded contexts). Read `product_definition.md` for quality attributes that must be tested. Read `glossary.md` for term definitions.
 2. If `simulation_results.md` exists from a prior iteration, read it for previously discovered rules and unresolved pain points — this iteration must walk walkthroughs that address those pain points.
@@ -25,11 +25,12 @@ Available knowledge: [[requirements/spec-simulation]]. `in` artifacts: read all 
    - **Contradictory**: spec says two things that conflict.
     - **Missing**: walkthrough not covered by spec at all.
    - **Edge-case**: spec covers the happy path but not this boundary condition.
-7. Write each discovered rule as a Rule block in the appropriate .feature file. Use the template at `.templates/docs/features/<feature_name>.feature.template` to create the file for each bounded context. The Rule block format: `Rule: <3-8 word title>` followed by a behavioral description paragraph. Each rule must cite the walkthrough that discovered it.
-8. Record walkthrough→rule provenance in `simulation_results.md`: each walkthrough's `Discovered Rule` column references the Rule title written to the .feature file.
-9. **E2E completeness walk**: string all discovered rules together into an end-to-end user journey per bounded context. Read rules from the .feature files, not simulation_results.md. For each context, verify:
+7. Write each discovered rule as a Rule block in the appropriate .feature file. Use the template at `.templates/docs/features/<feature_name>.feature.template` to create the file for each bounded context. The Rule block format: `Rule: <2-6 word title>` followed by a behavioral description paragraph. Each rule must cite the walkthrough that discovered it.
+8. For each bounded context, read the `### Technology Requirements` table in domain_spec.md. Write each technology requirement as a `# Constraints:` entry in the context's .feature file. Use the Verification column's instruction as the constraint text. Technology constraints carry implementation mandates forward from the domain spec to the artifacts the SE reads.
+9. Record walkthrough→rule provenance in `simulation_results.md`: each walkthrough's `Discovered Rule` column references the Rule title written to the .feature file.
+10. **E2E completeness walk**: string all discovered rules together into an end-to-end user journey per bounded context. Read rules from the .feature files, not simulation_results.md. For each context, verify:
    - The rules cover a complete happy-path flow from input to observable output. No "imagined" steps — every transition between rules has a defined trigger and output in the domain spec.
    - External Contract rules have enough detail to generate real fixtures: response shape, status codes, error shapes, field types.
    - The composed rules would produce a working application if implemented exactly as described. If any step in the E2E flow is undefined, record it as a pain point (type: `missing-e2e`).
    - Cross-context flows are complete: where one context's output feeds another context's input, both sides are specified with matching data shapes.
-10. Write `simulation_results.md` from the template at `.templates/docs/spec/simulation_results.md.template`. One file covering all contexts. Record pain points and walkthrough→rule provenance only — discovered rules live in .feature files. Template sections: Walkthroughs Performed (with Discovered Rule column referencing .feature Rule titles), Pain Points, Resolution Status, Summary.
+11. Write `simulation_results.md` from the template at `.templates/docs/spec/simulation_results.md.template`. One file covering all contexts. Record pain points and walkthrough→rule provenance only — discovered rules live in .feature files. Template sections: Walkthroughs Performed (with Discovered Rule column referencing .feature Rule titles), Pain Points, Resolution Status, Summary.

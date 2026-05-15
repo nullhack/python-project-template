@@ -5,7 +5,7 @@ description: "Identify feature boundaries from simulation-created .feature files
 
 # Discover Features
 
-Available knowledge: [[requirements/feature-boundaries]], [[requirements/feature-discovery#concepts]]. `in` artifacts: read all before starting work.
+Available knowledge: [[requirements/feature-boundaries]], [[requirements/feature-discovery#concepts]], [[requirements/gherkin#key-takeaways]]. `in` artifacts: read all before starting work.
 
 1. Read product_definition.md, domain_spec.md, features/*.feature, and glossary.md from `in` artifacts.
 2. Read simulation-created .feature files (one per bounded context from spec-validation). Read product_definition.md delivery order. These are the two inputs for feature candidate identification.

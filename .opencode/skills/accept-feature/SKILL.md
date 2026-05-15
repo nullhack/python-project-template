@@ -14,4 +14,8 @@ Available knowledge: [[requirements/gherkin#key-takeaways]], [[software-craft/te
 5. Verify semantic depth: for each Example that describes a user-facing command or API invocation, verify the test exercises the command/API handler, not just domain logic. Tests that bypass the entry point described in the acceptance criterion have structural traceability but wrong semantic depth per [[software-craft/test-design#concepts]].
 6. Verify quality attributes are met.
 7. Verify definition of done criteria are satisfied.
-8. Verify every stakeholder Q&A from interview notes maps to either a passing test or an explicit stakeholder deferral. Produce a traceability matrix: for each Q&A topic, list the test function name (derived from the Example title) or the deferral reason. Untraced requirements = incomplete delivery.
+8. Produce a traceability matrix: for each stakeholder Q&A topic from interview notes, map to:
+   - **Behavioral Q&A**: a passing test (Example title → test function name).
+   - **Technology Q&A**: implementation evidence (import, module structure, config) where the technology named in the Q&A is exercised in code. Technology Q&As are verified by reading the feature file's `# Constraints:` and checking the corresponding implementation — NOT through behavioral tests.
+   - **Explicit stakeholder deferral**: with the reason it was deferred.
+   Untraced Q&As of either type → incomplete delivery.

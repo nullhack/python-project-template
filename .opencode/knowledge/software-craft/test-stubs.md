@@ -16,7 +16,7 @@ last-updated: 2026-05-14
 
 ## Concepts
 
-**Title-Based Mapping**. pytest-beehave maps each Example or Scenario Outline in the feature file to a test function by title. The function name is derived from the Example or Scenario Outline title as a slug (e.g., Example: "VAT is applied at the correct rate" → `test_vat_is_applied_at_the_correct_rate`). This replaces the previous `@id` tag system. Titles must be unique within a feature file and 3–8 words per [[requirements/gherkin#concepts]].
+**Title-Based Mapping**. pytest-beehave maps each Example or Scenario Outline in the feature file to a test function by title. The function name is derived from the Example or Scenario Outline title as a slug (e.g., Example: "VAT is applied at the correct rate" → `test_vat_is_applied_at_the_correct_rate`). This replaces the previous `@id` tag system. Titles must be unique within a feature file and 2–6 words per [[requirements/gherkin#concepts]].
 
 **Auto-Generated Stubs**. When `beehave generate <feature_id>` runs, pytest-beehave reads the feature files and creates test stubs automatically. Each stub has an `...` (Ellipsis) body. During pytest collection, pytest-beehave auto-skips any test function with an `...` body — no `@pytest.mark.skip` decorator is needed. The SE replaces the `...` body with the test implementation during the RED phase.
 

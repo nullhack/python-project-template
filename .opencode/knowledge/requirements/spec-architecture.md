@@ -91,11 +91,14 @@ Rule: <title>         Rule: <title>           Rule: <title>          Rule: <titl
 
 ### Constraint Lifecycle
 
-Quality attributes from `product_definition.md` map to `# Constraints:` in `.feature` files. Constraints are non-functional requirements (latency, reliability) that are not convertible to Gherkin but must remain visible for reviewers and implementers.
+Constraints in `# Constraints:` comment blocks come from two sources:
 
-- **Writer**: `feature-discovery` (PO)
-- **Format**: `# Constraints:` comment block with `# - <threshold statement>` bullets
-- **Enforcement**: Reviewers verify constraints are met. Constraints are never converted to Examples.
+- **Quality attributes** from `product_definition.md` — mapped to features by `feature-discovery` (e.g. latency, reliability, security thresholds).
+- **Technology requirements** from `domain_spec.md` Technology Requirements table — written by `simulate-spec` during spec validation (e.g. DSPy typed signatures, PostgreSQL persistence, gRPC service layer).
+
+**Writer**: Quality attribute constraints → `feature-discovery` (PO). Technology constraints → `simulate-spec` (SA).
+**Format**: `# Constraints:` comment block with `# - <constraint>` bullets. Each constraint carries a verifiable claim.
+**Enforcement**: `review-gate` Tier 1 verifies constraints by executing the domain_spec.md Verification instruction. `accept-feature` traces technology Q&As to constraint evidence. Constraints are never converted to Examples.
 
 ### Cleanup Gates
 

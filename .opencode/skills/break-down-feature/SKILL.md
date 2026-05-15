@@ -5,14 +5,14 @@ description: "Verify simulation-discovered rules are specific enough and write t
 
 # Break Down Feature
 
-Available knowledge: [[requirements/invest]], [[requirements/decomposition]]. `in` artifacts: read all before starting work.
+Available knowledge: [[requirements/invest]], [[requirements/decomposition]], [[requirements/gherkin#key-takeaways]]. `in` artifacts: read all before starting work.
 
 1. Discover and read the feature file, product definition, domain spec, and glossary from `in`. The feature file contains Rule blocks with behavioral descriptions (from simulation). These rules were discovered during spec simulation — they are already validated behavioral statements, not hypotheses.
 2. For each Rule block in the .feature file:
    a. Verify the rule is specific enough to generate at least one Example. IF the rule is vague (e.g. "the system should handle errors") → flag for clarification.
    b. Verify the rule is not contradicted by another rule or by the domain spec.
    c. Verify the rule maps to at least one entity and state in the domain spec.
-3. Validate each Rule block's title: 3–8 words, descriptive, unique within the feature file, and contain no special characters. If a title doesn't meet constraints, rephrase while preserving meaning. Do NOT rewrite the behavioral description paragraph — it is the simulation-validated rule body. Example:
+3. Validate each Rule block's title: 2–6 words, descriptive, unique within the feature file, and contain no special characters. If a title doesn't meet constraints, rephrase while preserving meaning. Do NOT rewrite the behavioral description paragraph — it is the simulation-validated rule body. Example:
     ```
     Rule: Order must contain at least one item
     ```

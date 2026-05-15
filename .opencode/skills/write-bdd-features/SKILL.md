@@ -11,7 +11,7 @@ Available knowledge: [[requirements/gherkin]], [[requirements/moscow]], [[requir
 2. Run a pre-mortem per [[requirements/pre-mortem]] for each Rule before writing any Examples. All Rules must have their pre-mortems completed before any Examples are written.
 3. IF hidden failure modes surface from the pre-mortem → add Examples to cover them per [[requirements/gherkin#key-takeaways]].
 4. Convert behavior hints to Example or Scenario Outline blocks per [[requirements/gherkin#concepts]]:
-   a. **Title constraint**: every Example/Scenario Outline title must be 3–8 words and unique within the feature file. Count words by splitting on whitespace. If a title is too short or too long, rephrase before writing the Example.
+   a. **Title constraint**: every Example/Scenario Outline title must be 2–6 words and unique within the feature file. Count words by splitting on whitespace. If a title is too short or too long, rephrase before writing the Example.
    b. **Example vs Scenario Outline decision**: if the same behavioural outcome must be verified across 3+ different input/output value combinations → use `Scenario Outline:` with `<placeholder>` syntax and an `Examples:` table. Otherwise use `Example:`. Do NOT use Scenario Outline for single or two-value cases.
    c. **Scenario Outline format**: include all `<placeholder>` names in Given/When/Then steps. Provide at least 3 concrete rows in the Examples table. Placeholder names must be valid Python identifiers (not keywords, not builtins).
    d. **Literals for traceability**: use quoted strings (`"value"`) and bare numbers (`42`) in steps so beehave can extract and verify them in test bodies.
@@ -25,5 +25,5 @@ Available knowledge: [[requirements/gherkin]], [[requirements/moscow]], [[requir
 7. Classify each Example per [[requirements/moscow#concepts]]; MoSCoW classification is for internal triage only: do NOT add Must/Should/Could tags to Examples in the .feature file.
 8. IF a Rule has more than 8 Must Examples → split the Rule per [[requirements/decomposition#key-takeaways]].
 9. IF a Rule spans more than 2 concerns → split per [[requirements/decomposition#key-takeaways]].
-10. Verify every Rule title is 3–8 words. If any Rule title is too long or too short, rephrase to fit within the constraint while preserving the rule's meaning.
-11. Evaluate each Rule's Examples for quality: titles within 3–8 word range, observable (single outcome per Then), declarative (behaviour not steps), distinct (no duplicate coverage), pre-mortem coverage, correct use of Scenario Outline for multi-variant cases. Every criterion that fails is a hard blocker: fix before advancing.
+10. Verify every Rule title is 2–6 words. If any Rule title is too long or too short, rephrase to fit within the constraint while preserving the rule's meaning.
+11. Evaluate each Rule's Examples for quality: titles within 2–6 word range, observable (single outcome per Then), declarative (behaviour not steps), distinct (no duplicate coverage), pre-mortem coverage, correct use of Scenario Outline for multi-variant cases. Every criterion that fails is a hard blocker: fix before advancing.
