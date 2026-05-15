@@ -13,6 +13,6 @@ Available knowledge: [[architecture/reconciliation]], [[requirements/gherkin#con
    - domain_spec ↔ feature
    - glossary ↔ feature
    - product_definition ↔ scope
-3. Verify BDD quality per [[requirements/gherkin#concepts]]: every Example is declarative, each `Then` has a single observable outcome, no two Examples duplicate the same `Then` outcome, all titles (Feature, Rule, Example/Scenario Outline) are 3–8 words, Scenario Outline is used for 3+ value variants (not for single/two-value cases), placeholders and literals are correctly used.
+3. Verify BDD quality per [[requirements/gherkin#concepts]]: every Example is declarative, each `Then` has a single observable outcome, no two Examples duplicate the same `Then` outcome, all titles (Feature, Rule, Example/Scenario Outline) are 2–6 words, Scenario Outline is used for 3+ value variants (not for single/two-value cases), placeholders and literals are correctly used.
 4. Verify pre-mortem coverage per [[requirements/pre-mortem#concepts]]: each Rule has undergone specification pre-mortem; each distinct `Then` outcome has undergone behavior pre-mortem with Examples added for surfaced failure modes.
 5. If any inconsistency or quality gap is found, flag with file:line references (e.g., "domain_spec.md:23 conflicts with <feature>.feature:15"). Vague findings create rework.

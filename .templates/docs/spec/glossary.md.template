@@ -7,14 +7,73 @@
 
 ---
 
-## <Term>
+## Artifact Terms
 
-**Definition:** <one sentence — "A [category] that [distinguishes it from others in that category]">
+### walkthrough
+   **Definition:** A mental path (happy, edge, or error) that the System Architect walks through the domain spec during simulation to surface discovered rules and pain points.
+   **Aliases:** simulation scenario (deprecated)
+   **Source:** discovery-flow
 
-**Aliases:** <deprecated synonyms, or "none">
+### discovered rule
+   **Definition:** A plain-language behavioral statement surfaced by a walkthrough during spec simulation. Written as a Rule block in the .feature file.
+   **Aliases:** business rule, coarse rule, rule discovered (deprecated)
+   **Source:** spec-validation-flow
 
-**Example:** <one sentence showing the term in use in this project; optional>
+### Rule
+   **Definition:** A behavioral requirement subject to INVEST validation. Represented as a `Rule:` block in a .feature file consisting of a 3-8 word title followed by a behavioral description paragraph.
+   **Aliases:** user story (deprecated), story (deprecated)
+   **Source:** planning-flow
 
-**Source:** <feature stem (e.g. `display-version`) or discovery session date (e.g. `2025-01-15`)>
+### Rule block
+   **Definition:** The Gherkin `Rule:` section in a .feature file: a 3-8 word title followed by a behavioral description paragraph. The authoritative form of a behavioral requirement.
+   **Source:** planning-flow
+
+### behavior hint
+   **Definition:** A one-line behaviorally-distinct outcome description written under a Rule block during feature-breakdown. Format: `- <condition> → <outcome>`. Converted to Example or Scenario Outline blocks during feature-examples.
+   **Aliases:** scenario hint, Scenarios:, # Business rules: (deprecated)
+   **Source:** planning-flow
+
+### Example block
+   **Definition:** The Gherkin `Example:` section in a .feature file: a 3-8 word title followed by Given/When/Then steps describing a single behavioral outcome.
+   **Aliases:** BDD scenario, BDD example, acceptance criterion (deprecated)
+   **Source:** planning-flow
+
+### Scenario Outline block
+   **Definition:** The Gherkin `Scenario Outline:` section in a .feature file: a title with `<placeholder>` syntax and an `Examples:` data table. Used when the same behavioral outcome must be verified across 3+ input/output value combinations.
+   **Source:** planning-flow
+
+### pain point
+   **Definition:** A gap, contradiction, ambiguity, or edge case found during spec simulation. Classified as ambiguous, contradictory, missing, or edge-case. Tracked in simulation_results.md.
+   **Source:** spec-validation-flow
 
 ---
+
+## Specification Architecture
+
+### domain_spec.md
+   **Definition:** Monolithic structural domain specification. Contains context map, entities, relationships, aggregate boundaries, data shapes, integration points, and external contracts. Behavioral sections (State Machines, Error Handling, Invariants) are derived summaries that reference .feature file rules.
+   **Source:** discovery-flow
+
+### simulation_results.md
+   **Definition:** Per-iteration simulation output. Contains walkthroughs performed (with Discovered Rule column referencing .feature Rule titles), pain points, resolution status, and reviewer PASS/FAIL decision. Rules themselves live in .feature files.
+   **Source:** spec-validation-flow
+
+### .feature file
+   **Definition:** BDD specification for a single feature. The single source of truth for behavioral requirements: contains Feature title, description, Constraints, Rule blocks, and Example/Scenario Outline blocks. Progressively refined across simulation → discovery → breakdown → examples.
+   **Source:** spec-validation-flow, planning-flow
+
+---
+
+## Deprecated Terms
+
+These terms are retired. Do not use in new artifacts.
+
+| Term | Replaced By | Retired |
+|------|-------------|---------|
+| scenario (simulation) | walkthrough | 2026-05-15 |
+| business rules | Rule block, discovered rule | 2026-05-15 |
+| # Business rules: | (removed — rules are Rule blocks) | 2026-05-15 |
+| story, user story | Rule, Rule block | 2026-05-15 |
+| BDD scenario | Example block | 2026-05-15 |
+| Scenario: keyword | Example: keyword | 2026-05-15 |
+| As a/I want/So that | Behavioral description paragraph | 2026-05-15 |

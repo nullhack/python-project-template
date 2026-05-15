@@ -8,9 +8,9 @@ last-updated: 2026-05-14
 
 ## Key Takeaways
 
-- Write declarative Examples that describe behaviour, not UI steps; use `Example:` not `Scenario:` for single-case scenarios (BDD, North, 2006).
+- Write declarative Examples that describe behaviour, not UI steps; use `Example:` not `Scenario:` for single-case examples (BDD, North, 2006).
 - Use `Scenario Outline:` with `<placeholder>` syntax and an `Examples:` table when the same behavioural outcome must be verified across 3+ input/output value combinations.
-- Feature, Rule, and Example/Scenario Outline titles must be 3–8 words and unique within the feature file — pytest-beehave uses title-based mapping (title → `test_<slug>` function name) for traceability.
+- Feature, Rule, and Example/Scenario Outline titles must be 2–6 words and unique within the feature file — pytest-beehave uses title-based mapping (title → `test_<slug>` function name) for traceability.
 - `Then` must be a single, observable, measurable outcome; no "and" combining multiple behaviours in one `Then`.
 - Quoted strings (`"value"`) and bare numbers (`42`, `-3`) in steps are extracted by beehave as literals and verified present in test function bodies via `beehave check`.
 - `<placeholder>` names in steps become Python function parameters and Hypothesis `@given` strategies in generated stubs. Names must be valid Python identifiers (not keywords, not builtins).
@@ -22,9 +22,9 @@ last-updated: 2026-05-14
 
 **Declarative vs Imperative Gherkin**: Declarative Examples describe behaviour, not UI steps (BDD, North, 2006). "Given a registered user Bob / When Bob logs in / Then Bob sees a personalized welcome" is correct. "Given I type 'bob' in the username field / When I click the Login button / Then I see 'Welcome, Bob'" is imperative and wrong. Declarative Examples express what the user observes, not how the system implements it.
 
-**Example vs Scenario Outline**: Use `Example:` for single-case scenarios. Use `Scenario Outline:` when the same behavioural outcome must be verified across 3+ different input/output value combinations. Scenario Outline uses `<placeholder>` syntax in Given/When/Then steps and an `Examples:` table with concrete data rows. This avoids repeating identical step structures with different values.
+**Example vs Scenario Outline**: Use `Example:` for single-case examples. Use `Scenario Outline:` when the same behavioural outcome must be verified across 3+ different input/output value combinations. Scenario Outline uses `<placeholder>` syntax in Given/When/Then steps and an `Examples:` table with concrete data rows. This avoids repeating identical step structures with different values.
 
-**Title Length Constraint**: Feature, Rule, and Example/Scenario Outline titles must be 3–8 words. Titles become `test_<slug>` function names — too short produces ambiguous identifiers (e.g. `test_it_works`), too long produces unwieldy ones (e.g. `test_when_the_user_submits_a_form_with_invalid_email_the_system_displays_an_error_message`). Count words by splitting on whitespace.
+**Title Length Constraint**: Feature, Rule, and Example/Scenario Outline titles must be 2–6 words. Titles become `test_<slug>` function names — too short produces ambiguous identifiers (e.g. `test_stuff`), too long produces unwieldy ones (e.g. `test_when_the_user_submits_a_form_with_invalid_email_the_system_displays_an_error_message`). Count words by splitting on whitespace.
 
 **Placeholder Syntax**: `<variable_name>` in Given/When/Then steps. Beehave extracts these and generates Hypothesis `@given(var_name=strategy)` decorators in test stubs. Placeholder names must be valid Python identifiers, not keywords (`for`, `class`), and not builtins (`list`, `str`). When used with Scenario Outline, the Examples table column headers must match the placeholder names.
 
@@ -32,7 +32,7 @@ last-updated: 2026-05-14
 
 **Hypothesis Integration**: Scenario Outline generates `@given` decorated stubs with inferred Hypothesis strategies (`st.integers()`, `st.floats()`, `st.booleans()`, `st.text()`) plus `@example` decorators for each Examples table row. Plain Examples generate bare function stubs. For tests hitting external services, use `@settings(max_examples=N)` to control load. For unit/domain tests, Hypothesis defaults are fine.
 
-**Example Format and Title-Based Mapping**: Each Example uses the `Example:` keyword (not `Scenario:`), includes `Given/When/Then` in plain English. pytest-beehave maps Examples to test functions by title: the function name is `test_<scenario_title_slug>`. Titles must be unique within the feature file. Descriptive titles serve as the traceability link between feature specification and test code — no `@id` tags are needed.
+**Example Format and Title-Based Mapping**: Each Example uses the `Example:` keyword (not `Scenario:`), includes `Given/When/Then` in plain English. pytest-beehave maps Examples to test functions by title: the function name is `test_<example_title_slug>`. Titles must be unique within the feature file. Descriptive titles serve as the traceability link between feature specification and test code — no `@id` tags are needed.
 
 **Single Observable Outcome per Then**: `Then` must be a single, observable, measurable outcome. No "and" combining multiple behaviours in one `Then`. Split into separate Examples instead. Observable means observable by the end user, not by a test harness.
 
@@ -56,9 +56,9 @@ last-updated: 2026-05-14
 
 ### Title Conventions
 
-- Feature, Rule, and Example/Scenario Outline titles must be 3–8 words
+- Feature, Rule, and Example/Scenario Outline titles must be 2–6 words
 - Titles must be unique within the feature file
-- Title becomes the test function name: `test_<scenario_title_slug>`
+- Title becomes the test function name: `test_<example_title_slug>`
 - Titles should be descriptive enough to serve as the test identifier
 - No `@id` tags — the title is the traceability link
 - After criteria commit, changing a title breaks the traceability chain — deprecate and create a new Example instead
@@ -76,7 +76,7 @@ last-updated: 2026-05-14
 ### Scenario Outline Format
 
 ```gherkin
-Scenario Outline: <3-8 word title>
+Scenario Outline: <2-6 word title>
   Given a <product> in the cart with quantity <qty>
   When the customer submits the order
   Then the order total reflects <product> at quantity <qty>
@@ -131,7 +131,7 @@ Override by defining a strategy variable in the test file with the same name as 
 - Observable means observable by the end user, not by a test harness
 - Declarative, not imperative: describe behaviour, not UI steps
 - Each Example/Scenario Outline must be observably distinct from every other
-- Title must be unique within the feature file and 3–8 words
+- Title must be unique within the feature file and 2–6 words
 
 ### Feature Title and Filename Convention
 
@@ -186,7 +186,7 @@ Test path conventions (`tests/features/<feature_slug>/`), the feature-test vs un
 
 ## Related
 
-- [[requirements/invest]]: story quality criteria for rules
+- [[requirements/invest]]: INVEST criteria for Rule blocks
 - [[requirements/moscow]]: prioritizing Examples as Must/Should/Could
 - [[requirements/decomposition]]: splitting Rules with too many Examples
 - [[requirements/pre-mortem]]: finding hidden failure modes in rules

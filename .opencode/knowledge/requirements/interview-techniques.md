@@ -14,7 +14,7 @@ last-updated: 2026-04-29
 - Apply three levels of active listening (Rogers & Farson, 1957): per answer (paraphrase), per group (synthesis), end of session (full synthesis for approval).
 - Use the Funnel technique to order questions from broad to specific, preventing priming bias (Tversky & Kahneman, 1974) from early category labels.
 - Discovery interviews follow a three-level funnel: General (big picture) → Cross-cutting (behaviour groups) → Feature identification (feature names and rough boundaries). Feature specification happens separately in planning.
-- Feature specification interviews focus on one feature at a time, probing behavioral rules, edge cases (CIT), and real constraints (Laddering) to produce stories and scenarios.
+- Feature specification interviews focus on one feature at a time, probing behavioral rules, edge cases (CIT), and real constraints (Laddering) to produce Rules and Examples.
 
 ## Concepts
 
@@ -28,7 +28,7 @@ last-updated: 2026-04-29
 
 **Funnel Technique**: Start with broad open-ended questions before narrowing to specifics. Priming bias (Tversky & Kahneman, 1974) is structural: any category name the interviewer introduces activates a schema that filters what the interviewee considers worth reporting. The funnel sequences questions so the interviewee's own categories emerge first.
 
-**Discovery Interview Structure**: Discovery interviews follow a three-level funnel aligned with the Funnel technique. Level 1 (General: seven standard questions (Who, What, Why, When/Where, Success, Failure, Out-of-scope) establish the big picture. Level 2) Cross-cutting: behaviour groups, bounded contexts, integration points, and lifecycle events structure the domain. Level 3, Feature identification: feature names and rough boundaries are identified; detailed feature specification (stories, criteria) happens later, not here. The purpose of the discovery interview is to understand the domain and identify what features exist, not to specify each feature in detail.
+**Discovery Interview Structure**: Discovery interviews follow a three-level funnel aligned with the Funnel technique. Level 1 (General: seven standard questions (Who, What, Why, When/Where, Success, Failure, Out-of-scope) establish the big picture. Level 2) Cross-cutting: behaviour groups, bounded contexts, integration points, and lifecycle events structure the domain. Level 3, Feature identification: feature names and rough boundaries are identified; detailed feature specification (Rules, criteria) happens later, not here. The purpose of the discovery interview is to understand the domain and identify what features exist, not to specify each feature in detail.
 
 ## Content
 
@@ -80,5 +80,5 @@ The standard seven general questions (Who, What, Why, When/Where, Success, Failu
 ## Related
 
 - [[requirements/pre-mortem]]: prospective hindsight technique applied at specification and design stages
-- [[requirements/invest]]: story quality criteria applied after discovery
+- [[requirements/invest]]: INVEST criteria applied after discovery
 - [[requirements/gherkin]]: writing specifications from discovered requirements

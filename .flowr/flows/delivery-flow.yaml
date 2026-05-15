@@ -11,7 +11,7 @@ exits:
 states:
   - id: acceptance
     attrs:
-      description: "PO validates business behavior against BDD scenarios and quality attributes"
+      description: "PO validates business behavior against BDD examples and quality attributes"
       owner: PO
       git: feature
       skills:

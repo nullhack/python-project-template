@@ -1,10 +1,8 @@
 Feature: <Feature title>
 
   <2-4 sentence description of what this feature does and why it exists.
-  Written in plain language, always kept current by the PO.>
+  Written in plain language, always kept current by the PO.
 
-  # Business rules:
-  # - <Business rule that applies across multiple Examples>
-
-  # Constraints:
-  # - <Non-functional requirement specific to this feature>
+  Discovered rules are written as Rule blocks during simulation. Behavior
+  hints are added during feature-breakdown and converted to Gherkin
+  Example and Scenario Outline blocks during feature-examples.>

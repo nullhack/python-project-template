@@ -8,7 +8,7 @@ last-updated: 2026-05-08
 
 ## Key Takeaways
 
-- Feature boundaries are derived from the delivery order in product_definition.md, validated against bounded context and aggregate boundaries from the domain spec. Each delivery step becomes a feature candidate.
+- Feature boundaries are derived from simulation-created .feature files, validated against the delivery order in product_definition.md, the context map, and aggregate boundaries from the domain spec. Each .feature file from simulation is a feature candidate; candidates may be split, renamed, or merged.
 - A feature should belong to primarily one bounded context. If a delivery step spans two or more contexts, split it along context boundaries.
 - A feature should not span multiple aggregate transactional consistency boundaries. If it does, split along aggregate lines.
 - Feature names follow the `[Capability]` pattern from the delivery step. Descriptions answer: what it provides, which context it serves, why it exists, and key entities.
@@ -16,7 +16,7 @@ last-updated: 2026-05-08
 
 ## Concepts
 
-**Delivery Order as Backbone**: Patton (2014) recommends mapping the user's narrative flow as a backbone, then slicing vertically into releasable increments. The delivery order in product_definition.md is exactly this backbone: each step represents a cohesive capability the system must deliver. Using delivery steps as feature candidates ensures each feature is independently deliverable and follows the dependency graph.
+**Delivery Order as Backbone**: Patton (2014) recommends mapping the user's narrative flow as a backbone, then slicing vertically into releasable increments. The .feature files created during simulation capture the discovered behavior — the delivery order in product_definition.md validates the dependency graph. .feature files are refined into independently deliverable features that follow the validated delivery order.
 
 **Context Alignment Validation**: Each feature candidate must be checked against the domain spec's bounded context table. A feature that touches entities from two or more contexts has a boundary problem. Split it: each context gets its own feature. The domain spec's "Why Separate" column explains why the contexts were split — the feature split must respect the same reasoning.
 

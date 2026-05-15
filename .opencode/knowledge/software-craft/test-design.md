@@ -59,11 +59,11 @@ last-updated: 2026-05-14
 
 | Directory | Contents | Traceability |
 |-----------|----------|-------------|
-| `tests/features/<feature_slug>/` | BDD scenario tests: one test per Example in the feature file | Title-based mapping (pytest-beehave) |
+| `tests/features/<feature_slug>/` | BDD example tests: one test per Example in the feature file | Title-based mapping (pytest-beehave) |
 | `tests/unit/` | Unit contract tests: coverage-boosting tests for implementation branches not covered by BDD examples | No Example mapping |
 | `tests/unit/` | Property tests: invariant verification across input ranges | No Example mapping (except `@bug` examples); all structural/invariant rules must have one |
 
-**Rule:** `tests/features/` is exclusively for BDD scenario tests that trace back to Examples in the feature file via pytest-beehave's title-based mapping. Coverage-boosting tests that exercise implementation branches not covered by any Example are unit contract tests and belong in `tests/unit/`, not `tests/features/`. A test not mapped to an Example in `tests/features/` violates the traceability contract enforced by `beehave check`.
+**Rule:** `tests/features/` is exclusively for BDD example tests that trace back to Examples in the feature file via pytest-beehave's title-based mapping. Coverage-boosting tests that exercise implementation branches not covered by any Example are unit contract tests and belong in `tests/unit/`, not `tests/features/`. A test not mapped to an Example in `tests/features/` violates the traceability contract enforced by `beehave check`.
 
 ## Related
 

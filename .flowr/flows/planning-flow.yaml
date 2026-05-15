@@ -9,12 +9,11 @@ exits:
 states:
   - id: feature-discovery
     attrs:
-      description: "PO discovers features from simulation results and distributes rules into feature files"
+      description: "PO refines simulation-created feature files: splits/renames, redistributes Rule blocks, adds Constraints from quality attributes"
       owner: PO
       git: dev
       skills:
         - discover-features
-        - discover-rules
       in:
         - product_definition.md
         - domain_spec.md
@@ -22,7 +21,10 @@ states:
         - glossary.md
         - "features/*.feature"  # optional — may not exist on first cycle
       out:
-        - "features/<feature_id>.feature"
+        - features/<feature_id>.feature:
+            - feature_header
+            - constraints
+            - rules
     conditions:
       features-discovered:
         features-discovered: ==verified
@@ -56,7 +58,7 @@ states:
 
   - id: feature-breakdown
     attrs:
-      description: "PO verifies simulation-discovered rules are specific enough and writes them as Rule blocks in the feature file"
+      description: "PO validates INVEST, adds behavior hints under each Rule"
       owner: PO
       git: dev
       skills:
@@ -70,6 +72,7 @@ states:
       out:
         - features/<feature_id>.feature:
             - rules
+            - behavior_hints
     conditions:
       invest-passed:
         invest-passed: ==verified
@@ -80,7 +83,7 @@ states:
 
   - id: feature-examples
     attrs:
-      description: "PO writes concrete Given/When/Then Example blocks for each Rule in the feature file"
+      description: "PO converts behavior hints to Example and Scenario Outline blocks"
       owner: PO
       git: dev
       skills:
