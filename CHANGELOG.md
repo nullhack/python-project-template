@@ -2,6 +2,32 @@
 
 All notable changes to this template will be documented in this file.
 
+## [v8.6.0+20260515] - 2026-05-15: Dialogic Chronos
+
+### Added
+
+- **Technology Requirements chain**: `domain_spec.md` template now has a `### Technology Requirements` table (Context/Requirement/Verification columns). simulate-spec writes tech constraints to `.feature` files. review-gate Tier 1 verifies each constraint against implementation. accept-feature traces technology Q&As to implementation evidence.
+- **Title verification checks**: All 6 skills that write Feature/Rule/Example titles now have explicit 2–6 word count (split on whitespace) and uniqueness verification steps.
+
+### Changed
+
+- **Terminology standardisation** (~30 files): walkthrough replaces standalone "scenario" in simulation context. Rule block replaces "story"/"user story". Example block replaces "BDD scenario"/"BDD example". behavior hint replaces "scenario hint"/"Scenarios:".
+- **Spec architecture restructured**: behavioral rules now live exclusively in `.feature` files (single source of truth). `domain_spec.md` is structural model only with behavioral sections as derived summaries referencing `.feature` rules. `simulation_results.md` reduced to pain points + walkthrough provenance.
+- **Simulation writes directly to `.feature`**: simulate-spec creates coarse `.feature` files per bounded context with `Rule:` blocks. Planning refines: feature-discovery splits/renames, feature-breakdown adds `Behavior hints:`, feature-examples converts hints to Gherkin.
+- **`As a/I want/So that` deprecated**: `cli_entrypoint.feature` refactored to `Rule: title` + behavioral description + `Behavior hints:` format. Connextra user story format removed project-wide.
+- **`# Business rules:` replaced**: `.feature` template simplified — no more `# Business rules:` comment blocks. Rules originate as `Rule:` blocks during simulation.
+- **Title convention 3–8 → 2–6 words**: gherkin.md, test-stubs.md, and 6 skill files updated to new word range. Feature titles must also be 2–6 words and unique across all `.feature` files.
+- **Gherkin knowledge gaps closed**: simulate-spec, discover-features, and break-down-feature now load `[[requirements/gherkin#key-takeaways]]` for title and behavioral distinctness rules.
+
+### Removed
+
+- **Duplicate `discover-rules` skill**: nested `.opencode/skills/discover-rules/discover-rules/SKILL.md` deleted. Consolidated single skill now maps aggregate invariants to Rule blocks.
+- **Stale terminology**: "story", "user story", standalone "scenario" (except `Scenario Outline:` Gherkin keyword), `Scenario:` keyword references purged from all knowledge, skills, flows, and templates.
+
+### Fixed
+
+- **Technology requirements silently dropped**: review-gate now verifies domain_spec.md technology mandates. accept-feature traces technology Q&As. Prevents class of bug where stakeholder-required technologies (DSPy, PostgreSQL, gRPC) pass through entire flow undetected (PM_20260515_dspy_not_implemented).
+
 ## [v8.3.0+20260506] - 2026-05-06: Rigorous Euclid
 
 ### Added
