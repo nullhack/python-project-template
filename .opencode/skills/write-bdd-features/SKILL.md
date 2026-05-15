@@ -26,4 +26,12 @@ Available knowledge: [[requirements/gherkin]], [[requirements/moscow]], [[requir
 8. IF a Rule has more than 8 Must Examples → split the Rule per [[requirements/decomposition#key-takeaways]].
 9. IF a Rule spans more than 2 concerns → split per [[requirements/decomposition#key-takeaways]].
 10. Verify every Rule title is 2–6 words. If any Rule title is too long or too short, rephrase to fit within the constraint while preserving the rule's meaning.
-11. Evaluate each Rule's Examples for quality: titles within 2–6 word range, observable (single outcome per Then), declarative (behaviour not steps), distinct (no duplicate coverage), pre-mortem coverage, correct use of Scenario Outline for multi-variant cases. Every criterion that fails is a hard blocker: fix before advancing.
+11. Evaluate each Rule's Examples for quality, checking every criterion per [[requirements/gherkin#concepts]]:
+   a. **Title word count**: every Example and Scenario Outline title is 2–6 words. Count words by splitting on whitespace. If a title is outside the range → rephrase. Flag every violation.
+   b. **Uniqueness**: no duplicate Example or Scenario Outline titles within the feature file.
+   c. **Observable**: single outcome per Then clause.
+   d. **Declarative**: behaviour not steps.
+   e. **Distinct**: no duplicate coverage across Examples.
+   f. **Pre-mortem coverage**: failure modes from pre-mortem have corresponding Examples.
+   g. **Scenario Outline**: correct use for multi-variant cases (3+ rows in Examples table).
+   Every criterion that fails is a hard blocker: fix before advancing.

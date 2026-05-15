@@ -12,7 +12,7 @@ Available knowledge: [[requirements/invest]], [[requirements/decomposition]], [[
    a. Verify the rule is specific enough to generate at least one Example. IF the rule is vague (e.g. "the system should handle errors") → flag for clarification.
    b. Verify the rule is not contradicted by another rule or by the domain spec.
    c. Verify the rule maps to at least one entity and state in the domain spec.
-3. Validate each Rule block's title: 2–6 words, descriptive, unique within the feature file, and contain no special characters. If a title doesn't meet constraints, rephrase while preserving meaning. Do NOT rewrite the behavioral description paragraph — it is the simulation-validated rule body. Example:
+3. Validate each Rule block's title: 2–6 words, descriptive, unique within the feature file, and contain no special characters. Count words by splitting on whitespace. If a title is not 2–6 words or is not unique within the feature file → rephrase while preserving meaning. Do NOT rewrite the behavioral description paragraph — it is the simulation-validated rule body. Example:
     ```
     Rule: Order must contain at least one item
     ```
