@@ -82,5 +82,5 @@ Estimate implementation complexity:
 
 ## Related
 
-- [[requirements/invest]]: story quality criteria applied before scoring
+- [[requirements/invest]]: INVEST criteria applied before scoring
 - [[requirements/moscow]]: prioritizing Examples within a Rule

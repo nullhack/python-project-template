@@ -10,7 +10,7 @@ last-updated: 2026-05-14
 
 - External Contracts define how users and external systems interact with a bounded context. They are the primary simulation target: "given this input, the system produces this output." All contracts for all contexts live in a single monolithic domain_spec.md file.
 - Each contract has seven fields: Actor, Trigger, Input, Output, Errors, Side Effects, Preconditions. Contracts are `#### <Contract Name>` headings within each context's `### External Contracts` section.
-- Contracts start with ? for unknowns at iteration 0. Simulation fills in specifics through scenario walkthrough.
+- Contracts start with ? for unknowns at iteration 0. Simulation fills in specifics through walkthrough.
 - Contracts are NOT API specifications — they are behavioral descriptions that may map to CLI commands, HTTP endpoints, event handlers, or internal operations.
 
 ## Concepts

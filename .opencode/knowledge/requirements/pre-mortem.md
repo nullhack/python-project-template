@@ -70,7 +70,7 @@ The design self-declaration covers YAGNI, KISS, DRY, Object Calisthenics per [[s
 ## Related
 
 - [[requirements/interview-techniques]]: gap-finding techniques used in interviews
-- [[requirements/invest]]: story quality criteria that pre-mortem findings may affect
+- [[requirements/invest]]: INVEST criteria that pre-mortem findings may affect
 - [[requirements/gherkin]]: writing Examples informed by pre-mortem analysis
 - [[software-craft/tdd]]: design self-declaration subsumes the implementation pre-mortem
 - [[software-craft/object-calisthenics]]: ObjCal-7 (two instance variables) checked in architecture pre-mortem

@@ -42,6 +42,10 @@
 
 ## Delivery Order
 
+< Stakeholder-prioritized delivery sequence. Each step is a feature candidate.
+  feature-discovery validates this order against the context map dependency graph
+  but does not replace it — business priority is a stakeholder decision. >
+
 1. <feature or bounded context — ordered by business value and dependency>
 2. <feature or bounded context>
 3. <feature or bounded context>

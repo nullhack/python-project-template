@@ -9,7 +9,7 @@ description: "Select the next feature to develop by detecting delivery status fr
 
 1. List available feature files in `docs/features/`.
 2. IF no feature files exist → exit via `no-features`; features need discovery first.
-3. Read `product_definition.md` to obtain the delivery order (ordered list of feature slugs).
+3. Read `product_definition.md` to obtain the delivery order (ordered list of feature slugs). Validate against `domain_spec.md` context map to ensure dependency order is respected.
 4. For each feature slug in delivery order, determine delivery status with a single pipeline
    — do NOT open or read individual feature or test files:
 

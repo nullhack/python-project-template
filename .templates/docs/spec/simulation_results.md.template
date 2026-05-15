@@ -1,36 +1,30 @@
 # Simulation Results — Iteration <N>
 
 > One file per simulation iteration, covering all bounded contexts.
-> This document captures what the simulation found: scenarios walked,
-> rules discovered, and pain points requiring spec fixes.
+> This document captures what the simulation found: walkthroughs performed,
+> pain points discovered, and rule provenance. Discovered rules themselves
+> are written directly to .feature files during simulation.
 
 ---
 
 ## <Context Name>
 
-### Scenarios Walked
+### Walkthroughs Performed
 
-| # | Scenario | Type | Outcome |
-|---|----------|------|---------|
-| 1 | <happy path description> | happy | PASS / FAIL: <reason> |
-| 2 | <edge case description> | edge | PASS / FAIL: <reason> |
-| 3 | <error path description> | error | PASS / FAIL: <reason> |
+| # | Walkthrough | Type | Outcome | Discovered Rule |
+|---|-------------|------|---------|-----------------|
+| 1 | <happy path description> | happy | PASS / FAIL: <reason> | `<Rule title in .feature>` |
+| 2 | <edge case description> | edge | PASS / FAIL: <reason> | `<Rule title in .feature>` |
+| 3 | <error path description> | error | PASS / FAIL: <reason> | `<Rule title in .feature>` |
 
 #### I/O Evidence
 
-Scenarios are backed by I/O pairs in /tmp/sim/<context>/:
+Walkthroughs are backed by I/O pairs in /tmp/sim/<context>/:
 
-- `/tmp/sim/<context>/scenario_001_in.json` — input
-- `/tmp/sim/<context>/scenario_001_out.json` — expected output
-- `/tmp/sim/<context>/scenario_002_in.json` — input
-- `/tmp/sim/<context>/scenario_002_out.json` — expected output
-
-### Rules Discovered
-
-< descriptive statements, no numbered prefixes — these map to Example titles in .feature files >
-
-- <rule statement in plain language> — from scenario: <scenario title>
-- <rule statement in plain language> — from scenario: <scenario title>
+- `/tmp/sim/<context>/walkthrough_001_in.json` — input
+- `/tmp/sim/<context>/walkthrough_001_out.json` — expected output
+- `/tmp/sim/<context>/walkthrough_002_in.json` — input
+- `/tmp/sim/<context>/walkthrough_002_out.json` — expected output
 
 ### Pain Points
 
@@ -38,14 +32,6 @@ Scenarios are backed by I/O pairs in /tmp/sim/<context>/:
 
 - <description> — <spec section> — <classification: ambiguous / contradictory / missing / edge-case>
 - <description> — <spec section> — <classification>
-
-### E2E Test Candidates
-
-< Scenarios that should become acceptance tests after validation.
-  Each becomes an Example: title in the .feature file. >
-
-- <descriptive title for the test> — from scenario: <scenario title>
-- <descriptive title for the test> — from scenario: <scenario title>
 
 ### Resolution Status
 
@@ -65,8 +51,8 @@ Scenarios are backed by I/O pairs in /tmp/sim/<context>/:
 
 - Iteration: <N> of max 5
 - Contexts simulated: <count>
-- Scenarios walked: <count>
-- Rules discovered: <count>
+- Walkthroughs performed: <count>
+- Rules discovered: <count> (written to .feature files)
 - Pain points found: <count>
 - Pain points resolved: <count>
 - Pain points unresolved: <count>

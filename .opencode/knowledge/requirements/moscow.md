@@ -10,7 +10,7 @@ last-updated: 2026-04-29
 
 - Classify each candidate Example as Must (required for correctness), Should (high value but deferrable), or Could (nice-to-have edge case). This classification is for internal triage only: it must NOT appear as Gherkin tags or in the .feature file.
 - If MoSCoW triage reveals that Musts alone exceed 8 Examples or the Rule spans more than 2 concerns, split per [[requirements/decomposition]].
-- Musts cannot exceed 60% of total effort at the story level (DSDM); if a story has 12 Examples and only 3 are Musts, the remaining 9 can be deferred.
+- Musts cannot exceed 60% of total effort at the Rule level (DSDM); if a Rule has 12 Examples and only 3 are Musts, the remaining 9 can be deferred.
 - MoSCoW triage classifies Examples for internal prioritization only: it must NOT appear as Gherkin tags or in the .feature file.
 
 ## Concepts
@@ -35,7 +35,7 @@ last-updated: 2026-04-29
 
 ### Effort Allocation
 
-At the story level, Musts should not exceed 60% of total effort (DSDM). If a story has 12 Examples and only 3 are Musts, the remaining 9 can be deferred. This prevents gold-plating and keeps stories small and focused.
+At the Rule level, Musts should not exceed 60% of total effort (DSDM). If a Rule has 12 Examples and only 3 are Musts, the remaining 9 can be deferred. This prevents gold-plating and keeps Rules small and focused.
 
 ### When to Apply
 
@@ -43,6 +43,6 @@ MoSCoW triage classifies each candidate Example as Must/Should/Could for interna
 
 ## Related
 
-- [[requirements/invest]]: story quality criteria
+- [[requirements/invest]]: INVEST criteria
 - [[requirements/decomposition]]: splitting Rules that fail MoSCoW thresholds
 - [[requirements/gherkin]]: writing Examples with MoSCoW classification

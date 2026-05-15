@@ -19,6 +19,7 @@ states:
         - "simulation_results.md"  # optional — may not exist on first iteration
       out:
         - simulation_results.md
+        - "features/<context>.feature"
     next:
       done: review-simulation
 
@@ -34,6 +35,7 @@ states:
         - domain_spec.md
         - product_definition.md
         - glossary.md
+        - "features/*.feature"
       out:
         - simulation_results.md:
             - summary
@@ -63,8 +65,10 @@ states:
         - domain_spec.md
         - product_definition.md
         - glossary.md
+        - "features/<context>.feature"
       out:
         - domain_spec.md
         - simulation_results.md
+        - "features/<context>.feature"
     next:
       done: simulate-spec

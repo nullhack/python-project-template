@@ -11,7 +11,7 @@ exits:
 states:
   - id: planning
     attrs:
-      description: "Plan feature breakdown, BDD scenarios, and development readiness"
+      description: "Plan feature breakdown, BDD examples, and development readiness"
       git: dev
     flow: planning-flow
     flow-version: "^15"

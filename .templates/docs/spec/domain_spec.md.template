@@ -3,11 +3,14 @@
 > **Status:** DRAFT | VALIDATED (YYYY-MM-DD)
 > Monolithic: all bounded contexts in one file.
 > Each `## <Context Name>` section is a context boundary.
-> Contains both structural domain information (entities, relationships, aggregates,
-> context map) and behavioral contracts (external contracts, state machines, errors).
-> Evolves through spec simulation: rules, state machines, and error handling
-> are DISCOVERED, not pre-written.
-> NO Given/When/Then here — that belongs in .feature files after validation.
+> Contains structural domain information: entities, relationships, aggregates,
+> context map, data shapes, integration points, and external contracts.
+> Behavioral content (walkthroughs, rules, pain points) is discovered during
+> simulation and written to `.feature` files.
+> State Machines, Error Handling, and Invariants are derived summaries that
+> reference `.feature` file rules — the `.feature` files are the authoritative
+> source for behavioral specification.
+> NO Given/When/Then here — that belongs in `.feature` files.
 
 ---
 
@@ -99,29 +102,30 @@ and why it exists as a separate context.>
 
 ### State Machines
 
-< emerge from simulation — empty at iteration 0 >
+< Derived from `.feature` file rules for this context. Reference the `.feature` file as source. >
 
 #### <Entity Name>
-States: <discovered by simulation>
+States: <referenced from .feature>
 Transitions:
 
 | From | When | To | Guard |
 |------|------|----|-------|
-| <discovered by simulation> | | | |
+| <referenced from .feature> | | | |
 
 ### Error Handling
 
-< discovered during simulation — empty at iteration 0 >
+< Derived from `.feature` file rules for this context. Reference the `.feature` file as source. >
 
 | Scenario | Response |
 |----------|----------|
-| <discovered by simulation> | |
+| <referenced from .feature> | |
 
 ### Invariants
 
-< discovered during simulation — empty at iteration 0 >
+< Derived from `.feature` file aggregate invariants for this context. 
+  Reference the `.feature` file as source. Non-negotiable consistency boundaries. >
 
-- <entity> must always <condition>
+- <referenced from .feature>
 
 ---
 
