@@ -5,7 +5,7 @@ description: "Select the next feature to develop by detecting delivery status fr
 
 # Select Feature
 
-`in` artifacts: read all before starting work.
+Available knowledge: [[requirements/wsjf#key-takeaways]]. `in` artifacts: read all before starting work.
 
 1. List available feature files in `docs/features/`.
 2. IF no feature files exist → exit via `no-features`; features need discovery first.
@@ -28,7 +28,8 @@ description: "Select the next feature to develop by detecting delivery status fr
     d. If the test directory does not exist, beehave check will report errors
        → feature is incomplete (select it).
 
-5. Select the first incomplete feature by delivery order.
-6. IF every feature in the delivery order is delivered (diff clean + tests pass for all) →
+5. Collect all incomplete features. IF this is the first feature (no features have been delivered yet) → select the first incomplete feature by delivery order. Skip to step 7.
+6. IF subsequent features: score each incomplete feature per [[requirements/wsjf#key-takeaways]]. For each, estimate Value (1-5, mapped to Kano categories) and Effort (1-5, mapped to complexity). Compute WSJF = Value / Effort. Eliminate Dependency=1 features. Select the highest WSJF score; ties broken by Value.
+7. IF every feature in the delivery order is delivered (diff clean + tests pass for all) →
    exit via `no-features`.
-7. Set the `feature_id` session param to the selected feature's filename stem (without `.feature` extension).
+8. Set the `feature_id` session param to the selected feature's filename stem (without `.feature` extension).

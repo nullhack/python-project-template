@@ -18,7 +18,7 @@ last-updated: 2026-04-30
 
 ## Concepts
 
-**Monochrome-First Process**: Design the entire mark in black on white, then white on black. If it does not work in monochrome, colour will not save it. Only after the shape holds identity in one colour should a second colour be introduced, and only as an accent, never carrying meaning that must be read.
+**Monochrome-First Process**: Design monochrome-first per [[design/project-assets#concepts]]; only add colour after the shape holds identity.
 
 **Hue, Saturation, and Value as Independent Axes**: Hue (which colour) is one dimension. Saturation (how vivid vs muted) and value (how light vs dark) carry as much meaning as hue and are independent levers. A single hue can express different personalities by varying saturation and value:
 - High saturation + medium value: "digital, energetic, modern" (e.g., #3B82F6)
@@ -95,17 +95,7 @@ The other four (cold-warm, simultaneous, hue, extension) are documented by Itten
 
 ### Visual Weight Proportions (Itten's Contrast of Extension)
 
-When balancing colour areas in a composition, visual weight depends on inherent brightness:
-
-| Colour pair | Visual weight ratio (area for equal perceived weight) |
-|------------|------------------------------------------------------|
-| Yellow : Violet | 1 : 3 |
-| Orange : Blue | 1 : 2 |
-| Red : Green | 1 : 1 |
-| Yellow : Orange | 1 : 1.5 |
-| Light grey : Dark navy | 1 : 2 |
-
-A thin gold line on a navy field reads as "balanced" because the yellow's visual weight per unit area is 3× the violet's.
+Balance visual weight per [[design/visual-harmony#concepts]].
 
 ### WCAG Contrast Verification Checklist
 

@@ -171,8 +171,8 @@ cython_debug/
 #.idea/
 .mutmut-cache
 
-# Session files (local working state)
-.flowr/sessions/session.yaml
+# Session files and simulation cache (local working state)
+.cache/
 
 # Generated flow visualization data (regenerate with: task regenerate-flowviz)
 .flowr/viz/data.js

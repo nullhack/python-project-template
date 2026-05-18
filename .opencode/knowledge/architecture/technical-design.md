@@ -15,25 +15,19 @@ last-updated: 2026-04-29
 
 ## Concepts
 
-**Architectural Styles**: Common styles and when to choose them: Monolith (single deployment, simple ops, low latency between modules), Microservices (independent deployment, team autonomy, high operational complexity), Event-driven (loose coupling, eventual consistency, async workflows), Serverless (pay-per-use, auto-scaling, cold starts), Hexagonal/Ports & Adapters (testability, domain isolation, delivery-mechanism independence).
+**Architectural Styles**: Common styles and when to choose them per [[architecture/quality-attributes#concepts]].
 
 **C4 Diagrams** (Brown, 2018): Four levels of architectural visualization: Context (actors and external systems), Container (deployable units and their tech stacks), Component (internal modules and their responsibilities), Code (individual classes, rarely needed). Always start with Context, then Container. Component diagrams are optional. Code diagrams are rarely necessary.
 
-**Module Structure**: Organize by bounded context first (Evans, 2003), then by layer (domain, application, infrastructure). Domain layer has zero infrastructure imports. Application layer orchestrates use cases. Infrastructure layer implements external concerns. The dependency arrow always points inward: infrastructure → application → domain (Clean Architecture, Martin, 2012; Hexagonal Architecture, Cockburn, 2005).
+**Module Structure**: Dependency direction and layer separation per [[architecture/contract-design#concepts]]. Organize by bounded context first (Evans, 2003), then by layer (domain, application, infrastructure).
 
-**Contract-First Design**: Define the boundaries before the implementation: API contracts (request/response shapes, error codes, authentication), Event contracts (event names, payload schemas, ordering guarantees), Interface definitions (Protocol/abstract classes that the domain defines and infrastructure implements).
+**Contract-First Design**: Per [[architecture/contract-design#concepts]].
 
 ## Content
 
 ### Architectural Style Selection
 
-| Quality Attribute Priority | Recommended Style |
-|---|---|
-| Simplicity, fast time-to-market | Monolith |
-| Team autonomy, independent scaling | Microservices |
-| Loose coupling, async workflows | Event-driven |
-| Cost optimization, variable load | Serverless |
-| Testability, domain isolation | Hexagonal |
+Style selection table per [[architecture/quality-attributes#content]].
 
 Hybrid approaches are valid: a monolith with hexagonal internals, or microservices with event-driven communication between them.
 

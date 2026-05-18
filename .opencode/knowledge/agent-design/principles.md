@@ -23,12 +23,7 @@ last-updated: 2026-04-29
 - **Positional attention degradation** (Liu et al., 2023: middle content receives less attention): keep files short
 - **Redundant content** creating competing attention targets: each fact in one location
 
-| Concern | File | Purpose | Loaded When |
-|---|---|---|---|
-| Navigation | `AGENTS.md` | Where files live, how to resolve wikilinks | Every session |
-| Identity | `.opencode/agents/*.md` | Who I am, what I decide | When role invoked |
-| Procedure | `.opencode/skills/*/SKILL.md` | Step-by-step instructions | On demand |
-| Reference | `.opencode/knowledge/*/` | What and why | On demand, via wikilinks |
+See [[knowledge-design/principles#concepts]] for the separation-of-concerns table and failure-mode justification.
 
 **Subagents for Investigation**: When a task requires extensive reading (auditing code, researching decisions), use a subagent with read-only or restricted permissions. Subagents quarantine token cost and prevent anchoring bias from the main conversation context.
 

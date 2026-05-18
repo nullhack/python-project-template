@@ -75,5 +75,5 @@ When the same word has different meanings in different bounded contexts:
 ## Related
 
 - [[domain-modeling/event-storming]]
-- [[domain-modeling/domain-modeling]]
+- [[domain-modeling/event-storming]]
 - [[requirements/interview-techniques]]

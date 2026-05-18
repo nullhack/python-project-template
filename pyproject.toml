@@ -1,6 +1,6 @@
 [project]
 name = "temple8"
-version = "8.6.0"
+version = "9.0.0"
 description = "Spec-driven agent orchestration template with YAML flow definitions, multi-agent dispatch, and BDD traceability"
 readme = "README.md"
 requires-python = ">=3.14"
@@ -39,8 +39,8 @@ dev = [
 
 [tool.flowr]
 flows_dir = ".flowr/flows"
-sessions_dir = ".flowr/sessions"
-default_flow = "main-flow"
+sessions_dir = ".cache/sessions"
+default_flow = "define-flow"
 default_session = "default"
 
 [tool.beehave]
@@ -146,7 +146,7 @@ pytest \
 doc-publish = "task doc-build && ghp-import -n -p -f docs"
 static-check = "pyright app tests"
 validate-flows = "bash -c 'for f in .flowr/flows/*.yaml; do python -m flowr validate \"$f\"; done'"
-regenerate-flowviz = "python .flowr/viz/generate-flowviz-data.py"
+
 release-check = "task conventions && task static-check && task test && task doc-build"
 
 

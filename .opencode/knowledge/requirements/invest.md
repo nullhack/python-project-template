@@ -10,7 +10,7 @@ last-updated: 2026-04-29
 
 - Every Rule must pass all six INVEST letters: Independent, Negotiable, Valuable, Estimable, Small, Testable.
 - Each letter has a specific FAIL action: split or reorder dependencies (I), remove over-specification (N), reframe or drop (V), split or add discovery (E), split into smaller Rules (S), rewrite with observable outcomes (T).
-- Common mistakes: "As the system, I want..." has no business value; duplicate Rules should be merged or differentiated. Rules containing "and" or spanning multiple concerns must be split per [[requirements/decomposition]].
+- Common mistakes: Rules with no beneficiary lack business value; duplicate Rules should be merged or differentiated. Split triggers per [[requirements/decomposition#key-takeaways]].
 - Self-declare INVEST-I, INVEST-V, INVEST-S, and INVEST-T; every DISAGREE is a hard blocker.
 
 ## Concepts
@@ -19,7 +19,7 @@ last-updated: 2026-04-29
 
 **FAIL Actions**: Each letter has a specific corrective action when a Rule fails. Independent → split or reorder dependencies. Negotiable → remove over-specification. Valuable → reframe or drop. Estimable → split or add discovery questions. Small → split into smaller Rules. Testable → rewrite with observable outcomes.
 
-**Self-Declaration**: Declare INVEST-I (each Rule is Independent), INVEST-V (each Rule delivers Value to a named user), INVEST-S (each Rule is Small enough for one development cycle), and INVEST-T (each Rule is Testable). Every DISAGREE is a hard blocker. The procedural steps for self-declaration are in the break-down-feature skill.
+**Self-Declaration**: Declare INVEST-I (each Rule is Independent), INVEST-V (each Rule delivers Value to a named user), INVEST-S (each Rule is Small enough for one development cycle), and INVEST-T (each Rule is Testable). Every DISAGREE is a hard blocker. The procedural steps for self-declaration are in the refine-features skill.
 
 ## Content
 
@@ -36,8 +36,9 @@ last-updated: 2026-04-29
 
 ### Common Mistakes to Avoid
 
-- "As the system, I want...": no business value. Every Rule must name a user role who benefits.
-- Stories that duplicate another Rule: merge or differentiate.
+- Rule with no beneficiary: no business value. Every Rule must name a user role who benefits.
+- Duplicate Rules: merge or differentiate.
+- Split triggers (bounded context, independently testable outcomes): per [[requirements/decomposition#key-takeaways]]
 ### Self-Declaration Protocol
 
 Before committing Rules, declare:
@@ -52,6 +53,6 @@ Every DISAGREE is a hard blocker.
 ## Related
 
 - [[requirements/moscow]]: prioritizing Examples within a Rule
-- [[requirements/decomposition]]: splitting Rules that fail INVEST-S or span too many concerns
+- [[requirements/decomposition]]: splitting Rules that fail INVEST-S or span bounded contexts
 - [[requirements/gherkin]]: writing Examples from INVEST-qualified Rules
 - [[requirements/pre-mortem]]: finding hidden failure modes in rules

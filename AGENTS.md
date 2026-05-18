@@ -12,7 +12,7 @@ Post-mortem analysis shows these practices prevent most project failures. Violat
 
 ## Project Structure
 - `.flowr/flows/`: YAML state machine definitions (source of truth for routing)
-- `.flowr/sessions/`: runtime session state
+- `.cache/sessions/`: runtime session state
 - `.templates/`: artifact templates (strip `.templates/` prefix and `.template` suffix → destination path)
 - `.opencode/`: agents, skills, and knowledge
 
@@ -21,7 +21,9 @@ Post-mortem analysis shows these practices prevent most project failures. Violat
 When creating a document, use the template in `.templates/` that matches the artifact type. Strip the `.templates/` prefix and `.template` suffix to determine the destination path. For example:
 - `.templates/docs/adr/ADR_YYYYMMDD_<adr_id>.md.template` → `docs/adr/ADR_20260430_my_decision.md`
 - `.templates/docs/features/<feature_name>.feature.template` → `docs/features/my_feature.feature`
-- `.templates/docs/interview-notes/IN_YYYYMMDD_<session_id>.md.template` → `docs/interview-notes/IN_20260430_session_management.md`
+- `.templates/.cache/interview-notes/IN_YYYYMMDD_<session_id>.md.template` → `.cache/interview-notes/IN_20260430_session_management.md`
+- `.templates/.cache/sim/simulation_results_YYYYMMDDTHHMMSS.md.template` → `.cache/sim/simulation_results_20260517T143000.md`
+- `.templates/.cache/acceptance/<feature_id>.md.template` → `.cache/acceptance/domain_value_objects.md`
 
 If no template exists for an artifact type, create the document without one.
 
@@ -73,17 +75,19 @@ Artifact names in `in` and `out` lists use these conventions:
 | Pattern | Meaning | Example |
 |---------|---------|---------|
 | `filename.md` | A specific document | `domain_spec.md`, `product_definition.md` |
-| `dir/<param>.ext` | A specific instance identified by parameter | `features/<feature_id>.feature`, `interview-notes/<session_id>.md`, `adr/<adr_id>.md` |
-| `dir/*.ext` | Multiple documents of that type available in `in` | `interview-notes/*.md`, `adr/*.md` |
+| `dir/<param>.ext` | A specific instance identified by parameter | `features/<feature_id>.feature`, `.cache/interview-notes/<session_id>.md`, `adr/<adr_id>.md` |
+| `dir/*.ext` | Multiple documents of that type available in `in` | `.cache/interview-notes/*.md`, `adr/*.md` |
 | `conceptual_name` | A runtime artifact that passes between states within a flow | `typed-source-stubs`, `test-implementations` |
 
 Placeholders in template filenames and flow artifact paths use the `<type_id>` pattern where **type** identifies the document kind and **_id** signals snake_case formatting. See template filenames for the canonical placeholder names.
 
-**File naming rule:** All filenames use **snake_case** (e.g., `domain_value_objects.feature`, `ADR_20260504_protocol_adapters.md`). **Doc folders** use kebab-case for multi-word names (e.g., `interview-notes/`, `post-mortem/`). **Python/test folders** use snake_case (e.g., `tests/features/`).
+**File naming rule:** All filenames use **snake_case** (e.g., `domain_value_objects.feature`, `ADR_20260504_protocol_adapters.md`). **Cache folders** use kebab-case for multi-word names (e.g., `interview-notes/`, `post-mortem/`). **Python/test folders** use snake_case (e.g., `tests/features/`).
 
 **Wildcards (`*`)** in `in` indicate that multiple documents of that type are available. List the directory contents first, then read selectively based on the task. When a state creates a single instance, use a `<parameter>` name instead.
 
-**Runtime artifacts** (not backed by files) use descriptive names that make their purpose clear: `typed-source-stubs` (source files with type signatures only), `test-skeletons` (test files with structure only), `test-implementations` (tests with bodies), `source-implementations` (production code with behavior), `refactored-source` (code after refactoring pass), `feature-commits` (git commits for one feature), `merged-commits` (commits merged to local main), `root-cause-analysis` (analysis findings).
+**Runtime artifacts** (not backed by files) use descriptive names that make their purpose clear: `typed-source-stubs` (source files with type signatures only), `test-skeletons` (test files with structure only), `test-implementations` (tests with bodies), `source-implementations` (production code with behavior), `refactored-source` (code after refactoring pass), `feature-commits` (git commits for one feature), `merged-commits` (commits merged to local main), `root-cause-analysis` (analysis findings), `polished-source` (code after convention application).
+
+**Cache artifacts** are persisted to `.cache/` for cross-session durability. They are not spec documents but process evidence that survives session boundaries: `.cache/acceptance/<feature_id>.md` (PO acceptance record with traceability matrix), `.cache/interview-notes/<session_id>.md` (raw stakeholder input, archival after discovery), `.cache/sim/simulation_results_<timestamp>.md` (simulation evidence per iteration).
 
 **Environment artifacts** are produced by tooling rather than flow states: `coverage-reports` (test coverage output), `test-output` (test runner output), `linter-output` (linter output). These exist on disk after running the relevant tool and are referenced in `in` but not in any state's `out`.
 
@@ -113,7 +117,6 @@ Commands accept short flow names (e.g., `planning-flow`) or full file paths. Use
 | `python -m flowr session show [--name <name>]` | Display current session state and call stack |
 | `python -m flowr session set-state <state> [--name <name>]` | Manually update session state |
 | `python -m flowr session list` | List all sessions |
-| `task regenerate-flowviz` | Regenerate interactive D3.js visualization |
 
 ## Project Commands
 
@@ -178,7 +181,18 @@ Before starting a flow, create a session to track progress:
 python -m flowr session init <flow> --name <name>
 ```
 
-For project-level flows (discovery, architecture, branding, setup), use a descriptive name like `project`. For feature flows, use the feature name. The session tracks the current flow, state, call stack (for subflows), and params (including `feature-id`). When the first state has a `flow:` field, `session init` auto-enters the subflow.
+For project-level flows, use a descriptive name like `project`. For feature flows, use the feature name. The session tracks the current flow, state, call stack (for subflows), and params (including `feature-id`). When the first state has a `flow:` field, `session init` auto-enters the subflow.
+
+The three primary flows are independently invocable:
+- `define-flow` — spec creation, validation, feature refinement, and architecture (discovery → spec-validation → refine-features → architecture)
+- `develop-flow` — feature selection, example writing, TDD implementation, acceptance (per feature cycle)
+- `deliver-flow` — squash-merge, publish decision, PR creation
+
+### Cross-Flow Routing
+
+When develop-flow exits `needs-architecture`, the orchestrator must re-enter define-flow at the `architecture` state. Start a new define-flow session and use `flowr session set-state architecture` to skip to the architecture state. The architecture-flow fast-path (`architecture-complete: ==verified`) means re-running is cheap when no changes are needed.
+
+When post-mortem-flow exits `needs-architecture`, follow the same procedure: re-enter define-flow at `architecture`.
 
 ### Branch Discipline
 
@@ -186,7 +200,7 @@ States declare their git context in `attrs.git`:
 - `git: main`: all changes are committed to the local main branch
 - `git: feature`: all changes are committed to the current feature branch
 
-Before exiting a project-phase flow (discovery, architecture, branding, setup), the exit transition requires `committed-to-dev-locally: ==verified` evidence. This guarantees project artifacts are persisted before advancing to the next phase.
+Before exiting a project-phase flow (define, branding, setup), the exit transition requires `committed-to-dev-locally: ==verified` evidence. This guarantees project artifacts are persisted before advancing to the next phase.
 
 ### Within a State
 

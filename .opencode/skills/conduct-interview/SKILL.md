@@ -12,6 +12,6 @@ Available knowledge: [[requirements/interview-techniques#key-takeaways]]. `in` a
    cross-cutting group per [[requirements/interview-techniques#concepts]].
 3. If specific features are identified, drill into feature-level questions to
    define feature names and rough boundaries per [[requirements/interview-techniques#concepts]].
-4. If >2 concerns emerge for a single feature, split per [[requirements/decomposition]].
+4. If a feature candidate spans multiple bounded contexts, flag for splitting per [[requirements/decomposition]].
 5. Write confirmation gate before any file writes.
-6. Write interview notes to `docs/interview-notes/IN_YYYYMMDD_<session_id>.md` from the template at `.templates/docs/interview-notes/IN_YYYYMMDD_<session_id>.md.template`.
+6. Write interview notes to `.cache/interview-notes/IN_YYYYMMDD_<session_id>.md` from the template at `.templates/.cache/interview-notes/IN_YYYYMMDD_<session_id>.md.template`.

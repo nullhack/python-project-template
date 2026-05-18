@@ -1,7 +1,7 @@
 ---
 domain: writing
 tags: [ai-writing, detection, language-markers, rlhf-bias, humanization]
-last-updated: 2026-05-06
+last-updated: 2026-05-18
 ---
 
 # AI Language Markers
@@ -13,7 +13,8 @@ last-updated: 2026-05-06
 - Detect hedging verbs ("ensuring/ensures" at 4.3x, "rather than" at 2.5x) and filler phrases ("It's worth noting that" at 31x) as the strongest 2026-era signals.
 - Recognize structural formulaicity: em dash overuse (2.6x), "X plays a crucial role in shaping Y" (most formulaic trigram), uniform sentence length, rule of three.
 - Distinguish chatbot artifacts ("Absolutely!", "Great question!", "I'd be happy to help!") as conversational voice markers separate from content markers.
-- Apply multi-signal detection scoring across vocabulary, structure, hedging, and voice dimensions — no single marker is diagnostic; 5+ hits across tiers indicates likely AI generation.
+- Apply multi-signal detection scoring across vocabulary, structure, hedging, voice, and model-specific dimensions — no single marker is diagnostic; 5+ hits across tiers indicates likely AI generation.
+- Claude-specific patterns (first-person avoidance, compulsive balance, conclusion recycling) are subtler than vocabulary markers but form a consistent fingerprint; multi-turn conversations accumulate verbal tics 110% by turn 5+.
 
 ## Concepts
 
@@ -64,6 +65,30 @@ last-updated: 2026-05-06
 | bolster | GPT-4 era | Wikipedia AI writing page |
 | kaleidoscope | Reddit-flagged | Reddit (300+ comments) |
 | scaffold | Academic metaphor | Writing community lists |
+| navigate (metaphorical) | Clustered | Multiple sources |
+| harness | Clustered | Anti-slop, HumanizerTech |
+| unlock | Clustered | Anti-slop, HumanizerTech |
+| unveil | Clustered | Anti-slop, slopwash |
+| champion (verb) | Clustered | Anti-slop |
+| elevate (verb) | Clustered | Anti-slop, HumanizerTech |
+| illuminate (verb) | Clustered | Anti-slop |
+| seamless | Clustered | Bloomberry, Anti-slop |
+| innovative | Clustered | Anti-slop, slopwash |
+| ecosystem (metaphorical) | Clustered | Anti-slop |
+| framework (metaphorical) | Clustered | Anti-slop |
+| paradigm | Clustered | Anti-slop |
+| synergy | Clustered | Anti-slop, corporate-speak lists |
+| catalyst (metaphorical) | Clustered | Anti-slop |
+| transformative | Clustered | Anti-slop, Bloomberry |
+| compelling | Clustered | HumanizerTech |
+| profound | Clustered | Anti-slop |
+| scalable | Clustered | Anti-slop |
+| optimize (non-technical) | Clustered | Anti-slop, HumanizerTech |
+| empower | Clustered | Anti-slop, slopwash |
+| maximize (non-technical) | Clustered | Anti-slop |
+| embody | Clustered | Anti-slop |
+| revolutionize | Clustered | Anti-slop, Bloomberry |
+| boilerplate (noun) | Self-referential marker | Slopwash (detection category becomes the marker) |
 
 ### Tier 2: Hedging Verbs (2026 strongest signals)
 
@@ -103,6 +128,10 @@ last-updated: 2026-05-06
 | "As we navigate" | Clustered | Multiple sources |
 | "Let's dive in" / "Let's explore" | Chatbot artifacts | Reddit, Wikipedia |
 | "Whether you're a [X] or a [Y]" | Template scaffolding | Noren |
+| "Here's the thing/kicker/deal" | Conversational filler | Anti-slop, slopwash |
+| "Imagine a world where" | Grandiose opener | Anti-slop |
+| "Fear not" | Archaic reassurance | Anti-slop |
+| "That being said" | Hedging transition | Detection lists |
 | Generic positive close | AI conclusion pattern | Multiple sources |
 
 ### Tier 5: Chatbot Artifacts ("Helpful Assistant" Voice)
@@ -141,8 +170,28 @@ No single marker is diagnostic. Multi-signal detection scores across these dimen
 | Filler | "It's worth noting" or similar filler phrases |
 | Voice | No sentences under 8 words, no colloquial language, no personality |
 | Comparative | "Not X, but Y" appears more than twice |
+| Claude patterns | 3+ Tier 7 structural patterns present |
 
-Source: humanize-writing GitHub reference.
+Source: humanize-writing GitHub reference, Bloomberry 2026 study (82% of AI outputs contain 2+ of: hedge openers, tricolon lists, em-dash connectors, resolution closers).
+
+### Tier 7: Claude-Specific Structural Patterns
+
+Claude produces smoother, less detectable prose than ChatGPT (70-85% detection vs 85-95%). These patterns are subtler than vocabulary markers but form a consistent fingerprint:
+
+| Pattern | Description | Detector Weight |
+|---------|-------------|----------------|
+| First-person avoidance | Uses "one might argue", "it could be suggested" instead of "I think" — Constitutional AI safety artifact | Medium |
+| Systematic scope acknowledgement | Pre-emptive limitations at predictable positions ("of course, this is just one perspective") | Medium |
+| Compulsive balance | Always presents both sides, even when the prompt asks for a position | High |
+| Three-part list compulsion | RLHF artifact from evaluators rewarding triads; more rigid than human grouping | Medium |
+| Conclusion recycling | Restate → summarise → gesture forward, mechanically consistent | High |
+| Extended analogy preference | Verbose structural development of single metaphor rather than brief comparison | Low |
+| Smooth paragraph transitions | No abrupt shifts; every paragraph bridge is explicitly signposted | Medium |
+| "according to the text" / "based on the text" | Claude-specific citation phrasing (arXiv TF-IDF analysis across 8 models) | High |
+
+Claude also produces longer average sentence length with more complex clause structures than ChatGPT, and more consistent Markdown formatting.
+
+Verbal tic accumulation (arXiv 2604.19139): Multi-turn conversations show 110% increase in verbal tics by turn 5+. Review multi-turn outputs with heightened scrutiny.
 
 ## Related
 

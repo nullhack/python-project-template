@@ -15,10 +15,10 @@ last-updated: 2026-05-06
 - Carry runtime metadata in state-level `attrs` (agent, skills, input_artifacts, etc.); `attrs` is opaque to the engine and replaces flow-level attrs entirely (no merge).
 - All CLI commands output **JSON by default** (structured, machine-parseable). Use `--text` flag for human-readable plain text.
 - `next` command shows **all** transitions with status markers (`"open"` / `"blocked"`) and condition hints for blocked transitions.
-- Sessions track workflow progress (flow, state, call stack) as YAML files in `.flowr/sessions/` with atomic writes; `--session` on check/next/transition resolves flow/state automatically.
+- Sessions track workflow progress (flow, state, call stack) as YAML files in `.cache/sessions/` with atomic writes; `--session` on check/next/transition resolves flow/state automatically.
 - Subflow exit names resolve through the parent flow's transition map (not used directly as state IDs). Enables subflow chaining and recursive entry up to 3 levels.
 - Configuration reads `[tool.flowr]` from `pyproject.toml` (flows_dir, sessions_dir, default_flow, default_session); CLI flags override pyproject.toml which overrides defaults.
-- Flow name resolution: commands accept short names (e.g., `planning-flow`) resolved from the configured flows directory, or full file paths.
+- Flow name resolution: commands accept short names (e.g., `architecture-flow`) resolved from the configured flows directory, or full file paths.
 - Immutable loaded flows, closed evidence schema, isolated subflow context, filesystem wins over session on conflict. Extension fields (non-reserved keys) are allowed and not interpreted by the validator.
 
 ## Concepts
@@ -35,7 +35,7 @@ last-updated: 2026-05-06
 
 **Subflow Invocation**: A state with a `flow:` field becomes a subflow invocation. The parent's `next` keys must match the child's `exits` exactly. Subflows use a call-stack mechanism: push on entry, pop on exit. Context is isolated: only the current flow is visible. Cross-flow cycles are forbidden.
 
-**Subflow Exit Resolution (v1.0.0)**: Exit names resolve through the parent flow's transition map instead of being used directly as state IDs. This enables subflow chaining (atomic exit + re-enter next subflow) and recursive subflow entry up to 3 levels deep (e.g., main-flow → feature-dev-flow → planning-flow). Stack frames record the correct parent state (subflow wrapper, not pre-transition state).
+**Subflow Exit Resolution (v1.0.0)**: Exit names resolve through the parent flow's transition map instead of being used directly as state IDs. This enables subflow chaining (atomic exit + re-enter next subflow) and recursive subflow entry up to 3 levels deep (e.g., define-flow → spec-validation-flow). Stack frames record the correct parent state (subflow wrapper, not pre-transition state).
 
 ## Content
 
@@ -137,7 +137,7 @@ Named condition references in `when` clauses must resolve to a key in the same s
 - Cross-flow cycles are forbidden (detected via DFS at load time)
 - Exit names resolve through parent flow's transition map (not used directly as state IDs)
 - Subflow chaining: atomic exit + re-enter next subflow without manual state manipulation
-- Recursive entry: supports up to 3-level nesting (main → feature-dev → planning)
+- Recursive entry: supports up to 3-level nesting (define-flow → discovery-flow, develop-flow → development-flow, etc.)
 - Stack frames record the subflow wrapper state (not the pre-transition state)
 - `.yaml` extension fallback: flow references without extension are resolved automatically
 - `session init` auto-enters subflow when first state has a `flow:` field
@@ -176,7 +176,7 @@ A flow definition MAY contain fields not specified in the specification. Such ex
 
 ### Session Model
 
-Sessions persist workflow progress as YAML files in `.flowr/sessions/` with atomic writes (temp-file-then-rename). Each session tracks:
+Sessions persist workflow progress as YAML files in `.cache/sessions/` with atomic writes (temp-file-then-rename). Each session tracks:
 
 | Field | Description |
 |-------|-------------|
@@ -197,8 +197,8 @@ flowr reads `[tool.flowr]` from `pyproject.toml`. Resolution priority: CLI flags
 | Key | Default | Description |
 |-----|---------|-------------|
 | `flows_dir` | `.flowr/flows` | Directory containing flow YAML files |
-| `sessions_dir` | `.flowr/sessions` | Directory for session YAML files |
-| `default_flow` | `main-flow` | Flow name used when none specified |
+| `sessions_dir` | `.cache/sessions` | Directory for session YAML files |
+| `default_flow` | `define-flow` | Flow name used when none specified |
 | `default_session` | `default` | Session name used with bare `--session` |
 
 ### Design Principles

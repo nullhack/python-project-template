@@ -12,11 +12,11 @@ states:
       skills:
         - conduct-interview
       in:
-        - "interview-notes/*.md"  # optional
+        - ".cache/interview-notes/*.md"  # optional
         - "domain_spec.md"  # optional — for re-interview context
         - "product_definition.md"  # optional — for re-interview context
       out:
-        - "interview-notes/<session_id>.md"
+        - ".cache/interview-notes/<session_id>.md"
     next:
       needs-spec: spec-creation
       already-known: complete
@@ -30,7 +30,7 @@ states:
         - create-domain-spec
         - define-ubiquitous-language
       in:
-        - interview-notes/*.md
+        - .cache/interview-notes/*.md
         - "domain_spec.md"  # optional — cumulative edit across iterations
         - "glossary.md"  # optional — cumulative edit across iterations
         - "product_definition.md"  # optional — cumulative edit across iterations

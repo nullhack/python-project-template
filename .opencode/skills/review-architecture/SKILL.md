@@ -9,7 +9,7 @@ Available knowledge: [[software-craft/code-review#key-takeaways]], [[architectur
 
 **Adversarial stance**: Actively seek inconsistencies and gaps. Use accountability to an unknown audience (Tetlock, 1985) to produce more rigorous decisions.
 
-1. Read all `in` artifacts: ADRs (if any), product_definition.md, domain_spec.md, simulation_results.md, glossary.md.
+1. Read all `in` artifacts: ADRs (if any), product_definition.md, domain_spec.md, glossary.md.
 2. Verify cross-document consistency per [[architecture/reconciliation#concepts]]:
    - ADR ↔ domain_spec: every ADR aligns with spec requirements; each ADR references specific Example criteria.
    - domain_spec ↔ product_definition: every bounded context in the spec maps to a quality attribute or delivery step.

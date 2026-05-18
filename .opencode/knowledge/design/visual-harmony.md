@@ -53,6 +53,18 @@ last-updated: 2026-04-30
 | Creative, expressive | Sans-serif humanist | 300–500 | Wide | Nunito, Quicksand |
 | Technical, engineering | Monospace or geometric | 400–600 | Normal | JetBrains Mono, Fira Code |
 
+### Visual Weight Proportions (Itten's Contrast of Extension)
+
+| Colour pair | Visual weight ratio (area for equal perceived weight) |
+|------------|------------------------------------------------------|
+| Yellow : Violet | 1 : 3 |
+| Orange : Blue | 1 : 2 |
+| Red : Green | 1 : 1 |
+| Yellow : Orange | 1 : 1.5 |
+| Light grey : Dark navy | 1 : 2 |
+
+Use these ratios to determine element sizing: a smaller area of a visually heavier colour balances a larger area of a lighter colour.
+
 ### Composition Decision Guide
 
 | Desired effect | Layout strategy | Grid | Where to place primary element |

@@ -13,7 +13,7 @@ Available knowledge: [[architecture/technical-design]], [[software-craft/source-
    - Plain Examples → bare function stubs with `...` body
    - Scenario Outlines → `@given` decorated stubs with inferred Hypothesis strategies + `@example` decorators for each Examples table row
    - Placeholder names become function parameters; strategy is inferred from Examples table column types
-4. Run `beehave check` to verify all Examples in the feature file have corresponding test stubs and there are no orphan tests. This verifies: unmapped-scenario, unmapped-test, misplaced-test, missing-placeholder, missing-literal, example-mismatch. Stubs with `...` bodies are exempt from placeholder and literal checks.
-5. Verify decomposition per [[requirements/decomposition#key-takeaways]]: no more than 2 concerns, no more than 8 Must Examples.
+4. Run `beehave check` and resolve violations per [[software-craft/test-stubs#concepts]].
+5. Verify decomposition per [[requirements/decomposition#key-takeaways]]: no Rule spans >1 bounded context, no Rule has >8 Must behaviors after MoSCoW triage and Scenario Outline collapse.
 6. Verify all planning artifacts are present and consistent: feature file, product definition, domain spec, glossary.
-7. Commit all changes to the local dev branch.
+7. Commit all changes to the feature branch per [[software-craft/git-conventions#content]].
