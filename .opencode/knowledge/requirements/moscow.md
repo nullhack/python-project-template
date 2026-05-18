@@ -9,9 +9,8 @@ last-updated: 2026-04-29
 ## Key Takeaways
 
 - Classify each candidate Example as Must (required for correctness), Should (high value but deferrable), or Could (nice-to-have edge case). This classification is for internal triage only: it must NOT appear as Gherkin tags or in the .feature file.
-- If MoSCoW triage reveals that Musts alone exceed 8 Examples or the Rule spans more than 2 concerns, split per [[requirements/decomposition]].
+- If MoSCoW triage reveals that Must behaviors exceed 8 after Scenario Outline collapse, split per [[requirements/decomposition]].
 - Musts cannot exceed 60% of total effort at the Rule level (DSDM); if a Rule has 12 Examples and only 3 are Musts, the remaining 9 can be deferred.
-- MoSCoW triage classifies Examples for internal prioritization only: it must NOT appear as Gherkin tags or in the .feature file.
 
 ## Concepts
 
@@ -21,7 +20,7 @@ last-updated: 2026-04-29
 
 **Could**: Nice-to-have edge case. Low risk if deferred. Could Examples cover unusual conditions or minor enhancements that improve robustness.
 
-**Split Trigger**: If Musts alone exceed 8 Examples or the Rule spans more than 2 concerns, the decomposition rules in [[requirements/decomposition]] apply. MoSCoW triage surfaces the signal; decomposition handles the split.
+**Split Trigger**: If Must behaviors exceed 8 after MoSCoW triage and Scenario Outline collapse, the decomposition rules in [[requirements/decomposition]] apply. MoSCoW triage surfaces the signal; decomposition handles the split.
 
 ## Content
 

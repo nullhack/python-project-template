@@ -15,7 +15,6 @@ states:
       in:
         - product_definition.md
         - domain_spec.md
-        - simulation_results.md
       out:
         - product_definition.md:
             - deployment
@@ -71,6 +70,7 @@ states:
         - domain_spec.md
         - glossary.md
         - product_definition.md
+        - "adr/*.md"  # optional — visibility into prior ADRs before creating new ones
       out:
         - product_definition.md:
             - technology_stack
@@ -90,7 +90,6 @@ states:
         - "adr/<adr_id>.md"  # optional
         - product_definition.md
         - domain_spec.md
-        - simulation_results.md
         - glossary.md
       out: []
     conditions:

@@ -71,15 +71,7 @@ Before exiting a state, confirm each item:
 
 ### Owner Mapping
 
-| Owner Code | Agent |
-|---|---|
-| `PO` | product-owner |
-| `DE` | domain-expert |
-| `SE` | software-engineer |
-| `SA` | system-architect |
-| `R` | reviewer |
-| `Design Agent` | design-agent |
-| `Setup Agent` | setup-agent |
+Owner dispatch mapping per AGENTS.md Session Protocol.
 
 ## Related
 

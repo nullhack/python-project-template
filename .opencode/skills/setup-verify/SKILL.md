@@ -14,7 +14,7 @@ description: "Verify transformations, clean template artifacts, and finalize the
 3. Clean template-specific artifacts:
    - Delete `.flowr/viz/data.js` (regeneratable)
    - Delete `docs/branding.md` (user creates their own)
-   - Delete `.flowr/sessions/` contents if any exist
+   - Delete `.cache/sessions/` contents if any exist
    - Delete `docs/adr/.gitkeep`, `docs/features/.gitkeep`, `docs/spec/` (template placeholders)
 4. Set git remote: `git remote set-url origin git@github.com:{github_username}/{project_name}.git`
 5. Commit all changes: `git add -A && git commit -m "chore: initialize project from temple8"`

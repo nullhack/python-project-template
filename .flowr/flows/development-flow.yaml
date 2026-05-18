@@ -1,5 +1,5 @@
 flow: development-flow
-version: 12.0.0
+version: 13.0.0
 params: [feature_id]
 exits:
   - done
@@ -7,7 +7,7 @@ exits:
 states:
   - id: feature-structuring
     attrs:
-      description: "SA creates the feature branch and feature-level structure — package directories, port interfaces, aggregate root signatures — before TDD cycles begin"
+      description: "SA creates the feature branch and feature-level structure — package directories, port interfaces, aggregate root signatures — before stubs are generated"
       owner: SA
       git: feature
       skills:
@@ -15,13 +15,42 @@ states:
       in:
         - features/<feature_id>.feature
         - domain_spec.md
-        - simulation_results.md
         - glossary.md
         - product_definition.md
       out:
         - git_branch
     next:
-      ready: tdd-cycle
+      ready: create-py-stubs
+
+  - id: create-py-stubs
+    attrs:
+      description: "SA creates typed source stubs and generates test stubs via pytest-beehave, then verifies all planning artifacts are complete for baseline"
+      owner: SA
+      git: feature
+      skills:
+        - create-py-stubs
+      in:
+        - features/<feature_id>.feature
+        - domain_spec.md
+        - glossary.md
+        - product_definition.md
+      out:
+        - typed-source-stubs
+        - test-skeletons
+    conditions:
+      stubs-traceable:
+        beehave-check-passes: ==verified
+      baseline-confirmed:
+        baseline-confirmed: ==verified
+      committed:
+        committed: ==verified
+    next:
+      done:
+        to: tdd-cycle
+        when:
+          - stubs-traceable
+          - baseline-confirmed
+          - committed
 
   - id: tdd-cycle
     attrs:

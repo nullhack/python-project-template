@@ -170,7 +170,7 @@ Implement both:
 - Imperative UI steps instead of declarative behaviour descriptions
 - Two Examples with the same `Then` but different input values: duplicate behaviour coverage per [[requirements/gherkin#concepts]]
 - Duplicate Example titles within a feature file: breaks pytest-beehave mapping
-- Titles shorter than 3 words or longer than 8 words: produces ambiguous or unwieldy test identifiers
+- Titles shorter than 2 words or longer than 6 words: produces ambiguous or unwieldy test identifiers
 - Using Scenario Outline for single-value or two-value cases: over-engineering, use plain Example instead
 - Using `Scenario:` keyword: use `Example:` for single cases or `Scenario Outline:` for parameterized cases
 - Placeholder names that are Python keywords or builtins: beehave rejects these at parse time

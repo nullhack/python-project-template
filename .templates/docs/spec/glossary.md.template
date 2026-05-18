@@ -20,12 +20,12 @@
    **Source:** spec-validation-flow
 
 ### Rule
-   **Definition:** A behavioral requirement subject to INVEST validation. Represented as a `Rule:` block in a .feature file consisting of a 3-8 word title followed by a behavioral description paragraph.
+   **Definition:** A behavioral requirement subject to INVEST validation. Represented as a `Rule:` block in a .feature file consisting of a 2-6 word title followed by a behavioral description paragraph.
    **Aliases:** user story (deprecated), story (deprecated)
    **Source:** planning-flow
 
 ### Rule block
-   **Definition:** The Gherkin `Rule:` section in a .feature file: a 3-8 word title followed by a behavioral description paragraph. The authoritative form of a behavioral requirement.
+   **Definition:** The Gherkin `Rule:` section in a .feature file: a 2-6 word title followed by a behavioral description paragraph. The authoritative form of a behavioral requirement.
    **Source:** planning-flow
 
 ### behavior hint
@@ -34,7 +34,7 @@
    **Source:** planning-flow
 
 ### Example block
-   **Definition:** The Gherkin `Example:` section in a .feature file: a 3-8 word title followed by Given/When/Then steps describing a single behavioral outcome.
+   **Definition:** The Gherkin `Example:` section in a .feature file: a 2-6 word title followed by Given/When/Then steps describing a single behavioral outcome.
    **Aliases:** BDD scenario, BDD example, acceptance criterion (deprecated)
    **Source:** planning-flow
 
@@ -43,7 +43,7 @@
    **Source:** planning-flow
 
 ### pain point
-   **Definition:** A gap, contradiction, ambiguity, or edge case found during spec simulation. Classified as ambiguous, contradictory, missing, or edge-case. Tracked in simulation_results.md.
+   **Definition:** A gap, contradiction, ambiguity, or edge case found during spec simulation. Classified as ambiguous, contradictory, missing, or edge-case. Tracked in `.cache/sim/simulation_results_<timestamp>.md`.
    **Source:** spec-validation-flow
 
 ---
@@ -54,8 +54,8 @@
    **Definition:** Monolithic structural domain specification. Contains context map, entities, relationships, aggregate boundaries, data shapes, integration points, and external contracts. Behavioral sections (State Machines, Error Handling, Invariants) are derived summaries that reference .feature file rules.
    **Source:** discovery-flow
 
-### simulation_results.md
-   **Definition:** Per-iteration simulation output. Contains walkthroughs performed (with Discovered Rule column referencing .feature Rule titles), pain points, resolution status, and reviewer PASS/FAIL decision. Rules themselves live in .feature files.
+### simulation_results_<timestamp>.md
+   **Definition:** Per-iteration simulation environment artifact in `.cache/sim/`. Contains walkthroughs performed (with Discovered Rule column referencing .feature Rule titles), pain points, resolution status, and reviewer PASS/FAIL decision. Rules themselves live in .feature files. Not a persistent specification — domain knowledge migrates to domain_spec.md and .feature files during the spec-validation loop.
    **Source:** spec-validation-flow
 
 ### .feature file

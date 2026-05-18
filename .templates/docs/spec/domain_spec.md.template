@@ -62,9 +62,9 @@ and why it exists as a separate context.>
 
 ### Aggregate Boundaries
 
-| Aggregate | Root Entity | Invariants | Why Grouped |
-|-----------|-------------|------------|-------------|
-| `<Aggregate>` | `<RootEntity>` | <business rules this aggregate enforces> | <business reason for the boundary> |
+| Aggregate | Root Entity | Why Grouped | See |
+|-----------|-------------|-------------|-----|
+| `<Aggregate>` | `<RootEntity>` | <business reason for the boundary> | ### Invariants |
 
 ### Data Shapes
 
@@ -84,9 +84,12 @@ and why it exists as a separate context.>
 #### <This Context> -> <Other Context>
 - Purpose: <why these contexts communicate>
 - Trigger: <what initiates the communication>
+- Mechanism: <sync HTTP, async event, shared DB, etc.>
 - Pattern: <Vernon pattern from Context Map>
 - Payload: {<field>: <type>} (may have ? for unknowns)
 - Response: {<field>: <type>} (may have ? for unknowns)
+- Error handling: <retry, dead letter, circuit breaker, etc.>
+- Ownership: <which team or service owns this integration point>
 
 ### External Contracts
 

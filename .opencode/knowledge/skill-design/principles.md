@@ -99,11 +99,7 @@ When two skills need the same knowledge, both should reference the same knowledg
 
 ### Input Handling
 
-Every skill that has `in` artifacts follows two rules:
-
-1. **Verify before proceeding.** Check that all `in` artifacts exist on disk. If any are missing, stop and flag the missing artifact rather than proceeding with assumed knowledge. This prevents the most common source of rework: building on assumptions about documents that don't exist or have been moved.
-
-2. **Read all `in` artifacts before starting work.** All `in` artifacts are mandatory context — read them in full before executing the skill's procedural steps. For wildcard patterns (`*.md`), list the directory first to discover what's available, then read all discovered files. The `in` list defines what you *must* read, not what you *may* optionally reference.
+Verify input artifacts per AGENTS.md Session Protocol.
 
 ## Related
 

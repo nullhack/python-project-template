@@ -2,6 +2,47 @@
 
 All notable changes to this template will be documented in this file.
 
+## [v9.0.0+20260518] - 2026-05-18: Adversarial Audit
+
+### Breaking
+
+- **Define-flow reorder**: `spec-validation → architecture → refine-features → validated` (was `spec-validation → refine-features → architecture → validated`). Architecture now runs before refine-features so quality_attributes, integration_points, and technology_stack are finalized before feature constraints are frozen.
+- **Architecture skippable**: architecture-assessment sets `architecture-complete: ==verified` and exits immediately when no architecture changes needed — no spec mutations on the skip path.
+
+### Added
+
+- **Decomposition decision tree**: replaced 5 stale triggers (">8 candidate Examples", ">2 concerns", undefined "concerns") with behavioral decision tree: group by Then-outcome → collapse Scenario Outlines → count Must behaviors → >8 Musts splits Rule. Structural triggers: >1 bounded context, "and" joining independently testable outcomes, no beneficiary, duplicate Rule.
+- **WSJF scoring wired**: `select-feature` now scores subsequent features by WSJF (Value/Effort/Dependency) per `[[requirements/wsjf#key-takeaways]]`. First feature still selected by delivery order.
+- **AI language markers expanded**: Tier 1 +25 words (navigate, harness, seamless, boilerplate, etc.), Tier 4 +4 phrases, new Tier 7 Claude-Specific Structural Patterns (8 patterns), Claude detection dimension in scoring table.
+- **Domain spec template**: Integration Points section now requires Mechanism, Error handling, Ownership fields (synced with context-mapping knowledge).
+
+### Changed
+
+- **Adversarial audit — 47 knowledge files, 39 skills**: comprehensive deduplication, stale content removal, and cross-reference alignment across all domains.
+- **Knowledge deduplication** (12 files): invest.md, moscow.md, decomposition.md, feature-discovery.md, technical-design.md, assessment.md, flowr-operations.md, todo-anchor-protocol.md, agent-design/principles.md, skill-design/principles.md, color-systems.md, project-assets.md — inline duplications replaced with cross-references to canonical sources.
+- **Skill deduplication** (10 files): refactor, review-gate, simulate-spec, fix-spec, review-simulation, create-py-stubs, verify-traceability, write-bdd-features, accept-feature, refine-features — inline knowledge restatements replaced with references.
+- **ADR structure aligned**: `adr.md` now documents Interview section and "Alternatives Considered" field name matching the actual template.
+- **Owner mapping consolidated**: removed from flowr-operations.md and todo-anchor-protocol.md; lives only in AGENTS.md.
+- **"As the system, I want..." removed**: all user story format examples replaced with Rule-native language ("Rule with no beneficiary").
+- **spec-architecture.md Terminology Map**: removed "story, user story" from deprecated column to prevent agents interpreting it as a format hint.
+
+### Removed
+
+- **`spec-architecture.md`** (requirements): fully covered by rule-derivation, spec-simulation, feature-discovery, gherkin, feature-boundaries, and the flow YAML files themselves. Zero references, highest drift risk.
+- **`rule-derivation.md`** (requirements): fully covered by spec-simulation.md (simulation rule discovery) and feature-discovery.md (traceability/gap verification). Zero skill references.
+- **`domain-modeling.md`** (domain-modeling): merged into event-storming.md as `### Formalization` subsection (Entity/VO distinction, relationship types, table formats, boundary heuristics). Zero skill references.
+
+### Fixed
+
+- **gherkin.md:173**: "3 words or longer than 8" → "2 words or longer than 6" to match canonical 2-6 word constraint.
+- **Glossary template drift**: "3-8 word title" → "2-6 word title" on lines 23, 28, 37.
+- **versioning.md:43-44**: broken `[[process/...]]` references → plain text URLs (semver.org, calver.org).
+- **create-domain-spec/SKILL.md:11**: misrouted reference from `[[domain-modeling/behavioral-contracts#concepts]]` → `[[domain-modeling/event-storming#concepts]]` for bounded context identification.
+- **moscow.md:14**: removed duplicate Key Takeaway (identical to line 11).
+- **Gh-159**: spec-to-feature pipeline gap resolved by define-flow reorder — architecture runs before refine-features, ensuring delivery items are validated against complete spec documents before feature files are frozen.
+- **Gh-144**: technical_design.md.template redundancies resolved by knowledge dedup — technical-design.md no longer duplicates quality-attributes, contract-design, or assessment content.
+- **Gh-143**: mandatory artifact reads, out-artifact lifecycle protocol, and cumulative editing guidance now in AGENTS.md Session Protocol.
+
 ## [v8.6.0+20260515] - 2026-05-15: Dialogic Chronos
 
 ### Added

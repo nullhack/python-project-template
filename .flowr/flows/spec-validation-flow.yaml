@@ -16,9 +16,9 @@ states:
         - domain_spec.md
         - product_definition.md
         - glossary.md
-        - "simulation_results.md"  # optional — may not exist on first iteration
+        - ".cache/sim/simulation_results_*.md"  # optional — prior iterations
       out:
-        - simulation_results.md
+        - ".cache/sim/simulation_results_<timestamp>.md"
         - "features/<context>.feature"
     next:
       done: review-simulation
@@ -31,13 +31,13 @@ states:
       skills:
         - review-simulation
       in:
-        - simulation_results.md
+        - ".cache/sim/simulation_results_*.md"
         - domain_spec.md
         - product_definition.md
         - glossary.md
         - "features/*.feature"
       out:
-        - simulation_results.md:
+        - ".cache/sim/simulation_results_<timestamp>.md":
             - summary
     conditions:
       simulation-approved:
@@ -61,14 +61,14 @@ states:
       skills:
         - fix-spec
       in:
-        - simulation_results.md
+        - ".cache/sim/simulation_results_*.md"
         - domain_spec.md
         - product_definition.md
         - glossary.md
         - "features/<context>.feature"
       out:
         - domain_spec.md
-        - simulation_results.md
+        - ".cache/sim/simulation_results_<timestamp>.md"
         - "features/<context>.feature"
     next:
       done: simulate-spec

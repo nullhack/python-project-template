@@ -41,20 +41,11 @@ last-updated: 2026-04-30
 
 ### Logo Design Process
 
-1. **Brief**: Written brief with project name, tagline, 3 personality adjectives, forbidden elements, 5 reference logos
-2. **Sketch**: 20–40 rough concepts, black pen on white paper, monochrome only
-3. **Select**: Pick top 3–5, refine in vector, still monochrome
-4. **Colour**: Add 1 colour, then 2 maximum. Test on white, black, and mid-gray backgrounds
-5. **Stress-test**: Apply evaluation checklist (5-second, blur, monochrome, scalability, proximity, "one thing")
-6. **Deliver**: Export all sizes and formats per delivery checklist
+The logo and banner follow a favicon-first, monochrome-first, progressive-simplification process per the `design-assets` skill.
 
 ### Banner Design Process
 
-1. **Layout**: 1280×640px canvas (2:1 for social preview), centred content zone
-2. **Elements**: Logo mark (left or centre), project name in large type, tagline optional
-3. **Colours**: Use brand primary and background only. Accent sparingly for rules/dividers
-4. **Dark variant**: Same layout, inverted palette, tested on dark backgrounds
-5. **Export**: SVG for README, PNG at 1280×640 for GitHub social preview
+The logo and banner follow a favicon-first, monochrome-first, progressive-simplification process per the `design-assets` skill.
 
 ### File Delivery Checklist
 

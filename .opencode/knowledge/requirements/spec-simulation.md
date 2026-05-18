@@ -9,7 +9,7 @@ last-updated: 2026-05-14
 ## Key Takeaways
 
 - Spec simulation walks through domain spec walkthroughs mentally before any code is written, discovering rules, pain points, and E2E test candidates. The domain spec is monolithic: one file containing all bounded contexts as `## <Context Name>` sections.
-- Simulation iterates over all bounded contexts in the single domain_spec.md file. I/O evidence is per-context in /tmp/sim/<context>/. These files are NOT committed — they are ephemeral evidence of the simulation process.
+- Simulation iterates over all bounded contexts in the single domain_spec.md file. I/O evidence is per-context in .cache/sim/<context>/. These files are NOT committed — they are ephemeral evidence of the simulation process.
 - Pain points are classified as: ambiguous (multiple readings), contradictory (conflicting specs), missing (not covered at all), or edge-case (happy path covered but not this boundary).
 - Discovered rules are surfaced as plain-language behavioral statements — no numbered prefixes. Each discovered rule traces to the walkthrough that produced it.
 - The simulation loop (simulate → review → fix → re-simulate) caps at 5 iterations. If unresolved pain points remain, the flow escalates to needs-reinterview.
@@ -27,7 +27,7 @@ last-updated: 2026-05-14
 - **Missing**: the walkthrough is not covered by the spec at all. Fix: add the missing content (new entity fields, integration contracts, error paths).
 - **Edge-case**: the spec covers the happy path but not this boundary condition. Fix: add explicit handling (constraints, guards) or state out-of-scope.
 
-**I/O Evidence**: Each simulated walkthrough produces a pair of JSON files in /tmp/sim/<context>/:
+**I/O Evidence**: Each simulated walkthrough produces a pair of JSON files in .cache/sim/<context>/:
 - `walkthrough_<N>_in.json`: the input state and stimulus.
 - `walkthrough_<N>_out.json`: the expected output state and response.
 These files provide concrete examples for later test writing and prove the simulation was thorough.
@@ -60,5 +60,4 @@ The reviewer decides PASS or FAIL based on:
 ## Related
 
 - [[domain-modeling/behavioral-contracts]]: the External Contracts that simulation targets
-- [[requirements/rule-derivation]]: systematic rule sources (now supplemented by simulation discovery)
 - [[requirements/pre-mortem]]: adversarial analysis technique used during simulation

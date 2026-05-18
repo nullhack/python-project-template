@@ -12,7 +12,7 @@ last-updated: 2026-05-08
 - Domain events are facts expressed in past tense (OrderPlaced, FillDetected). Extract from interview transcripts by scanning for business-relevant state changes and outcome statements.
 - Commands are intents in imperative (PlaceOrder, DetectFill). Each command has an actor, preconditions, and produces zero or more events. Read models are the decision information needed before executing a command.
 - Hotspots mark conflicts, ambiguities, or disagreements. They are not resolved during event storming — they are flagged for stakeholder follow-up and indicate context boundary candidates.
-- Candidate bounded contexts emerge from clustering related events. Candidate aggregates emerge from grouping events that must be transactionally consistent.
+- Candidate bounded contexts emerge from clustering related events. Candidate aggregates emerge from grouping events that must be transactionally consistent. Formalization converts these candidates into entity tables, aggregate boundaries, and context maps.
 
 ## Concepts
 
@@ -27,6 +27,51 @@ last-updated: 2026-05-08
 **Candidate Grouping**: After all events and commands are identified, group them into hypotheses: aggregates (events/commands that must be transactionally consistent) and bounded contexts (clusters sharing a ubiquitous language). This is hypothesis, not final — the domain-discovery step formalizes these candidates.
 
 ## Content
+
+### Formalization
+
+Event storming produces candidates. Formalization converts candidates into structural specification artifacts.
+
+**Entity vs Value Object**: An entity has identity persisting across state changes (a Slot is the same Slot regardless of state). A value object has no identity — defined entirely by attribute values (PriceLevel at price=100, qty=5 equals any other with same values). Only entities can be aggregate roots. Value objects are always owned by an entity.
+
+**Relationship Extraction**: Relationships derive from: event flow (entity A produces an event entity B consumes), data flow (entity A composed from entity B's data), and domain constraints (a rule involves both entities). Three types: composition, dependency, domain flow. Cardinality constrains design: 1:1 enables direct reference, 1:N enables collection, M:N requires indirection.
+
+**Formalization Steps**:
+
+1. List entity candidates from events and commands. Each event's subject is an entity candidate. Each command's target is an entity candidate. Deduplicate across events.
+2. Classify each candidate: entity if it has identity and lifecycle; value object if defined by attributes and immutable.
+3. Determine relationships: composition (A contains B), dependency (A uses B), or domain flow (A produces output for B). Cardinality: 1:1, 1:N, M:N.
+4. Define aggregate boundaries: group entities sharing invariants. Document root entity, invariants, and business reason for grouping.
+5. Identify context boundaries: group aggregates sharing a ubiquitous language. Document name, responsibility, key entities, capability, why separate, integration points.
+6. Map context relationships per [[domain-modeling/context-mapping#key-takeaways]].
+
+**Entity Table Format**:
+
+| Field | Purpose |
+|---|---|
+| Name | PascalCase entity name |
+| Type | Entity or Value Object |
+| Description | What it represents |
+| Bounded Context | Owning context |
+| Aggregate Root? | Yes if root, — if value object |
+
+**Aggregate Boundary Table Format**:
+
+| Field | Purpose |
+|---|---|
+| Aggregate | PascalCase name |
+| Root Entity | Identity root |
+| Invariants | Business rules enforced |
+| Why Grouped | Business reason for boundary |
+| Bounded Context | Owning context |
+
+**Boundary Decision Heuristics**:
+
+- If an invariant references two entities, they share an aggregate
+- If an aggregate exceeds memory, split and accept eventual consistency
+- If two contexts use the same term with different definitions, they are separate contexts
+- If removing one aggregate doesn't change term meanings in another, they are separate contexts
+- If a rule can be checked eventually (not immediately), entities may be in different aggregates
 
 ### Phase 1: Chaotic Exploration
 
@@ -99,7 +144,6 @@ Record as: `Candidate Aggregate: [name] — [events] — [commands] — [consist
 
 ## Related
 
-- [[domain-modeling/domain-modeling]]
 - [[domain-modeling/context-mapping]]
 - [[requirements/ubiquitous-language]]
 - [[requirements/interview-techniques]]

@@ -50,7 +50,6 @@ When a delivery step spans multiple contexts or aggregates:
 |--------|-------|---------------|
 | Spans 2+ bounded contexts | Split along context boundaries | Shared-kernel types (Domain shared), Orchestrator, Tightly coupled co-deployed |
 | Spans 2+ aggregates | Split along aggregate boundaries | If aggregates must be transactionally consistent |
-| Has >2 distinct concerns | Split into separate features per concern | If concerns are inseparable aspects of one capability |
 | Delivery step name contains "and" | Likely two features | If "and" joins inseparable aspects |
 
 ### Cross-Cutting Concern Mapping
@@ -66,6 +65,5 @@ Example: Kill switch behavior appears in Engine (lifecycle control) and Order Ex
 ## Related
 
 - [[requirements/feature-discovery]]
-- [[requirements/rule-derivation]]
 - [[requirements/decomposition]]
-- [[domain-modeling/domain-modeling]]
+- [[domain-modeling/event-storming]]

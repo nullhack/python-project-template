@@ -40,5 +40,5 @@ last-updated: 2026-04-30
 
 ## References
 
-- [[process/preston-werner_2013]]: SemVer 2.0.0 specification
-- [[process/calver_2020]]: Calendar Versioning convention
+- SemVer 2.0.0 specification (semver.org)
+- Calendar Versioning convention (calver.org)

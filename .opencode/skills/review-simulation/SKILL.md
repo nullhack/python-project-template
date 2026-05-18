@@ -7,18 +7,17 @@ description: "Adversarial review of simulation results: find missed scenarios, v
 
 Available knowledge: [[requirements/spec-simulation#concepts]], [[architecture/reconciliation#key-takeaways]], [[requirements/gherkin#concepts]]. `in` artifacts: read all before starting work.
 
-1. Read `simulation_results.md` and `domain_spec.md` (all contexts).
+1. Read `.cache/sim/simulation_results_*.md` (all iterations, focus on the latest) and `domain_spec.md` (all contexts).
 2. Declare adversarial stance per [[architecture/reconciliation#concepts]]: "I will actively search for missed scenarios and invalid pain points, not confirm the simulation's completeness."
-3. **Walkthrough coverage check**: For each context in domain_spec.md, for each entity, verify at least one happy path, one edge case, and one error path walkthrough. For each integration point, verify at least one success and one failure walkthrough. For cross-context integration points, verify both sides of the bilateral relationship were tested. Flag any gaps.
-4. **Pain point validation**: For each pain point in simulation_results.md, verify it is real and correctly classified. A pain point is invalid if the spec actually covers the walkthrough (reviewer misread) or if the walkthrough is out of scope per product_definition.md. Remove invalid pain points. Add any missed pain points.
-5. **Rule quality check**: For each discovered rule (now in .feature files), verify it is:
+3. Verify reviewer decision criteria per [[requirements/spec-simulation#content]].
+4. **Rule quality check**: For each discovered rule (now in .feature files), verify it is:
     - Specific enough to be testable (not vague like "the system should handle errors").
-    - Traceable to a walkthrough that discovered it (via simulation_results.md provenance column).
+     - Traceable to a walkthrough that discovered it (via simulation results provenance column).
     - Not contradicted by another rule or by the spec.
     - Written as a Rule block with clear behavioral description, suitable for generating Examples.
-6. **Quality attribute coverage**: For each quality attribute in product_definition.md, verify at least one walkthrough stresses it. If not, add a missed walkthrough.
-7. **Cross-context consistency**: Verify integration points are consistent: if Context A says it sends payload X to Context B, verify Context B expects payload X. Bilateral mismatches are hard failures.
-8. **Decide PASS or FAIL**:
+5. **Quality attribute coverage**: For each quality attribute in product_definition.md, verify at least one walkthrough stresses it. If not, add a missed walkthrough.
+6. **Cross-context consistency**: Verify integration points are consistent: if Context A says it sends payload X to Context B, verify Context B expects payload X. Bilateral mismatches are hard failures.
+7. **Decide PASS or FAIL**:
    - **PASS**: zero unresolved pain points, all entities across all contexts covered by walkthroughs, all integration points tested, all quality attributes stressed, cross-context integration points consistent.
    - **FAIL**: any unresolved pain point, any untested entity or integration point, any untested quality attribute, any bilateral integration mismatch.
-9. Record the decision in simulation_results.md Summary section. If FAIL, specify which pain points must be addressed in the next fix-spec iteration.
+8. Record the decision in the latest simulation results Summary section. If FAIL, specify which pain points must be addressed in the next fix-spec iteration.

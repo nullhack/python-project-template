@@ -26,7 +26,7 @@ last-updated: 2026-05-14
 
 **Contract vs Integration Point**: Integration Points describe context-to-context communication (how bounded contexts talk to each other). External Contracts describe how the outside world talks to THIS context. Both are in the domain spec but serve different purposes.
 
-**Simulation Target**: The SA walks through each External Contract with happy/edge/error scenarios, mentally executing the contract against the spec. The contract's Input/Output fields provide the I/O shape for /tmp/sim/ evidence files. Pain points discovered here drive spec fixes.
+**Simulation Target**: The SA walks through each External Contract with happy/edge/error scenarios, mentally executing the contract against the spec. The contract's Input/Output fields provide the I/O shape for .cache/sim/ evidence files. Pain points discovered here drive spec fixes.
 
 ## Content
 

@@ -11,16 +11,8 @@ Available knowledge: [[software-craft/tdd]], [[software-craft/refactoring]], [[s
 2. Refactor only if there is a test that would break if the refactoring is wrong per [[software-craft/tdd#key-takeaways]].
 3. Apply small steps: one refactoring at a time, tests green after each step, no new functionality per [[software-craft/refactoring#key-takeaways]].
 4. Apply design-only transformations per [[software-craft/tdd#concepts]]: YAGNI > KISS > DRY > ObjCal > Smells > SOLID > patterns. Do not apply convention compliance (docstrings, type hints, import ordering, format changes). Those belong in the Conventions Phase.
-5. IF a class has >2 instance variables → split per [[software-craft/object-calisthenics#key-takeaways]].
-6. IF a method uses `else` → replace with early return or guard clause per [[software-craft/object-calisthenics#key-takeaways]].
-7. IF code calls `obj.get_x()` then decides → replace with Tell, Don't Ask per [[software-craft/object-calisthenics#key-takeaways]].
-8. IF Long Method → Extract Method per [[software-craft/smell-catalogue#concepts]].
-9. IF Switch Statements or repeated `if/elif` on type → Replace Conditional with Polymorphism per [[software-craft/smell-catalogue#concepts]].
-10. IF Feature Envy → Move Method per [[software-craft/smell-catalogue#concepts]].
-11. IF Primitive Obsession → Replace Data Value with Object per [[software-craft/smell-catalogue#concepts]].
-12. IF Data Clumps → Introduce Parameter Object per [[software-craft/smell-catalogue#concepts]].
-13. IF Shotgun Surgery or Divergent Change → Extract Class per [[software-craft/smell-catalogue#concepts]].
-14. IF no improvement is needed → skip refactoring and proceed to the next test.
-15. IF a spec gap or inconsistency is discovered during refactoring → do NOT modify specification documents (domain_spec.md, glossary.md, product_definition.md, ADRs, feature files). Flag it in output notes. The SE may ONLY modify production code and test code.
-16. Commit refactor changes separately from feature changes per [[software-craft/git-conventions#concepts]].
-17. Run `task test-fast` to confirm all tests remain green after refactoring.
+5. Detect improvement opportunities per the design principle priority in [[software-craft/tdd#content]], loading ObjCal per [[software-craft/object-calisthenics#key-takeaways]], smells per [[software-craft/smell-catalogue#key-takeaways]], and SOLID per [[software-craft/solid#key-takeaways]]. Apply the appropriate refactoring technique per [[software-craft/refactoring-techniques#concepts]].
+6. IF no improvement is needed → skip refactoring and proceed to the next test.
+7. IF a spec gap or inconsistency is discovered during refactoring → do NOT modify specification documents (domain_spec.md, glossary.md, product_definition.md, ADRs, feature files). Flag it in output notes. The SE may ONLY modify production code and test code.
+8. Commit refactor changes separately from feature changes per [[software-craft/git-conventions#concepts]].
+9. Run `task test-fast` to confirm all tests remain green after refactoring.

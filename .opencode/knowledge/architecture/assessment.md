@@ -54,12 +54,7 @@ When assessing architecture for a new feature:
 
 ### Hexagonal Architecture Verification
 
-When reviewing existing architecture:
-
-- Every external dependency must have a Protocol (interface) in the domain layer
-- The domain layer must have zero imports from infrastructure packages
-- Adapters must implement domain-defined Ports, not the other way around
-- If the domain references a concrete technology, it's a violation
+Verify hexagonal architecture compliance per [[architecture/contract-design#concepts]].
 
 ## Related
 

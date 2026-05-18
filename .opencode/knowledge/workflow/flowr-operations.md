@@ -31,7 +31,7 @@ last-updated: 2026-05-06
 
 **Flow Name Resolution**: Commands accept short flow names (e.g., `architecture-flow`) or full file paths. Short names are resolved by searching the configured flows directory.
 
-**Sessions**: Sessions persist workflow progress (current flow, state, call stack for subflows) as YAML files in `.flowr/sessions/`. Use `--session <name>` on check/next/transition to resolve flow and state from the session. `transition --session` auto-updates the session after advancing. `session init` auto-enters subflow when the first state has a `flow:` field.
+**Sessions**: Sessions persist workflow progress (current flow, state, call stack for subflows) as YAML files in `.cache/sessions/`. Use `--session <name>` on check/next/transition to resolve flow and state from the session. `transition --session` auto-updates the session after advancing. `session init` auto-enters subflow when the first state has a `flow:` field.
 
 **Subflow Exit Resolution**: In flowr v1.0.0, exit names resolve through the parent flow's transition map rather than being used directly as state IDs. This enables subflow chaining (e.g., discovery-flow → architecture-flow) and recursive subflow entry (3-level nesting) without manual state manipulation.
 
@@ -73,84 +73,11 @@ All commands output JSON by default. Add `--text` for human-readable output.
 
 ### Output Formats
 
-**`check`** returns:
-```json
-{
-  "id": "feature-selection",
-  "attrs": {
-    "description": "...", "owner": "PO", "git": "main",
-    "skills": ["select-feature"], "in": [...], "out": [...]
-  },
-  "transitions": ["selected", "needs_architecture", "no_features"]
-}
-```
-
-**`next`** returns all transitions with status markers:
-```json
-{
-  "state": "feature-breakdown",
-  "transitions": [
-    {
-      "trigger": "done",
-      "target": "feature-examples",
-      "status": "blocked",
-      "conditions": {
-        "independent": "==no_shared_data_or_side_effects",
-        "negotiable": "==scope_negotiated",
-        "valuable": "==user_value_clear"
-      }
-    },
-    {
-      "trigger": "needs_respecification",
-      "target": "feature-breakdown",
-      "status": "open",
-      "conditions": null
-    }
-  ]
-}
-```
-
-**`check <target>`** returns transition conditions:
-```json
-{
-  "from": "feature-breakdown",
-  "target": "done",
-  "conditions": {
-    "independent": "==no_shared_data_or_side_effects",
-    "negotiable": "==scope_negotiated"
-  }
-}
-```
-
-**`transition`** returns the computed state change:
-```json
-{
-  "from": "feature-selection",
-  "trigger": "selected",
-  "to": "feature-breakdown"
-}
-```
-
-**`config`** returns resolved configuration with sources:
-```json
-[
-  {"key": "flows_dir", "value": ".flowr/flows", "source": "pyproject.toml"},
-  {"key": "default_session", "value": "default", "source": "default"}
-]
-```
+JSON output format examples per [[workflow/flowr-spec#concepts]].
 
 ### Configuration
 
-flowr reads configuration from `[tool.flowr]` in `pyproject.toml`, falling back to defaults:
-
-| Key | Default | Description |
-|-----|---------|-------------|
-| `flows_dir` | `.flowr/flows` | Directory containing flow YAML files |
-| `sessions_dir` | `.flowr/sessions` | Directory for session YAML files |
-| `default_flow` | `main-flow` | Flow name used when none specified |
-| `default_session` | `default` | Session name used when `--session` is given without a value |
-
-CLI `--flows-dir` overrides `pyproject.toml` which overrides defaults.
+Configuration table per [[workflow/flowr-spec#content]].
 
 ### Evidence Syntax
 
@@ -182,7 +109,7 @@ For ongoing work, use sessions to track progress:
 
 ### Session Protocol Integration
 
-- The `owner` field from `check` output determines which agent to dispatch to (PO → product-owner, SE → software-engineer, SA → system-architect, DE → domain-expert, R → reviewer, Design Agent → design-agent, Setup Agent → setup-agent).
+- Owner dispatch mapping per AGENTS.md Session Protocol.
 - The `skills` field lists which skills to load and execute.
 - The `in` and `out` fields define the artifact contract: what you may read and what you may write.
 - Do not skip the check step or guess transitions. Always verify the current state before starting work.
