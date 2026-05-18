@@ -9,7 +9,7 @@ exits:
 states:
   - id: feature-selection
     attrs:
-      description: "PO selects the next feature — by delivery order for first feature, by WSJF for subsequent features"
+      description: "PO selects the next feature — by dependency count then WSJF"
       owner: PO
       git: dev
       skills:

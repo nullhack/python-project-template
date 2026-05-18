@@ -1,6 +1,6 @@
 ---
 domain: requirements
-tags: [feature-boundaries, story-mapping, delivery-order, bounded-contexts, feature-naming]
+tags: [feature-boundaries, bounded-contexts, feature-naming]
 last-updated: 2026-05-08
 ---
 
@@ -8,21 +8,21 @@ last-updated: 2026-05-08
 
 ## Key Takeaways
 
-- Feature boundaries are derived from simulation-created .feature files, validated against the delivery order in product_definition.md, the context map, and aggregate boundaries from the domain spec. Each .feature file from simulation is a feature candidate; candidates may be split, renamed, or merged.
-- A feature should belong to primarily one bounded context. If a delivery step spans two or more contexts, split it along context boundaries.
+- Feature boundaries are derived from simulation-created .feature files, validated against the context map and aggregate boundaries from the domain spec. Each .feature file from simulation is a feature candidate; candidates may be split, renamed, or merged.
+- A feature should belong to primarily one bounded context. If a feature spans two or more contexts, split it along context boundaries.
 - A feature should not span multiple aggregate transactional consistency boundaries. If it does, split along aggregate lines.
-- Feature names follow the `[Capability]` pattern from the delivery step. Descriptions answer: what it provides, which context it serves, why it exists, and key entities.
+- Feature names follow the `[Capability]` pattern. Descriptions answer: what it provides, which context it serves, why it exists, and key entities.
 - Cross-cutting concerns (risk management, error handling, observability) are not separate features — they appear as Constraints in the features that implement them.
 
 ## Concepts
 
-**Delivery Order as Backbone**: Patton (2014) recommends mapping the user's narrative flow as a backbone, then slicing vertically into releasable increments. The .feature files created during simulation capture the discovered behavior — the delivery order in product_definition.md validates the dependency graph. .feature files are refined into independently deliverable features that follow the validated delivery order.
+**Context Map as Backbone**: Patton (2014) recommends mapping the user's narrative flow as a backbone, then slicing vertically into releasable increments. The .feature files created during simulation capture the discovered behavior — the context map from domain_spec.md validates the dependency graph. .feature files are refined into independently deliverable features whose delivery order is derived at selection time via dependency count and WSJF.
 
 **Context Alignment Validation**: Each feature candidate must be checked against the domain spec's bounded context table. A feature that touches entities from two or more contexts has a boundary problem. Split it: each context gets its own feature. The domain spec's "Why Separate" column explains why the contexts were split — the feature split must respect the same reasoning.
 
-**Aggregate Boundary Validation**: Aggregates define transactional consistency boundaries. A feature that modifies data across two aggregates in one transaction violates aggregate design. If a delivery step spans multiple aggregates, split the feature so each aggregate's invariants are tested within one feature.
+**Aggregate Boundary Validation**: Aggregates define transactional consistency boundaries. A feature that modifies data across two aggregates in one transaction violates aggregate design. If a feature spans multiple aggregates, split the feature so each aggregate's invariants are tested within one feature.
 
-**Naming and Description Convention**: Feature names come from the delivery step name, validated for clarity. Good names are specific enough that a developer knows what to build and a tester knows what to verify. Descriptions follow a four-part pattern: (1) what the feature provides, (2) which bounded context it serves, (3) why it exists — the business need, (4) key entities from the domain spec that belong to this feature.
+**Naming and Description Convention**: Feature names are noun phrases validated for clarity. Good names are specific enough that a developer knows what to build and a tester knows what to verify. Descriptions follow a four-part pattern: (1) what the feature provides, (2) which bounded context it serves, (3) why it exists — the business need, (4) key entities from the domain spec that belong to this feature.
 
 **Cross-Cutting Concerns**: Risk management, error handling, logging, and observability span multiple contexts. These are not separate features. Instead, they appear as Constraints in the features where they are implemented. The domain spec's context map shows which contexts have safety or error-handling responsibilities. Map those responsibilities to Constraints, not to separate features.
 
@@ -32,7 +32,7 @@ last-updated: 2026-05-08
 
 ### Feature Boundary Derivation Process
 
-1. **List delivery steps as feature candidates**: Read product_definition.md delivery order. Each numbered step is a feature candidate. Record: step number, name, module, and summary.
+1. **List feature candidates**: Each bounded context's simulation-created .feature file is a feature candidate. Record: context name, entities, and summary.
 
 2. **Map each candidate to bounded contexts**: For each candidate, identify which bounded contexts its entities belong to using the domain spec's entity table. If a candidate spans multiple contexts, split it.
 
@@ -44,13 +44,13 @@ last-updated: 2026-05-08
 
 ### Splitting Criteria
 
-When a delivery step spans multiple contexts or aggregates:
+When a feature spans multiple contexts or aggregates:
 
 | Signal | Split | Keep together |
 |--------|-------|---------------|
 | Spans 2+ bounded contexts | Split along context boundaries | Shared-kernel types (Domain shared), Orchestrator, Tightly coupled co-deployed |
 | Spans 2+ aggregates | Split along aggregate boundaries | If aggregates must be transactionally consistent |
-| Delivery step name contains "and" | Likely two features | If "and" joins inseparable aspects |
+| Feature name contains "and" | Likely two features | If "and" joins inseparable aspects |
 
 ### Cross-Cutting Concern Mapping
 

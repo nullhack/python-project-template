@@ -1,17 +1,5 @@
 # Domain Specification
 
-> **Status:** DRAFT | VALIDATED (YYYY-MM-DD)
-> Monolithic: all bounded contexts in one file.
-> Each `## <Context Name>` section is a context boundary.
-> Contains structural domain information: entities, relationships, aggregates,
-> context map, data shapes, integration points, and external contracts.
-> Behavioral content (walkthroughs, rules, pain points) is discovered during
-> simulation and written to `.feature` files.
-> State Machines, Error Handling, and Invariants are derived summaries that
-> reference `.feature` file rules — the `.feature` files are the authoritative
-> source for behavioral specification.
-> NO Given/When/Then here — that belongs in `.feature` files.
-
 ---
 
 ## Context Map

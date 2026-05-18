@@ -41,7 +41,6 @@ states:
             - why
             - users
             - out_of_scope
-            - delivery_order
             - quality_attributes
         - domain_spec.md:
             - context_map

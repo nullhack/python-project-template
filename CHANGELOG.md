@@ -12,7 +12,7 @@ All notable changes to this template will be documented in this file.
 ### Added
 
 - **Decomposition decision tree**: replaced 5 stale triggers (">8 candidate Examples", ">2 concerns", undefined "concerns") with behavioral decision tree: group by Then-outcome → collapse Scenario Outlines → count Must behaviors → >8 Musts splits Rule. Structural triggers: >1 bounded context, "and" joining independently testable outcomes, no beneficiary, duplicate Rule.
-- **WSJF scoring wired**: `select-feature` now scores subsequent features by WSJF (Value/Effort/Dependency) per `[[requirements/wsjf#key-takeaways]]`. First feature still selected by delivery order.
+- **WSJF scoring wired**: `select-feature` now scores all features by dependency count (lowest first), then WSJF (Value/Effort) per `[[requirements/wsjf#key-takeaways]]`. Delivery order derived at selection time from context map dependency graph.
 - **AI language markers expanded**: Tier 1 +25 words (navigate, harness, seamless, boilerplate, etc.), Tier 4 +4 phrases, new Tier 7 Claude-Specific Structural Patterns (8 patterns), Claude detection dimension in scoring table.
 - **Domain spec template**: Integration Points section now requires Mechanism, Error handling, Ownership fields (synced with context-mapping knowledge).
 

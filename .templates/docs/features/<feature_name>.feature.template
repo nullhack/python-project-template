@@ -5,4 +5,4 @@ Feature: <Feature title>
 
   Discovered rules are written as Rule blocks during simulation, then
   refined into feature boundaries by refine-features. Examples and
-  Scenario Outline blocks are added during feature-examples.>
+  Scenario Outline blocks are added later during feature-examples flow.>

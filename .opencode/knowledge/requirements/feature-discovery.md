@@ -14,6 +14,7 @@ last-updated: 2026-05-14
 - Rules are written directly to .feature files during simulation. Refine-features (in define-flow) splits, renames, adds descriptions, and validates rules. After define-flow, Feature titles, Rule titles, and Constraints are FROZEN.
 - Gaps discovered during feature refinement (a bounded context with no feature, a quality attribute with no enforcing feature) are flagged, not silently filled.
 - Features progress through a lifecycle: Rule blocks from simulation → feature boundaries and descriptions from refine-features → Example blocks from feature-examples.
+- Feature selection order is derived at selection time from the context map dependency graph and WSJF scoring — not from a pre-authored delivery order.
 
 ## Concepts
 
@@ -27,7 +28,7 @@ last-updated: 2026-05-14
 
 **Feature Lifecycle**: Features follow a lifecycle of increasing specificity across phases:
 1. **Simulation** (define-flow): Rules written directly to .feature files during simulation, grouped by bounded context. Technology constraints written as `# Constraints:`.
-2. **Refinement** (define-flow, refine-features): Feature boundaries identified from simulation-created .feature files. Features are split/renamed based on Delivery Order and context map. Rule blocks redistributed (content unchanged). Quality attributes mapped to `# Constraints:`. Rule titles validated for INVEST. Feature titles and descriptions finalized.
+2. **Refinement** (define-flow, refine-features): Feature boundaries identified from simulation-created .feature files. Features are split/renamed based on context map and aggregate boundaries. Rule blocks redistributed (content unchanged). Quality attributes mapped to `# Constraints:`. Rule titles validated for INVEST. Feature titles and descriptions finalized.
 3. **Example Writing** (develop-flow, feature-examples): Rules converted to Gherkin Example/Scenario Outline blocks with pre-mortem analysis.
 
 ## Content
@@ -36,7 +37,7 @@ last-updated: 2026-05-14
 
 Feature discovery is two sequential activities:
 
-1. **Boundary identification** (refine-features skill): Use the delivery order from product_definition.md as backbone. Map each step to bounded contexts and aggregates from the domain spec. Split candidates that span contexts or aggregates. Name features and write descriptions per [[requirements/feature-boundaries]].
+1. **Boundary identification** (refine-features skill): Use the context map from domain_spec.md as backbone. Map each bounded context to feature candidates from simulation-created .feature files. Split candidates that span contexts or aggregates. Name features and write descriptions per [[requirements/feature-boundaries]].
 
 2. **Rule organization** (refine-features skill): For each feature, organize the Rule blocks already written to .feature files during simulation. Split/rename Rules per context boundaries. Map quality attributes to constraints. Write `# Constraints:` into each .feature file. Validate INVEST criteria.
 
@@ -53,7 +54,7 @@ Gaps are recorded in the relevant interview notes. Do NOT silently fill gaps wit
 
 ## Related
 
-- [[requirements/feature-boundaries]]: deriving feature boundaries from delivery order and domain spec
+- [[requirements/feature-boundaries]]: deriving feature boundaries from context map and domain spec
 - [[requirements/spec-simulation]]: how rules are discovered during simulation
 - [[requirements/invest]]: INVEST criteria applied to Rule blocks
 - [[requirements/wsjf]]: feature prioritization applied to BASELINED features
