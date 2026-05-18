@@ -56,7 +56,7 @@ How many states READ each document. Higher consumption = higher system value.
 | `domain_model.md` | The WHAT. Bounded contexts, entities, relationships, aggregates. Without it, no agent knows what the system models. Consumed by 14 states. |
 | `glossary.md` | The WORDS. Shared language that keeps code, specs, and tests coherent. Without it, agents generate inconsistent naming. Consumed by 14 states. |
 | `technical_design.md` | The HOW. Stack, API contracts, event contracts, interfaces, module structure. The blueprint agents need to generate code structure. Consumed by 10 states. |
-| `product_definition.md` | The WHY & WHO. Scope boundaries, users, delivery order, quality attributes, definition of done. Prevents scope creep and prioritizes work. Consumed by 15 states. |
+| `product_definition.md` | The WHY & WHO. Scope boundaries, users, quality attributes. Prevents scope creep and drives architecture. Consumed by 15 states. |
 | `features/<name>.feature` | The BEHAVIOR. Rules + BDD examples are the executable specification. These ARE the tests. Without them, no agent knows what correct behavior looks like. Consumed by 12 states. |
 | `system.md` | The TRUTH. Current-state system overview, key decisions, active constraints. Evolves with the system. The only document that reflects what IS (vs what was planned). Consumed by 5 states. |
 
@@ -113,7 +113,7 @@ How many states READ each document. Higher consumption = higher system value.
 | `Users` | **MUST** | Personas. Determines who features serve. |
 | `Quality Attributes` | **MUST** | Measurable scenarios that drive architecture. Referenced by architecture-assessment, technical-design, definition-of-done, review-gate. Written by scope-boundary, updated by architecture-assessment. |
 | `Out of Scope` | **MUST** | Explicit non-goals. Boundary enforcement. |
-| `Delivery Order` | **MUST** | Feature dependency chain. Drives feature-selection state. |
+| `Delivery Order` | **REMOVED** | Feature selection order is now derived at selection time from the context map dependency graph and WSJF scoring. |
 | `Definition of Done` | **MUST** | Quality gates per feature. Written by definition-of-done state. Consumed implicitly by review and acceptance. |
 | `Deployment` | **MUST** | Deployment type and checklist. Written by scope-boundary, updated by architecture-assessment. |
 | `Branch Strategy` | **COULD** | Conventions. Could live in AGENTS.md or CONTRIBUTING.md instead. |
@@ -338,7 +338,7 @@ Each layer consumes the one below it. No document can be eliminated without losi
 | 1 | `domain_model.md` | Bounded contexts, entities, value objects, relationships, aggregate boundaries with invariants | Summary, Bounded Contexts, Entities, Relationships, Aggregate Boundaries (4 of 8 sections) |
 | 2 | `glossary.md` | Consistent naming across all generated code | All entries |
 | 3 | `technical_design.md` | Stack choice, module layout, API contracts, event contracts, port interfaces, dependencies, config keys | All 10 sections (C4 Diagrams optional) |
-| 4 | `product_definition.md` | Scope boundaries, users, delivery order, quality attributes, definition of done, deployment checklist | 8 of 9+ sections (Why optional, Branch Strategy not needed) |
+| 4 | `product_definition.md` | Scope boundaries, users, quality attributes, definition of done, deployment checklist | 7 of 8+ sections (Why optional, Branch Strategy not needed) |
 | 5 | `features/*.feature` | Per-feature: rules (user stories) and examples (BDD Given/When/Then with @id tags) | title, description, Rules, Examples, Constraints (5 of 6+ sections) |
 | 6 | `system.md` | Current-state architecture, key decisions, active constraints | Summary, Delivery, Context, Container, Module Structure, Domain Model Documentation, Active Constraints, Key Decisions (8 of 9+ sections) |
 

@@ -1,6 +1,6 @@
 ---
 name: select-feature
-description: "Select the next feature to develop by detecting delivery status from disk evidence, following delivery order"
+description: "Select the next feature to develop by detecting delivery status from disk evidence, deriving priority from dependency count and WSJF"
 ---
 
 # Select Feature
@@ -9,27 +9,28 @@ Available knowledge: [[requirements/wsjf#key-takeaways]]. `in` artifacts: read a
 
 1. List available feature files in `docs/features/`.
 2. IF no feature files exist → exit via `no-features`; features need discovery first.
-3. Read `product_definition.md` to obtain the delivery order (ordered list of feature slugs). Validate against `domain_spec.md` context map to ensure dependency order is respected.
-4. For each feature slug in delivery order, determine delivery status with a single pipeline
-   — do NOT open or read individual feature or test files:
+3. For each feature, determine delivery status — do NOT open or read individual feature or test files:
 
-    a. Check if the feature file has Example blocks (any line starting with `Example:`).
-       If none, the feature has not been broken down into BDD examples yet → feature is incomplete (select it).
+   a. Check if the feature file has Example blocks (any line starting with `Example:`).
+      If none, the feature has not been broken down into BDD examples yet → feature is incomplete.
 
-    b. Run `beehave check <slug>` to verify structural traceability:
-       - Any output (errors) → some Examples lack matching test functions or there are orphan tests → feature is incomplete (select it).
-       - No output (clean) → all Examples have matching test functions.
+   b. Run `beehave check <slug>` to verify structural traceability:
+      - Any output (errors) → some Examples lack matching test functions or there are orphan tests → feature is incomplete.
+      - No output (clean) → all Examples have matching test functions.
 
-    c. If beehave check is clean, run the tests scoped to that feature's test directory
-      using the project's test runner (see Project Commands table).
-      - Any failures → feature is incomplete (select it).
+   c. If beehave check is clean, run `task test-fast` scoped to that feature's test directory.
+      - Any failures → feature is incomplete.
       - All pass → feature is delivered (skip).
 
-    d. If the test directory does not exist, beehave check will report errors
-       → feature is incomplete (select it).
+   d. If the test directory does not exist, beehave check will report errors → feature is incomplete.
 
-5. Collect all incomplete features. IF this is the first feature (no features have been delivered yet) → select the first incomplete feature by delivery order. Skip to step 7.
-6. IF subsequent features: score each incomplete feature per [[requirements/wsjf#key-takeaways]]. For each, estimate Value (1-5, mapped to Kano categories) and Effort (1-5, mapped to complexity). Compute WSJF = Value / Effort. Eliminate Dependency=1 features. Select the highest WSJF score; ties broken by Value.
-7. IF every feature in the delivery order is delivered (diff clean + tests pass for all) →
-   exit via `no-features`.
+4. IF every feature is delivered → exit via `no-features`.
+5. Collect all incomplete features. Derive dependency count for each from `domain_spec.md` context map:
+   - Count how many other incomplete features this feature depends on (via integration points and entity relationships in the context map).
+   - Filter: select features with the **lowest dependency count** first (0 = no dependencies).
+6. IF only one feature has the lowest dependency count → select it. Skip to step 8.
+7. IF multiple features tie on dependency count → score each tied feature per [[requirements/wsjf#key-takeaways]]:
+   - Estimate Value (1-5, mapped to Kano categories) and Effort (1-5, mapped to complexity).
+   - Compute WSJF = Value / Effort.
+   - Select the highest WSJF score; ties broken by Value.
 8. Set the `feature_id` session param to the selected feature's filename stem (without `.feature` extension).

@@ -955,7 +955,7 @@ wheels = [
 
 [[package]]
 name = "temple8"
-version = "9.0.0"
+version = "9.0.1"
 source = { virtual = "." }
 
 [package.optional-dependencies]
