@@ -1,7 +1,7 @@
 ---
 domain: requirements
 tags: [gherkin, acceptance-criteria, specification, examples, bdd, scenario-outline, hypothesis]
-last-updated: 2026-05-14
+last-updated: 2026-05-19
 ---
 
 # Gherkin Specification Format
@@ -10,10 +10,9 @@ last-updated: 2026-05-14
 
 - Write declarative Examples that describe behaviour, not UI steps; use `Example:` not `Scenario:` for single-case examples (BDD, North, 2006).
 - Use `Scenario Outline:` with `<placeholder>` syntax and an `Examples:` table when the same behavioural outcome must be verified across 3+ input/output value combinations.
-- Feature, Rule, and Example/Scenario Outline titles must be 2–6 words and unique within the feature file — pytest-beehave uses title-based mapping (title → `test_<slug>` function name) for traceability.
-- `Then` must be a single, observable, measurable outcome; no "and" combining multiple behaviours in one `Then`.
-- Quoted strings (`"value"`) and bare numbers (`42`, `-3`) in steps are extracted by beehave as literals and verified present in test function bodies via `beehave check`.
-- `<placeholder>` names in steps become Python function parameters and Hypothesis `@given` strategies in generated stubs. Names must be valid Python identifiers (not keywords, not builtins).
+- Feature, Rule, and Example/Scenario Outline titles must be 2–6 words and unique within the feature file — pytest-beehave uses title-based mapping (title → `test_<slug>` function name) for traceability. Titles must contain ONLY Unicode letters, digits, and spaces — no hyphens, periods, underscores, or special characters (they break slug generation).
+- Quoted strings (`"value"`) and bare numbers (`42`, `-3`) in steps are extracted by beehave as literals and verified present in test function bodies via `beehave check`. Choose literals the test will naturally consume — for example, `"US"` is more useful than `"United States of America"` because the test can use it directly as a parameter. Avoid literals that only make sense as display text.
+- `<placeholder>` names in steps become Python function parameters and Hypothesis `@given` strategies in generated stubs. Names must be valid Python identifiers (not keywords, not builtins). All columns in the Examples table — including output columns like `<expected>` — become Hypothesis parameters. Output columns that are deterministic functions of inputs (e.g., `expected = min(a, b)`) are reassigned in the test body. This is by design: Hypothesis requires `@given` and `@example` to share the same parameter set.
 - Bug Examples use `@bug` and require both a specific feature test and a Hypothesis property test.
 - After criteria commit, Examples are frozen; changes require `@deprecated` on the old Example and a new Example with a new unique title.
 - Two Examples with the same `Then` outcome but different input values test the same behaviour; partition by behaviour outcome, not by input value (Wynne, 2015; Adzic, 2011).
@@ -24,13 +23,15 @@ last-updated: 2026-05-14
 
 **Example vs Scenario Outline**: Use `Example:` for single-case examples. Use `Scenario Outline:` when the same behavioural outcome must be verified across 3+ different input/output value combinations. Scenario Outline uses `<placeholder>` syntax in Given/When/Then steps and an `Examples:` table with concrete data rows. This avoids repeating identical step structures with different values.
 
-**Title Length Constraint**: Feature, Rule, and Example/Scenario Outline titles must be 2–6 words. Titles become `test_<slug>` function names — too short produces ambiguous identifiers (e.g. `test_stuff`), too long produces unwieldy ones (e.g. `test_when_the_user_submits_a_form_with_invalid_email_the_system_displays_an_error_message`). Count words by splitting on whitespace.
+**Title Length and Character Constraint**: Feature, Rule, and Example/Scenario Outline titles must be 2–6 words and unique within the feature file. Titles must contain ONLY Unicode letters, digits, and spaces — no hyphens (`-`), periods (`.`), underscores (`_`), or other special characters. The title is slugified to produce the test function name (`test_<slug>`), and special characters either break slug generation or produce ambiguous identifiers. Too short produces ambiguous identifiers (e.g. `test_stuff`), too long produces unwieldy ones. Count words by splitting on whitespace.
 
 **Placeholder Syntax**: `<variable_name>` in Given/When/Then steps. Beehave extracts these and generates Hypothesis `@given(var_name=strategy)` decorators in test stubs. Placeholder names must be valid Python identifiers, not keywords (`for`, `class`), and not builtins (`list`, `str`). When used with Scenario Outline, the Examples table column headers must match the placeholder names.
 
-**Literal Extraction**: Quoted strings (`"value"`, `'value'`) and bare numbers (`42`, `-3`, `3.14`) in Given/When/Then steps are extracted by beehave as literals. `beehave check` verifies these literals appear in the test function body. This provides structural traceability beyond title mapping — tests must use the exact literal values from the spec.
+**Literal Extraction**: Quoted strings (`"value"`, `'value'`) and bare numbers (`42`, `-3`, `3.14`) in Given/When/Then steps are extracted by beehave as literals. `beehave check` verifies these literals appear in the test function body. This provides structural traceability beyond title mapping — tests must use the exact literal values from the spec. **Choose literals the test will naturally consume.** If a step says `When an order is placed for "Widget"`, the test will construct an object using `"Widget"` — that's natural. If a step says `When the user uploads "Annual Report Q4 2024 Final Draft"`, the test must contain that entire string, which is awkward. Prefer short, code-friendly literals. For entity identifiers (like trading pairs or product codes), use the format the code actually uses (e.g., `"US"` not `"United States"`) so the test can pass the literal directly to constructors.
 
 **Hypothesis Integration**: Scenario Outline generates `@given` decorated stubs with inferred Hypothesis strategies (`st.integers()`, `st.floats()`, `st.booleans()`, `st.text()`) plus `@example` decorators for each Examples table row. Plain Examples generate bare function stubs. For tests hitting external services, use `@settings(max_examples=N)` to control load. For unit/domain tests, Hypothesis defaults are fine.
+
+**Output Columns and Hypothesis Constraint**: Every column in the Examples table becomes both an `@example` argument and a `@given` strategy — including output columns like `<expected>`. Hypothesis enforces that `@given` and `@example` share the same parameter set. When an output column is a deterministic function of inputs (e.g., `expected = min(size, count)`), the random `@given` value is meaningless. The SE reassigns it in the test body: `expected = min(size, count)`. The `@example` rows provide the correct concrete values for regression. This is the intended pattern — do NOT remove output columns from the Examples table or from `@given`. The output columns serve as documentation and regression anchors even though Hypothesis fuzzes a meaningless random value for them.
 
 **Example Format and Title-Based Mapping**: Each Example uses the `Example:` keyword (not `Scenario:`), includes `Given/When/Then` in plain English. pytest-beehave maps Examples to test functions by title: the function name is `test_<example_title_slug>`. Titles must be unique within the feature file. Descriptive titles serve as the traceability link between feature specification and test code — no `@id` tags are needed.
 
@@ -58,6 +59,7 @@ last-updated: 2026-05-14
 
 - Feature, Rule, and Example/Scenario Outline titles must be 2–6 words
 - Titles must be unique within the feature file
+- Titles must contain ONLY Unicode letters, digits, and spaces — no hyphens, periods, underscores, or special characters
 - Title becomes the test function name: `test_<example_title_slug>`
 - Titles should be descriptive enough to serve as the test identifier
 - No `@id` tags — the title is the traceability link
@@ -175,6 +177,8 @@ Implement both:
 - Using `Scenario:` keyword: use `Example:` for single cases or `Scenario Outline:` for parameterized cases
 - Placeholder names that are Python keywords or builtins: beehave rejects these at parse time
 - Paraphrasing literal values in test code instead of using exact values from the spec: fails `beehave check`
+- Titles containing hyphens, periods, underscores, or special characters: only Unicode letters, digits, and spaces are allowed
+- Using long or display-oriented literals in steps (e.g., `"Annual Report Q4 2024 Final Draft"`): the entire string must appear in the test body — prefer short, code-friendly literals
 
 ### Feature File Path Convention
 
