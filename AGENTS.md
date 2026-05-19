@@ -8,7 +8,8 @@ Post-mortem analysis shows these practices prevent most project failures. Violat
 4. **Never decompose a feature without stakeholder approval.** If a feature is too large for INVEST, propose the split to the stakeholder with rationale. They decide what's core vs. deferred.
 5. **Verify inputs exist before entering a state.** Every state's `in` artifacts must be readable on disk. If they're missing, stop and reconstruct them. Don't proceed with assumed knowledge.
 6. **A feature is not done until every interview requirement is traced.** Every stakeholder Q&A must map to either a passing @id test or an explicit stakeholder deferral. Untraced requirements = incomplete delivery.
-7. **Respect git branch discipline.** Every state declares `git: dev`, `git: feature`, or `git: main` in its attrs. Work on the branch the state declares. Never switch branches mid-state. Before exiting a project-phase flow (discovery, architecture, branding, setup), set `committed-to-dev-locally: ==verified` evidence. Changes must be committed to dev before advancing.
+7. **Respect git branch discipline.** Every state declares `git: dev`, `git: feature`, or `git: main` in its attrs. **Verify the current branch matches `attrs.git` before starting any work.** If the branch is wrong, checkout or create the correct branch before proceeding. Never switch branches mid-state. Before exiting a project-phase flow (discovery, architecture, branding, setup), set `committed-to-dev-locally: ==verified` evidence. Changes must be committed to dev before advancing.
+8. **Every feature branch must be merged back to dev.** A feature is not delivered until its commits are squash-merged into local dev and `task test-fast` passes on dev. The develop-flow exits to deliver-flow which handles the merge, but the orchestrator must never leave a feature branch dangling — if the session ends mid-feature, resume and complete the merge before starting new work.
 
 ## Project Structure
 - `.flowr/flows/`: YAML state machine definitions (source of truth for routing)
@@ -163,15 +164,19 @@ Exception: The polish-code skill explicitly runs convention commands (`task conv
 
 ### Todo-Driven State Execution
 
-At state entry, generate a procedural todo list from the state's metadata using the todowrite tool. Format: `[X]` completed, `[ ]` pending, `[~]` anchor (always last).
+At state entry, generate a procedural todo list using the todowrite tool. Format: `[X]` completed, `[ ]` pending, `[~]` anchor (always last).
 
-1. **Preparation** (`[ ]`): list available `in` artifacts
-2. **Dispatch** (`[ ]`): call the state's owner agent with skills loaded
-3. **Output** (`[ ]`): one per `out` artifact
-4. **Verification** (`[ ]`): check constraints, run tests/lint if applicable
-5. **Anchor** (`[~]`, always last): flowr next → pick transition → flowr transition → rewrite todo
+1. **Preparation** (`[ ]`): verify current branch matches `attrs.git` (checkout or create if wrong). List available `in` artifacts.
+2. **Dispatch** (`[ ]`): dispatch to the owner agent listed in `attrs.owner` as a subagent with skills loaded. The orchestrator MUST NOT do the work itself — only route. Owner mapping: `PO` → product-owner, `DE` → domain-expert, `SE` → software-engineer, `SA` → system-architect, `R` → reviewer, `Design Agent` → design-agent, `Setup Agent` → setup-agent.
+3. **Load skills** (`[ ]`): read every skill file listed in `attrs.skills` from `.opencode/skills/<skill_name>/SKILL.md`. This step is MANDATORY — never skip it.
+4. **Skill-derived work items** (`[ ]`): one todo item per numbered step in the skill, using the skill's own language verbatim. These are the substantive work items. Self-generated items are only permitted for infrastructure (read artifacts, commit) — never for the core procedure.
+5. **Output** (`[ ]`): one per `out` artifact
+6. **Verification** (`[ ]`): check constraints, run tests/lint if applicable
+7. **Anchor** (`[~]`, always last): flowr next → pick transition → flowr transition → rewrite todo
 
 The todo is the execution contract. Every item must be marked `[X]` before the anchor fires. One state per todo; never span multiple states or collapse loop iterations. Full protocol: [[workflow/todo-anchor-protocol]].
+
+**Todo discipline**: After completing ANY step, update the todowrite tool to mark it `[X]` and set the next step `[ ]` to `in_progress`. If the todo list is empty or missing, regenerate it immediately — working without a todo means working without a contract. Never let the todo go stale between steps.
 
 ### Session Init
 

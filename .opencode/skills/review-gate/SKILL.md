@@ -15,7 +15,7 @@ Available knowledge: [[software-craft/code-review]], [[software-craft/test-desig
 2. Verify implementation aligns with architectural decisions per [[software-craft/code-review#concepts]]: ADR compliance, quality attributes met.
 3. Verify all `# Constraints:` in the .feature file are met in the implementation. For technology constraints, read domain_spec.md `### Technology Requirements` table and execute the Verification instruction for each row (grep imports, check file existence, inspect config). Zero evidence → FAIL. For quality attribute constraints, verify thresholds are enforced.
 4. Verify implementation aligns with feature specification: all Examples have corresponding test implementations, behavior matches Gherkin steps.
-5. Verify design principles adversarially per the priority order in [[software-craft/tdd#content]], loading ObjCal per [[software-craft/object-calisthenics#key-takeaways]], smells per [[software-craft/smell-catalogue#key-takeaways]], and SOLID per [[software-craft/solid#key-takeaways]].
+5. Verify design principles adversarially per the priority order in [[software-craft/tdd#content]], loading the full documents for detection: ObjCal per [[software-craft/object-calisthenics]], smells per [[software-craft/smell-catalogue]], and SOLID per [[software-craft/solid]]. Use `#key-takeaways` only when recalling principles, not when detecting violations.
 6. **FAIL-FAST**: If any design violations found → exit `fail` with specific citations (file:line). Do NOT proceed to structure review.
 
 ## Tier 2: Structure Review
