@@ -1,7 +1,7 @@
 ---
 domain: software-craft
 tags: [test-stubs, traceability, pytest-beehave, scenario-outline, hypothesis]
-last-updated: 2026-05-14
+last-updated: 2026-05-19
 ---
 
 # Test Stubs
@@ -67,6 +67,32 @@ Override by defining a variable with the placeholder name as a Hypothesis strate
 Stubs (functions with `...` body) are exempt from placeholder and literal checks — these only apply once the `...` is replaced with implementation.
 
 **Test File Layout**. pytest-beehave organizes tests as: Feature title → directory, Rule → test file, Example/Scenario Outline → function name. Test files are placed in `tests/features/<feature_slug>/<rule_slug>_test.py`.
+
+**Derived Output Columns**. When a Scenario Outline Examples table includes output columns (e.g., `expected`) that are deterministic functions of input columns, the test body must reassign them. Hypothesis generates random values for ALL columns — including outputs — because it requires `@given` and `@example` to share the same parameter set. The reassignment pattern:
+
+```python
+@given(size=st.integers(min_value=1, max_value=50), count=st.integers(min_value=0, max_value=100), expected=st.integers())
+@example(size=3, count=5, expected=3)
+@example(size=1, count=3, expected=1)
+def test_bounded_history(size, count, expected):
+    expected = min(size, count)
+    assert len(cache.history(pair, "data", count=size)) == expected
+```
+
+The `@example` rows provide correct concrete values for regression. The `@given` value for `expected` is random noise — the reassignment overrides it. This is the intended pattern.
+
+**String Literal Helpers**. When a Gherkin step references a compound identifier like `"FOO/BAR"`, the test needs this literal in the function body for `beehave check`. Use a helper that naturally consumes the literal:
+
+```python
+def _pair_from(symbol: str) -> Pair:
+    base, quote = symbol.split("/")
+    return Pair(base=Token(base), quote=Token(quote))
+
+def test_example():
+    pair = _pair_from("FOO/BAR")
+```
+
+The literal `"FOO/BAR"` appears naturally in the function body — no noise assertions or unused variables needed. NEVER satisfy literal checks by stuffing strings into assert messages (`assert x == y, "FOO/BAR"`) or assigning to underscore (`_ = "FOO/BAR"`).
 
 ## Related
 
